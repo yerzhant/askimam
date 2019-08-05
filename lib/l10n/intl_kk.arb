@@ -1,0 +1,143 @@
+{
+  "@@last_modified": "2019-04-27T17:00:39.849783",
+  "appName": "Azan.kz сайт имамына сұрақ",
+  "@appName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enteringIntoSystem": "Системаға кіру...",
+  "@enteringIntoSystem": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "publicQuestions": "Жария сұрақтар",
+  "@publicQuestions": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myQuestions": "Менің сұрақтар",
+  "@myQuestions": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newQuestions": "Жаңа сұрақтар",
+  "@newQuestions": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "askQuestion": "Сұрақты қою",
+  "@askQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteQuestions": "Сұрақтарды жою",
+  "@deleteQuestions": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confidentialityPolicy": "Құпиялылық саясаты",
+  "@confidentialityPolicy": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterMessage": "Хабарды жазыңыз",
+  "@enterMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sendMessage": "Хабар жіберу",
+  "@sendMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "returnToNewQuestions": "Жаңа сұрақтарға қайтару",
+  "@returnToNewQuestions": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "returnToListOfNewQuestions": "Бұл сұрақы Жаңа сұрақтарға қайтаруға қажетпа?",
+  "@returnToListOfNewQuestions": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myMessages": "Менің хат алмасу",
+  "@myMessages": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hasNewMessage": "Жаңа хабар бар",
+  "@hasNewMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subject": "Тақырыбы",
+  "@subject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterSubject": "Тақырыбын енгізіңіз",
+  "@enterSubject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterSubject": "Өтінеміз, тақырыбын енгізіңіз",
+  "@pleaseEnterSubject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "privateQuestion": "Жекеше сұрақ",
+  "@privateQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "publicQuestion": "Көпшілік сұрақ",
+  "@publicQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterQuestion": "Сұрақты енгізіңіз",
+  "@enterQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterQuestion": "Өтінеміз, сұрақты енгізіңіз",
+  "@pleaseEnterQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "send": "Жіберу",
+  "@send": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "imamRegistrationConfirmation": "Сіздің өтініміңіз қабылданды. Өтінеміз, Сіздің өтініміңіз расталғаннан кейін бағдарламаны жаңартыңыз.",
+  "@imamRegistrationConfirmation": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "imamsRating": "Ұстаздардың рейтингі",
+  "@imamsRating": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPrompt": "Ізделетін сөзді/өрнекті енгізіңіз",
+  "@searchPrompt": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "share": "Бөлісу",
+  "@share": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "teacher": "Ұстаз",
+  "@teacher": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "audioMessage": "Аудио хабарландыру",
+  "@audioMessage": {
+    "type": "text",
+    "placeholders": {}
+  }
+}
