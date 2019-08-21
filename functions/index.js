@@ -114,17 +114,50 @@ exports.topicUpdated = functions.region('europe-west1').firestore
 //             .where('isPublic', '==', true)
 //             .get();
 
-// /*      This is for faster upload in case current solution will be slow.  
+//         /*      This is for faster upload in case current solution will be slow.  
+//                 const records = [];
+//                 index
+//                     .saveObjects(records)
+//                     .then(() => {
+//                       console.log('Contacts imported into Algolia');
+//                     })
+//                     .catch(error => {
+//                       console.error('Error when importing contact into Algolia', error);
+//                       process.exit(1);
+//                     });*/
+
+//         for (const topic of topics.docs) {
+//             // console.log(`Topic: ${JSON.stringify(topic.data())}`);
+//             // console.log(`Topic name: ${topic.data().name}`);
+//             // break;
+//             // eslint-disable-next-line no-await-in-loop
+//             const messages = await admin.firestore()
+//                 .collection('messages')
+//                 .where('topicId', '==', topic.id)
+//                 .get();
+
+//             // console.log(`Messages: ${messages.size}`);
+//             // // eslint-disable-next-line no-loop-func
+//             messages.forEach(msgSnap => {
+//                 const message = msgSnap.data();
+//                 searchEngine.indexMessage(msgSnap.id, message.topicId, topic.data().name, message.text);
+//                 // console.log(`Text: ${message.text}`);
+//             });
+//         }
+
+//         console.log('Finished.');
+//         return null;
+//     });
+
+// exports.reindexMessagesOrig = functions.region('europe-west1').firestore
+//     .document('')
+//     .onCreate(async () => {
+//         const topics = await admin.firestore()
+//             .collection('topics')
+//             .where('isPublic', '==', true)
+//             .get();
+
 //         const records = [];
-//         index
-//             .saveObjects(records)
-//             .then(() => {
-//               console.log('Contacts imported into Algolia');
-//             })
-//             .catch(error => {
-//               console.error('Error when importing contact into Algolia', error);
-//               process.exit(1);
-//             });*/
 
 //         topics.forEach(async snap => {
 //             const topic = snap.data();
