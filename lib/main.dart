@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,6 +18,7 @@ import 'package:askimam/delete_topics.dart';
 import 'package:askimam/imams_rating.dart';
 import 'package:askimam/search.dart';
 import 'package:askimam/localization.dart';
+import 'package:askimam/auto_direction.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 FirebaseUser _user;

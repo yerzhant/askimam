@@ -1,4 +1,3 @@
-import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +6,7 @@ import 'package:askimam/chat.dart';
 import 'package:askimam/delete_topics.dart';
 import 'package:askimam/consts.dart';
 import 'package:askimam/localization.dart';
+import 'package:askimam/auto_direction.dart';
 
 class QuestionsOfImamPage extends StatelessWidget {
   final FirebaseUser _user;

@@ -1,4 +1,3 @@
-import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:askimam/consts.dart';
 import 'package:askimam/my_questions.dart';
 import 'package:askimam/localization.dart';
+import 'package:askimam/auto_direction.dart';
 
 class NewQuestionPage extends StatefulWidget {
   final FirebaseUser _user;
