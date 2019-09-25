@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 import 'package:askimam/localization.dart';
+import 'package:intl/intl.dart';
 
 class AudioPlayer extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -23,6 +24,7 @@ class _AudioPlayer extends State<AudioPlayer> {
   bool _isPaused = false;
   double _position = 0;
   double _duration = 0;
+  String _currentTime;
 
   @override
   void initState() {
@@ -78,7 +80,7 @@ class _AudioPlayer extends State<AudioPlayer> {
         ),
         Padding(
           padding: const EdgeInsets.only(right: 15, left: 5),
-          child: Text(widget.data['duration']),
+          child: Text(_isPlaying ? _currentTime : widget.data['duration']),
         ),
       ],
     );
@@ -88,9 +90,10 @@ class _AudioPlayer extends State<AudioPlayer> {
     await _player.startPlayer(widget.data['audioUrl']);
     _subscription = _player.onPlayerStateChanged.listen((e) {
       if (e != null) {
+        _position = e.currentPosition;
+        DateTime date = DateTime.fromMillisecondsSinceEpoch(_position.toInt());
         setState(() {
           _duration = e.duration;
-          _position = e.currentPosition;
           if (_duration == _position) {
             currentlyPlaying = null;
             _isPlaying = false;
@@ -100,6 +103,7 @@ class _AudioPlayer extends State<AudioPlayer> {
             currentlyPlaying = this;
             _isPlaying = true;
           }
+          _currentTime = DateFormat('mm:ss').format(date);
         });
       }
     });
