@@ -140,7 +140,10 @@ class _ChatState extends State<Chat> {
                     text: message['text'],
                     child: SizedBox(
                       width: double.infinity,
-                      child: Text(message['text']),
+                      child: Text(
+                        message['text'],
+                        style: TextStyle(height: 1.5),
+                      ),
                     ),
                   ),
                 ),

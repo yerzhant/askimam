@@ -10,7 +10,29 @@ class ImamsRating extends StatelessWidget {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).imamsRating),
       ),
-      body: _buildList(),
+      body: Column(
+        children: <Widget>[
+          Expanded(child: _buildList()),
+          Divider(height: 1),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Text(
+                    'На русские вопросы отвечает Устаз Азамат Абу Баязид.',
+                  ),
+                ),
+                Text(
+                  'На казахские вопросы отвечают: Устаз Руслан и Ұстаз Жанболат.',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
