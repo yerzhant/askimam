@@ -51,6 +51,7 @@ class AskImamApp extends StatelessWidget {
         const Locale('ru', ''),
         const Locale('kk', ''),
       ],
+      // debugShowCheckedModeBanner: false,
     );
   }
 }
