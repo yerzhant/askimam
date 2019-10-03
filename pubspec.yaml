@@ -15,7 +15,7 @@ description: Ask imam on Azan.kz
 # flutter build apk
 # flutter build appbundle
 # flutter install
-version: 1.13.0+20
+version: 1.14.0+21
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
