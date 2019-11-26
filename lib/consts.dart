@@ -11,3 +11,4 @@ const messagesCollection = _isRelease ? 'messages' : 'testMessages';
 const imamsTopic = _isRelease ? 'imams' : 'testImams';
 const audioFolder = _isRelease ? 'audio' : 'test-audio';
 const messagesIndex = 'messages';
+const topicsLimitOnMainPage = 50;
