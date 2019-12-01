@@ -309,7 +309,7 @@ class _Topics extends StatelessWidget {
           .where('isPublic', isEqualTo: true)
           .where('isAnswered', isEqualTo: true)
           .orderBy('modifiedOn', descending: true)
-          .limit(topicsLimitOnMainPage)
+          // .limit(topicsLimitOnMainPage)
           .snapshots(),
       initialData: null,
       builder: (_, snapshot) {
