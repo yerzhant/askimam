@@ -25,19 +25,19 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_cupertino_localizations:
-  intl:
-  intl_translation:
-  google_sign_in:
-  firebase_auth:
-  firebase_messaging:
-  firebase_storage:
-  cloud_firestore:
-  shared_preferences:
-  url_launcher:
-  algolia:
-  share:
-  flutter_sound:
+  flutter_cupertino_localizations: ^1.0.1
+  intl: ^0.16.0
+  intl_translation: ^0.17.7
+  google_sign_in: ^4.1.1
+  firebase_auth: ^0.15.3
+  firebase_messaging: ^6.0.9
+  firebase_storage: ^3.1.0
+  cloud_firestore: ^0.13.0+1
+  shared_preferences: ^0.5.6
+  url_launcher: ^5.4.1
+  algolia: ^0.1.7
+  share: ^0.6.3+5
+  flutter_sound: ^1.7.0
   # auto_direction:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
