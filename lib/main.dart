@@ -25,7 +25,10 @@ FirebaseUser _user;
 bool _isImam = false;
 String _fcmToken;
 
-void main() => runApp(AskImamApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(AskImamApp());
+}
 
 class AskImamApp extends StatelessWidget {
   AskImamApp() {

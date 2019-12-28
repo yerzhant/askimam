@@ -39,7 +39,7 @@ android {
 
     defaultConfig {
         applicationId "kz.azan.askimam"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
