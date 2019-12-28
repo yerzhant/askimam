@@ -190,8 +190,7 @@ class _Composer extends State<Composer> {
   }
 
   void _startRecording() async {
-    _audioPath =
-        await _recorder.startRecorder(null, sampleRate: 8000);
+    _audioPath = await _recorder.startRecorder(null); //, sampleRate: 8000);
     _soundRecordingSubscription = _recorder.onRecorderStateChanged.listen((e) {
       if (e != null) {
         DateTime date =
