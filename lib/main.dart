@@ -303,51 +303,76 @@ class _MainPage extends StatelessWidget {
   }
 }
 
-class _Topics extends StatelessWidget {
+class _Topics extends StatefulWidget {
+  @override
+  __TopicsState createState() => __TopicsState();
+}
+
+class __TopicsState extends State<_Topics> {
+  final _topics = <DocumentSnapshot>[];
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) _moreTopics();
+    });
+    _moreTopics();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance
-          .collection(topicsCollection)
-          .where('isPublic', isEqualTo: true)
-          .where('isAnswered', isEqualTo: true)
-          .orderBy('modifiedOn', descending: true)
-          // .limit(topicsLimitOnMainPage)
-          .snapshots(),
-      initialData: null,
-      builder: (_, snapshot) {
-        if (snapshot.data == null || !snapshot.hasData) return Container();
-
-        final documents = snapshot.data.documents;
-
-        return ListView.separated(
-          itemCount: documents.length,
-          separatorBuilder: (_, __) => Divider(height: 1),
-          itemBuilder: (_, index) {
-            final topic = documents[index];
-
-            return ListTile(
-              title: AutoDirection(
-                text: topic['name'],
-                child: Text(topic['name']),
+    return ListView.separated(
+      controller: _scrollController,
+      itemCount: _topics.length,
+      separatorBuilder: (_, __) => Divider(),
+      itemBuilder: (_, index) {
+        final topic = _topics[index];
+        return ListTile(
+          title: AutoDirection(
+            text: topic['name'],
+            child: Text(topic['name']),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => Chat(
+                  user: _user,
+                  topic: topic,
+                  fcmToken: _fcmToken,
+                  isPublic: true,
+                ),
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => Chat(
-                      user: _user,
-                      topic: topic,
-                      fcmToken: _fcmToken,
-                      isPublic: true,
-                    ),
-                  ),
-                );
-              },
             );
           },
         );
       },
     );
+  }
+
+  void _moreTopics() {
+    var query = Firestore.instance
+        .collection(topicsCollection)
+        .where('isPublic', isEqualTo: true)
+        .where('isAnswered', isEqualTo: true)
+        .orderBy('modifiedOn', descending: true)
+        .limit(topicsChunkSize);
+
+    if (_topics.length > 0) query = query.startAfterDocument(_topics.last);
+
+    query.snapshots().forEach((snap) {
+      setState(() {
+        _topics.addAll(snap.documents);
+      });
+    });
   }
 }
