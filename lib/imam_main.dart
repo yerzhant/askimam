@@ -31,15 +31,6 @@ class _ImamMainPageState extends State<ImamMainPage> {
   @override
   Widget build(BuildContext context) {
     final imageIdx = _random.nextInt(4);
-    Color appNameColor;
-    switch (imageIdx) {
-      case 2:
-        appNameColor = Colors.orange[700];
-        break;
-
-      default:
-        appNameColor = Colors.white;
-    }
 
     return Scaffold(
       appBar: PreferredSize(
@@ -84,7 +75,12 @@ class _ImamMainPageState extends State<ImamMainPage> {
             DrawerHeader(
               child: Text(
                 AppLocalizations.of(context).appName,
-                style: TextStyle(color: appNameColor, fontSize: 16),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  shadows: [Shadow(blurRadius: 5)],
+                ),
               ),
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -95,7 +91,10 @@ class _ImamMainPageState extends State<ImamMainPage> {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).publicQuestions),
-              leading: Icon(Icons.public),
+              leading: Icon(
+                Icons.public,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -109,7 +108,10 @@ class _ImamMainPageState extends State<ImamMainPage> {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).myMessages),
-              leading: Icon(Icons.list),
+              leading: Icon(
+                Icons.list,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -122,7 +124,10 @@ class _ImamMainPageState extends State<ImamMainPage> {
             ),
             ListTile(
               title: Text(MaterialLocalizations.of(context).searchFieldLabel),
-              leading: Icon(Icons.search),
+              leading: Icon(
+                Icons.search,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -139,7 +144,10 @@ class _ImamMainPageState extends State<ImamMainPage> {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).deleteQuestions),
-              leading: Icon(Icons.delete),
+              leading: Icon(
+                Icons.delete,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -152,7 +160,10 @@ class _ImamMainPageState extends State<ImamMainPage> {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).imamsRating),
-              leading: Icon(Icons.assessment),
+              leading: Icon(
+                Icons.assessment,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -166,7 +177,10 @@ class _ImamMainPageState extends State<ImamMainPage> {
             Divider(height: 1),
             ListTile(
               title: Text('Azan.kz'),
-              leading: Icon(Icons.public),
+              leading: Icon(
+                Icons.public,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () async {
                 Navigator.pop(context);
                 await launch('https://azan.kz');
@@ -174,7 +188,10 @@ class _ImamMainPageState extends State<ImamMainPage> {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).confidentialityPolicy),
-              leading: Icon(Icons.info),
+              leading: Icon(
+                Icons.info,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () async {
                 Navigator.pop(context);
                 await launch(policyUrl);
@@ -247,7 +264,10 @@ class _TopicsState extends State<_Topics> {
               ? Text(AppLocalizations.of(context).hasNewMessage)
               : null,
           leading: isPublic
-              ? Icon(Icons.public, color: Colors.greenAccent[400])
+              ? Icon(
+                  Icons.public,
+                  color: Theme.of(context).primaryColor,
+                )
               : null,
           trailing:
               hasNewMessages ? Icon(Icons.chat, color: Colors.orange) : null,

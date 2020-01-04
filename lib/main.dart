@@ -131,15 +131,6 @@ class _MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageIdx = _random.nextInt(4);
-    Color appNameColor;
-    switch (imageIdx) {
-      case 2:
-        appNameColor = Colors.orange[700];
-        break;
-
-      default:
-        appNameColor = Colors.white;
-    }
 
     return Scaffold(
       appBar: PreferredSize(
@@ -186,7 +177,12 @@ class _MainPage extends StatelessWidget {
             DrawerHeader(
               child: Text(
                 AppLocalizations.of(context).appName,
-                style: TextStyle(color: appNameColor, fontSize: 16),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  shadows: [Shadow(blurRadius: 5)],
+                ),
               ),
               decoration: BoxDecoration(
                 image: DecorationImage(
