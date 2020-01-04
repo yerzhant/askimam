@@ -36,6 +36,7 @@ class _Topics extends StatelessWidget {
           .collection(topicsCollection)
           .where('imamUid', isEqualTo: _user.uid)
           .orderBy('modifiedOn', descending: true)
+          .limit(imamsQuestionsLimit)
           .snapshots(),
       initialData: null,
       builder: (_, snapshot) {
