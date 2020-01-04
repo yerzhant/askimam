@@ -194,7 +194,10 @@ class _MainPage extends StatelessWidget {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).askQuestion),
-              leading: Icon(Icons.add),
+              leading: Icon(
+                Icons.add,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -207,7 +210,10 @@ class _MainPage extends StatelessWidget {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).myQuestions),
-              leading: Icon(Icons.list),
+              leading: Icon(
+                Icons.list,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -220,7 +226,10 @@ class _MainPage extends StatelessWidget {
             ),
             ListTile(
               title: Text(MaterialLocalizations.of(context).searchFieldLabel),
-              leading: Icon(Icons.search),
+              leading: Icon(
+                Icons.search,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -233,7 +242,10 @@ class _MainPage extends StatelessWidget {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).deleteQuestions),
-              leading: Icon(Icons.delete),
+              leading: Icon(
+                Icons.delete,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -246,7 +258,10 @@ class _MainPage extends StatelessWidget {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).imamsRating),
-              leading: Icon(Icons.assessment),
+              leading: Icon(
+                Icons.assessment,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -260,7 +275,10 @@ class _MainPage extends StatelessWidget {
             Divider(height: 1),
             ListTile(
               title: Text('Azan.kz'),
-              leading: Icon(Icons.public),
+              leading: Icon(
+                Icons.public,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () async {
                 Navigator.pop(context);
                 await launch('https://azan.kz');
@@ -268,7 +286,10 @@ class _MainPage extends StatelessWidget {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).confidentialityPolicy),
-              leading: Icon(Icons.info),
+              leading: Icon(
+                Icons.info,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: () async {
                 Navigator.pop(context);
                 await launch(policyUrl);
