@@ -63,6 +63,7 @@ class AskImamApp extends StatelessWidget {
 void _signIn() async {
   final prefs = await SharedPreferences.getInstance();
   _isImam = prefs.getBool('isImam') ?? false;
+  // _isImam = true;
 
   if (_isImam) {
     _firebaseMessaging.subscribeToTopic(imamsTopic);
@@ -337,8 +338,8 @@ class __TopicsState extends State<_Topics> {
             text: topic['name'],
             child: Text(topic['name']),
           ),
-          onTap: () {
-            Navigator.push(
+          onTap: () async {
+            await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => Chat(
@@ -349,6 +350,7 @@ class __TopicsState extends State<_Topics> {
                 ),
               ),
             );
+            _topics.clear();
           },
         );
       },

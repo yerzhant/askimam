@@ -271,8 +271,8 @@ class _TopicsState extends State<_Topics> {
               : null,
           trailing:
               hasNewMessages ? Icon(Icons.chat, color: Colors.orange) : null,
-          onTap: () {
-            Navigator.push(
+          onTap: () async {
+            await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => Chat(
@@ -283,6 +283,7 @@ class _TopicsState extends State<_Topics> {
                 ),
               ),
             );
+            _topics.clear();
           },
           onLongPress: () {
             Navigator.push(
