@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:askimam/imam_main_public.dart';
+import 'package:askimam/imam_main.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,17 +15,17 @@ import 'package:askimam/search.dart';
 import 'package:askimam/localization.dart';
 import 'package:askimam/auto_direction.dart';
 
-class ImamMainPage extends StatefulWidget {
+class ImamMainPagePublic extends StatefulWidget {
   final FirebaseUser _user;
   final String _fcmToken;
 
-  ImamMainPage(this._user, this._fcmToken);
+  ImamMainPagePublic(this._user, this._fcmToken);
 
   @override
-  State createState() => _ImamMainPageState();
+  State createState() => _ImamMainPagePublicState();
 }
 
-class _ImamMainPageState extends State<ImamMainPage> {
+class _ImamMainPagePublicState extends State<ImamMainPagePublic> {
   final _random = Random();
 
   @override
@@ -55,7 +55,7 @@ class _ImamMainPageState extends State<ImamMainPage> {
 
             final hasNew = _isNewMessageForMe(snapshot);
             return AppBar(
-              title: Text(AppLocalizations.of(context).newQuestions),
+              title: Text(AppLocalizations.of(context).publicQuestions),
               actions: <Widget>[
                 IconButton(
                   icon: Icon(
@@ -94,15 +94,15 @@ class _ImamMainPageState extends State<ImamMainPage> {
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).publicQuestions),
-              leading: Icon(Icons.public),
+              title: Text(AppLocalizations.of(context).newQuestions),
+              leading: Icon(Icons.new_releases),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) =>
-                        ImamMainPagePublic(widget._user, widget._fcmToken),
+                        ImamMainPage(widget._user, widget._fcmToken),
                   ),
                 );
               },
@@ -284,7 +284,8 @@ class _TopicsState extends State<_Topics> {
   void _moreTopics() {
     Query query = Firestore.instance
         .collection(topicsCollection)
-        .where('imamUid', isNull: true)
+        .where('isPublic', isEqualTo: true)
+        .where('isAnswered', isEqualTo: true)
         .orderBy('modifiedOn', descending: true)
         .limit(topicsChunkSize);
 
