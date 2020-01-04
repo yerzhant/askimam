@@ -51,7 +51,7 @@ class _ImamMainPagePublicState extends State<ImamMainPagePublic> {
                 IconButton(
                   icon: Icon(
                     hasNew ? Icons.announcement : Icons.list,
-                    color: hasNew ? Colors.redAccent : null,
+                    color: hasNew ? Colors.orange : null,
                   ),
                   tooltip: AppLocalizations.of(context).myMessages,
                   onPressed: () {
@@ -76,7 +76,7 @@ class _ImamMainPagePublicState extends State<ImamMainPagePublic> {
               child: Text(
                 AppLocalizations.of(context).appName,
                 style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.orange,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   shadows: [Shadow(blurRadius: 5)],
@@ -227,10 +227,15 @@ class _TopicsState extends State<_Topics> {
   @override
   void initState() {
     super.initState();
+
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 200) _moreTopics();
+      final scrollThreshold = MediaQuery.of(context).size.height * .25;
+
+      if (_scrollController.position.maxScrollExtent -
+              _scrollController.position.pixels <
+          scrollThreshold) _moreTopics();
     });
+
     _moreTopics();
   }
 
@@ -271,8 +276,8 @@ class _TopicsState extends State<_Topics> {
               : null,
           trailing:
               hasNewMessages ? Icon(Icons.chat, color: Colors.orange) : null,
-          onTap: () async {
-            await Navigator.push(
+          onTap: () {
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => Chat(
@@ -283,7 +288,6 @@ class _TopicsState extends State<_Topics> {
                 ),
               ),
             );
-            _topics.clear();
           },
           onLongPress: () {
             Navigator.push(
@@ -302,7 +306,7 @@ class _TopicsState extends State<_Topics> {
     );
   }
 
-  void _moreTopics() {
+  void _moreTopics() async {
     Query query = Firestore.instance
         .collection(topicsCollection)
         .where('isPublic', isEqualTo: true)
@@ -312,10 +316,9 @@ class _TopicsState extends State<_Topics> {
 
     if (_topics.length > 0) query = query.startAfterDocument(_topics.last);
 
-    query.snapshots().forEach((snap) {
-      setState(() {
-        _topics.addAll(snap.documents);
-      });
+    final snap = await query.getDocuments();
+    setState(() {
+      _topics.addAll(snap.documents);
     });
   }
 }

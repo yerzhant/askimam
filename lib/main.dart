@@ -153,7 +153,7 @@ class _MainPage extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     hasNew ? Icons.announcement : Icons.list,
-                    color: hasNew ? Colors.redAccent : null,
+                    color: hasNew ? Colors.orange : null,
                   ),
                   tooltip: AppLocalizations.of(context).myQuestions,
                   onPressed: () {
@@ -179,7 +179,7 @@ class _MainPage extends StatelessWidget {
               child: Text(
                 AppLocalizations.of(context).appName,
                 style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.orange,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   shadows: [Shadow(blurRadius: 5)],
@@ -302,20 +302,25 @@ class _MainPage extends StatelessWidget {
 
 class _Topics extends StatefulWidget {
   @override
-  __TopicsState createState() => __TopicsState();
+  _TopicsState createState() => _TopicsState();
 }
 
-class __TopicsState extends State<_Topics> {
+class _TopicsState extends State<_Topics> {
   final _topics = <DocumentSnapshot>[];
   final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 200) _moreTopics();
+      final scrollThreshold = MediaQuery.of(context).size.height * .25;
+
+      if (_scrollController.position.maxScrollExtent -
+              _scrollController.position.pixels <
+          scrollThreshold) _moreTopics();
     });
+
     _moreTopics();
   }
 
@@ -338,8 +343,8 @@ class __TopicsState extends State<_Topics> {
             text: topic['name'],
             child: Text(topic['name']),
           ),
-          onTap: () async {
-            await Navigator.push(
+          onTap: () {
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => Chat(
@@ -350,14 +355,13 @@ class __TopicsState extends State<_Topics> {
                 ),
               ),
             );
-            _topics.clear();
           },
         );
       },
     );
   }
 
-  void _moreTopics() {
+  void _moreTopics() async {
     var query = Firestore.instance
         .collection(topicsCollection)
         .where('isPublic', isEqualTo: true)
@@ -367,10 +371,9 @@ class __TopicsState extends State<_Topics> {
 
     if (_topics.length > 0) query = query.startAfterDocument(_topics.last);
 
-    query.snapshots().forEach((snap) {
-      setState(() {
-        _topics.addAll(snap.documents);
-      });
+    final snap = await query.getDocuments();
+    setState(() {
+      _topics.addAll(snap.documents);
     });
   }
 }
