@@ -65,7 +65,10 @@ class _Topics extends StatelessWidget {
                   ? Text(AppLocalizations.of(context).hasNewMessage)
                   : null,
               leading: isPublic
-                  ? Icon(Icons.public, color: Colors.greenAccent[400])
+                  ? Icon(
+                      Icons.public,
+                      color: Theme.of(context).primaryColor,
+                    )
                   : null,
               trailing: hasNewMessages
                   ? Icon(Icons.chat, color: Colors.orange)
