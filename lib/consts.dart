@@ -12,4 +12,3 @@ const imamsTopic = _isRelease ? 'imams' : 'testImams';
 const audioFolder = _isRelease ? 'audio' : 'test-audio';
 const messagesIndex = 'messages';
 const topicsChunkSize = 20;
-const imamsQuestionsLimit = 50;
