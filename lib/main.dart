@@ -335,11 +335,8 @@ class _TopicsState extends State<_Topics> {
     super.initState();
 
     _scrollController.addListener(() {
-      final scrollThreshold = MediaQuery.of(context).size.height * .25;
-
-      if (_scrollController.position.maxScrollExtent -
-              _scrollController.position.pixels <
-          scrollThreshold) _moreTopics();
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) _moreTopics();
     });
 
     _moreTopics();
