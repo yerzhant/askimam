@@ -21,18 +21,27 @@ class ImamsRating extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(bottom: 5),
-                  child: Text(
-                    'На русскоязычные вопросы отвечает устаз Азамат Абу Баязид.',
-                  ),
+                  child: _buildImams('ru-imams'),
                 ),
-                Text(
-                  'Қазақ тіл сұрақтарға жауап беретін ұстаздар: ұстаз Серік Ахметов және ұстаз Руслан Қайыргелді.',
-                ),
+                _buildImams('kz-imams'),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildImams(String key) {
+    return StreamBuilder(
+      stream: Firestore.instance
+          .collection(settingsCollection)
+          .where('key', isEqualTo: key)
+          .snapshots(),
+      builder: (_, snapshot) {
+        if (snapshot.data == null || !snapshot.hasData) return Container();
+        return Text(snapshot.data.documents[0]['value']);
+      },
     );
   }
 
