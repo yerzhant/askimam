@@ -13,6 +13,8 @@ import 'package:askimam/localization.dart';
 import 'package:askimam/audio_player.dart';
 import 'package:askimam/auto_direction.dart';
 
+enum _Action { share, edit, delete }
+
 class Chat extends StatefulWidget {
   final FirebaseUser user;
   final DocumentSnapshot topic;
@@ -149,18 +151,18 @@ class _ChatState extends State<Chat> {
                   ),
                 ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              Text(
-                DateFormat('d.MM.yyyy HH:mm:ss').format(
-                  DateTime.fromMillisecondsSinceEpoch(message['createdOn']),
-                ),
-                style: TextStyle(
-                  color: Colors.grey[400],
-                  fontSize: 12,
-                  fontStyle: FontStyle.italic,
+              Expanded(
+                child: Text(
+                  _formatCreatedOn(message),
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
               ),
+              if (!widget.isPublic) _buildActionsMenu(message),
             ],
           ),
         ],
@@ -184,6 +186,12 @@ class _ChatState extends State<Chat> {
     );
   }
 
+  String _formatCreatedOn(DocumentSnapshot message) {
+    return DateFormat('d.MM.yyyy HH:mm:ss').format(
+      DateTime.fromMillisecondsSinceEpoch(message['createdOn']),
+    );
+  }
+
   Widget _buildImamName(BuildContext context, DocumentSnapshot message) {
     if (message['sender'] == 'i' && message.data.containsKey('senderName')) {
       return Text(
@@ -197,6 +205,48 @@ class _ChatState extends State<Chat> {
     } else {
       return Container();
     }
+  }
+
+  _buildActionsMenu(DocumentSnapshot message) {
+    return PopupMenuButton<_Action>(
+      child: Icon(Icons.more_vert, size: 16),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<_Action>>[
+        PopupMenuItem(
+          child: Text('Поделиться'),
+          value: _Action.share,
+        ),
+        if (!message.data.containsKey('audioUrl'))
+          PopupMenuItem(
+            child: Text('Изменить'),
+            value: _Action.edit,
+          ),
+        PopupMenuItem(
+          child: Text('Удалить'),
+          value: _Action.delete,
+        ),
+      ],
+      onSelected: (action) {
+        switch (action) {
+          case _Action.share:
+            var text = message['text'];
+            text += _getAudioUrl(message);
+            Share.share(text);
+            break;
+
+          case _Action.edit:
+            break;
+
+          case _Action.delete:
+            Firestore.instance
+                .collection(messagesCollection)
+                .document(message.documentID)
+                .delete();
+            break;
+
+          default:
+        }
+      },
+    );
   }
 
   List<Widget> _getActions(BuildContext context) {
@@ -279,13 +329,21 @@ class _ChatState extends State<Chat> {
       } else if (m['sender'] == 'i') {
         text += AppLocalizations.of(context).teacher + ':\n';
       }
-      text += m['text'] + '\n';
-      text += DateTime.fromMillisecondsSinceEpoch(m['createdOn'])
-              .toString()
-              .substring(0, 19) +
-          '\n';
+      text += m['text'];
+      text += _getAudioUrl(m);
+      text += '\n' + _formatCreatedOn(m) + '\n';
     });
 
     Share.share(text);
+  }
+
+  String _getAudioUrl(DocumentSnapshot m) {
+    if (m.data.containsKey('audioUrl')) {
+      var text =
+          ' (если автоматически не открывается плеер, то при загрузке файла нужно установить ему расширение mp3):\n';
+      text += m['audioUrl'];
+      return text;
+    }
+    return '';
   }
 }
