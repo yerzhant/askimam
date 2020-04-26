@@ -61,6 +61,8 @@ class AskImamApp extends StatelessWidget {
 }
 
 void _signIn() async {
+  await Firestore.instance.settings(persistenceEnabled: false);
+
   final prefs = await SharedPreferences.getInstance();
   _isImam = prefs.getBool('isImam') ?? false;
   // _isImam = true;
