@@ -215,15 +215,17 @@ class _ChatState extends State<Chat> {
           child: Text('Поделиться'),
           value: _Action.share,
         ),
-        if (!message.data.containsKey('audioUrl'))
+        if (!message.data.containsKey('audioUrl') &&
+            (widget.isImam || message['sender'] != 'i'))
           PopupMenuItem(
             child: Text('Изменить'),
             value: _Action.edit,
           ),
-        PopupMenuItem(
-          child: Text('Удалить'),
-          value: _Action.delete,
-        ),
+        if (widget.isImam || message['sender'] != 'i')
+          PopupMenuItem(
+            child: Text('Удалить'),
+            value: _Action.delete,
+          ),
       ],
       onSelected: (action) {
         switch (action) {
