@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:share/share.dart';
 
 import 'package:askimam/composer.dart';
@@ -151,9 +152,9 @@ class _ChatState extends State<Chat> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text(
-                DateTime.fromMillisecondsSinceEpoch(message['createdOn'])
-                    .toString()
-                    .substring(0, 19),
+                DateFormat('d.MM.yyyy HH:mm:ss').format(
+                  DateTime.fromMillisecondsSinceEpoch(message['createdOn']),
+                ),
                 style: TextStyle(
                   color: Colors.grey[400],
                   fontSize: 12,
