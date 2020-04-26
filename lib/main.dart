@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -41,21 +42,24 @@ class AskImamApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      onGenerateTitle: (BuildContext context) =>
-          AppLocalizations.of(context).appName,
-      home: _firstPage(),
-      localizationsDelegates: [
-        const AppLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate
-      ],
-      supportedLocales: [
-        const Locale('ru', ''),
-        const Locale('kk', ''),
-      ],
-      // debugShowCheckedModeBanner: false,
+    return ChangeNotifierProvider(
+      create: (_) => ChatState(),
+      child: MaterialApp(
+        onGenerateTitle: (BuildContext context) =>
+            AppLocalizations.of(context).appName,
+        home: _firstPage(),
+        localizationsDelegates: [
+          const AppLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
+        ],
+        supportedLocales: [
+          const Locale('ru', ''),
+          const Locale('kk', ''),
+        ],
+        // debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

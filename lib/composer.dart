@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:askimam/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,16 +12,24 @@ import 'package:askimam/consts.dart';
 import 'package:askimam/localization.dart';
 import 'package:intl/intl.dart';
 import 'package:askimam/auto_direction.dart';
+import 'package:provider/provider.dart';
 
 const _initial_recording_time = '00:00';
 
 class Composer extends StatefulWidget {
   final FirebaseUser user;
   final DocumentSnapshot topic;
+  final DocumentSnapshot message;
   final String fcmToken;
   final bool isImam;
 
-  Composer({this.user, this.topic, this.fcmToken, this.isImam = false});
+  Composer({
+    this.user,
+    this.topic,
+    this.message,
+    this.fcmToken,
+    this.isImam = false,
+  });
 
   @override
   State<StatefulWidget> createState() => _Composer();
@@ -63,6 +72,8 @@ class _Composer extends State<Composer> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.message != null) _controller.text = widget.message['text'];
+
     return IndexedStack(
       index: _composerIndex,
       children: <Widget>[
@@ -80,15 +91,12 @@ class _Composer extends State<Composer> {
                     decoration: InputDecoration.collapsed(
                       hintText: AppLocalizations.of(context).enterMessage,
                     ),
-                    onChanged: (value) {
-                      setState(() {});
-                    },
                   ),
                 ),
               ),
               IconButton(
                 icon: Icon(
-                  Icons.send,
+                  widget.message == null ? Icons.send : Icons.check,
                   color: Theme.of(context).primaryColor,
                 ),
                 tooltip: AppLocalizations.of(context).sendMessage,
@@ -96,7 +104,7 @@ class _Composer extends State<Composer> {
                   _sendText();
                 },
               ),
-              if (widget.isImam)
+              if (widget.message == null && widget.isImam)
                 IconButton(
                   icon: Icon(
                     Icons.mic,
@@ -105,6 +113,15 @@ class _Composer extends State<Composer> {
                   tooltip: AppLocalizations.of(context).audioMessage,
                   onPressed: () {
                     _startRecording();
+                  },
+                ),
+              if (widget.message != null)
+                IconButton(
+                  icon: Icon(Icons.cancel, color: Colors.orange),
+                  onPressed: () {
+                    Provider.of<ChatState>(context, listen: false)
+                        .clearMessage();
+                    _controller.text = '';
                   },
                 ),
             ],
@@ -153,23 +170,43 @@ class _Composer extends State<Composer> {
 
   void _sendText() {
     if (_controller.text.isNotEmpty) {
-      _updateDB(_controller.text);
+      if (widget.message != null)
+        _editMessage(_controller.text);
+      else
+        _updateDB(_controller.text);
       _controller.text = '';
     }
+  }
+
+  _editMessage(String text) {
+    final editedOn = DateTime.now().millisecondsSinceEpoch;
+
+    widget.message.reference.setData({
+      'text': text,
+      'editedOn': editedOn,
+    }, merge: true);
+
+    widget.topic.reference.setData({
+      'modifiedOn': editedOn,
+    }, merge: true);
+
+    Provider.of<ChatState>(context, listen: false).clearMessage();
   }
 
   Future<DocumentReference> _updateDB(String message) async {
     final createdOn = DateTime.now().millisecondsSinceEpoch;
 
     DocumentReference docRef =
-        await Firestore.instance.collection(messagesCollection).add({
-      'uid': widget.isImam ? widget.topic['uid'] : widget.user.uid,
-      'createdOn': createdOn,
-      'topicId': widget.topic.documentID,
-      'sender': widget.isImam ? 'i' : 'q', // Imam, Questioner
-      'text': message,
-      'senderName': _senderName,
-    });
+        await Firestore.instance.collection(messagesCollection).add(
+      {
+        'uid': widget.isImam ? widget.topic['uid'] : widget.user.uid,
+        'createdOn': createdOn,
+        'topicId': widget.topic.documentID,
+        'sender': widget.isImam ? 'i' : 'q', // Imam, Questioner
+        'text': message,
+        'senderName': _senderName,
+      },
+    );
 
     widget.topic.reference.setData({
       'modifiedOn': createdOn,

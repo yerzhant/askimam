@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 import 'package:askimam/composer.dart';
@@ -53,6 +54,7 @@ class _ChatState extends State<Chat> {
         if (isMine || widget.isImam) {
           widget.topic.reference.setData(viewedField, merge: true);
         }
+        Provider.of<ChatState>(context, listen: false).clearMessage();
         return true;
       },
       child: Scaffold(
@@ -85,11 +87,16 @@ class _ChatState extends State<Chat> {
             ),
             // if (!widget.isPublic) Divider(height: 1),
             if (!widget.isPublic)
-              Composer(
-                user: widget.user,
-                topic: widget.topic,
-                fcmToken: widget.fcmToken,
-                isImam: widget.isImam,
+              Consumer<ChatState>(
+                builder: (_, state, __) {
+                  return Composer(
+                    user: widget.user,
+                    topic: widget.topic,
+                    message: state.message,
+                    fcmToken: widget.fcmToken,
+                    isImam: widget.isImam,
+                  );
+                },
               ),
           ],
         ),
@@ -127,6 +134,11 @@ class _ChatState extends State<Chat> {
     final isMyMessage =
         !widget.isImam && !isImamsMessage || widget.isImam && isImamsMessage;
 
+    var dateTimeTextStyle = TextStyle(
+      color: Colors.grey[400],
+      fontSize: 12,
+      fontStyle: FontStyle.italic,
+    );
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,13 +165,24 @@ class _ChatState extends State<Chat> {
           Row(
             children: <Widget>[
               Expanded(
-                child: Text(
-                  _formatCreatedOn(message),
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
-                  ),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      _formatDateTime(message, 'createdOn'),
+                      style: dateTimeTextStyle,
+                    ),
+                    if (message.data.containsKey('editedOn'))
+                      Text(' | ',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 12,
+                          )),
+                    if (message.data.containsKey('editedOn'))
+                      Text(
+                        _formatDateTime(message, 'editedOn'),
+                        style: dateTimeTextStyle,
+                      ),
+                  ],
                 ),
               ),
               if (!widget.isPublic) _buildActionsMenu(message),
@@ -186,9 +209,9 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  String _formatCreatedOn(DocumentSnapshot message) {
+  String _formatDateTime(DocumentSnapshot message, String field) {
     return DateFormat('d.MM.yyyy HH:mm:ss').format(
-      DateTime.fromMillisecondsSinceEpoch(message['createdOn']),
+      DateTime.fromMillisecondsSinceEpoch(message[field]),
     );
   }
 
@@ -236,6 +259,7 @@ class _ChatState extends State<Chat> {
             break;
 
           case _Action.edit:
+            Provider.of<ChatState>(context, listen: false).editMessage(message);
             break;
 
           case _Action.delete:
@@ -333,7 +357,7 @@ class _ChatState extends State<Chat> {
       }
       text += m['text'];
       text += _getAudioUrl(m);
-      text += '\n' + _formatCreatedOn(m) + '\n';
+      text += '\n' + _formatDateTime(m, 'createdOn') + '\n';
     });
 
     Share.share(text);
@@ -347,5 +371,19 @@ class _ChatState extends State<Chat> {
       return text;
     }
     return '';
+  }
+}
+
+class ChatState with ChangeNotifier {
+  DocumentSnapshot message;
+
+  void editMessage(DocumentSnapshot msg) {
+    message = msg;
+    notifyListeners();
+  }
+
+  void clearMessage() {
+    message = null;
+    notifyListeners();
   }
 }

@@ -15,7 +15,7 @@ description: Ask imam on Azan.kz
 # flutter build apk
 # flutter build appbundle
 # flutter install
-version: 1.16.3+30
+version: 1.17.0+31
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -38,6 +38,7 @@ dependencies:
   algolia: ^0.1.7
   share: ^0.6.3+5
   flutter_sound: ^1.7.0
+  provider: ^4.0.5
   # auto_direction:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
