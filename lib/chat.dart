@@ -149,7 +149,7 @@ class _ChatState extends State<Chat> {
               : Padding(
                   padding: EdgeInsets.only(
                     top: isImamsMessage ? 7 : 0,
-                    bottom: 5,
+                    bottom: 7,
                   ),
                   child: AutoDirection(
                     text: message['text'],
@@ -157,7 +157,7 @@ class _ChatState extends State<Chat> {
                       width: double.infinity,
                       child: Text(
                         message['text'],
-                        style: TextStyle(height: 1.5),
+                        style: TextStyle(height: 1.6),
                       ),
                     ),
                   ),
