@@ -97,7 +97,7 @@ class _SelectableTextTapWorkaroundWrapperState
           final TextSpan span = _getSpanByOffset(
             _startPosition,
             // This may need to NOT be hardcoded
-            Theme.of(context).textTheme.body1,
+            Theme.of(context).textTheme.bodyText2,
             constraints,
           );
           if (span.recognizer is TapGestureRecognizer) {
