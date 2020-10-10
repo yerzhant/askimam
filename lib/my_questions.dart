@@ -83,7 +83,7 @@ class __TopicsState extends State<_Topics> {
         physics: AlwaysScrollableScrollPhysics(),
         controller: _scrollController,
         itemCount: _topics.length + 1,
-        separatorBuilder: (_, __) => Divider(),
+        separatorBuilder: (_, __) => Divider(height: 1),
         itemBuilder: (_, index) {
           if (index == _topics.length) {
             return Center(
