@@ -57,9 +57,8 @@ class ImamsRating extends StatelessWidget {
 
         final documents = snapshot.data.documents;
 
-        return ListView.separated(
+        return ListView.builder(
           itemCount: documents.length,
-          separatorBuilder: (_, __) => Divider(height: 1),
           itemBuilder: (_, index) => _buildItem(documents[index]),
         );
       },

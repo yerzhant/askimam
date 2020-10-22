@@ -65,11 +65,10 @@ class _TopicsState extends State<_Topics> {
         _topics.clear();
         await _moreTopics();
       },
-      child: ListView.separated(
+      child: ListView.builder(
         physics: AlwaysScrollableScrollPhysics(),
         controller: _scrollController,
         itemCount: _topics.length + 1,
-        separatorBuilder: (_, __) => Divider(height: 1),
         itemBuilder: (_, index) {
           if (index == _topics.length) {
             return Center(

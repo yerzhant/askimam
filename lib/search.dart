@@ -119,9 +119,8 @@ class _SearchState extends State<Search> {
             }
           });
 
-          return ListView.separated(
+          return ListView.builder(
             itemCount: topics.length,
-            separatorBuilder: (_, __) => Divider(height: 1),
             itemBuilder: (_, index) => _buildItem(topics[index], context),
           );
         } else {
@@ -145,12 +144,12 @@ class _SearchState extends State<Search> {
             context,
             MaterialPageRoute(
               builder: (_) => Chat(
-                    user: widget.user,
-                    topic: snap,
-                    fcmToken: widget.fcmToken,
-                    isImam: widget.isImam,
-                    isPublic: true,
-                  ),
+                user: widget.user,
+                topic: snap,
+                fcmToken: widget.fcmToken,
+                isImam: widget.isImam,
+                isPublic: true,
+              ),
             ),
           );
         });
