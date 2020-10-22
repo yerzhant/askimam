@@ -1,25 +1,25 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:askimam/auto_direction.dart';
+import 'package:askimam/chat.dart';
+import 'package:askimam/consts.dart';
+import 'package:askimam/delete_topics.dart';
+import 'package:askimam/favorites.dart';
+import 'package:askimam/imam_main.dart';
+import 'package:askimam/imams_rating.dart';
+import 'package:askimam/localization.dart';
+import 'package:askimam/my_questions.dart';
+import 'package:askimam/new_question.dart';
+import 'package:askimam/search.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'package:askimam/consts.dart';
-import 'package:askimam/new_question.dart';
-import 'package:askimam/my_questions.dart';
-import 'package:askimam/chat.dart';
-import 'package:askimam/imam_main.dart';
-import 'package:askimam/delete_topics.dart';
-import 'package:askimam/imams_rating.dart';
-import 'package:askimam/search.dart';
-import 'package:askimam/localization.dart';
-import 'package:askimam/auto_direction.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 FirebaseUser _user;
@@ -43,22 +43,25 @@ class AskImamApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ChatState(),
-      child: MaterialApp(
-        onGenerateTitle: (BuildContext context) =>
-            AppLocalizations.of(context).appName,
-        home: _firstPage(),
-        localizationsDelegates: [
-          const AppLocalizationsDelegate(),
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate
-        ],
-        supportedLocales: [
-          const Locale('ru', ''),
-          const Locale('kk', ''),
-        ],
-        // debugShowCheckedModeBanner: false,
+      create: (_) => FavoriteState(_user),
+      child: ChangeNotifierProvider(
+        create: (_) => ChatState(),
+        child: MaterialApp(
+          onGenerateTitle: (BuildContext context) =>
+              AppLocalizations.of(context).appName,
+          home: _firstPage(),
+          localizationsDelegates: [
+            const AppLocalizationsDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate
+          ],
+          supportedLocales: [
+            const Locale('ru', ''),
+            const Locale('kk', ''),
+          ],
+          // debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }
@@ -229,6 +232,22 @@ class _MainPage extends StatelessWidget {
               },
             ),
             ListTile(
+              title: Text('Избранные'),
+              leading: Icon(
+                Icons.star,
+                color: Theme.of(context).primaryColor,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => Favorites(_user, _fcmToken),
+                  ),
+                );
+              },
+            ),
+            ListTile(
               title: Text(MaterialLocalizations.of(context).searchFieldLabel),
               leading: Icon(
                 Icons.search,
@@ -357,55 +376,78 @@ class _TopicsState extends State<_Topics> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        _topics.clear();
-        await _moreTopics();
-      },
-      child: ListView.separated(
-        physics: AlwaysScrollableScrollPhysics(),
-        controller: _scrollController,
-        itemCount: _topics.length + 1,
-        separatorBuilder: (_, __) => Divider(height: 1),
-        itemBuilder: (_, index) {
-          if (index == _topics.length) {
-            return Center(
-              child: Opacity(
-                opacity: _topics.length > 0 && _isLoading ? 1 : 0,
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+    return Consumer<FavoriteState>(
+      builder: (BuildContext context, FavoriteState state, _) {
+        return RefreshIndicator(
+          onRefresh: () async {
+            Provider.of<FavoriteState>(context, listen: false).refresh();
+            _topics.clear();
+            await _moreTopics();
+          },
+          child: ListView.separated(
+            physics: AlwaysScrollableScrollPhysics(),
+            controller: _scrollController,
+            itemCount: _topics.length + 1,
+            separatorBuilder: (_, __) => Divider(height: 1),
+            itemBuilder: (_, index) {
+              if (index == _topics.length) {
+                return Center(
+                  child: Opacity(
+                    opacity: _topics.length > 0 && _isLoading ? 1 : 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            );
-          }
+                );
+              }
 
-          final topic = _topics[index];
-          return ListTile(
-            title: AutoDirection(
-              text: topic['name'],
-              child: Text(topic['name']),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => Chat(
-                    user: _user,
-                    topic: topic,
-                    fcmToken: _fcmToken,
-                    isPublic: true,
-                  ),
+              final topic = _topics[index];
+
+              final isFavorite = state.favoriteTopicIds
+                  .any((element) => element == topic.documentID);
+
+              return ListTile(
+                title: AutoDirection(
+                  text: topic['name'],
+                  child: Text(topic['name']),
                 ),
+                trailing: IconButton(
+                  icon: Icon(
+                    isFavorite ? Icons.star : Icons.star_border,
+                    color: isFavorite
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey,
+                  ),
+                  onPressed: () {
+                    if (isFavorite)
+                      _removeFromFavorite(topic.documentID);
+                    else
+                      _addToFavorite(topic);
+                  },
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => Chat(
+                        user: _user,
+                        topic: topic,
+                        fcmToken: _fcmToken,
+                        isPublic: true,
+                      ),
+                    ),
+                  );
+                },
               );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -429,5 +471,31 @@ class _TopicsState extends State<_Topics> {
     if (mounted) {
       setState(() {});
     }
+  }
+
+  void _addToFavorite(DocumentSnapshot topic) {
+    final createdOn = DateTime.now().millisecondsSinceEpoch;
+
+    Firestore.instance.collection(favoritesCollection).add({
+      'uid': _user.uid,
+      'topicId': topic.documentID,
+      'topicName': topic.data['name'],
+      'createdOn': createdOn,
+    });
+
+    Provider.of<FavoriteState>(context, listen: false)
+        .addTopicId(topic.documentID);
+  }
+
+  void _removeFromFavorite(String topicId) async {
+    final snap = await Firestore.instance
+        .collection(favoritesCollection)
+        .where('topicId', isEqualTo: topicId)
+        .snapshots()
+        .first;
+
+    snap.documents.first.reference.delete();
+
+    Provider.of<FavoriteState>(context, listen: false).removeTopicId(topicId);
   }
 }
