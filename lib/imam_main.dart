@@ -274,7 +274,7 @@ class _TopicsState extends State<_Topics> {
           }
 
           final topic = _topics[index];
-          final hasNewMessages = topic['imamViewedOn'] != null
+          final hasNewMessages = topic.data()['imamViewedOn'] != null
               ? topic['modifiedOn'] > topic['imamViewedOn']
               : true;
           final isPublic =
