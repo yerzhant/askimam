@@ -47,7 +47,7 @@ class AskImamApp extends StatelessWidget {
   void _signIn() async {
     final prefs = await SharedPreferences.getInstance();
     _isImam = prefs.getBool('isImam') ?? false;
-    _isImam = true;
+    // _isImam = true;
 
     if (_isImam) {
       _firebaseMessaging.subscribeToTopic(imamsTopic);
