@@ -271,7 +271,7 @@ class _Composer extends State<Composer> {
     final Reference ref =
         FirebaseStorage.instance.ref().child(audioFolder).child(docRef.id);
     final UploadTask task = ref.putFile(File(_audioPath));
-    final String url = await task.snapshot.ref.getDownloadURL();
+    final url = await task.then((snapshot) => snapshot.ref.getDownloadURL());
 
     docRef.set({
       'audioUrl': url,
