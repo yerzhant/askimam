@@ -9,7 +9,7 @@ import 'package:askimam/localization.dart';
 import 'package:askimam/auto_direction.dart';
 
 class MyQuestionsPage extends StatelessWidget {
-  final FirebaseUser _user;
+  final User _user;
   final String _fcmToken;
 
   MyQuestionsPage(this._user, this._fcmToken);
@@ -38,7 +38,7 @@ class MyQuestionsPage extends StatelessWidget {
 }
 
 class _Topics extends StatefulWidget {
-  final FirebaseUser _user;
+  final User _user;
   final String _fcmToken;
 
   _Topics(this._user, this._fcmToken);
@@ -103,7 +103,7 @@ class __TopicsState extends State<_Topics> {
           final topic = _topics[index];
           final hasNewMessages = topic['modifiedOn'] > topic['viewedOn'];
           final isPublic =
-              topic.data.containsKey('isPublic') && topic['isPublic'];
+              topic.data().containsKey('isPublic') && topic['isPublic'];
 
           return ListTile(
             selected: hasNewMessages,
@@ -138,7 +138,7 @@ class __TopicsState extends State<_Topics> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => DeleteTopics(widget._user, topic.documentID),
+                  builder: (_) => DeleteTopics(widget._user, topic.id),
                 ),
               );
             },
@@ -153,7 +153,7 @@ class __TopicsState extends State<_Topics> {
       _isLoading = true;
     });
 
-    Query query = Firestore.instance
+    Query query = FirebaseFirestore.instance
         .collection(topicsCollection)
         .where('uid', isEqualTo: widget._user.uid)
         .orderBy('modifiedOn', descending: true)
@@ -161,8 +161,8 @@ class __TopicsState extends State<_Topics> {
 
     if (_topics.length > 0) query = query.startAfterDocument(_topics.last);
 
-    final snap = await query.getDocuments();
-    _topics.addAll(snap.documents);
+    final snap = await query.get();
+    _topics.addAll(snap.docs);
     _isLoading = false;
     if (mounted) {
       setState(() {});

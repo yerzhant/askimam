@@ -23,7 +23,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-FirebaseUser _user;
+User _user;
 bool _isImam = false;
 String _fcmToken;
 
@@ -83,7 +83,7 @@ void _signIn() async {
   final googleUser = await _googleSignIn.signIn();
   final googleAuth = await googleUser.authentication;
 
-  final credential = GoogleAuthProvider.getCredential(
+  final credential = GoogleAuthProvider.credential(
     idToken: googleAuth.idToken,
     accessToken: googleAuth.accessToken,
   );
@@ -92,8 +92,8 @@ void _signIn() async {
 }
 
 Widget _firstPage() {
-  return StreamBuilder<FirebaseUser>(
-    stream: FirebaseAuth.instance.onAuthStateChanged,
+  return StreamBuilder<User>(
+    stream: FirebaseAuth.instance.authStateChanges(),
     initialData: null,
     builder: (context, snapshot) {
       if (snapshot.data != null &&
@@ -133,7 +133,7 @@ class _MainPage extends StatelessWidget {
   final _random = Random();
 
   bool _isNewMessageForMe(AsyncSnapshot<QuerySnapshot> snapshot) {
-    return snapshot.data.documents
+    return snapshot.data.docs
         .any((topic) => topic['modifiedOn'] > topic['viewedOn']);
   }
 
@@ -145,7 +145,7 @@ class _MainPage extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, kToolbarHeight),
         child: StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance
+          stream: FirebaseFirestore.instance
               .collection(topicsCollection)
               .where('uid', isEqualTo: _user.uid)
               .snapshots(),
@@ -424,8 +424,8 @@ class _TopicsState extends State<_Topics> {
 
               final topic = _topics[index];
 
-              final isFavorite = state.favoriteTopicIds
-                  .any((element) => element == topic.documentID);
+              final isFavorite =
+                  state.favoriteTopicIds.any((element) => element == topic.id);
 
               return ListTile(
                 title: AutoDirection(
@@ -441,7 +441,7 @@ class _TopicsState extends State<_Topics> {
                   ),
                   onPressed: () {
                     if (isFavorite)
-                      _removeFromFavorite(topic.documentID);
+                      _removeFromFavorite(topic.id);
                     else
                       _addToFavorite(topic);
                   },
@@ -472,7 +472,7 @@ class _TopicsState extends State<_Topics> {
       _isLoading = true;
     });
 
-    var query = Firestore.instance
+    var query = FirebaseFirestore.instance
         .collection(topicsCollection)
         .where('isPublic', isEqualTo: true)
         .where('isAnswered', isEqualTo: true)
@@ -481,8 +481,8 @@ class _TopicsState extends State<_Topics> {
 
     if (_topics.length > 0) query = query.startAfterDocument(_topics.last);
 
-    final snap = await query.getDocuments();
-    _topics.addAll(snap.documents);
+    final snap = await query.get();
+    _topics.addAll(snap.docs);
     _isLoading = false;
     if (mounted) {
       setState(() {});
@@ -492,25 +492,24 @@ class _TopicsState extends State<_Topics> {
   void _addToFavorite(DocumentSnapshot topic) {
     final createdOn = DateTime.now().millisecondsSinceEpoch;
 
-    Firestore.instance.collection(favoritesCollection).add({
+    FirebaseFirestore.instance.collection(favoritesCollection).add({
       'uid': _user.uid,
-      'topicId': topic.documentID,
-      'topicName': topic.data['name'],
+      'topicId': topic.id,
+      'topicName': topic.data()['name'],
       'createdOn': createdOn,
     });
 
-    Provider.of<FavoriteState>(context, listen: false)
-        .addTopicId(topic.documentID);
+    Provider.of<FavoriteState>(context, listen: false).addTopicId(topic.id);
   }
 
   void _removeFromFavorite(String topicId) async {
-    final snap = await Firestore.instance
+    final snap = await FirebaseFirestore.instance
         .collection(favoritesCollection)
         .where('topicId', isEqualTo: topicId)
         .snapshots()
         .first;
 
-    snap.documents.first.reference.delete();
+    snap.docs.first.reference.delete();
 
     Provider.of<FavoriteState>(context, listen: false).removeTopicId(topicId);
   }

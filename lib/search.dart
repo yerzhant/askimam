@@ -12,7 +12,7 @@ final _algolia = Algolia.init(
     applicationId: "HKPC9P01WI", apiKey: "fbde107bf3464d149fa699cd0aea85e4");
 
 class Search extends StatefulWidget {
-  final FirebaseUser user;
+  final User user;
   final bool isImam;
   final String fcmToken;
 
@@ -136,8 +136,8 @@ class _SearchState extends State<Search> {
     return ListTile(
       title: Text(doc.data['topicName']),
       onTap: () {
-        Firestore.instance
-            .document(topicsCollection + '/' + doc.data['topicId'])
+        FirebaseFirestore.instance
+            .doc(topicsCollection + '/' + doc.data['topicId'])
             .get()
             .then((snap) {
           Navigator.push(

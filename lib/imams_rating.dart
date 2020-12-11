@@ -34,7 +34,7 @@ class ImamsRating extends StatelessWidget {
 
   Widget _buildImams(String key) {
     return StreamBuilder(
-      stream: Firestore.instance
+      stream: FirebaseFirestore.instance
           .collection(settingsCollection)
           .where('key', isEqualTo: key)
           .snapshots(),
@@ -47,7 +47,7 @@ class ImamsRating extends StatelessWidget {
 
   Widget _buildList() {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance
+      stream: FirebaseFirestore.instance
           .collection(usersCollection)
           .orderBy('answered', descending: true)
           .snapshots(),
@@ -55,7 +55,7 @@ class ImamsRating extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data == null || !snapshot.hasData) return Container();
 
-        final documents = snapshot.data.documents;
+        final documents = snapshot.data.docs;
 
         return ListView.builder(
           itemCount: documents.length,

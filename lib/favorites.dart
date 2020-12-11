@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Favorites extends StatefulWidget {
-  final FirebaseUser _user;
+  final User _user;
   final String _fcmToken;
 
   Favorites(this._user, this._fcmToken);
@@ -27,7 +27,7 @@ class _FavoritesState extends State<Favorites> {
   }
 
   Widget _buildTopics() {
-    final stream = Firestore.instance
+    final stream = FirebaseFirestore.instance
         .collection(favoritesCollection)
         .where('uid', isEqualTo: widget._user.uid)
         .orderBy('createdOn', descending: true)
@@ -40,7 +40,7 @@ class _FavoritesState extends State<Favorites> {
         if (snapshot.data == null || !snapshot.hasData)
           return CircularProgressIndicator();
 
-        final documents = snapshot.data.documents;
+        final documents = snapshot.data.docs;
 
         return ListView.builder(
           itemCount: documents.length,
@@ -52,14 +52,14 @@ class _FavoritesState extends State<Favorites> {
 
   Widget _buildTopic(DocumentSnapshot doc) {
     return Dismissible(
-      key: Key(doc.documentID),
+      key: Key(doc.id),
       background: Container(color: Colors.red[100]),
       child: ListTile(
         title: Text(doc['topicName']),
         onTap: () async {
-          final topic = await Firestore.instance
+          final topic = await FirebaseFirestore.instance
               .collection(topicsCollection)
-              .document(doc['topicId'])
+              .doc(doc['topicId'])
               .snapshots()
               .first;
 
@@ -81,9 +81,9 @@ class _FavoritesState extends State<Favorites> {
   }
 
   void _deleteFavorite(DocumentSnapshot doc) {
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection(favoritesCollection)
-        .document(doc.documentID)
+        .doc(doc.id)
         .delete();
 
     Provider.of<FavoriteState>(context, listen: false)
@@ -92,7 +92,7 @@ class _FavoritesState extends State<Favorites> {
 }
 
 class FavoriteState extends ChangeNotifier {
-  final FirebaseUser user;
+  final User user;
   final favoriteTopicIds = <String>[];
 
   FavoriteState(this.user) {
@@ -110,13 +110,13 @@ class FavoriteState extends ChangeNotifier {
   }
 
   Future<void> refresh() async {
-    final snap = await Firestore.instance
+    final snap = await FirebaseFirestore.instance
         .collection(favoritesCollection)
         .where('uid', isEqualTo: user.uid)
-        .getDocuments();
+        .get();
 
     final ids =
-        snap.documents.map((e) => e.data['topicId']).toList().cast<String>();
+        snap.docs.map((e) => e.data()['topicId']).toList().cast<String>();
     favoriteTopicIds.clear();
     favoriteTopicIds.addAll(ids);
 

@@ -9,7 +9,7 @@ import 'package:askimam/localization.dart';
 import 'package:askimam/auto_direction.dart';
 
 class NewQuestionPage extends StatefulWidget {
-  final FirebaseUser _user;
+  final User _user;
   final String _fcmToken;
 
   NewQuestionPage(this._user, this._fcmToken);
@@ -149,9 +149,9 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
   void _createQuestion() async {
     final createdOn = DateTime.now().millisecondsSinceEpoch;
 
-    final topic = Firestore.instance.collection(topicsCollection).document();
+    final topic = FirebaseFirestore.instance.collection(topicsCollection).doc();
 
-    await topic.setData({
+    await topic.set({
       'uid': widget._user.uid,
       'fcmToken': widget._fcmToken,
       'createdOn': createdOn,
@@ -163,10 +163,10 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
       'isPublic': _visibility == _Visibility.public,
     });
 
-    Firestore.instance.collection(messagesCollection).add({
+    FirebaseFirestore.instance.collection(messagesCollection).add({
       'uid': widget._user.uid,
       'createdOn': createdOn,
-      'topicId': topic.documentID,
+      'topicId': topic.id,
       'sender': 'q', // Questioner
       'text': _question,
     });
@@ -174,10 +174,10 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
 
   void _registerImam(BuildContext context) async {
     if (_question.toLowerCase().trim() != 'восстановление') {
-      await Firestore.instance
+      await FirebaseFirestore.instance
           .collection(usersCollection)
-          .document(widget._user.uid)
-          .setData({
+          .doc(widget._user.uid)
+          .set({
         'checkText': _question,
         'role': 'reg-request',
       });

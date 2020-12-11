@@ -9,7 +9,7 @@ import 'package:askimam/localization.dart';
 import 'package:askimam/auto_direction.dart';
 
 class QuestionsOfImamPage extends StatelessWidget {
-  final FirebaseUser _user;
+  final User _user;
 
   QuestionsOfImamPage(this._user);
 
@@ -25,7 +25,7 @@ class QuestionsOfImamPage extends StatelessWidget {
 }
 
 class _Topics extends StatefulWidget {
-  final FirebaseUser _user;
+  final User _user;
 
   _Topics(this._user);
 
@@ -88,11 +88,11 @@ class _TopicsState extends State<_Topics> {
 
           final topic = _topics[index];
           var hasNewMessages = true;
-          if (topic.data.containsKey('imamViewedOn')) {
+          if (topic.data().containsKey('imamViewedOn')) {
             hasNewMessages = topic['modifiedOn'] > topic['imamViewedOn'];
           }
           final isPublic =
-              topic.data.containsKey('isPublic') && topic['isPublic'];
+              topic.data().containsKey('isPublic') && topic['isPublic'];
 
           return ListTile(
             selected: hasNewMessages,
@@ -133,7 +133,7 @@ class _TopicsState extends State<_Topics> {
                 MaterialPageRoute(
                   builder: (_) => DeleteTopics(
                     widget._user,
-                    topic.documentID,
+                    topic.id,
                     true,
                   ),
                 ),
@@ -150,7 +150,7 @@ class _TopicsState extends State<_Topics> {
       _isLoading = true;
     });
 
-    Query query = Firestore.instance
+    Query query = FirebaseFirestore.instance
         .collection(topicsCollection)
         .where('imamUid', isEqualTo: widget._user.uid)
         .orderBy('modifiedOn', descending: true)
@@ -158,8 +158,8 @@ class _TopicsState extends State<_Topics> {
 
     if (_topics.length > 0) query = query.startAfterDocument(_topics.last);
 
-    final snap = await query.getDocuments();
-    _topics.addAll(snap.documents);
+    final snap = await query.get();
+    _topics.addAll(snap.docs);
     _isLoading = false;
     if (mounted) {
       setState(() {});

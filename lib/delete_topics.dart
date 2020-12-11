@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:askimam/consts.dart';
 
 class DeleteTopics extends StatefulWidget {
-  final FirebaseUser _user;
+  final User _user;
   final String _topicId;
   final bool _isImam;
 
@@ -44,20 +44,23 @@ class _DeleteTopicsState extends State<DeleteTopics> {
   }
 
   void _deleteTopic(String topicId) async {
-    Firestore.instance.collection(topicsCollection).document(topicId).delete();
+    FirebaseFirestore.instance
+        .collection(topicsCollection)
+        .doc(topicId)
+        .delete();
 
-    final messagesSnapshot = await Firestore.instance
+    final messagesSnapshot = await FirebaseFirestore.instance
         .collection(messagesCollection)
         .where('topicId', isEqualTo: topicId)
         .snapshots()
         .first;
 
-    messagesSnapshot.documents.forEach((doc) => doc.reference.delete());
+    messagesSnapshot.docs.forEach((doc) => doc.reference.delete());
   }
 
   Widget _buildTopics() {
     final CollectionReference collectionReference =
-        Firestore.instance.collection(topicsCollection);
+        FirebaseFirestore.instance.collection(topicsCollection);
     final Query query = widget._isImam
         ? collectionReference
         : collectionReference.where('uid', isEqualTo: widget._user.uid);
@@ -68,7 +71,7 @@ class _DeleteTopicsState extends State<DeleteTopics> {
       builder: (context, snapshot) {
         if (snapshot.data == null || !snapshot.hasData) return Container();
 
-        final documents = snapshot.data.documents;
+        final documents = snapshot.data.docs;
 
         return ListView.builder(
           itemCount: documents.length,
@@ -79,7 +82,7 @@ class _DeleteTopicsState extends State<DeleteTopics> {
   }
 
   Widget _buildTopic(DocumentSnapshot doc) {
-    final selected = _selected.contains(doc.documentID);
+    final selected = _selected.contains(doc.id);
 
     return ListTile(
       title: Text(doc['name']),
@@ -91,9 +94,9 @@ class _DeleteTopicsState extends State<DeleteTopics> {
       onTap: () {
         setState(() {
           if (selected) {
-            _selected.remove(doc.documentID);
+            _selected.remove(doc.id);
           } else {
-            _selected.add(doc.documentID);
+            _selected.add(doc.id);
           }
         });
       },

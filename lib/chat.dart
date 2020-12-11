@@ -18,7 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 enum _Action { share, edit, delete }
 
 class Chat extends StatefulWidget {
-  final FirebaseUser user;
+  final User user;
   final DocumentSnapshot topic;
   final bool isImam;
   final String fcmToken;
@@ -53,7 +53,7 @@ class _ChatState extends State<Chat> {
         };
         final isMine = widget.topic['uid'] == widget.user.uid;
         if (isMine || widget.isImam) {
-          widget.topic.reference.setData(viewedField, merge: true);
+          widget.topic.reference.set(viewedField, SetOptions(merge: true));
         }
         Provider.of<ChatState>(context, listen: false).clearMessage();
         return true;
@@ -107,16 +107,16 @@ class _ChatState extends State<Chat> {
 
   StreamBuilder<QuerySnapshot> _buildList(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance
+      stream: FirebaseFirestore.instance
           .collection(messagesCollection)
-          .where('topicId', isEqualTo: widget.topic.documentID)
+          .where('topicId', isEqualTo: widget.topic.id)
           .orderBy('createdOn', descending: true)
           .snapshots(),
       initialData: null,
       builder: (_, snapshot) {
         if (snapshot.data == null || !snapshot.hasData) return Container();
 
-        final documents = snapshot.data.documents;
+        final documents = snapshot.data.docs;
 
         return ListView.builder(
           reverse: true,
@@ -145,8 +145,8 @@ class _ChatState extends State<Chat> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildImamName(context, message),
-          message.data.containsKey('audioUrl')
-              ? AudioPlayer(key: UniqueKey(), data: message.data)
+          message.data().containsKey('audioUrl')
+              ? AudioPlayer(key: UniqueKey(), data: message.data())
               : Padding(
                   padding: EdgeInsets.only(
                     top: isImamsMessage ? 7 : 0,
@@ -175,13 +175,13 @@ class _ChatState extends State<Chat> {
                       _formatDateTime(message, 'createdOn'),
                       style: dateTimeTextStyle,
                     ),
-                    if (message.data.containsKey('editedOn'))
+                    if (message.data().containsKey('editedOn'))
                       Text(' | ',
                           style: TextStyle(
                             color: Colors.grey[400],
                             fontSize: 12,
                           )),
-                    if (message.data.containsKey('editedOn'))
+                    if (message.data().containsKey('editedOn'))
                       Text(
                         _formatDateTime(message, 'editedOn'),
                         style: dateTimeTextStyle,
@@ -220,7 +220,7 @@ class _ChatState extends State<Chat> {
   }
 
   Widget _buildImamName(BuildContext context, DocumentSnapshot message) {
-    if (message['sender'] == 'i' && message.data.containsKey('senderName')) {
+    if (message['sender'] == 'i' && message.data().containsKey('senderName')) {
       return Text(
         message['senderName'],
         style: TextStyle(
@@ -242,7 +242,7 @@ class _ChatState extends State<Chat> {
           child: Text('Поделиться'),
           value: _Action.share,
         ),
-        if (!message.data.containsKey('audioUrl') &&
+        if (!message.data().containsKey('audioUrl') &&
             (widget.isImam || message['sender'] != 'i'))
           PopupMenuItem(
             child: Text('Изменить'),
@@ -267,9 +267,9 @@ class _ChatState extends State<Chat> {
             break;
 
           case _Action.delete:
-            Firestore.instance
+            FirebaseFirestore.instance
                 .collection(messagesCollection)
-                .document(message.documentID)
+                .doc(message.id)
                 .delete();
             break;
 
@@ -305,10 +305,10 @@ class _ChatState extends State<Chat> {
                           Text(MaterialLocalizations.of(context).okButtonLabel),
                       onPressed: () {
                         final createdOn = DateTime.now().millisecondsSinceEpoch;
-                        widget.topic.reference.setData({
+                        widget.topic.reference.set({
                           'modifiedOn': createdOn,
                           'imamUid': null,
-                        }, merge: true);
+                        }, SetOptions(merge: true));
                         Navigator.of(context)..pop()..pop();
                       },
                     ),
@@ -345,16 +345,16 @@ class _ChatState extends State<Chat> {
         widget.topic['name'] +
         '\n';
 
-    var snap = await Firestore.instance
+    var snap = await FirebaseFirestore.instance
         .collection(messagesCollection)
-        .where('topicId', isEqualTo: widget.topic.documentID)
+        .where('topicId', isEqualTo: widget.topic.id)
         .orderBy('createdOn', descending: true)
-        .getDocuments();
+        .get();
 
-    snap.documents.sort((m1, m2) => m1['createdOn'] - m2['createdOn']);
-    snap.documents.forEach((m) {
+    snap.docs.sort((m1, m2) => m1['createdOn'] - m2['createdOn']);
+    snap.docs.forEach((m) {
       text += '\n';
-      if (m.data.containsKey('senderName') && m['senderName'] != null) {
+      if (m.data().containsKey('senderName') && m['senderName'] != null) {
         text += m['senderName'] + ':\n';
       } else if (m['sender'] == 'i') {
         text += AppLocalizations.of(context).teacher + ':\n';
@@ -368,7 +368,7 @@ class _ChatState extends State<Chat> {
   }
 
   String _getAudioUrl(DocumentSnapshot m) {
-    if (m.data.containsKey('audioUrl')) {
+    if (m.data().containsKey('audioUrl')) {
       var text =
           ' (если автоматически не открывается плеер, то при загрузке файла нужно установить ему расширение mp3):\n';
       text += m['audioUrl'];

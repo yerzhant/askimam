@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 const _initial_recording_time = '00:00';
 
 class Composer extends StatefulWidget {
-  final FirebaseUser user;
+  final User user;
   final DocumentSnapshot topic;
   final DocumentSnapshot message;
   final String fcmToken;
@@ -55,8 +55,8 @@ class _Composer extends State<Composer> {
     _recorder.setDbLevelEnabled(true);
 
     if (widget.isImam) {
-      Firestore.instance
-          .document(usersCollection + '/' + widget.user.uid)
+      FirebaseFirestore.instance
+          .doc(usersCollection + '/' + widget.user.uid)
           .get()
           .then((snap) {
         _senderName = snap['checkText'];
@@ -181,14 +181,14 @@ class _Composer extends State<Composer> {
   _editMessage(String text) {
     final editedOn = DateTime.now().millisecondsSinceEpoch;
 
-    widget.message.reference.setData({
+    widget.message.reference.set({
       'text': text,
       'editedOn': editedOn,
-    }, merge: true);
+    }, SetOptions(merge: true));
 
-    widget.topic.reference.setData({
+    widget.topic.reference.set({
       'modifiedOn': editedOn,
-    }, merge: true);
+    }, SetOptions(merge: true));
 
     Provider.of<ChatState>(context, listen: false).clearMessage();
   }
@@ -197,29 +197,29 @@ class _Composer extends State<Composer> {
     final createdOn = DateTime.now().millisecondsSinceEpoch;
 
     DocumentReference docRef =
-        await Firestore.instance.collection(messagesCollection).add(
+        await FirebaseFirestore.instance.collection(messagesCollection).add(
       {
         'uid': widget.isImam ? widget.topic['uid'] : widget.user.uid,
         'createdOn': createdOn,
-        'topicId': widget.topic.documentID,
+        'topicId': widget.topic.id,
         'sender': widget.isImam ? 'i' : 'q', // Imam, Questioner
         'text': message,
         'senderName': _senderName,
       },
     );
 
-    widget.topic.reference.setData({
+    widget.topic.reference.set({
       'modifiedOn': createdOn,
-    }, merge: true);
+    }, SetOptions(merge: true));
 
     if (widget.isImam) {
       if (widget.topic['imamUid'] == null) {
-        widget.topic.reference.setData({
+        widget.topic.reference.set({
           'imamUid': widget.user.uid,
           'imamFcmToken': widget.fcmToken,
           'imamViewedOn': createdOn,
           'isAnswered': true,
-        }, merge: true);
+        }, SetOptions(merge: true));
       }
     }
 
@@ -268,18 +268,15 @@ class _Composer extends State<Composer> {
     DocumentReference docRef = await _updateDB(
         AppLocalizations.of(context).audioMessage + ' - ' + _recordingTime);
 
-    final StorageReference ref = FirebaseStorage.instance
-        .ref()
-        .child(audioFolder)
-        .child(docRef.documentID);
-    final StorageUploadTask task = ref.putFile(File(_audioPath));
-    final StorageTaskSnapshot snapshot = await task.onComplete;
-    final String url = await snapshot.ref.getDownloadURL();
+    final Reference ref =
+        FirebaseStorage.instance.ref().child(audioFolder).child(docRef.id);
+    final UploadTask task = ref.putFile(File(_audioPath));
+    final String url = await task.snapshot.ref.getDownloadURL();
 
-    docRef.setData({
+    docRef.set({
       'audioUrl': url,
       'duration': _recordingTime,
-    }, merge: true);
+    }, SetOptions(merge: true));
 
     _recordingTime = _initial_recording_time;
     File(_audioPath).delete();
