@@ -21,24 +21,50 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 User _user;
 bool _isImam = false;
 String _fcmToken;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(AskImamApp());
 }
 
 class AskImamApp extends StatelessWidget {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   AskImamApp() {
     _signIn();
 
     _firebaseMessaging.getToken().then((token) {
       _fcmToken = token;
     });
+  }
+
+  void _signIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    _isImam = prefs.getBool('isImam') ?? false;
+    _isImam = true;
+
+    if (_isImam) {
+      _firebaseMessaging.subscribeToTopic(imamsTopic);
+    }
+
+    final _googleSignIn = GoogleSignIn();
+    final _auth = FirebaseAuth.instance;
+
+    final googleUser = await _googleSignIn.signIn();
+    final googleAuth = await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+      accessToken: googleAuth.accessToken,
+    );
+
+    await _auth.signInWithCredential(credential);
   }
 
   @override
@@ -66,67 +92,44 @@ class AskImamApp extends StatelessWidget {
       ),
     );
   }
-}
 
-void _signIn() async {
-  final prefs = await SharedPreferences.getInstance();
-  _isImam = prefs.getBool('isImam') ?? false;
-  // _isImam = true;
-
-  if (_isImam) {
-    _firebaseMessaging.subscribeToTopic(imamsTopic);
+  Widget _firstPage() {
+    return StreamBuilder<User>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      initialData: null,
+      builder: (context, snapshot) {
+        if (snapshot.data != null &&
+            snapshot.connectionState == ConnectionState.active &&
+            snapshot.hasData) {
+          _user = snapshot.data;
+          return _isImam ? ImamMainPage(_user, _fcmToken) : _MainPage();
+        } else {
+          return Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/masjid-1.jpg'),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  Colors.white.withOpacity(.5),
+                  BlendMode.dstATop,
+                ),
+              ),
+            ),
+            child: Center(
+              child: Text(
+                AppLocalizations.of(context).enteringIntoSystem,
+                style: TextStyle(
+                  inherit: false,
+                  color: Colors.blue[200],
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          );
+        }
+      },
+    );
   }
-
-  final _googleSignIn = GoogleSignIn();
-  final _auth = FirebaseAuth.instance;
-
-  final googleUser = await _googleSignIn.signIn();
-  final googleAuth = await googleUser.authentication;
-
-  final credential = GoogleAuthProvider.credential(
-    idToken: googleAuth.idToken,
-    accessToken: googleAuth.accessToken,
-  );
-
-  await _auth.signInWithCredential(credential);
-}
-
-Widget _firstPage() {
-  return StreamBuilder<User>(
-    stream: FirebaseAuth.instance.authStateChanges(),
-    initialData: null,
-    builder: (context, snapshot) {
-      if (snapshot.data != null &&
-          snapshot.connectionState == ConnectionState.active &&
-          snapshot.hasData) {
-        _user = snapshot.data;
-        return _isImam ? ImamMainPage(_user, _fcmToken) : _MainPage();
-      } else {
-        return Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('images/masjid-1.jpg'),
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(.5),
-                BlendMode.dstATop,
-              ),
-            ),
-          ),
-          child: Center(
-            child: Text(
-              AppLocalizations.of(context).enteringIntoSystem,
-              style: TextStyle(
-                inherit: false,
-                color: Colors.blue[200],
-                fontSize: 16,
-              ),
-            ),
-          ),
-        );
-      }
-    },
-  );
 }
 
 class _MainPage extends StatelessWidget {
