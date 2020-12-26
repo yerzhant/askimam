@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:askimam/imam_main_public.dart';
+import 'package:askimam/sponsor_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -175,6 +176,26 @@ class _ImamMainPageState extends State<ImamMainPage> {
               },
             ),
             Divider(height: 1),
+            ListTile(
+              title: Text(
+                'Поддержать проекты',
+                style: TextStyle(color: Colors.white),
+              ),
+              tileColor: Theme.of(context).primaryColor,
+              leading: Icon(
+                Icons.support,
+                color: Colors.blue[100],
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SponsorPage(),
+                  ),
+                );
+              },
+            ),
             ListTile(
               title: Text('Azan.kz'),
               leading: Icon(
