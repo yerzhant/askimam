@@ -1,7 +1,7 @@
 name: askimam
 description: Ask imam on Azan.kz
 
-version: 1.20.0+36
+version: 1.20.1+37
 
 environment:
   sdk: '>=2.2.2 <3.0.0'
