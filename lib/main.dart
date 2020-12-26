@@ -301,10 +301,14 @@ class _MainPage extends StatelessWidget {
             ),
             Divider(height: 1),
             ListTile(
-              title: Text('Поддержать проекты'),
+              title: Text(
+                'Поддержать проекты',
+                style: TextStyle(color: Colors.white),
+              ),
+              tileColor: Theme.of(context).primaryColor,
               leading: Icon(
                 Icons.support,
-                color: Theme.of(context).primaryColor,
+                color: Colors.blue[100],
               ),
               onTap: () {
                 Navigator.pop(context);
