@@ -11,9 +11,9 @@ import 'package:askimam/localization.dart';
 import 'package:askimam/my_questions.dart';
 import 'package:askimam/new_question.dart';
 import 'package:askimam/search.dart';
-import 'package:askimam/sponsor_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -21,7 +21,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 User _user;
 bool _isImam = false;
@@ -300,26 +299,26 @@ class _MainPage extends StatelessWidget {
               },
             ),
             Divider(height: 1),
-            ListTile(
-              title: Text(
-                'Поддержать проекты',
-                style: TextStyle(color: Colors.white),
-              ),
-              tileColor: Theme.of(context).primaryColor,
-              leading: Icon(
-                Icons.support,
-                color: Colors.blue[100],
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => SponsorPage(),
-                  ),
-                );
-              },
-            ),
+            // ListTile(
+            //   title: Text(
+            //     'Поддержать проекты',
+            //     style: TextStyle(color: Colors.white),
+            //   ),
+            //   tileColor: Theme.of(context).primaryColor,
+            //   leading: Icon(
+            //     Icons.support,
+            //     color: Colors.blue[100],
+            //   ),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (_) => SponsorPage(),
+            //       ),
+            //     );
+            //   },
+            // ),
             ListTile(
               title: Text('Azan.kz'),
               leading: Icon(

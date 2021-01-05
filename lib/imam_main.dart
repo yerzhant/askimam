@@ -1,20 +1,18 @@
 import 'dart:math';
 
-import 'package:askimam/imam_main_public.dart';
-import 'package:askimam/sponsor_page.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'package:askimam/consts.dart';
-import 'package:askimam/questions_of_imam.dart';
-import 'package:askimam/chat.dart';
-import 'package:askimam/delete_topics.dart';
-import 'package:askimam/imams_rating.dart';
-import 'package:askimam/search.dart';
-import 'package:askimam/localization.dart';
 import 'package:askimam/auto_direction.dart';
+import 'package:askimam/chat.dart';
+import 'package:askimam/consts.dart';
+import 'package:askimam/delete_topics.dart';
+import 'package:askimam/imam_main_public.dart';
+import 'package:askimam/imams_rating.dart';
+import 'package:askimam/localization.dart';
+import 'package:askimam/questions_of_imam.dart';
+import 'package:askimam/search.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ImamMainPage extends StatefulWidget {
   final User _user;
@@ -176,26 +174,26 @@ class _ImamMainPageState extends State<ImamMainPage> {
               },
             ),
             Divider(height: 1),
-            ListTile(
-              title: Text(
-                'Поддержать проекты',
-                style: TextStyle(color: Colors.white),
-              ),
-              tileColor: Theme.of(context).primaryColor,
-              leading: Icon(
-                Icons.support,
-                color: Colors.blue[100],
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => SponsorPage(),
-                  ),
-                );
-              },
-            ),
+            // ListTile(
+            //   title: Text(
+            //     'Поддержать проекты',
+            //     style: TextStyle(color: Colors.white),
+            //   ),
+            //   tileColor: Theme.of(context).primaryColor,
+            //   leading: Icon(
+            //     Icons.support,
+            //     color: Colors.blue[100],
+            //   ),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (_) => SponsorPage(),
+            //       ),
+            //     );
+            //   },
+            // ),
             ListTile(
               title: Text('Azan.kz'),
               leading: Icon(
