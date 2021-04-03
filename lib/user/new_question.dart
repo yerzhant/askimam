@@ -109,35 +109,38 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 40),
-              RaisedButton(
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                child: Text(AppLocalizations.of(context).send),
-                onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
+              SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: RaisedButton(
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
+                  child: Text(AppLocalizations.of(context).send),
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save();
 
-                    final isImamRegistration =
-                        _topic.toLowerCase().trim() == 'регистрация';
+                      final isImamRegistration =
+                          _topic.toLowerCase().trim() == 'регистрация';
 
-                    if (isImamRegistration) {
-                      _registerImam(context);
-                    } else {
-                      _createQuestion();
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => MyQuestionsPage(
-                            widget._user,
-                            widget._fcmToken,
+                      if (isImamRegistration) {
+                        _registerImam(context);
+                      } else {
+                        _createQuestion();
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => MyQuestionsPage(
+                              widget._user,
+                              widget._fcmToken,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }
                     }
-                  }
-                },
+                  },
+                ),
               ),
             ],
           ),
