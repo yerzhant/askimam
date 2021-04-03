@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:askimam/consts.dart';
-import 'package:askimam/my_questions.dart';
-import 'package:askimam/localization.dart';
-import 'package:askimam/auto_direction.dart';
+import 'package:askimam/user/my_questions.dart';
+import 'package:askimam/l10n/localization.dart';
+import 'package:askimam/components/auto_direction.dart';
 
 class NewQuestionPage extends StatefulWidget {
   final User _user;

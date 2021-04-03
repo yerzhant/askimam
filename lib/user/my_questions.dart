@@ -2,38 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:askimam/chat.dart';
-import 'package:askimam/delete_topics.dart';
 import 'package:askimam/consts.dart';
-import 'package:askimam/localization.dart';
-import 'package:askimam/auto_direction.dart';
+import 'package:askimam/common_pages/chat.dart';
+import 'package:askimam/common_pages/delete_topics.dart';
+import 'package:askimam/l10n/localization.dart';
+import 'package:askimam/components/auto_direction.dart';
 
-class QuestionsOfImamPage extends StatelessWidget {
+class MyQuestionsPage extends StatelessWidget {
   final User _user;
+  final String _fcmToken;
 
-  QuestionsOfImamPage(this._user);
+  MyQuestionsPage(this._user, this._fcmToken);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).myMessages),
+        title: Text(AppLocalizations.of(context).myQuestions),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.delete),
+            tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => DeleteTopics(_user)),
+              );
+            },
+          ),
+        ],
       ),
-      body: _Topics(_user),
+      body: _Topics(_user, _fcmToken),
     );
   }
 }
 
 class _Topics extends StatefulWidget {
   final User _user;
+  final String _fcmToken;
 
-  _Topics(this._user);
+  _Topics(this._user, this._fcmToken);
 
   @override
-  _TopicsState createState() => _TopicsState();
+  __TopicsState createState() => __TopicsState();
 }
 
-class _TopicsState extends State<_Topics> {
+class __TopicsState extends State<_Topics> {
   final _topics = <DocumentSnapshot>[];
   final _scrollController = ScrollController();
   var _isLoading = false;
@@ -87,10 +101,7 @@ class _TopicsState extends State<_Topics> {
           }
 
           final topic = _topics[index];
-          var hasNewMessages = true;
-          if (topic.data().containsKey('imamViewedOn')) {
-            hasNewMessages = topic['modifiedOn'] > topic['imamViewedOn'];
-          }
+          final hasNewMessages = topic['modifiedOn'] > topic['viewedOn'];
           final isPublic =
               topic.data().containsKey('isPublic') && topic['isPublic'];
 
@@ -109,12 +120,8 @@ class _TopicsState extends State<_Topics> {
                     color: Theme.of(context).primaryColor,
                   )
                 : null,
-            trailing: hasNewMessages
-                ? Icon(
-                    Icons.chat,
-                    color: Colors.orange,
-                  )
-                : null,
+            trailing:
+                hasNewMessages ? Icon(Icons.chat, color: Colors.orange) : null,
             onTap: () {
               Navigator.push(
                 context,
@@ -122,7 +129,7 @@ class _TopicsState extends State<_Topics> {
                   builder: (_) => Chat(
                     user: widget._user,
                     topic: topic,
-                    isImam: true,
+                    fcmToken: widget._fcmToken,
                   ),
                 ),
               );
@@ -131,11 +138,7 @@ class _TopicsState extends State<_Topics> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => DeleteTopics(
-                    widget._user,
-                    topic.id,
-                    true,
-                  ),
+                  builder: (_) => DeleteTopics(widget._user, topic.id),
                 ),
               );
             },
@@ -152,7 +155,7 @@ class _TopicsState extends State<_Topics> {
 
     Query query = FirebaseFirestore.instance
         .collection(topicsCollection)
-        .where('imamUid', isEqualTo: widget._user.uid)
+        .where('uid', isEqualTo: widget._user.uid)
         .orderBy('modifiedOn', descending: true)
         .limit(topicsChunkSize);
 

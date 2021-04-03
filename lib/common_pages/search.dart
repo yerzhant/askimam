@@ -5,8 +5,8 @@ import 'package:algolia/algolia.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:askimam/consts.dart';
-import 'package:askimam/chat.dart';
-import 'package:askimam/localization.dart';
+import 'package:askimam/common_pages/chat.dart';
+import 'package:askimam/l10n/localization.dart';
 
 final _algolia = Algolia.init(
     applicationId: "HKPC9P01WI", apiKey: "fbde107bf3464d149fa699cd0aea85e4");

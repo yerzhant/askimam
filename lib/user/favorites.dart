@@ -1,4 +1,4 @@
-import 'package:askimam/chat.dart';
+import 'package:askimam/common_pages/chat.dart';
 import 'package:askimam/consts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

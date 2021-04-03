@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:askimam/audio_player.dart';
-import 'package:askimam/auto_direction.dart';
-import 'package:askimam/composer.dart';
+import 'package:askimam/components/audio_player.dart';
+import 'package:askimam/components/auto_direction.dart';
+import 'package:askimam/components/composer.dart';
 import 'package:askimam/consts.dart';
 import 'package:askimam/fixed_selectable_linkify/fixed_selectable_linkify.dart';
-import 'package:askimam/localization.dart';
+import 'package:askimam/l10n/localization.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

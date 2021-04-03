@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:askimam/chat.dart';
+import 'package:askimam/common_pages/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -9,9 +9,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 import 'package:askimam/consts.dart';
-import 'package:askimam/localization.dart';
+import 'package:askimam/l10n/localization.dart';
 import 'package:intl/intl.dart';
-import 'package:askimam/auto_direction.dart';
+import 'package:askimam/components/auto_direction.dart';
 import 'package:provider/provider.dart';
 
 const _initial_recording_time = '00:00';

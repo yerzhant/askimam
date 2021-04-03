@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-import 'package:askimam/localization.dart';
+import 'package:askimam/l10n/localization.dart';
 import 'package:intl/intl.dart';
 
 class AudioPlayer extends StatefulWidget {

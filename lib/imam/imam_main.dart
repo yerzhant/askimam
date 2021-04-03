@@ -1,14 +1,14 @@
 import 'dart:math';
 
-import 'package:askimam/auto_direction.dart';
-import 'package:askimam/chat.dart';
+import 'package:askimam/components/auto_direction.dart';
+import 'package:askimam/common_pages/chat.dart';
 import 'package:askimam/consts.dart';
-import 'package:askimam/delete_topics.dart';
-import 'package:askimam/imam_main_public.dart';
-import 'package:askimam/imams_rating.dart';
-import 'package:askimam/localization.dart';
-import 'package:askimam/questions_of_imam.dart';
-import 'package:askimam/search.dart';
+import 'package:askimam/common_pages/delete_topics.dart';
+import 'package:askimam/imam/imam_main_public.dart';
+import 'package:askimam/common_pages/imams_rating.dart';
+import 'package:askimam/l10n/localization.dart';
+import 'package:askimam/imam/questions_of_imam.dart';
+import 'package:askimam/common_pages/search.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

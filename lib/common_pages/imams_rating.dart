@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:askimam/consts.dart';
-import 'package:askimam/localization.dart';
+import 'package:askimam/l10n/localization.dart';
 
 class ImamsRating extends StatelessWidget {
   @override
