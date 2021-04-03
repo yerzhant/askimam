@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:askimam/common_pages/profile_page.dart';
 import 'package:askimam/components/auto_direction.dart';
 import 'package:askimam/common_pages/chat.dart';
 import 'package:askimam/consts.dart';
@@ -157,6 +158,7 @@ class _ImamMainPageState extends State<ImamMainPage> {
                 );
               },
             ),
+            Divider(height: 1),
             ListTile(
               title: Text(AppLocalizations.of(context).imamsRating),
               leading: Icon(
@@ -173,7 +175,22 @@ class _ImamMainPageState extends State<ImamMainPage> {
                 );
               },
             ),
-            Divider(height: 1),
+            ListTile(
+              title: Text('Профиль'),
+              leading: Icon(
+                Icons.account_box,
+                color: Theme.of(context).primaryColor,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ProfilePage(widget._user),
+                  ),
+                );
+              },
+            ),
             // ListTile(
             //   title: Text(
             //     'Поддержать проекты',

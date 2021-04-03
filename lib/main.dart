@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:askimam/common_pages/profile_page.dart';
 import 'package:askimam/components/auto_direction.dart';
 import 'package:askimam/common_pages/chat.dart';
 import 'package:askimam/consts.dart';
@@ -25,6 +26,7 @@ import 'package:url_launcher/url_launcher.dart';
 User _user;
 bool _isImam = false;
 String _fcmToken;
+var _showProfileMenu = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,10 +34,17 @@ void main() async {
   runApp(AskImamApp());
 }
 
-class AskImamApp extends StatelessWidget {
+class AskImamApp extends StatefulWidget {
+  @override
+  _AskImamAppState createState() => _AskImamAppState();
+}
+
+class _AskImamAppState extends State<AskImamApp> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-  AskImamApp() {
+  @override
+  void initState() {
+    super.initState();
     _signIn();
 
     _firebaseMessaging.getToken().then((token) {
@@ -131,8 +140,29 @@ class AskImamApp extends StatelessWidget {
   }
 }
 
-class _MainPage extends StatelessWidget {
+class _MainPage extends StatefulWidget {
+  @override
+  __MainPageState createState() => __MainPageState();
+}
+
+class __MainPageState extends State<_MainPage> {
   final _random = Random();
+
+  void initState() {
+    super.initState();
+    _init();
+  }
+
+  void _init() async {
+    final showProfile = await FirebaseFirestore.instance
+        .collection(settingsCollection)
+        .doc(showProfileSettingKey)
+        .get();
+
+    setState(() {
+      _showProfileMenu = showProfile['value'];
+    });
+  }
 
   bool _isNewMessageForMe(AsyncSnapshot<QuerySnapshot> snapshot) {
     return snapshot.data.docs
@@ -282,6 +312,7 @@ class _MainPage extends StatelessWidget {
                 );
               },
             ),
+            Divider(height: 1),
             ListTile(
               title: Text(AppLocalizations.of(context).imamsRating),
               leading: Icon(
@@ -298,7 +329,23 @@ class _MainPage extends StatelessWidget {
                 );
               },
             ),
-            Divider(height: 1),
+            if (_showProfileMenu)
+              ListTile(
+                title: Text('Профиль'),
+                leading: Icon(
+                  Icons.account_box,
+                  color: Theme.of(context).primaryColor,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ProfilePage(_user),
+                    ),
+                  );
+                },
+              ),
             // ListTile(
             //   title: Text(
             //     'Поддержать проекты',
