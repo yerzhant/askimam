@@ -44,6 +44,7 @@ void main() {
                   Favorite(3, 3, 'Subject 3'),
                 ]),
               ]);
+
       blocTest('should return an error',
           build: () {
             when(repo.getMyFavorites()).thenAnswer(
@@ -55,6 +56,26 @@ void main() {
           expect: () => [
                 FavoriteState.inProgress([]),
                 FavoriteState.error(Rejection('oops!')),
+              ]);
+
+      blocTest('should load favorites after an error',
+          build: () {
+            when(repo.getMyFavorites()).thenAnswer((_) async => right([
+                  Favorite(1, 1, 'Subject 1'),
+                  Favorite(2, 2, 'Subject 2'),
+                  Favorite(3, 3, 'Subject 3'),
+                ]));
+            return bloc;
+          },
+          seed: () => FavoriteState.error(Rejection('x')),
+          act: (_) => bloc.add(FavoriteEvent.refresh()),
+          expect: () => [
+                FavoriteState.inProgress([]),
+                FavoriteState([
+                  Favorite(1, 1, 'Subject 1'),
+                  Favorite(2, 2, 'Subject 2'),
+                  Favorite(3, 3, 'Subject 3'),
+                ]),
               ]);
     });
 
@@ -110,7 +131,35 @@ void main() {
                 FavoriteState.error(Rejection('error')),
               ]);
 
-      // TODO: more edge cases are needed
+      blocTest('should return an earlier error',
+          build: () => bloc,
+          seed: () => FavoriteState.error(Rejection('error')),
+          act: (_) => bloc.add(
+                FavoriteEvent.delete(Favorite(1, 1, 'Subject 1')),
+              ),
+          expect: () => []);
+
+      blocTest('should delete it while deleting another one',
+          build: () {
+            when(repo.delete(Favorite(2, 2, 'Subject 2'))).thenAnswer(
+              (realInvocation) async => none(),
+            );
+            return bloc;
+          },
+          seed: () => FavoriteState.inProgress([
+                Favorite(1, 1, 'Subject 1'),
+                Favorite(2, 2, 'Subject 2'),
+                Favorite(3, 3, 'Subject 3'),
+              ]),
+          act: (_) => bloc.add(
+                FavoriteEvent.delete(Favorite(2, 2, 'Subject 2')),
+              ),
+          expect: () => [
+                FavoriteState([
+                  Favorite(1, 1, 'Subject 1'),
+                  Favorite(3, 3, 'Subject 3'),
+                ]),
+              ]);
     });
 
     // TODO: add Open a chat

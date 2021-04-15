@@ -33,23 +33,25 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   }
 
   Stream<FavoriteState> _mapDeleteToState(Favorite favorite) async* {
-    yield state.when(
-      (myFavorites) => FavoriteState.inProgress(myFavorites),
-      inProgress: (myFavorites) => FavoriteState.inProgress(myFavorites),
-      error: (rejection) => FavoriteState.error(rejection),
-    );
+    Stream<FavoriteState> delete(List<Favorite> myFavorites) async* {
+      yield FavoriteState.inProgress(myFavorites);
 
-    final result = await _repo.delete(favorite);
+      final result = await _repo.delete(favorite);
 
-    yield result.fold(
-      () => state.when(
-        (myFavorites) => FavoriteState.error(Rejection('error')),
-        inProgress: (myFavorites) => FavoriteState(
+      yield result.fold(
+        () => FavoriteState(
           myFavorites.where((element) => element != favorite).toList(),
         ),
-        error: (rejection) => throw Error(),
-      ),
-      (a) => FavoriteState.error(a),
+        (a) => FavoriteState.error(a),
+      );
+    }
+
+    yield* state.when(
+      (myFavorites) => delete(myFavorites),
+      inProgress: (myFavorites) => delete(myFavorites),
+      error: (rejection) async* {
+        yield FavoriteState.error(rejection);
+      },
     );
   }
 }
