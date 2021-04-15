@@ -16,8 +16,8 @@ void main() {
           var json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
         } else if (req.url.path == '/suffix/2') {
-          var json = ApiResponse.error('reason').toJsonString();
-          return Response(json, 200);
+          var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
+          return Response.bytes(json, 200);
         } else if (req.url.path == '/suffix/3') {
           return Response('', 401, reasonPhrase: 'boom!');
         } else {
@@ -41,7 +41,7 @@ void main() {
     test('should return some rejection reason', () async {
       final result = await apiClient.delete('suffix/2');
 
-      expect(result, some(Rejection('reason')));
+      expect(result, some(Rejection('Что-то пошло не так')));
     });
 
     test('should return some nok', () async {

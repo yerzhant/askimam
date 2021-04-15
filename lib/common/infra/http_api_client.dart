@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:askimam/common/domain/apiClient.dart';
 import 'package:askimam/common/domain/rejection.dart';
 import 'package:askimam/common/web/api_response.dart';
@@ -14,10 +16,12 @@ class HttpApiClient implements ApiClient {
   Future<Option<Rejection>> delete(String suffix) async {
     try {
       final url = Uri.parse('$_url/$suffix');
-      final response = await _client.delete(url);
+      final response = await _client.delete(url, headers: {
+        HttpHeaders.acceptHeader: ContentType.json.value,
+      });
 
       if (response.statusCode == 200) {
-        final apiResponse = response.body.decodeApiResponse();
+        final apiResponse = response.decodeApiResponse();
 
         if (apiResponse.status == ApiResponseStatus.Ok) {
           return none();
