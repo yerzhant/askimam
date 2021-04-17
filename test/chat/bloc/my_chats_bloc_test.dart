@@ -1,4 +1,4 @@
-import 'package:askimam/chat/bloc/public_chats_bloc.dart';
+import 'package:askimam/chat/bloc/my_chats_bloc.dart';
 import 'package:askimam/chat/domain/chat.dart';
 import 'package:askimam/chat/domain/chat_repository.dart';
 import 'package:askimam/common/domain/rejection.dart';
@@ -8,26 +8,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'public_chat_bloc_test.mocks.dart';
+import 'my_chats_bloc_test.mocks.dart';
 
 @GenerateMocks([ChatRepository])
 void main() {
-  late PublicChatsBloc bloc;
+  late MyChatsBloc bloc;
   final repo = MockChatRepository();
 
   setUp(() {
-    bloc = PublicChatsBloc(repo, 20);
+    bloc = MyChatsBloc(repo, 20);
   });
 
   test('Initial state', () {
-    expect(bloc.state, PublicChatsState.inProgress([]));
+    expect(bloc.state, MyChatsState.inProgress([]));
   });
 
   group('Load first page', () {
     blocTest(
-      'should load public chats',
+      'should load chats',
       build: () {
-        when(repo.getPublic(0, 20)).thenAnswer(
+        when(repo.getMy(0, 20)).thenAnswer(
           (_) async => right([
             Chat(1, 'subject', false),
             Chat(2, 'subject', false),
@@ -36,10 +36,10 @@ void main() {
         );
         return bloc;
       },
-      act: (_) => bloc.add(PublicChatsEvent.reload()),
+      act: (_) => bloc.add(MyChatsEvent.reload()),
       expect: () => [
-        PublicChatsState.inProgress([]),
-        PublicChatsState([
+        MyChatsState.inProgress([]),
+        MyChatsState([
           Chat(1, 'subject', false),
           Chat(2, 'subject', false),
           Chat(3, 'subject', true),
@@ -50,21 +50,21 @@ void main() {
     blocTest(
       'should be rejected',
       build: () {
-        when(repo.getPublic(0, 20))
+        when(repo.getMy(0, 20))
             .thenAnswer((_) async => left(Rejection('reason')));
         return bloc;
       },
-      act: (_) => bloc.add(PublicChatsEvent.reload()),
+      act: (_) => bloc.add(MyChatsEvent.reload()),
       expect: () => [
-        PublicChatsState.inProgress([]),
-        PublicChatsState.error(Rejection('reason')),
+        MyChatsState.inProgress([]),
+        MyChatsState.error(Rejection('reason')),
       ],
     );
 
     blocTest(
-      'should load public chats after an error',
+      'should load chats after an error',
       build: () {
-        when(repo.getPublic(0, 20)).thenAnswer(
+        when(repo.getMy(0, 20)).thenAnswer(
           (_) async => right([
             Chat(1, 'subject', false),
             Chat(2, 'subject', false),
@@ -73,11 +73,11 @@ void main() {
         );
         return bloc;
       },
-      seed: () => PublicChatsState.error(Rejection('reason')),
-      act: (_) => bloc.add(PublicChatsEvent.reload()),
+      seed: () => MyChatsState.error(Rejection('reason')),
+      act: (_) => bloc.add(MyChatsEvent.reload()),
       expect: () => [
-        PublicChatsState.inProgress([]),
-        PublicChatsState([
+        MyChatsState.inProgress([]),
+        MyChatsState([
           Chat(1, 'subject', false),
           Chat(2, 'subject', false),
           Chat(3, 'subject', true),
@@ -86,9 +86,9 @@ void main() {
     );
 
     blocTest(
-      'should reload public chats',
+      'should reload chats',
       build: () {
-        when(repo.getPublic(0, 20)).thenAnswer(
+        when(repo.getMy(0, 20)).thenAnswer(
           (_) async => right([
             Chat(1, 'subject', false),
             Chat(2, 'subject', false),
@@ -98,15 +98,15 @@ void main() {
         );
         return bloc;
       },
-      seed: () => PublicChatsState([
+      seed: () => MyChatsState([
         Chat(1, 'subject', false),
         Chat(2, 'subject', false),
         Chat(3, 'subject', true),
       ]),
-      act: (_) => bloc.add(PublicChatsEvent.reload()),
+      act: (_) => bloc.add(MyChatsEvent.reload()),
       expect: () => [
-        PublicChatsState.inProgress([]),
-        PublicChatsState([
+        MyChatsState.inProgress([]),
+        MyChatsState([
           Chat(1, 'subject', false),
           Chat(2, 'subject', false),
           Chat(3, 'subject', true),
@@ -120,28 +120,28 @@ void main() {
     blocTest(
       'should load next page',
       build: () {
-        when(repo.getPublic(20, 20)).thenAnswer(
+        when(repo.getMy(20, 20)).thenAnswer(
           (_) async => right([
             ...List.generate(20, (i) => Chat(i + 21, 'subject', false)),
           ]),
         );
         return bloc;
       },
-      seed: () => PublicChatsState([
+      seed: () => MyChatsState([
         ...List.generate(18, (i) => Chat(i + 1, 'subject', false)),
         Chat(19, 'subject', false),
         Chat(20, 'subject', true),
       ]),
-      act: (_) => bloc.add(PublicChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(MyChatsEvent.loadNextPage()),
       expect: () => [
-        PublicChatsState.inProgress([
+        MyChatsState.inProgress([
           ...List.generate(18, (i) => Chat(i + 1, 'subject', false)),
           Chat(19, 'subject', false),
           Chat(20, 'subject', true),
           // late testing!
           ...List.generate(20, (i) => Chat(i + 21, 'subject', false)),
         ]),
-        PublicChatsState([
+        MyChatsState([
           ...List.generate(18, (i) => Chat(i + 1, 'subject', false)),
           Chat(19, 'subject', false),
           Chat(20, 'subject', true),
@@ -153,43 +153,43 @@ void main() {
     blocTest(
       'should ignore double next page loading',
       build: () => bloc,
-      seed: () => PublicChatsState.inProgress([
+      seed: () => MyChatsState.inProgress([
         ...List.generate(18, (i) => Chat(i + 1, 'subject', false)),
         Chat(19, 'subject', false),
         Chat(20, 'subject', true),
       ]),
-      act: (_) => bloc.add(PublicChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(MyChatsEvent.loadNextPage()),
       expect: () => [],
     );
 
     blocTest(
       'should reject to load next page if already has been rejected',
       build: () => bloc,
-      seed: () => PublicChatsState.error(Rejection('reason')),
-      act: (_) => bloc.add(PublicChatsEvent.loadNextPage()),
+      seed: () => MyChatsState.error(Rejection('reason')),
+      act: (_) => bloc.add(MyChatsEvent.loadNextPage()),
       expect: () => [],
     );
 
     blocTest(
       'should be rejected on loading next page',
       build: () {
-        when(repo.getPublic(20, 20))
+        when(repo.getMy(20, 20))
             .thenAnswer((_) async => left(Rejection('reason')));
         return bloc;
       },
-      seed: () => PublicChatsState([
+      seed: () => MyChatsState([
         ...List.generate(18, (i) => Chat(i + 1, 'subject', false)),
         Chat(19, 'subject', false),
         Chat(20, 'subject', true),
       ]),
-      act: (_) => bloc.add(PublicChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(MyChatsEvent.loadNextPage()),
       expect: () => [
-        PublicChatsState.inProgress([
+        MyChatsState.inProgress([
           ...List.generate(18, (i) => Chat(i + 1, 'subject', false)),
           Chat(19, 'subject', false),
           Chat(20, 'subject', true),
         ]),
-        PublicChatsState.error(Rejection('reason')),
+        MyChatsState.error(Rejection('reason')),
       ],
     );
   });
@@ -198,7 +198,7 @@ void main() {
     blocTest(
       'should load first page',
       build: () {
-        when(repo.getPublic(0, 20)).thenAnswer(
+        when(repo.getMy(0, 20)).thenAnswer(
           (_) async => right([
             Chat(1, 'subject', false),
             Chat(2, 'subject', false),
@@ -207,10 +207,10 @@ void main() {
         );
         return bloc;
       },
-      act: (_) => bloc.add(PublicChatsEvent.show()),
+      act: (_) => bloc.add(MyChatsEvent.show()),
       expect: () => [
-        PublicChatsState.inProgress([]),
-        PublicChatsState([
+        MyChatsState.inProgress([]),
+        MyChatsState([
           Chat(1, 'subject', false),
           Chat(2, 'subject', false),
           Chat(3, 'subject', true),
@@ -221,12 +221,12 @@ void main() {
     blocTest(
       'should not load a page',
       build: () => bloc,
-      seed: () => PublicChatsState([
+      seed: () => MyChatsState([
         Chat(1, 'subject', false),
         Chat(2, 'subject', false),
         Chat(3, 'subject', true),
       ]),
-      act: (_) => bloc.add(PublicChatsEvent.show()),
+      act: (_) => bloc.add(MyChatsEvent.show()),
       expect: () => [],
     );
   });
