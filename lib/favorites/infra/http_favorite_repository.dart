@@ -1,4 +1,4 @@
-import 'package:askimam/common/domain/apiClient.dart';
+import 'package:askimam/common/domain/api_client.dart';
 import 'package:askimam/common/domain/rejection.dart';
 import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:askimam/favorites/domain/favorite_repository.dart';

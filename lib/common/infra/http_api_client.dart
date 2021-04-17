@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:askimam/common/domain/apiClient.dart';
+import 'package:askimam/common/domain/api_client.dart';
+import 'package:askimam/common/domain/model.dart';
 import 'package:askimam/common/domain/rejection.dart';
 import 'package:askimam/common/web/api_response.dart';
 import 'package:dartz/dartz.dart';
@@ -38,7 +39,9 @@ class HttpApiClient implements ApiClient {
   }
 
   @override
-  Future<Either<Rejection, List<T>>> getList<T>(String suffix) async {
+  Future<Either<Rejection, List<T>>> getList<T extends Model>(
+    String suffix,
+  ) async {
     try {
       final httpResponse = await _client.get(
         _constructUrl(suffix),

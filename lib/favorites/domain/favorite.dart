@@ -1,10 +1,11 @@
+import 'package:askimam/common/domain/model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'favorite.freezed.dart';
 part 'favorite.g.dart';
 
 @freezed
-abstract class Favorite with _$Favorite {
+class Favorite with _$Favorite, Model {
   factory Favorite(
     int id,
     int chatId,

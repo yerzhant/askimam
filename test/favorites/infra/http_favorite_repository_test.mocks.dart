@@ -4,7 +4,8 @@
 
 import 'dart:async' as _i4;
 
-import 'package:askimam/common/domain/apiClient.dart' as _i3;
+import 'package:askimam/common/domain/api_client.dart' as _i3;
+import 'package:askimam/common/domain/model.dart' as _i6;
 import 'package:askimam/common/domain/rejection.dart' as _i5;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -25,7 +26,8 @@ class MockApiClient extends _i1.Mock implements _i3.ApiClient {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, List<T>>> getList<T>(String? suffix) =>
+  _i4.Future<_i2.Either<_i5.Rejection, List<T>>> getList<T extends _i6.Model>(
+          String? suffix) =>
       (super.noSuchMethod(Invocation.method(#getList, [suffix]),
               returnValue: Future.value(_FakeEither<_i5.Rejection, List<T>>()))
           as _i4.Future<_i2.Either<_i5.Rejection, List<T>>>);

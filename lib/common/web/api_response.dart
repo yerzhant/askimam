@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:askimam/common/domain/model.dart';
 import 'package:askimam/common/domain/rejection.dart';
 import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -36,7 +37,7 @@ abstract class ApiResponse with _$ApiResponse {
   String toJsonString() => jsonEncode(toJson());
   List<int> toJsonUtf8() => utf8.encode(jsonEncode(toJson()));
 
-  List<T> list<T>() {
+  List<T> list<T extends Model>() {
     final factories = <Type, Function>{
       Favorite: (json) => Favorite.fromJson(json),
     };
