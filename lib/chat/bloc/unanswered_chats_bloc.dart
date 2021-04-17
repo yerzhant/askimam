@@ -1,0 +1,70 @@
+import 'dart:async';
+
+import 'package:askimam/chat/domain/chat.dart';
+import 'package:askimam/chat/domain/chat_repository.dart';
+import 'package:askimam/common/domain/rejection.dart';
+import 'package:bloc/bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'unanswered_chats_event.dart';
+part 'unanswered_chats_state.dart';
+part 'unanswered_chats_bloc.freezed.dart';
+
+class UnansweredChatsBloc
+    extends Bloc<UnansweredChatsEvent, UnansweredChatsState> {
+  final ChatRepository _repo;
+  final int _pageSize;
+
+  UnansweredChatsBloc(this._repo, this._pageSize) : super(_InProgress([]));
+
+  @override
+  Stream<UnansweredChatsState> mapEventToState(UnansweredChatsEvent event) =>
+      event.when(
+        show: _show,
+        reload: _reload,
+        loadNextPage: _loadNextPage,
+      );
+
+  Stream<UnansweredChatsState> _show() async* {
+    state.maybeWhen(
+      (chats) async* {
+        yield UnansweredChatsState(chats);
+      },
+      orElse: () => add(UnansweredChatsEvent.reload()),
+    );
+  }
+
+  Stream<UnansweredChatsState> _reload() async* {
+    yield UnansweredChatsState.inProgress([]);
+
+    final result = await _repo.getUnanswered(0, _pageSize);
+
+    yield result.fold(
+      (l) => UnansweredChatsState.error(l),
+      (r) => UnansweredChatsState(r),
+    );
+  }
+
+  Stream<UnansweredChatsState> _loadNextPage() async* {
+    Stream<UnansweredChatsState> load(List<Chat> chats) async* {
+      yield UnansweredChatsState.inProgress(chats);
+
+      final result = await _repo.getUnanswered(chats.length, _pageSize);
+
+      yield result.fold(
+        (l) => UnansweredChatsState.error(l),
+        (r) => UnansweredChatsState(chats..addAll(r)),
+      );
+    }
+
+    yield* state.when(
+      (chats) => load(chats),
+      inProgress: (chats) async* {
+        yield UnansweredChatsState.inProgress(chats);
+      },
+      error: (rejection) async* {
+        yield UnansweredChatsState.error(rejection);
+      },
+    );
+  }
+}
