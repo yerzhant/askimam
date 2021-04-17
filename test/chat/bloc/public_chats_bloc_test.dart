@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'public_chat_bloc_test.mocks.dart';
+import 'public_chats_bloc_test.mocks.dart';
 
 @GenerateMocks([ChatRepository])
 void main() {
