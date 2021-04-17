@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
-part of 'chat_bloc.dart';
+part of 'public_chat_bloc.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,96 +13,96 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$ChatEventTearOff {
-  const _$ChatEventTearOff();
+class _$PublicChatEventTearOff {
+  const _$PublicChatEventTearOff();
 
-  _ReloadPublic reloadPublic() {
-    return const _ReloadPublic();
+  _Reload reload() {
+    return const _Reload();
   }
 
-  _LoadNextPublicPage loadNextPublicPage() {
-    return const _LoadNextPublicPage();
+  _LoadNextPage loadNextPage() {
+    return const _LoadNextPage();
   }
 }
 
 /// @nodoc
-const $ChatEvent = _$ChatEventTearOff();
+const $PublicChatEvent = _$PublicChatEventTearOff();
 
 /// @nodoc
-mixin _$ChatEvent {
+mixin _$PublicChatEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() reloadPublic,
-    required TResult Function() loadNextPublicPage,
+    required TResult Function() reload,
+    required TResult Function() loadNextPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? reloadPublic,
-    TResult Function()? loadNextPublicPage,
+    TResult Function()? reload,
+    TResult Function()? loadNextPage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_ReloadPublic value) reloadPublic,
-    required TResult Function(_LoadNextPublicPage value) loadNextPublicPage,
+    required TResult Function(_Reload value) reload,
+    required TResult Function(_LoadNextPage value) loadNextPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ReloadPublic value)? reloadPublic,
-    TResult Function(_LoadNextPublicPage value)? loadNextPublicPage,
+    TResult Function(_Reload value)? reload,
+    TResult Function(_LoadNextPage value)? loadNextPage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ChatEventCopyWith<$Res> {
-  factory $ChatEventCopyWith(ChatEvent value, $Res Function(ChatEvent) then) =
-      _$ChatEventCopyWithImpl<$Res>;
+abstract class $PublicChatEventCopyWith<$Res> {
+  factory $PublicChatEventCopyWith(
+          PublicChatEvent value, $Res Function(PublicChatEvent) then) =
+      _$PublicChatEventCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$ChatEventCopyWithImpl<$Res> implements $ChatEventCopyWith<$Res> {
-  _$ChatEventCopyWithImpl(this._value, this._then);
+class _$PublicChatEventCopyWithImpl<$Res>
+    implements $PublicChatEventCopyWith<$Res> {
+  _$PublicChatEventCopyWithImpl(this._value, this._then);
 
-  final ChatEvent _value;
+  final PublicChatEvent _value;
   // ignore: unused_field
-  final $Res Function(ChatEvent) _then;
+  final $Res Function(PublicChatEvent) _then;
 }
 
 /// @nodoc
-abstract class _$ReloadPublicCopyWith<$Res> {
-  factory _$ReloadPublicCopyWith(
-          _ReloadPublic value, $Res Function(_ReloadPublic) then) =
-      __$ReloadPublicCopyWithImpl<$Res>;
+abstract class _$ReloadCopyWith<$Res> {
+  factory _$ReloadCopyWith(_Reload value, $Res Function(_Reload) then) =
+      __$ReloadCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$ReloadPublicCopyWithImpl<$Res> extends _$ChatEventCopyWithImpl<$Res>
-    implements _$ReloadPublicCopyWith<$Res> {
-  __$ReloadPublicCopyWithImpl(
-      _ReloadPublic _value, $Res Function(_ReloadPublic) _then)
-      : super(_value, (v) => _then(v as _ReloadPublic));
+class __$ReloadCopyWithImpl<$Res> extends _$PublicChatEventCopyWithImpl<$Res>
+    implements _$ReloadCopyWith<$Res> {
+  __$ReloadCopyWithImpl(_Reload _value, $Res Function(_Reload) _then)
+      : super(_value, (v) => _then(v as _Reload));
 
   @override
-  _ReloadPublic get _value => super._value as _ReloadPublic;
+  _Reload get _value => super._value as _Reload;
 }
 
 /// @nodoc
-class _$_ReloadPublic implements _ReloadPublic {
-  const _$_ReloadPublic();
+class _$_Reload implements _Reload {
+  const _$_Reload();
 
   @override
   String toString() {
-    return 'ChatEvent.reloadPublic()';
+    return 'PublicChatEvent.reload()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _ReloadPublic);
+    return identical(this, other) || (other is _Reload);
   }
 
   @override
@@ -111,21 +111,21 @@ class _$_ReloadPublic implements _ReloadPublic {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() reloadPublic,
-    required TResult Function() loadNextPublicPage,
+    required TResult Function() reload,
+    required TResult Function() loadNextPage,
   }) {
-    return reloadPublic();
+    return reload();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? reloadPublic,
-    TResult Function()? loadNextPublicPage,
+    TResult Function()? reload,
+    TResult Function()? loadNextPage,
     required TResult orElse(),
   }) {
-    if (reloadPublic != null) {
-      return reloadPublic();
+    if (reload != null) {
+      return reload();
     }
     return orElse();
   }
@@ -133,61 +133,61 @@ class _$_ReloadPublic implements _ReloadPublic {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_ReloadPublic value) reloadPublic,
-    required TResult Function(_LoadNextPublicPage value) loadNextPublicPage,
+    required TResult Function(_Reload value) reload,
+    required TResult Function(_LoadNextPage value) loadNextPage,
   }) {
-    return reloadPublic(this);
+    return reload(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ReloadPublic value)? reloadPublic,
-    TResult Function(_LoadNextPublicPage value)? loadNextPublicPage,
+    TResult Function(_Reload value)? reload,
+    TResult Function(_LoadNextPage value)? loadNextPage,
     required TResult orElse(),
   }) {
-    if (reloadPublic != null) {
-      return reloadPublic(this);
+    if (reload != null) {
+      return reload(this);
     }
     return orElse();
   }
 }
 
-abstract class _ReloadPublic implements ChatEvent {
-  const factory _ReloadPublic() = _$_ReloadPublic;
+abstract class _Reload implements PublicChatEvent {
+  const factory _Reload() = _$_Reload;
 }
 
 /// @nodoc
-abstract class _$LoadNextPublicPageCopyWith<$Res> {
-  factory _$LoadNextPublicPageCopyWith(
-          _LoadNextPublicPage value, $Res Function(_LoadNextPublicPage) then) =
-      __$LoadNextPublicPageCopyWithImpl<$Res>;
+abstract class _$LoadNextPageCopyWith<$Res> {
+  factory _$LoadNextPageCopyWith(
+          _LoadNextPage value, $Res Function(_LoadNextPage) then) =
+      __$LoadNextPageCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$LoadNextPublicPageCopyWithImpl<$Res>
-    extends _$ChatEventCopyWithImpl<$Res>
-    implements _$LoadNextPublicPageCopyWith<$Res> {
-  __$LoadNextPublicPageCopyWithImpl(
-      _LoadNextPublicPage _value, $Res Function(_LoadNextPublicPage) _then)
-      : super(_value, (v) => _then(v as _LoadNextPublicPage));
+class __$LoadNextPageCopyWithImpl<$Res>
+    extends _$PublicChatEventCopyWithImpl<$Res>
+    implements _$LoadNextPageCopyWith<$Res> {
+  __$LoadNextPageCopyWithImpl(
+      _LoadNextPage _value, $Res Function(_LoadNextPage) _then)
+      : super(_value, (v) => _then(v as _LoadNextPage));
 
   @override
-  _LoadNextPublicPage get _value => super._value as _LoadNextPublicPage;
+  _LoadNextPage get _value => super._value as _LoadNextPage;
 }
 
 /// @nodoc
-class _$_LoadNextPublicPage implements _LoadNextPublicPage {
-  const _$_LoadNextPublicPage();
+class _$_LoadNextPage implements _LoadNextPage {
+  const _$_LoadNextPage();
 
   @override
   String toString() {
-    return 'ChatEvent.loadNextPublicPage()';
+    return 'PublicChatEvent.loadNextPage()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _LoadNextPublicPage);
+    return identical(this, other) || (other is _LoadNextPage);
   }
 
   @override
@@ -196,21 +196,21 @@ class _$_LoadNextPublicPage implements _LoadNextPublicPage {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() reloadPublic,
-    required TResult Function() loadNextPublicPage,
+    required TResult Function() reload,
+    required TResult Function() loadNextPage,
   }) {
-    return loadNextPublicPage();
+    return loadNextPage();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? reloadPublic,
-    TResult Function()? loadNextPublicPage,
+    TResult Function()? reload,
+    TResult Function()? loadNextPage,
     required TResult orElse(),
   }) {
-    if (loadNextPublicPage != null) {
-      return loadNextPublicPage();
+    if (loadNextPage != null) {
+      return loadNextPage();
     }
     return orElse();
   }
@@ -218,43 +218,43 @@ class _$_LoadNextPublicPage implements _LoadNextPublicPage {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_ReloadPublic value) reloadPublic,
-    required TResult Function(_LoadNextPublicPage value) loadNextPublicPage,
+    required TResult Function(_Reload value) reload,
+    required TResult Function(_LoadNextPage value) loadNextPage,
   }) {
-    return loadNextPublicPage(this);
+    return loadNextPage(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ReloadPublic value)? reloadPublic,
-    TResult Function(_LoadNextPublicPage value)? loadNextPublicPage,
+    TResult Function(_Reload value)? reload,
+    TResult Function(_LoadNextPage value)? loadNextPage,
     required TResult orElse(),
   }) {
-    if (loadNextPublicPage != null) {
-      return loadNextPublicPage(this);
+    if (loadNextPage != null) {
+      return loadNextPage(this);
     }
     return orElse();
   }
 }
 
-abstract class _LoadNextPublicPage implements ChatEvent {
-  const factory _LoadNextPublicPage() = _$_LoadNextPublicPage;
+abstract class _LoadNextPage implements PublicChatEvent {
+  const factory _LoadNextPage() = _$_LoadNextPage;
 }
 
 /// @nodoc
-class _$ChatStateTearOff {
-  const _$ChatStateTearOff();
+class _$PublicChatStateTearOff {
+  const _$PublicChatStateTearOff();
 
-  _State call(List<Chat> public) {
+  _State call(List<Chat> chats) {
     return _State(
-      public,
+      chats,
     );
   }
 
-  _InProgress inProgress(List<Chat> public) {
+  _InProgress inProgress(List<Chat> chats) {
     return _InProgress(
-      public,
+      chats,
     );
   }
 
@@ -266,21 +266,21 @@ class _$ChatStateTearOff {
 }
 
 /// @nodoc
-const $ChatState = _$ChatStateTearOff();
+const $PublicChatState = _$PublicChatStateTearOff();
 
 /// @nodoc
-mixin _$ChatState {
+mixin _$PublicChatState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<Chat> public) $default, {
-    required TResult Function(List<Chat> public) inProgress,
+    TResult Function(List<Chat> chats) $default, {
+    required TResult Function(List<Chat> chats) inProgress,
     required TResult Function(Rejection rejection) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<Chat> public)? $default, {
-    TResult Function(List<Chat> public)? inProgress,
+    TResult Function(List<Chat> chats)? $default, {
+    TResult Function(List<Chat> chats)? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),
   }) =>
@@ -303,29 +303,31 @@ mixin _$ChatState {
 }
 
 /// @nodoc
-abstract class $ChatStateCopyWith<$Res> {
-  factory $ChatStateCopyWith(ChatState value, $Res Function(ChatState) then) =
-      _$ChatStateCopyWithImpl<$Res>;
+abstract class $PublicChatStateCopyWith<$Res> {
+  factory $PublicChatStateCopyWith(
+          PublicChatState value, $Res Function(PublicChatState) then) =
+      _$PublicChatStateCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$ChatStateCopyWithImpl<$Res> implements $ChatStateCopyWith<$Res> {
-  _$ChatStateCopyWithImpl(this._value, this._then);
+class _$PublicChatStateCopyWithImpl<$Res>
+    implements $PublicChatStateCopyWith<$Res> {
+  _$PublicChatStateCopyWithImpl(this._value, this._then);
 
-  final ChatState _value;
+  final PublicChatState _value;
   // ignore: unused_field
-  final $Res Function(ChatState) _then;
+  final $Res Function(PublicChatState) _then;
 }
 
 /// @nodoc
 abstract class _$StateCopyWith<$Res> {
   factory _$StateCopyWith(_State value, $Res Function(_State) then) =
       __$StateCopyWithImpl<$Res>;
-  $Res call({List<Chat> public});
+  $Res call({List<Chat> chats});
 }
 
 /// @nodoc
-class __$StateCopyWithImpl<$Res> extends _$ChatStateCopyWithImpl<$Res>
+class __$StateCopyWithImpl<$Res> extends _$PublicChatStateCopyWithImpl<$Res>
     implements _$StateCopyWith<$Res> {
   __$StateCopyWithImpl(_State _value, $Res Function(_State) _then)
       : super(_value, (v) => _then(v as _State));
@@ -335,12 +337,12 @@ class __$StateCopyWithImpl<$Res> extends _$ChatStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? public = freezed,
+    Object? chats = freezed,
   }) {
     return _then(_State(
-      public == freezed
-          ? _value.public
-          : public // ignore: cast_nullable_to_non_nullable
+      chats == freezed
+          ? _value.chats
+          : chats // ignore: cast_nullable_to_non_nullable
               as List<Chat>,
     ));
   }
@@ -348,27 +350,27 @@ class __$StateCopyWithImpl<$Res> extends _$ChatStateCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_State implements _State {
-  const _$_State(this.public);
+  const _$_State(this.chats);
 
   @override
-  final List<Chat> public;
+  final List<Chat> chats;
 
   @override
   String toString() {
-    return 'ChatState(public: $public)';
+    return 'PublicChatState(chats: $chats)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _State &&
-            (identical(other.public, public) ||
-                const DeepCollectionEquality().equals(other.public, public)));
+            (identical(other.chats, chats) ||
+                const DeepCollectionEquality().equals(other.chats, chats)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(public);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(chats);
 
   @JsonKey(ignore: true)
   @override
@@ -378,23 +380,23 @@ class _$_State implements _State {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<Chat> public) $default, {
-    required TResult Function(List<Chat> public) inProgress,
+    TResult Function(List<Chat> chats) $default, {
+    required TResult Function(List<Chat> chats) inProgress,
     required TResult Function(Rejection rejection) error,
   }) {
-    return $default(public);
+    return $default(chats);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<Chat> public)? $default, {
-    TResult Function(List<Chat> public)? inProgress,
+    TResult Function(List<Chat> chats)? $default, {
+    TResult Function(List<Chat> chats)? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),
   }) {
     if ($default != null) {
-      return $default(public);
+      return $default(chats);
     }
     return orElse();
   }
@@ -424,10 +426,10 @@ class _$_State implements _State {
   }
 }
 
-abstract class _State implements ChatState {
-  const factory _State(List<Chat> public) = _$_State;
+abstract class _State implements PublicChatState {
+  const factory _State(List<Chat> chats) = _$_State;
 
-  List<Chat> get public => throw _privateConstructorUsedError;
+  List<Chat> get chats => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$StateCopyWith<_State> get copyWith => throw _privateConstructorUsedError;
 }
@@ -437,11 +439,12 @@ abstract class _$InProgressCopyWith<$Res> {
   factory _$InProgressCopyWith(
           _InProgress value, $Res Function(_InProgress) then) =
       __$InProgressCopyWithImpl<$Res>;
-  $Res call({List<Chat> public});
+  $Res call({List<Chat> chats});
 }
 
 /// @nodoc
-class __$InProgressCopyWithImpl<$Res> extends _$ChatStateCopyWithImpl<$Res>
+class __$InProgressCopyWithImpl<$Res>
+    extends _$PublicChatStateCopyWithImpl<$Res>
     implements _$InProgressCopyWith<$Res> {
   __$InProgressCopyWithImpl(
       _InProgress _value, $Res Function(_InProgress) _then)
@@ -452,12 +455,12 @@ class __$InProgressCopyWithImpl<$Res> extends _$ChatStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? public = freezed,
+    Object? chats = freezed,
   }) {
     return _then(_InProgress(
-      public == freezed
-          ? _value.public
-          : public // ignore: cast_nullable_to_non_nullable
+      chats == freezed
+          ? _value.chats
+          : chats // ignore: cast_nullable_to_non_nullable
               as List<Chat>,
     ));
   }
@@ -465,27 +468,27 @@ class __$InProgressCopyWithImpl<$Res> extends _$ChatStateCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_InProgress implements _InProgress {
-  const _$_InProgress(this.public);
+  const _$_InProgress(this.chats);
 
   @override
-  final List<Chat> public;
+  final List<Chat> chats;
 
   @override
   String toString() {
-    return 'ChatState.inProgress(public: $public)';
+    return 'PublicChatState.inProgress(chats: $chats)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _InProgress &&
-            (identical(other.public, public) ||
-                const DeepCollectionEquality().equals(other.public, public)));
+            (identical(other.chats, chats) ||
+                const DeepCollectionEquality().equals(other.chats, chats)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(public);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(chats);
 
   @JsonKey(ignore: true)
   @override
@@ -495,23 +498,23 @@ class _$_InProgress implements _InProgress {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<Chat> public) $default, {
-    required TResult Function(List<Chat> public) inProgress,
+    TResult Function(List<Chat> chats) $default, {
+    required TResult Function(List<Chat> chats) inProgress,
     required TResult Function(Rejection rejection) error,
   }) {
-    return inProgress(public);
+    return inProgress(chats);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<Chat> public)? $default, {
-    TResult Function(List<Chat> public)? inProgress,
+    TResult Function(List<Chat> chats)? $default, {
+    TResult Function(List<Chat> chats)? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),
   }) {
     if (inProgress != null) {
-      return inProgress(public);
+      return inProgress(chats);
     }
     return orElse();
   }
@@ -541,10 +544,10 @@ class _$_InProgress implements _InProgress {
   }
 }
 
-abstract class _InProgress implements ChatState {
-  const factory _InProgress(List<Chat> public) = _$_InProgress;
+abstract class _InProgress implements PublicChatState {
+  const factory _InProgress(List<Chat> chats) = _$_InProgress;
 
-  List<Chat> get public => throw _privateConstructorUsedError;
+  List<Chat> get chats => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$InProgressCopyWith<_InProgress> get copyWith =>
       throw _privateConstructorUsedError;
@@ -560,7 +563,7 @@ abstract class _$ErrorCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ErrorCopyWithImpl<$Res> extends _$ChatStateCopyWithImpl<$Res>
+class __$ErrorCopyWithImpl<$Res> extends _$PublicChatStateCopyWithImpl<$Res>
     implements _$ErrorCopyWith<$Res> {
   __$ErrorCopyWithImpl(_Error _value, $Res Function(_Error) _then)
       : super(_value, (v) => _then(v as _Error));
@@ -597,7 +600,7 @@ class _$_Error implements _Error {
 
   @override
   String toString() {
-    return 'ChatState.error(rejection: $rejection)';
+    return 'PublicChatState.error(rejection: $rejection)';
   }
 
   @override
@@ -621,8 +624,8 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<Chat> public) $default, {
-    required TResult Function(List<Chat> public) inProgress,
+    TResult Function(List<Chat> chats) $default, {
+    required TResult Function(List<Chat> chats) inProgress,
     required TResult Function(Rejection rejection) error,
   }) {
     return error(rejection);
@@ -631,8 +634,8 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<Chat> public)? $default, {
-    TResult Function(List<Chat> public)? inProgress,
+    TResult Function(List<Chat> chats)? $default, {
+    TResult Function(List<Chat> chats)? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),
   }) {
@@ -667,7 +670,7 @@ class _$_Error implements _Error {
   }
 }
 
-abstract class _Error implements ChatState {
+abstract class _Error implements PublicChatState {
   const factory _Error(Rejection rejection) = _$_Error;
 
   Rejection get rejection => throw _privateConstructorUsedError;
