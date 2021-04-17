@@ -163,5 +163,6 @@ void main() {
     });
 
     // TODO: add Open a chat
+    // TODO: add Add a favorite but to Chat's bloc
   });
 }
