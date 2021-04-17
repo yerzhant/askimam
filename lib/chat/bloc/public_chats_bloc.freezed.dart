@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
-part of 'public_chat_bloc.dart';
+part of 'public_chats_bloc.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,8 +13,8 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$PublicChatEventTearOff {
-  const _$PublicChatEventTearOff();
+class _$PublicChatsEventTearOff {
+  const _$PublicChatsEventTearOff();
 
   _Reload reload() {
     return const _Reload();
@@ -26,10 +26,10 @@ class _$PublicChatEventTearOff {
 }
 
 /// @nodoc
-const $PublicChatEvent = _$PublicChatEventTearOff();
+const $PublicChatsEvent = _$PublicChatsEventTearOff();
 
 /// @nodoc
-mixin _$PublicChatEvent {
+mixin _$PublicChatsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() reload,
@@ -59,20 +59,20 @@ mixin _$PublicChatEvent {
 }
 
 /// @nodoc
-abstract class $PublicChatEventCopyWith<$Res> {
-  factory $PublicChatEventCopyWith(
-          PublicChatEvent value, $Res Function(PublicChatEvent) then) =
-      _$PublicChatEventCopyWithImpl<$Res>;
+abstract class $PublicChatsEventCopyWith<$Res> {
+  factory $PublicChatsEventCopyWith(
+          PublicChatsEvent value, $Res Function(PublicChatsEvent) then) =
+      _$PublicChatsEventCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$PublicChatEventCopyWithImpl<$Res>
-    implements $PublicChatEventCopyWith<$Res> {
-  _$PublicChatEventCopyWithImpl(this._value, this._then);
+class _$PublicChatsEventCopyWithImpl<$Res>
+    implements $PublicChatsEventCopyWith<$Res> {
+  _$PublicChatsEventCopyWithImpl(this._value, this._then);
 
-  final PublicChatEvent _value;
+  final PublicChatsEvent _value;
   // ignore: unused_field
-  final $Res Function(PublicChatEvent) _then;
+  final $Res Function(PublicChatsEvent) _then;
 }
 
 /// @nodoc
@@ -82,7 +82,7 @@ abstract class _$ReloadCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ReloadCopyWithImpl<$Res> extends _$PublicChatEventCopyWithImpl<$Res>
+class __$ReloadCopyWithImpl<$Res> extends _$PublicChatsEventCopyWithImpl<$Res>
     implements _$ReloadCopyWith<$Res> {
   __$ReloadCopyWithImpl(_Reload _value, $Res Function(_Reload) _then)
       : super(_value, (v) => _then(v as _Reload));
@@ -97,7 +97,7 @@ class _$_Reload implements _Reload {
 
   @override
   String toString() {
-    return 'PublicChatEvent.reload()';
+    return 'PublicChatsEvent.reload()';
   }
 
   @override
@@ -153,7 +153,7 @@ class _$_Reload implements _Reload {
   }
 }
 
-abstract class _Reload implements PublicChatEvent {
+abstract class _Reload implements PublicChatsEvent {
   const factory _Reload() = _$_Reload;
 }
 
@@ -166,7 +166,7 @@ abstract class _$LoadNextPageCopyWith<$Res> {
 
 /// @nodoc
 class __$LoadNextPageCopyWithImpl<$Res>
-    extends _$PublicChatEventCopyWithImpl<$Res>
+    extends _$PublicChatsEventCopyWithImpl<$Res>
     implements _$LoadNextPageCopyWith<$Res> {
   __$LoadNextPageCopyWithImpl(
       _LoadNextPage _value, $Res Function(_LoadNextPage) _then)
@@ -182,7 +182,7 @@ class _$_LoadNextPage implements _LoadNextPage {
 
   @override
   String toString() {
-    return 'PublicChatEvent.loadNextPage()';
+    return 'PublicChatsEvent.loadNextPage()';
   }
 
   @override
@@ -238,13 +238,13 @@ class _$_LoadNextPage implements _LoadNextPage {
   }
 }
 
-abstract class _LoadNextPage implements PublicChatEvent {
+abstract class _LoadNextPage implements PublicChatsEvent {
   const factory _LoadNextPage() = _$_LoadNextPage;
 }
 
 /// @nodoc
-class _$PublicChatStateTearOff {
-  const _$PublicChatStateTearOff();
+class _$PublicChatsStateTearOff {
+  const _$PublicChatsStateTearOff();
 
   _State call(List<Chat> chats) {
     return _State(
@@ -266,10 +266,10 @@ class _$PublicChatStateTearOff {
 }
 
 /// @nodoc
-const $PublicChatState = _$PublicChatStateTearOff();
+const $PublicChatsState = _$PublicChatsStateTearOff();
 
 /// @nodoc
-mixin _$PublicChatState {
+mixin _$PublicChatsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(List<Chat> chats) $default, {
@@ -303,20 +303,20 @@ mixin _$PublicChatState {
 }
 
 /// @nodoc
-abstract class $PublicChatStateCopyWith<$Res> {
-  factory $PublicChatStateCopyWith(
-          PublicChatState value, $Res Function(PublicChatState) then) =
-      _$PublicChatStateCopyWithImpl<$Res>;
+abstract class $PublicChatsStateCopyWith<$Res> {
+  factory $PublicChatsStateCopyWith(
+          PublicChatsState value, $Res Function(PublicChatsState) then) =
+      _$PublicChatsStateCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$PublicChatStateCopyWithImpl<$Res>
-    implements $PublicChatStateCopyWith<$Res> {
-  _$PublicChatStateCopyWithImpl(this._value, this._then);
+class _$PublicChatsStateCopyWithImpl<$Res>
+    implements $PublicChatsStateCopyWith<$Res> {
+  _$PublicChatsStateCopyWithImpl(this._value, this._then);
 
-  final PublicChatState _value;
+  final PublicChatsState _value;
   // ignore: unused_field
-  final $Res Function(PublicChatState) _then;
+  final $Res Function(PublicChatsState) _then;
 }
 
 /// @nodoc
@@ -327,7 +327,7 @@ abstract class _$StateCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$StateCopyWithImpl<$Res> extends _$PublicChatStateCopyWithImpl<$Res>
+class __$StateCopyWithImpl<$Res> extends _$PublicChatsStateCopyWithImpl<$Res>
     implements _$StateCopyWith<$Res> {
   __$StateCopyWithImpl(_State _value, $Res Function(_State) _then)
       : super(_value, (v) => _then(v as _State));
@@ -357,7 +357,7 @@ class _$_State implements _State {
 
   @override
   String toString() {
-    return 'PublicChatState(chats: $chats)';
+    return 'PublicChatsState(chats: $chats)';
   }
 
   @override
@@ -426,7 +426,7 @@ class _$_State implements _State {
   }
 }
 
-abstract class _State implements PublicChatState {
+abstract class _State implements PublicChatsState {
   const factory _State(List<Chat> chats) = _$_State;
 
   List<Chat> get chats => throw _privateConstructorUsedError;
@@ -444,7 +444,7 @@ abstract class _$InProgressCopyWith<$Res> {
 
 /// @nodoc
 class __$InProgressCopyWithImpl<$Res>
-    extends _$PublicChatStateCopyWithImpl<$Res>
+    extends _$PublicChatsStateCopyWithImpl<$Res>
     implements _$InProgressCopyWith<$Res> {
   __$InProgressCopyWithImpl(
       _InProgress _value, $Res Function(_InProgress) _then)
@@ -475,7 +475,7 @@ class _$_InProgress implements _InProgress {
 
   @override
   String toString() {
-    return 'PublicChatState.inProgress(chats: $chats)';
+    return 'PublicChatsState.inProgress(chats: $chats)';
   }
 
   @override
@@ -544,7 +544,7 @@ class _$_InProgress implements _InProgress {
   }
 }
 
-abstract class _InProgress implements PublicChatState {
+abstract class _InProgress implements PublicChatsState {
   const factory _InProgress(List<Chat> chats) = _$_InProgress;
 
   List<Chat> get chats => throw _privateConstructorUsedError;
@@ -563,7 +563,7 @@ abstract class _$ErrorCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ErrorCopyWithImpl<$Res> extends _$PublicChatStateCopyWithImpl<$Res>
+class __$ErrorCopyWithImpl<$Res> extends _$PublicChatsStateCopyWithImpl<$Res>
     implements _$ErrorCopyWith<$Res> {
   __$ErrorCopyWithImpl(_Error _value, $Res Function(_Error) _then)
       : super(_value, (v) => _then(v as _Error));
@@ -600,7 +600,7 @@ class _$_Error implements _Error {
 
   @override
   String toString() {
-    return 'PublicChatState.error(rejection: $rejection)';
+    return 'PublicChatsState.error(rejection: $rejection)';
   }
 
   @override
@@ -670,7 +670,7 @@ class _$_Error implements _Error {
   }
 }
 
-abstract class _Error implements PublicChatState {
+abstract class _Error implements PublicChatsState {
   const factory _Error(Rejection rejection) = _$_Error;
 
   Rejection get rejection => throw _privateConstructorUsedError;
