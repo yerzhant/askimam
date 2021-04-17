@@ -20,9 +20,10 @@ ApiResponse _$ApiResponseFromJson(Map<String, dynamic> json) {
 class _$ApiResponseTearOff {
   const _$ApiResponseTearOff();
 
-  _ApiResponse call(ApiResponseStatus status, {String? error}) {
+  _ApiResponse call(ApiResponseStatus status, {Object? data, String? error}) {
     return _ApiResponse(
       status,
+      data: data,
       error: error,
     );
   }
@@ -38,6 +39,7 @@ const $ApiResponse = _$ApiResponseTearOff();
 /// @nodoc
 mixin _$ApiResponse {
   ApiResponseStatus get status => throw _privateConstructorUsedError;
+  Object? get data => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +53,7 @@ abstract class $ApiResponseCopyWith<$Res> {
   factory $ApiResponseCopyWith(
           ApiResponse value, $Res Function(ApiResponse) then) =
       _$ApiResponseCopyWithImpl<$Res>;
-  $Res call({ApiResponseStatus status, String? error});
+  $Res call({ApiResponseStatus status, Object? data, String? error});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$ApiResponseCopyWithImpl<$Res> implements $ApiResponseCopyWith<$Res> {
   @override
   $Res call({
     Object? status = freezed,
+    Object? data = freezed,
     Object? error = freezed,
   }) {
     return _then(_value.copyWith(
@@ -72,6 +75,7 @@ class _$ApiResponseCopyWithImpl<$Res> implements $ApiResponseCopyWith<$Res> {
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as ApiResponseStatus,
+      data: data == freezed ? _value.data : data,
       error: error == freezed
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -87,7 +91,7 @@ abstract class _$ApiResponseCopyWith<$Res>
           _ApiResponse value, $Res Function(_ApiResponse) then) =
       __$ApiResponseCopyWithImpl<$Res>;
   @override
-  $Res call({ApiResponseStatus status, String? error});
+  $Res call({ApiResponseStatus status, Object? data, String? error});
 }
 
 /// @nodoc
@@ -103,6 +107,7 @@ class __$ApiResponseCopyWithImpl<$Res> extends _$ApiResponseCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = freezed,
+    Object? data = freezed,
     Object? error = freezed,
   }) {
     return _then(_ApiResponse(
@@ -110,6 +115,7 @@ class __$ApiResponseCopyWithImpl<$Res> extends _$ApiResponseCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as ApiResponseStatus,
+      data: data == freezed ? _value.data : data,
       error: error == freezed
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -121,8 +127,8 @@ class __$ApiResponseCopyWithImpl<$Res> extends _$ApiResponseCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_ApiResponse implements _ApiResponse {
-  _$_ApiResponse(this.status, {this.error});
+class _$_ApiResponse extends _ApiResponse {
+  const _$_ApiResponse(this.status, {this.data, this.error}) : super._();
 
   factory _$_ApiResponse.fromJson(Map<String, dynamic> json) =>
       _$_$_ApiResponseFromJson(json);
@@ -130,11 +136,13 @@ class _$_ApiResponse implements _ApiResponse {
   @override
   final ApiResponseStatus status;
   @override
+  final Object? data;
+  @override
   final String? error;
 
   @override
   String toString() {
-    return 'ApiResponse(status: $status, error: $error)';
+    return 'ApiResponse(status: $status, data: $data, error: $error)';
   }
 
   @override
@@ -143,6 +151,8 @@ class _$_ApiResponse implements _ApiResponse {
         (other is _ApiResponse &&
             (identical(other.status, status) ||
                 const DeepCollectionEquality().equals(other.status, status)) &&
+            (identical(other.data, data) ||
+                const DeepCollectionEquality().equals(other.data, data)) &&
             (identical(other.error, error) ||
                 const DeepCollectionEquality().equals(other.error, error)));
   }
@@ -151,6 +161,7 @@ class _$_ApiResponse implements _ApiResponse {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(status) ^
+      const DeepCollectionEquality().hash(data) ^
       const DeepCollectionEquality().hash(error);
 
   @JsonKey(ignore: true)
@@ -164,15 +175,18 @@ class _$_ApiResponse implements _ApiResponse {
   }
 }
 
-abstract class _ApiResponse implements ApiResponse {
-  factory _ApiResponse(ApiResponseStatus status, {String? error}) =
-      _$_ApiResponse;
+abstract class _ApiResponse extends ApiResponse {
+  const factory _ApiResponse(ApiResponseStatus status,
+      {Object? data, String? error}) = _$_ApiResponse;
+  const _ApiResponse._() : super._();
 
   factory _ApiResponse.fromJson(Map<String, dynamic> json) =
       _$_ApiResponse.fromJson;
 
   @override
   ApiResponseStatus get status => throw _privateConstructorUsedError;
+  @override
+  Object? get data => throw _privateConstructorUsedError;
   @override
   String? get error => throw _privateConstructorUsedError;
   @override

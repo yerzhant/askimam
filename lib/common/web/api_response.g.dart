@@ -9,6 +9,7 @@ part of 'api_response.dart';
 _$_ApiResponse _$_$_ApiResponseFromJson(Map<String, dynamic> json) {
   return _$_ApiResponse(
     _$enumDecode(_$ApiResponseStatusEnumMap, json['status']),
+    data: json['data'],
     error: json['error'] as String?,
   );
 }
@@ -16,6 +17,7 @@ _$_ApiResponse _$_$_ApiResponseFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$_$_ApiResponseToJson(_$_ApiResponse instance) =>
     <String, dynamic>{
       'status': _$ApiResponseStatusEnumMap[instance.status],
+      'data': instance.data,
       'error': instance.error,
     };
 

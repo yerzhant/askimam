@@ -1,6 +1,7 @@
 import 'package:askimam/common/domain/rejection.dart';
 import 'package:askimam/common/infra/http_api_client.dart';
 import 'package:askimam/common/web/api_response.dart';
+import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
@@ -26,12 +27,37 @@ void main() {
           throw Exception('x');
         }
 
+      case 'GET':
+        if (req.url.path == '/suffix') {
+          final json = ApiResponse.data([
+            Favorite(1, 1, 'Тема'),
+            Favorite(2, 2, 'Тема'),
+          ]).toJsonUtf8();
+          return Response.bytes(json, 200);
+        } else {
+          throw Exception('x');
+        }
+
       default:
         throw Exception('Unhandled method');
     }
   });
 
   final apiClient = HttpApiClient(httpClient, apiUrl, '123');
+
+  group('Get list', () {
+    test('should return a list', () async {
+      final result = await apiClient.getList<Favorite>('suffix');
+
+      expect(
+        result.getOrElse(() => []),
+        [
+          Favorite(1, 1, 'Тема'),
+          Favorite(2, 2, 'Тема'),
+        ],
+      );
+    });
+  });
 
   group('Delete', () {
     test('should return none', () async {
@@ -49,7 +75,7 @@ void main() {
     test('should return some nok', () async {
       final result = await apiClient.delete('suffix/3');
 
-      expect(result, some(Rejection('NOK: 500, boom!')));
+      expect(result, some(Rejection('Response: 500, boom!')));
     });
 
     test('should return some exception', () async {
