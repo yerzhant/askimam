@@ -25,7 +25,7 @@ void main() {
       when(apiClient.getList<Favorite>('favorites'))
           .thenAnswer((_) async => right(list));
 
-      final result = await repo.getMyFavorites();
+      final result = await repo.get();
 
       expect(result, right(list));
     });
@@ -34,7 +34,7 @@ void main() {
       when(apiClient.getList<Favorite>('favorites'))
           .thenAnswer((_) async => left(Rejection('error')));
 
-      final result = await repo.getMyFavorites();
+      final result = await repo.get();
 
       expect(result, left(Rejection('error')));
     });

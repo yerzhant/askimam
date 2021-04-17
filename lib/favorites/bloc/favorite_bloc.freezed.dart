@@ -24,6 +24,12 @@ class _$FavoriteEventTearOff {
     return const _Refresh();
   }
 
+  _Add add(Favorite favorite) {
+    return _Add(
+      favorite,
+    );
+  }
+
   _Delete delete(Favorite favorite) {
     return _Delete(
       favorite,
@@ -40,6 +46,7 @@ mixin _$FavoriteEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() refresh,
+    required TResult Function(Favorite favorite) add,
     required TResult Function(Favorite favorite) delete,
   }) =>
       throw _privateConstructorUsedError;
@@ -47,6 +54,7 @@ mixin _$FavoriteEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? refresh,
+    TResult Function(Favorite favorite)? add,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
   }) =>
@@ -55,6 +63,7 @@ mixin _$FavoriteEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_Show value) show,
     required TResult Function(_Refresh value) refresh,
+    required TResult Function(_Add value) add,
     required TResult Function(_Delete value) delete,
   }) =>
       throw _privateConstructorUsedError;
@@ -62,6 +71,7 @@ mixin _$FavoriteEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Show value)? show,
     TResult Function(_Refresh value)? refresh,
+    TResult Function(_Add value)? add,
     TResult Function(_Delete value)? delete,
     required TResult orElse(),
   }) =>
@@ -123,6 +133,7 @@ class _$_Show implements _Show {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() refresh,
+    required TResult Function(Favorite favorite) add,
     required TResult Function(Favorite favorite) delete,
   }) {
     return show();
@@ -133,6 +144,7 @@ class _$_Show implements _Show {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? refresh,
+    TResult Function(Favorite favorite)? add,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
   }) {
@@ -147,6 +159,7 @@ class _$_Show implements _Show {
   TResult map<TResult extends Object?>({
     required TResult Function(_Show value) show,
     required TResult Function(_Refresh value) refresh,
+    required TResult Function(_Add value) add,
     required TResult Function(_Delete value) delete,
   }) {
     return show(this);
@@ -157,6 +170,7 @@ class _$_Show implements _Show {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Show value)? show,
     TResult Function(_Refresh value)? refresh,
+    TResult Function(_Add value)? add,
     TResult Function(_Delete value)? delete,
     required TResult orElse(),
   }) {
@@ -209,6 +223,7 @@ class _$_Refresh implements _Refresh {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() refresh,
+    required TResult Function(Favorite favorite) add,
     required TResult Function(Favorite favorite) delete,
   }) {
     return refresh();
@@ -219,6 +234,7 @@ class _$_Refresh implements _Refresh {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? refresh,
+    TResult Function(Favorite favorite)? add,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
   }) {
@@ -233,6 +249,7 @@ class _$_Refresh implements _Refresh {
   TResult map<TResult extends Object?>({
     required TResult Function(_Show value) show,
     required TResult Function(_Refresh value) refresh,
+    required TResult Function(_Add value) add,
     required TResult Function(_Delete value) delete,
   }) {
     return refresh(this);
@@ -243,6 +260,7 @@ class _$_Refresh implements _Refresh {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Show value)? show,
     TResult Function(_Refresh value)? refresh,
+    TResult Function(_Add value)? add,
     TResult Function(_Delete value)? delete,
     required TResult orElse(),
   }) {
@@ -255,6 +273,135 @@ class _$_Refresh implements _Refresh {
 
 abstract class _Refresh implements FavoriteEvent {
   const factory _Refresh() = _$_Refresh;
+}
+
+/// @nodoc
+abstract class _$AddCopyWith<$Res> {
+  factory _$AddCopyWith(_Add value, $Res Function(_Add) then) =
+      __$AddCopyWithImpl<$Res>;
+  $Res call({Favorite favorite});
+
+  $FavoriteCopyWith<$Res> get favorite;
+}
+
+/// @nodoc
+class __$AddCopyWithImpl<$Res> extends _$FavoriteEventCopyWithImpl<$Res>
+    implements _$AddCopyWith<$Res> {
+  __$AddCopyWithImpl(_Add _value, $Res Function(_Add) _then)
+      : super(_value, (v) => _then(v as _Add));
+
+  @override
+  _Add get _value => super._value as _Add;
+
+  @override
+  $Res call({
+    Object? favorite = freezed,
+  }) {
+    return _then(_Add(
+      favorite == freezed
+          ? _value.favorite
+          : favorite // ignore: cast_nullable_to_non_nullable
+              as Favorite,
+    ));
+  }
+
+  @override
+  $FavoriteCopyWith<$Res> get favorite {
+    return $FavoriteCopyWith<$Res>(_value.favorite, (value) {
+      return _then(_value.copyWith(favorite: value));
+    });
+  }
+}
+
+/// @nodoc
+class _$_Add implements _Add {
+  const _$_Add(this.favorite);
+
+  @override
+  final Favorite favorite;
+
+  @override
+  String toString() {
+    return 'FavoriteEvent.add(favorite: $favorite)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _Add &&
+            (identical(other.favorite, favorite) ||
+                const DeepCollectionEquality()
+                    .equals(other.favorite, favorite)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(favorite);
+
+  @JsonKey(ignore: true)
+  @override
+  _$AddCopyWith<_Add> get copyWith =>
+      __$AddCopyWithImpl<_Add>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() show,
+    required TResult Function() refresh,
+    required TResult Function(Favorite favorite) add,
+    required TResult Function(Favorite favorite) delete,
+  }) {
+    return add(favorite);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? show,
+    TResult Function()? refresh,
+    TResult Function(Favorite favorite)? add,
+    TResult Function(Favorite favorite)? delete,
+    required TResult orElse(),
+  }) {
+    if (add != null) {
+      return add(favorite);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Show value) show,
+    required TResult Function(_Refresh value) refresh,
+    required TResult Function(_Add value) add,
+    required TResult Function(_Delete value) delete,
+  }) {
+    return add(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Show value)? show,
+    TResult Function(_Refresh value)? refresh,
+    TResult Function(_Add value)? add,
+    TResult Function(_Delete value)? delete,
+    required TResult orElse(),
+  }) {
+    if (add != null) {
+      return add(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Add implements FavoriteEvent {
+  const factory _Add(Favorite favorite) = _$_Add;
+
+  Favorite get favorite => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$AddCopyWith<_Add> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -330,6 +477,7 @@ class _$_Delete implements _Delete {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() refresh,
+    required TResult Function(Favorite favorite) add,
     required TResult Function(Favorite favorite) delete,
   }) {
     return delete(favorite);
@@ -340,6 +488,7 @@ class _$_Delete implements _Delete {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? refresh,
+    TResult Function(Favorite favorite)? add,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
   }) {
@@ -354,6 +503,7 @@ class _$_Delete implements _Delete {
   TResult map<TResult extends Object?>({
     required TResult Function(_Show value) show,
     required TResult Function(_Refresh value) refresh,
+    required TResult Function(_Add value) add,
     required TResult Function(_Delete value) delete,
   }) {
     return delete(this);
@@ -364,6 +514,7 @@ class _$_Delete implements _Delete {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Show value)? show,
     TResult Function(_Refresh value)? refresh,
+    TResult Function(_Add value)? add,
     TResult Function(_Delete value)? delete,
     required TResult orElse(),
   }) {
@@ -386,9 +537,9 @@ abstract class _Delete implements FavoriteEvent {
 class _$FavoriteStateTearOff {
   const _$FavoriteStateTearOff();
 
-  _State call(List<Favorite> myFavorites) {
+  _State call(List<Favorite> favorites) {
     return _State(
-      myFavorites,
+      favorites,
     );
   }
 
@@ -412,14 +563,14 @@ const $FavoriteState = _$FavoriteStateTearOff();
 mixin _$FavoriteState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<Favorite> myFavorites) $default, {
+    TResult Function(List<Favorite> favorites) $default, {
     required TResult Function(List<Favorite> favorites) inProgress,
     required TResult Function(Rejection rejection) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<Favorite> myFavorites)? $default, {
+    TResult Function(List<Favorite> favorites)? $default, {
     TResult Function(List<Favorite> favorites)? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),
@@ -463,7 +614,7 @@ class _$FavoriteStateCopyWithImpl<$Res>
 abstract class _$StateCopyWith<$Res> {
   factory _$StateCopyWith(_State value, $Res Function(_State) then) =
       __$StateCopyWithImpl<$Res>;
-  $Res call({List<Favorite> myFavorites});
+  $Res call({List<Favorite> favorites});
 }
 
 /// @nodoc
@@ -477,12 +628,12 @@ class __$StateCopyWithImpl<$Res> extends _$FavoriteStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? myFavorites = freezed,
+    Object? favorites = freezed,
   }) {
     return _then(_State(
-      myFavorites == freezed
-          ? _value.myFavorites
-          : myFavorites // ignore: cast_nullable_to_non_nullable
+      favorites == freezed
+          ? _value.favorites
+          : favorites // ignore: cast_nullable_to_non_nullable
               as List<Favorite>,
     ));
   }
@@ -490,28 +641,28 @@ class __$StateCopyWithImpl<$Res> extends _$FavoriteStateCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_State implements _State {
-  const _$_State(this.myFavorites);
+  const _$_State(this.favorites);
 
   @override
-  final List<Favorite> myFavorites;
+  final List<Favorite> favorites;
 
   @override
   String toString() {
-    return 'FavoriteState(myFavorites: $myFavorites)';
+    return 'FavoriteState(favorites: $favorites)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _State &&
-            (identical(other.myFavorites, myFavorites) ||
+            (identical(other.favorites, favorites) ||
                 const DeepCollectionEquality()
-                    .equals(other.myFavorites, myFavorites)));
+                    .equals(other.favorites, favorites)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(myFavorites);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(favorites);
 
   @JsonKey(ignore: true)
   @override
@@ -521,23 +672,23 @@ class _$_State implements _State {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<Favorite> myFavorites) $default, {
+    TResult Function(List<Favorite> favorites) $default, {
     required TResult Function(List<Favorite> favorites) inProgress,
     required TResult Function(Rejection rejection) error,
   }) {
-    return $default(myFavorites);
+    return $default(favorites);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<Favorite> myFavorites)? $default, {
+    TResult Function(List<Favorite> favorites)? $default, {
     TResult Function(List<Favorite> favorites)? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),
   }) {
     if ($default != null) {
-      return $default(myFavorites);
+      return $default(favorites);
     }
     return orElse();
   }
@@ -568,9 +719,9 @@ class _$_State implements _State {
 }
 
 abstract class _State implements FavoriteState {
-  const factory _State(List<Favorite> myFavorites) = _$_State;
+  const factory _State(List<Favorite> favorites) = _$_State;
 
-  List<Favorite> get myFavorites => throw _privateConstructorUsedError;
+  List<Favorite> get favorites => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$StateCopyWith<_State> get copyWith => throw _privateConstructorUsedError;
 }
@@ -639,7 +790,7 @@ class _$_InProgress implements _InProgress {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<Favorite> myFavorites) $default, {
+    TResult Function(List<Favorite> favorites) $default, {
     required TResult Function(List<Favorite> favorites) inProgress,
     required TResult Function(Rejection rejection) error,
   }) {
@@ -649,7 +800,7 @@ class _$_InProgress implements _InProgress {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<Favorite> myFavorites)? $default, {
+    TResult Function(List<Favorite> favorites)? $default, {
     TResult Function(List<Favorite> favorites)? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),
@@ -765,7 +916,7 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<Favorite> myFavorites) $default, {
+    TResult Function(List<Favorite> favorites) $default, {
     required TResult Function(List<Favorite> favorites) inProgress,
     required TResult Function(Rejection rejection) error,
   }) {
@@ -775,7 +926,7 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<Favorite> myFavorites)? $default, {
+    TResult Function(List<Favorite> favorites)? $default, {
     TResult Function(List<Favorite> favorites)? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),

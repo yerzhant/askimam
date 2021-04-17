@@ -27,11 +27,16 @@ class MockFavoriteRepository extends _i1.Mock
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Favorite>>> getMyFavorites() =>
-      (super.noSuchMethod(Invocation.method(#getMyFavorites, []),
+  _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Favorite>>> get() =>
+      (super.noSuchMethod(Invocation.method(#get, []),
               returnValue: Future.value(
                   _FakeEither<_i5.Rejection, List<_i6.Favorite>>()))
           as _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Favorite>>>);
+  @override
+  _i4.Future<_i2.Option<_i5.Rejection>> add(_i6.Favorite? favorite) =>
+      (super.noSuchMethod(Invocation.method(#add, [favorite]),
+              returnValue: Future.value(_FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
   @override
   _i4.Future<_i2.Option<_i5.Rejection>> delete(_i6.Favorite? favorite) =>
       (super.noSuchMethod(Invocation.method(#delete, [favorite]),

@@ -10,8 +10,14 @@ class HttpFavoriteRepository implements FavoriteRepository {
   const HttpFavoriteRepository(this._apiClient);
 
   @override
-  Future<Either<Rejection, List<Favorite>>> getMyFavorites() async {
+  Future<Either<Rejection, List<Favorite>>> get() async {
     return await _apiClient.getList<Favorite>('favorites');
+  }
+
+  @override
+  Future<Option<Rejection>> add(Favorite favorite) {
+    // TODO: implement add
+    throw UnimplementedError();
   }
 
   @override

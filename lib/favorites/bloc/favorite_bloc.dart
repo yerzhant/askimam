@@ -18,21 +18,22 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   @override
   Stream<FavoriteState> mapEventToState(FavoriteEvent event) => event.when(
         show: _show,
-        refresh: _mapRefreshToState,
-        delete: _mapDeleteToState,
+        refresh: _refresh,
+        add: _add,
+        delete: _delete,
       );
 
   Stream<FavoriteState> _show() async* {
     state.maybeWhen(
-      (myFavorites) => FavoriteState(myFavorites),
+      (favorites) => FavoriteState(favorites),
       orElse: () => add(FavoriteEvent.refresh()),
     );
   }
 
-  Stream<FavoriteState> _mapRefreshToState() async* {
+  Stream<FavoriteState> _refresh() async* {
     yield FavoriteState.inProgress([]);
 
-    final result = await _repo.getMyFavorites();
+    final result = await _repo.get();
 
     yield result.fold(
       (l) => FavoriteState.error(l),
@@ -40,23 +41,44 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     );
   }
 
-  Stream<FavoriteState> _mapDeleteToState(Favorite favorite) async* {
-    Stream<FavoriteState> delete(List<Favorite> myFavorites) async* {
-      yield FavoriteState.inProgress(myFavorites);
+  Stream<FavoriteState> _add(Favorite favorite) async* {
+    Stream<FavoriteState> add(List<Favorite> favorites) async* {
+      yield FavoriteState.inProgress(favorites);
+
+      final result = await _repo.add(favorite);
+
+      yield result.fold(
+        () => FavoriteState(favorites..insert(0, favorite)),
+        (a) => FavoriteState.error(a),
+      );
+    }
+
+    yield* state.when(
+      (favorites) => add(favorites),
+      inProgress: (favorites) => add(favorites),
+      error: (rejection) async* {
+        yield FavoriteState.error(rejection);
+      },
+    );
+  }
+
+  Stream<FavoriteState> _delete(Favorite favorite) async* {
+    Stream<FavoriteState> delete(List<Favorite> favorites) async* {
+      yield FavoriteState.inProgress(favorites);
 
       final result = await _repo.delete(favorite);
 
       yield result.fold(
         () => FavoriteState(
-          myFavorites.where((element) => element != favorite).toList(),
+          favorites.where((element) => element != favorite).toList(),
         ),
         (a) => FavoriteState.error(a),
       );
     }
 
     yield* state.when(
-      (myFavorites) => delete(myFavorites),
-      inProgress: (myFavorites) => delete(myFavorites),
+      (favorites) => delete(favorites),
+      inProgress: (favorites) => delete(favorites),
       error: (rejection) async* {
         yield FavoriteState.error(rejection);
       },
