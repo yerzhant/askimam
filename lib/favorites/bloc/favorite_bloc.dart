@@ -17,9 +17,17 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
 
   @override
   Stream<FavoriteState> mapEventToState(FavoriteEvent event) => event.when(
+        show: _show,
         refresh: _mapRefreshToState,
         delete: _mapDeleteToState,
       );
+
+  Stream<FavoriteState> _show() async* {
+    state.maybeWhen(
+      (myFavorites) => FavoriteState(myFavorites),
+      orElse: () => add(FavoriteEvent.refresh()),
+    );
+  }
 
   Stream<FavoriteState> _mapRefreshToState() async* {
     yield FavoriteState.inProgress([]);

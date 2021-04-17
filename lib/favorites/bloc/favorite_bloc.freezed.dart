@@ -16,6 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$FavoriteEventTearOff {
   const _$FavoriteEventTearOff();
 
+  _Show show() {
+    return const _Show();
+  }
+
   _Refresh refresh() {
     return const _Refresh();
   }
@@ -34,12 +38,14 @@ const $FavoriteEvent = _$FavoriteEventTearOff();
 mixin _$FavoriteEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() show,
     required TResult Function() refresh,
     required TResult Function(Favorite favorite) delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? show,
     TResult Function()? refresh,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
@@ -47,12 +53,14 @@ mixin _$FavoriteEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_Show value) show,
     required TResult Function(_Refresh value) refresh,
     required TResult Function(_Delete value) delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Show value)? show,
     TResult Function(_Refresh value)? refresh,
     TResult Function(_Delete value)? delete,
     required TResult orElse(),
@@ -75,6 +83,92 @@ class _$FavoriteEventCopyWithImpl<$Res>
   final FavoriteEvent _value;
   // ignore: unused_field
   final $Res Function(FavoriteEvent) _then;
+}
+
+/// @nodoc
+abstract class _$ShowCopyWith<$Res> {
+  factory _$ShowCopyWith(_Show value, $Res Function(_Show) then) =
+      __$ShowCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$ShowCopyWithImpl<$Res> extends _$FavoriteEventCopyWithImpl<$Res>
+    implements _$ShowCopyWith<$Res> {
+  __$ShowCopyWithImpl(_Show _value, $Res Function(_Show) _then)
+      : super(_value, (v) => _then(v as _Show));
+
+  @override
+  _Show get _value => super._value as _Show;
+}
+
+/// @nodoc
+class _$_Show implements _Show {
+  const _$_Show();
+
+  @override
+  String toString() {
+    return 'FavoriteEvent.show()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _Show);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() show,
+    required TResult Function() refresh,
+    required TResult Function(Favorite favorite) delete,
+  }) {
+    return show();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? show,
+    TResult Function()? refresh,
+    TResult Function(Favorite favorite)? delete,
+    required TResult orElse(),
+  }) {
+    if (show != null) {
+      return show();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Show value) show,
+    required TResult Function(_Refresh value) refresh,
+    required TResult Function(_Delete value) delete,
+  }) {
+    return show(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Show value)? show,
+    TResult Function(_Refresh value)? refresh,
+    TResult Function(_Delete value)? delete,
+    required TResult orElse(),
+  }) {
+    if (show != null) {
+      return show(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Show implements FavoriteEvent {
+  const factory _Show() = _$_Show;
 }
 
 /// @nodoc
@@ -113,6 +207,7 @@ class _$_Refresh implements _Refresh {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() show,
     required TResult Function() refresh,
     required TResult Function(Favorite favorite) delete,
   }) {
@@ -122,6 +217,7 @@ class _$_Refresh implements _Refresh {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? show,
     TResult Function()? refresh,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
@@ -135,6 +231,7 @@ class _$_Refresh implements _Refresh {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_Show value) show,
     required TResult Function(_Refresh value) refresh,
     required TResult Function(_Delete value) delete,
   }) {
@@ -144,6 +241,7 @@ class _$_Refresh implements _Refresh {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Show value)? show,
     TResult Function(_Refresh value)? refresh,
     TResult Function(_Delete value)? delete,
     required TResult orElse(),
@@ -230,6 +328,7 @@ class _$_Delete implements _Delete {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() show,
     required TResult Function() refresh,
     required TResult Function(Favorite favorite) delete,
   }) {
@@ -239,6 +338,7 @@ class _$_Delete implements _Delete {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? show,
     TResult Function()? refresh,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
@@ -252,6 +352,7 @@ class _$_Delete implements _Delete {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_Show value) show,
     required TResult Function(_Refresh value) refresh,
     required TResult Function(_Delete value) delete,
   }) {
@@ -261,6 +362,7 @@ class _$_Delete implements _Delete {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Show value)? show,
     TResult Function(_Refresh value)? refresh,
     TResult Function(_Delete value)? delete,
     required TResult orElse(),
