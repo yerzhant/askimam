@@ -9,16 +9,20 @@ import 'package:http/http.dart';
 class HttpApiClient implements ApiClient {
   final Client _client;
   final String _url;
+  final String _jwt;
 
-  const HttpApiClient(this._client, this._url);
+  const HttpApiClient(this._client, this._url, this._jwt);
 
   @override
   Future<Option<Rejection>> delete(String suffix) async {
     try {
-      final url = Uri.parse('$_url/$suffix');
-      final response = await _client.delete(url, headers: {
+      final headers = {
         HttpHeaders.acceptHeader: ContentType.json.value,
-      });
+        HttpHeaders.authorizationHeader: 'Bearer $_jwt',
+      };
+
+      final url = Uri.parse('$_url/$suffix');
+      final response = await _client.delete(url, headers: headers);
 
       if (response.statusCode == 200) {
         final apiResponse = response.decodeApiResponse();

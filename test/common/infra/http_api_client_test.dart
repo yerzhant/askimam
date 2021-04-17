@@ -12,14 +12,16 @@ void main() {
   final httpClient = MockClient((req) async {
     switch (req.method) {
       case 'DELETE':
-        if (req.url.path == '/suffix/1') {
+        if (req.headers['Authorization'] != 'Bearer 123') {
+          return Response('', 401);
+        } else if (req.url.path == '/suffix/1') {
           var json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
         } else if (req.url.path == '/suffix/2') {
           var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
           return Response.bytes(json, 200);
         } else if (req.url.path == '/suffix/3') {
-          return Response('', 401, reasonPhrase: 'boom!');
+          return Response('', 500, reasonPhrase: 'boom!');
         } else {
           throw Exception('x');
         }
@@ -29,7 +31,7 @@ void main() {
     }
   });
 
-  final apiClient = HttpApiClient(httpClient, apiUrl);
+  final apiClient = HttpApiClient(httpClient, apiUrl, '123');
 
   group('Delete', () {
     test('should return none', () async {
@@ -47,7 +49,7 @@ void main() {
     test('should return some nok', () async {
       final result = await apiClient.delete('suffix/3');
 
-      expect(result, some(Rejection('NOK: 401, boom!')));
+      expect(result, some(Rejection('NOK: 500, boom!')));
     });
 
     test('should return some exception', () async {
