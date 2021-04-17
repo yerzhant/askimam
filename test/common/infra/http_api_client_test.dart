@@ -13,7 +13,7 @@ void main() {
   final httpClient = MockClient((req) async {
     switch (req.method) {
       case 'DELETE':
-        if (req.headers['Authorization'] != 'Bearer 123') {
+        if (!_isAuthorized(req)) {
           return Response('', 401);
         } else if (req.url.path == '/suffix/1') {
           var json = ApiResponse.ok().toJsonString();
@@ -28,12 +28,23 @@ void main() {
         }
 
       case 'GET':
-        if (req.url.path == '/suffix') {
+        if (req.url.path == '/list') {
           final json = ApiResponse.data([
             Favorite(1, 1, 'Тема'),
             Favorite(2, 2, 'Тема'),
           ]).toJsonUtf8();
           return Response.bytes(json, 200);
+        } else if (req.url.path == '/auth-list' && _isAuthorized(req)) {
+          final json = ApiResponse.data([
+            Favorite(1, 1, 'Тема'),
+            Favorite(2, 2, 'Тема'),
+          ]).toJsonUtf8();
+          return Response.bytes(json, 200);
+        } else if (req.url.path == '/list-rejection') {
+          var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
+          return Response.bytes(json, 200);
+        } else if (req.url.path == '/list-nok') {
+          return Response('', 500, reasonPhrase: 'boom!');
         } else {
           throw Exception('x');
         }
@@ -43,11 +54,12 @@ void main() {
     }
   });
 
-  final apiClient = HttpApiClient(httpClient, apiUrl, '123');
+  final apiClient = HttpApiClient(httpClient, apiUrl, jwt: '123');
 
   group('Get list', () {
     test('should return a list', () async {
-      final result = await apiClient.getList<Favorite>('suffix');
+      final apiClient = HttpApiClient(httpClient, apiUrl);
+      final result = await apiClient.getList<Favorite>('list');
 
       expect(
         result.getOrElse(() => []),
@@ -56,6 +68,36 @@ void main() {
           Favorite(2, 2, 'Тема'),
         ],
       );
+    });
+
+    test('should return an auth list', () async {
+      final result = await apiClient.getList<Favorite>('auth-list');
+
+      expect(
+        result.getOrElse(() => []),
+        [
+          Favorite(1, 1, 'Тема'),
+          Favorite(2, 2, 'Тема'),
+        ],
+      );
+    });
+
+    test('should return a rejection', () async {
+      final result = await apiClient.getList<Favorite>('list-rejection');
+
+      expect(result, left(Rejection('Что-то пошло не так')));
+    });
+
+    test('should return a nok', () async {
+      final result = await apiClient.getList<Favorite>('list-nok');
+
+      expect(result, left(Rejection('Response: 500, boom!')));
+    });
+
+    test('should return an exception', () async {
+      final result = await apiClient.getList<Favorite>('list-x');
+
+      expect(result, left(Rejection('Exception: x')));
     });
   });
 
@@ -85,3 +127,5 @@ void main() {
     });
   });
 }
+
+bool _isAuthorized(Request req) => req.headers['Authorization'] == 'Bearer 123';

@@ -9,28 +9,28 @@ import 'package:http/http.dart';
 class HttpApiClient implements ApiClient {
   final Client _client;
   final String _url;
-  final String _jwt;
+  final String jwt;
 
-  const HttpApiClient(this._client, this._url, this._jwt);
+  const HttpApiClient(this._client, this._url, {this.jwt = ''});
 
   @override
   Future<Option<Rejection>> delete(String suffix) async {
     try {
-      final response = await _client.delete(
+      final httpResponse = await _client.delete(
         _constructUrl(suffix),
         headers: _getHeaders(),
       );
 
-      if (response.statusCode == 200) {
-        final apiResponse = response.decodeApiResponse();
+      if (httpResponse.statusCode == 200) {
+        final response = httpResponse.decodeApiResponse();
 
-        if (apiResponse.status == ApiResponseStatus.Ok) {
+        if (response.status == ApiResponseStatus.Ok) {
           return none();
         } else {
-          return some(apiResponse.asRejection());
+          return some(response.asRejection());
         }
       } else {
-        return some(response.asRejection());
+        return some(httpResponse.asRejection());
       }
     } on Exception catch (e) {
       return some(e.asRejection());
@@ -40,38 +40,32 @@ class HttpApiClient implements ApiClient {
   @override
   Future<Either<Rejection, List<T>>> getList<T>(String suffix) async {
     try {
-      final response = await _client.get(
+      final httpResponse = await _client.get(
         _constructUrl(suffix),
         headers: _getHeaders(),
       );
 
-      if (response.statusCode == 200) {
-        final apiResponse = response.decodeApiResponse();
+      if (httpResponse.statusCode == 200) {
+        final response = httpResponse.decodeApiResponse();
 
-        if (apiResponse.status == ApiResponseStatus.Ok) {
-          return right(apiResponse.list<T>());
-          // } else {
-          //   return some(apiResponse.asRejection());
+        if (response.status == ApiResponseStatus.Ok) {
+          return right(response.list<T>());
+        } else {
+          return left(response.asRejection());
         }
       } else {
-        // return some(
-        //   Rejection('NOK: ${response.statusCode}, ${response.reasonPhrase}'),
-        // );
+        return left(httpResponse.asRejection());
       }
-      return left(Rejection('reason'));
     } on Exception catch (e) {
       return left(e.asRejection());
     }
   }
 
-  Uri _constructUrl(String suffix) {
-    final url = Uri.parse('$_url/$suffix');
-    return url;
-  }
+  Uri _constructUrl(String suffix) => Uri.parse('$_url/$suffix');
 
   Map<String, String> _getHeaders() => {
         HttpHeaders.acceptHeader: ContentType.json.value,
-        if (_jwt.trim().isNotEmpty)
-          HttpHeaders.authorizationHeader: 'Bearer $_jwt',
+        if (jwt.trim().isNotEmpty)
+          HttpHeaders.authorizationHeader: 'Bearer $jwt',
       };
 }
