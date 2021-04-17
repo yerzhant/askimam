@@ -193,5 +193,43 @@ void main() {
       ],
     );
   });
+
+  group('Show tab', () {
+    blocTest(
+      'should load first page',
+      build: () {
+        when(repo.getPublic(0, 20)).thenAnswer(
+          (_) async => right([
+            Chat(1, 'subject', false),
+            Chat(2, 'subject', false),
+            Chat(3, 'subject', true),
+          ]),
+        );
+        return bloc;
+      },
+      act: (_) => bloc.add(PublicChatsEvent.show()),
+      expect: () => [
+        PublicChatsState.inProgress([]),
+        PublicChatsState([
+          Chat(1, 'subject', false),
+          Chat(2, 'subject', false),
+          Chat(3, 'subject', true),
+        ])
+      ],
+    );
+
+    blocTest(
+      'should not load a page',
+      build: () => bloc,
+      seed: () => PublicChatsState([
+        Chat(1, 'subject', false),
+        Chat(2, 'subject', false),
+        Chat(3, 'subject', true),
+      ]),
+      act: (_) => bloc.add(PublicChatsEvent.show()),
+      expect: () => [],
+    );
+  });
+
   // TODO: route to messages
 }

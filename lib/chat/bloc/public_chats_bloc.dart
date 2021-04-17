@@ -19,9 +19,19 @@ class PublicChatsBloc extends Bloc<PublicChatsEvent, PublicChatsState> {
   @override
   Stream<PublicChatsState> mapEventToState(PublicChatsEvent event) =>
       event.when(
+        show: _show,
         reload: _reload,
         loadNextPage: _loadNextPage,
       );
+
+  Stream<PublicChatsState> _show() async* {
+    state.maybeWhen(
+      (chats) async* {
+        yield PublicChatsState(chats);
+      },
+      orElse: () => add(PublicChatsEvent.reload()),
+    );
+  }
 
   Stream<PublicChatsState> _reload() async* {
     yield PublicChatsState.inProgress([]);

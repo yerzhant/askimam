@@ -16,6 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$PublicChatsEventTearOff {
   const _$PublicChatsEventTearOff();
 
+  _Show show() {
+    return const _Show();
+  }
+
   _Reload reload() {
     return const _Reload();
   }
@@ -32,12 +36,14 @@ const $PublicChatsEvent = _$PublicChatsEventTearOff();
 mixin _$PublicChatsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() show,
     required TResult Function() reload,
     required TResult Function() loadNextPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? show,
     TResult Function()? reload,
     TResult Function()? loadNextPage,
     required TResult orElse(),
@@ -45,12 +51,14 @@ mixin _$PublicChatsEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
     required TResult Function(_LoadNextPage value) loadNextPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
     TResult Function(_LoadNextPage value)? loadNextPage,
     required TResult orElse(),
@@ -73,6 +81,92 @@ class _$PublicChatsEventCopyWithImpl<$Res>
   final PublicChatsEvent _value;
   // ignore: unused_field
   final $Res Function(PublicChatsEvent) _then;
+}
+
+/// @nodoc
+abstract class _$ShowCopyWith<$Res> {
+  factory _$ShowCopyWith(_Show value, $Res Function(_Show) then) =
+      __$ShowCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$ShowCopyWithImpl<$Res> extends _$PublicChatsEventCopyWithImpl<$Res>
+    implements _$ShowCopyWith<$Res> {
+  __$ShowCopyWithImpl(_Show _value, $Res Function(_Show) _then)
+      : super(_value, (v) => _then(v as _Show));
+
+  @override
+  _Show get _value => super._value as _Show;
+}
+
+/// @nodoc
+class _$_Show implements _Show {
+  const _$_Show();
+
+  @override
+  String toString() {
+    return 'PublicChatsEvent.show()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _Show);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() show,
+    required TResult Function() reload,
+    required TResult Function() loadNextPage,
+  }) {
+    return show();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? show,
+    TResult Function()? reload,
+    TResult Function()? loadNextPage,
+    required TResult orElse(),
+  }) {
+    if (show != null) {
+      return show();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Show value) show,
+    required TResult Function(_Reload value) reload,
+    required TResult Function(_LoadNextPage value) loadNextPage,
+  }) {
+    return show(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Show value)? show,
+    TResult Function(_Reload value)? reload,
+    TResult Function(_LoadNextPage value)? loadNextPage,
+    required TResult orElse(),
+  }) {
+    if (show != null) {
+      return show(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Show implements PublicChatsEvent {
+  const factory _Show() = _$_Show;
 }
 
 /// @nodoc
@@ -111,6 +205,7 @@ class _$_Reload implements _Reload {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() show,
     required TResult Function() reload,
     required TResult Function() loadNextPage,
   }) {
@@ -120,6 +215,7 @@ class _$_Reload implements _Reload {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? show,
     TResult Function()? reload,
     TResult Function()? loadNextPage,
     required TResult orElse(),
@@ -133,6 +229,7 @@ class _$_Reload implements _Reload {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
     required TResult Function(_LoadNextPage value) loadNextPage,
   }) {
@@ -142,6 +239,7 @@ class _$_Reload implements _Reload {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
     TResult Function(_LoadNextPage value)? loadNextPage,
     required TResult orElse(),
@@ -196,6 +294,7 @@ class _$_LoadNextPage implements _LoadNextPage {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() show,
     required TResult Function() reload,
     required TResult Function() loadNextPage,
   }) {
@@ -205,6 +304,7 @@ class _$_LoadNextPage implements _LoadNextPage {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? show,
     TResult Function()? reload,
     TResult Function()? loadNextPage,
     required TResult orElse(),
@@ -218,6 +318,7 @@ class _$_LoadNextPage implements _LoadNextPage {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
     required TResult Function(_LoadNextPage value) loadNextPage,
   }) {
@@ -227,6 +328,7 @@ class _$_LoadNextPage implements _LoadNextPage {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
     TResult Function(_LoadNextPage value)? loadNextPage,
     required TResult orElse(),
