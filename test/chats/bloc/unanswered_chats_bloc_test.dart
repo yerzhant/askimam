@@ -244,6 +244,81 @@ void main() {
     );
   });
 
+  group('Delete a chat:', () {
+    blocTest(
+      'should delete it',
+      build: () {
+        when(repo.delete(Chat(1, 'subject', false)))
+            .thenAnswer((_) async => none());
+        return bloc;
+      },
+      seed: () => UnansweredChatsState([
+        Chat(1, 'subject', false),
+        Chat(2, 'subject', false),
+        Chat(3, 'subject', true),
+      ]),
+      act: (_) =>
+          bloc.add(UnansweredChatsEvent.delete(Chat(1, 'subject', false))),
+      expect: () => [
+        UnansweredChatsState.inProgress([
+          Chat(1, 'subject', false),
+          Chat(2, 'subject', false),
+          Chat(3, 'subject', true),
+        ]),
+        UnansweredChatsState([
+          Chat(2, 'subject', false),
+          Chat(3, 'subject', true),
+        ])
+      ],
+    );
+
+    blocTest(
+      'should not delete it',
+      build: () {
+        when(repo.delete(Chat(1, 'subject', false)))
+            .thenAnswer((_) async => some(Rejection('reason')));
+        return bloc;
+      },
+      seed: () => UnansweredChatsState([
+        Chat(1, 'subject', false),
+        Chat(2, 'subject', false),
+        Chat(3, 'subject', true),
+      ]),
+      act: (_) =>
+          bloc.add(UnansweredChatsEvent.delete(Chat(1, 'subject', false))),
+      expect: () => [
+        UnansweredChatsState.inProgress([
+          Chat(1, 'subject', false),
+          Chat(2, 'subject', false),
+          Chat(3, 'subject', true),
+        ]),
+        UnansweredChatsState.error(Rejection('reason')),
+      ],
+    );
+
+    blocTest(
+      'should happen nothing',
+      build: () => bloc,
+      seed: () => UnansweredChatsState.inProgress([
+        Chat(1, 'subject', false),
+        Chat(2, 'subject', false),
+        Chat(3, 'subject', true),
+      ]),
+      act: (_) =>
+          bloc.add(UnansweredChatsEvent.delete(Chat(1, 'subject', false))),
+      expect: () => [],
+    );
+
+    blocTest(
+      'should happen nothing either',
+      build: () => bloc,
+      seed: () => UnansweredChatsState.error(Rejection('reason')),
+      act: (_) =>
+          bloc.add(UnansweredChatsEvent.delete(Chat(1, 'subject', false))),
+      expect: () => [],
+    );
+  });
+
   group('Listen to favorites changes:', () {
     blocTest(
       'should set a flag',

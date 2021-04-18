@@ -36,6 +36,7 @@ class UnansweredChatsBloc
   Stream<UnansweredChatsState> mapEventToState(UnansweredChatsEvent event) =>
       event.when(
         show: _show,
+        delete: _delete,
         reload: _reload,
         loadNextPage: _loadNextPage,
         updateFavorites: _updateFavorites,
@@ -80,6 +81,25 @@ class UnansweredChatsBloc
       },
       error: (rejection) async* {
         yield UnansweredChatsState.error(rejection);
+      },
+    );
+  }
+
+  Stream<UnansweredChatsState> _delete(Chat chat) async* {
+    yield* state.maybeWhen(
+      (chats) async* {
+        yield UnansweredChatsState.inProgress(chats);
+
+        final result = await _repo.delete(chat);
+
+        yield result.fold(
+          () => UnansweredChatsState(
+              chats.where((c) => c.id != chat.id).toList()),
+          (a) => UnansweredChatsState.error(a),
+        );
+      },
+      orElse: () async* {
+        yield state;
       },
     );
   }

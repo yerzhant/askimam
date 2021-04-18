@@ -24,6 +24,12 @@ class _$UnansweredChatsEventTearOff {
     return const _Reload();
   }
 
+  _Delete delete(Chat chat) {
+    return _Delete(
+      chat,
+    );
+  }
+
   _LoadNextPage loadNextPage() {
     return const _LoadNextPage();
   }
@@ -44,6 +50,7 @@ mixin _$UnansweredChatsEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() reload,
+    required TResult Function(Chat chat) delete,
     required TResult Function() loadNextPage,
     required TResult Function(List<Favorite> favorites) updateFavorites,
   }) =>
@@ -52,6 +59,7 @@ mixin _$UnansweredChatsEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? reload,
+    TResult Function(Chat chat)? delete,
     TResult Function()? loadNextPage,
     TResult Function(List<Favorite> favorites)? updateFavorites,
     required TResult orElse(),
@@ -61,6 +69,7 @@ mixin _$UnansweredChatsEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
+    required TResult Function(_Delete value) delete,
     required TResult Function(_LoadNextPage value) loadNextPage,
     required TResult Function(_UpdateFavorites value) updateFavorites,
   }) =>
@@ -69,6 +78,7 @@ mixin _$UnansweredChatsEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
+    TResult Function(_Delete value)? delete,
     TResult Function(_LoadNextPage value)? loadNextPage,
     TResult Function(_UpdateFavorites value)? updateFavorites,
     required TResult orElse(),
@@ -131,6 +141,7 @@ class _$_Show implements _Show {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() reload,
+    required TResult Function(Chat chat) delete,
     required TResult Function() loadNextPage,
     required TResult Function(List<Favorite> favorites) updateFavorites,
   }) {
@@ -142,6 +153,7 @@ class _$_Show implements _Show {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? reload,
+    TResult Function(Chat chat)? delete,
     TResult Function()? loadNextPage,
     TResult Function(List<Favorite> favorites)? updateFavorites,
     required TResult orElse(),
@@ -157,6 +169,7 @@ class _$_Show implements _Show {
   TResult map<TResult extends Object?>({
     required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
+    required TResult Function(_Delete value) delete,
     required TResult Function(_LoadNextPage value) loadNextPage,
     required TResult Function(_UpdateFavorites value) updateFavorites,
   }) {
@@ -168,6 +181,7 @@ class _$_Show implements _Show {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
+    TResult Function(_Delete value)? delete,
     TResult Function(_LoadNextPage value)? loadNextPage,
     TResult Function(_UpdateFavorites value)? updateFavorites,
     required TResult orElse(),
@@ -222,6 +236,7 @@ class _$_Reload implements _Reload {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() reload,
+    required TResult Function(Chat chat) delete,
     required TResult Function() loadNextPage,
     required TResult Function(List<Favorite> favorites) updateFavorites,
   }) {
@@ -233,6 +248,7 @@ class _$_Reload implements _Reload {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? reload,
+    TResult Function(Chat chat)? delete,
     TResult Function()? loadNextPage,
     TResult Function(List<Favorite> favorites)? updateFavorites,
     required TResult orElse(),
@@ -248,6 +264,7 @@ class _$_Reload implements _Reload {
   TResult map<TResult extends Object?>({
     required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
+    required TResult Function(_Delete value) delete,
     required TResult Function(_LoadNextPage value) loadNextPage,
     required TResult Function(_UpdateFavorites value) updateFavorites,
   }) {
@@ -259,6 +276,7 @@ class _$_Reload implements _Reload {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
+    TResult Function(_Delete value)? delete,
     TResult Function(_LoadNextPage value)? loadNextPage,
     TResult Function(_UpdateFavorites value)? updateFavorites,
     required TResult orElse(),
@@ -272,6 +290,139 @@ class _$_Reload implements _Reload {
 
 abstract class _Reload implements UnansweredChatsEvent {
   const factory _Reload() = _$_Reload;
+}
+
+/// @nodoc
+abstract class _$DeleteCopyWith<$Res> {
+  factory _$DeleteCopyWith(_Delete value, $Res Function(_Delete) then) =
+      __$DeleteCopyWithImpl<$Res>;
+  $Res call({Chat chat});
+
+  $ChatCopyWith<$Res> get chat;
+}
+
+/// @nodoc
+class __$DeleteCopyWithImpl<$Res>
+    extends _$UnansweredChatsEventCopyWithImpl<$Res>
+    implements _$DeleteCopyWith<$Res> {
+  __$DeleteCopyWithImpl(_Delete _value, $Res Function(_Delete) _then)
+      : super(_value, (v) => _then(v as _Delete));
+
+  @override
+  _Delete get _value => super._value as _Delete;
+
+  @override
+  $Res call({
+    Object? chat = freezed,
+  }) {
+    return _then(_Delete(
+      chat == freezed
+          ? _value.chat
+          : chat // ignore: cast_nullable_to_non_nullable
+              as Chat,
+    ));
+  }
+
+  @override
+  $ChatCopyWith<$Res> get chat {
+    return $ChatCopyWith<$Res>(_value.chat, (value) {
+      return _then(_value.copyWith(chat: value));
+    });
+  }
+}
+
+/// @nodoc
+class _$_Delete implements _Delete {
+  const _$_Delete(this.chat);
+
+  @override
+  final Chat chat;
+
+  @override
+  String toString() {
+    return 'UnansweredChatsEvent.delete(chat: $chat)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _Delete &&
+            (identical(other.chat, chat) ||
+                const DeepCollectionEquality().equals(other.chat, chat)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(chat);
+
+  @JsonKey(ignore: true)
+  @override
+  _$DeleteCopyWith<_Delete> get copyWith =>
+      __$DeleteCopyWithImpl<_Delete>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() show,
+    required TResult Function() reload,
+    required TResult Function(Chat chat) delete,
+    required TResult Function() loadNextPage,
+    required TResult Function(List<Favorite> favorites) updateFavorites,
+  }) {
+    return delete(chat);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? show,
+    TResult Function()? reload,
+    TResult Function(Chat chat)? delete,
+    TResult Function()? loadNextPage,
+    TResult Function(List<Favorite> favorites)? updateFavorites,
+    required TResult orElse(),
+  }) {
+    if (delete != null) {
+      return delete(chat);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Show value) show,
+    required TResult Function(_Reload value) reload,
+    required TResult Function(_Delete value) delete,
+    required TResult Function(_LoadNextPage value) loadNextPage,
+    required TResult Function(_UpdateFavorites value) updateFavorites,
+  }) {
+    return delete(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Show value)? show,
+    TResult Function(_Reload value)? reload,
+    TResult Function(_Delete value)? delete,
+    TResult Function(_LoadNextPage value)? loadNextPage,
+    TResult Function(_UpdateFavorites value)? updateFavorites,
+    required TResult orElse(),
+  }) {
+    if (delete != null) {
+      return delete(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Delete implements UnansweredChatsEvent {
+  const factory _Delete(Chat chat) = _$_Delete;
+
+  Chat get chat => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$DeleteCopyWith<_Delete> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -315,6 +466,7 @@ class _$_LoadNextPage implements _LoadNextPage {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() reload,
+    required TResult Function(Chat chat) delete,
     required TResult Function() loadNextPage,
     required TResult Function(List<Favorite> favorites) updateFavorites,
   }) {
@@ -326,6 +478,7 @@ class _$_LoadNextPage implements _LoadNextPage {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? reload,
+    TResult Function(Chat chat)? delete,
     TResult Function()? loadNextPage,
     TResult Function(List<Favorite> favorites)? updateFavorites,
     required TResult orElse(),
@@ -341,6 +494,7 @@ class _$_LoadNextPage implements _LoadNextPage {
   TResult map<TResult extends Object?>({
     required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
+    required TResult Function(_Delete value) delete,
     required TResult Function(_LoadNextPage value) loadNextPage,
     required TResult Function(_UpdateFavorites value) updateFavorites,
   }) {
@@ -352,6 +506,7 @@ class _$_LoadNextPage implements _LoadNextPage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
+    TResult Function(_Delete value)? delete,
     TResult Function(_LoadNextPage value)? loadNextPage,
     TResult Function(_UpdateFavorites value)? updateFavorites,
     required TResult orElse(),
@@ -434,6 +589,7 @@ class _$_UpdateFavorites implements _UpdateFavorites {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() reload,
+    required TResult Function(Chat chat) delete,
     required TResult Function() loadNextPage,
     required TResult Function(List<Favorite> favorites) updateFavorites,
   }) {
@@ -445,6 +601,7 @@ class _$_UpdateFavorites implements _UpdateFavorites {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? reload,
+    TResult Function(Chat chat)? delete,
     TResult Function()? loadNextPage,
     TResult Function(List<Favorite> favorites)? updateFavorites,
     required TResult orElse(),
@@ -460,6 +617,7 @@ class _$_UpdateFavorites implements _UpdateFavorites {
   TResult map<TResult extends Object?>({
     required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
+    required TResult Function(_Delete value) delete,
     required TResult Function(_LoadNextPage value) loadNextPage,
     required TResult Function(_UpdateFavorites value) updateFavorites,
   }) {
@@ -471,6 +629,7 @@ class _$_UpdateFavorites implements _UpdateFavorites {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
+    TResult Function(_Delete value)? delete,
     TResult Function(_LoadNextPage value)? loadNextPage,
     TResult Function(_UpdateFavorites value)? updateFavorites,
     required TResult orElse(),
