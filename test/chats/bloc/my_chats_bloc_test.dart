@@ -244,6 +244,62 @@ void main() {
     );
   });
 
+  group('Add a chat:', () {
+    blocTest(
+      'should add it',
+      build: () {
+        when(repo.add(ChatType.Public, 'subject', 'text'))
+            .thenAnswer((_) async => none());
+        when(repo.getMy(0, 20)).thenAnswer((_) async => right([
+              Chat(4, 'subject', false),
+              Chat(3, 'subject', true),
+              Chat(2, 'subject', false),
+            ]));
+        return bloc;
+      },
+      seed: () => MyChatsState([
+        Chat(3, 'subject', true),
+        Chat(2, 'subject', false),
+      ]),
+      act: (_) =>
+          bloc.add(MyChatsEvent.add(ChatType.Public, 'subject', 'text')),
+      expect: () => [
+        MyChatsState.inProgress([
+          Chat(3, 'subject', true),
+          Chat(2, 'subject', false),
+        ]),
+        MyChatsState.inProgress([]),
+        MyChatsState([
+          Chat(4, 'subject', false),
+          Chat(3, 'subject', true),
+          Chat(2, 'subject', false),
+        ]),
+      ],
+    );
+
+    blocTest(
+      'should not add it',
+      build: () {
+        when(repo.add(ChatType.Public, 'subject', 'text'))
+            .thenAnswer((_) async => some(Rejection('reason')));
+        return bloc;
+      },
+      seed: () => MyChatsState([
+        Chat(3, 'subject', true),
+        Chat(2, 'subject', false),
+      ]),
+      act: (_) =>
+          bloc.add(MyChatsEvent.add(ChatType.Public, 'subject', 'text')),
+      expect: () => [
+        MyChatsState.inProgress([
+          Chat(3, 'subject', true),
+          Chat(2, 'subject', false),
+        ]),
+        MyChatsState.error(Rejection('reason')),
+      ],
+    );
+  });
+
   group('Delete a chat:', () {
     blocTest(
       'should delete it',

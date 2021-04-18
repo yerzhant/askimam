@@ -13,3 +13,5 @@ abstract class Chat with _$Chat {
 
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
 }
+
+enum ChatType { Public, Private }

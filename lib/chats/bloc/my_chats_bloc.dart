@@ -3,15 +3,14 @@ import 'dart:async';
 import 'package:askimam/chat/domain/chat.dart';
 import 'package:askimam/chat/domain/chat_repository.dart';
 import 'package:askimam/common/domain/rejection.dart';
-import 'package:askimam/common/utils.dart';
 import 'package:askimam/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'my_chats_bloc.freezed.dart';
 part 'my_chats_event.dart';
 part 'my_chats_state.dart';
-part 'my_chats_bloc.freezed.dart';
 
 class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
   final ChatRepository _repo;
@@ -34,6 +33,7 @@ class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
 
   @override
   Stream<MyChatsState> mapEventToState(MyChatsEvent event) => event.when(
+        add: _add,
         show: _show,
         delete: _delete,
         reload: _reload,
@@ -73,13 +73,36 @@ class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
       );
     }
 
-    yield* state.when(
+    yield* state.maybeWhen(
       (chats) => load(chats),
-      inProgress: (chats) async* {
-        yield MyChatsState.inProgress(chats);
+      orElse: () async* {
+        yield state;
       },
-      error: (rejection) async* {
-        yield MyChatsState.error(rejection);
+    );
+  }
+
+  Stream<MyChatsState> _add(
+    ChatType type,
+    String? subject,
+    String text,
+  ) async* {
+    yield* state.maybeWhen(
+      (chats) async* {
+        yield MyChatsState.inProgress(chats);
+
+        final result = await _repo.add(type, subject, text);
+
+        yield* result.fold(
+          () async* {
+            add(MyChatsEvent.reload());
+          },
+          (a) async* {
+            yield MyChatsState.error(a);
+          },
+        );
+      },
+      orElse: () async* {
+        yield state;
       },
     );
   }

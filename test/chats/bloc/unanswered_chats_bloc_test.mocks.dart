@@ -47,6 +47,12 @@ class MockChatRepository extends _i1.Mock implements _i3.ChatRepository {
                   Future.value(_FakeEither<_i5.Rejection, List<_i6.Chat>>()))
           as _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>>);
   @override
+  _i4.Future<_i2.Option<_i5.Rejection>> add(
+          _i6.ChatType? type, String? subject, String? text) =>
+      (super.noSuchMethod(Invocation.method(#add, [type, subject, text]),
+              returnValue: Future.value(_FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
+  @override
   _i4.Future<_i2.Option<_i5.Rejection>> delete(_i6.Chat? chat) =>
       (super.noSuchMethod(Invocation.method(#delete, [chat]),
               returnValue: Future.value(_FakeOption<_i5.Rejection>()))
