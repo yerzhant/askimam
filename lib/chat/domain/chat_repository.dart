@@ -6,4 +6,5 @@ abstract class ChatRepository {
   Future<Either<Rejection, List<Chat>>> getPublic(int offset, int pageSize);
   Future<Either<Rejection, List<Chat>>> getMy(int offset, int pageSize);
   Future<Either<Rejection, List<Chat>>> getUnanswered(int offset, int pageSize);
+  Future<Option<Rejection>> delete(Chat chat);
 }

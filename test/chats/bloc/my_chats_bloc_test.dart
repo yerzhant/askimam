@@ -244,6 +244,77 @@ void main() {
     );
   });
 
+  group('Delete a chat:', () {
+    blocTest(
+      'should delete it',
+      build: () {
+        when(repo.delete(Chat(1, 'subject', false)))
+            .thenAnswer((_) async => none());
+        return bloc;
+      },
+      seed: () => MyChatsState([
+        Chat(1, 'subject', false),
+        Chat(2, 'subject', false),
+        Chat(3, 'subject', true),
+      ]),
+      act: (_) => bloc.add(MyChatsEvent.delete(Chat(1, 'subject', false))),
+      expect: () => [
+        MyChatsState.inProgress([
+          Chat(1, 'subject', false),
+          Chat(2, 'subject', false),
+          Chat(3, 'subject', true),
+        ]),
+        MyChatsState([
+          Chat(2, 'subject', false),
+          Chat(3, 'subject', true),
+        ])
+      ],
+    );
+
+    blocTest(
+      'should not delete it',
+      build: () {
+        when(repo.delete(Chat(1, 'subject', false)))
+            .thenAnswer((_) async => some(Rejection('reason')));
+        return bloc;
+      },
+      seed: () => MyChatsState([
+        Chat(1, 'subject', false),
+        Chat(2, 'subject', false),
+        Chat(3, 'subject', true),
+      ]),
+      act: (_) => bloc.add(MyChatsEvent.delete(Chat(1, 'subject', false))),
+      expect: () => [
+        MyChatsState.inProgress([
+          Chat(1, 'subject', false),
+          Chat(2, 'subject', false),
+          Chat(3, 'subject', true),
+        ]),
+        MyChatsState.error(Rejection('reason')),
+      ],
+    );
+
+    blocTest(
+      'should happen nothing',
+      build: () => bloc,
+      seed: () => MyChatsState.inProgress([
+        Chat(1, 'subject', false),
+        Chat(2, 'subject', false),
+        Chat(3, 'subject', true),
+      ]),
+      act: (_) => bloc.add(MyChatsEvent.delete(Chat(1, 'subject', false))),
+      expect: () => [],
+    );
+
+    blocTest(
+      'should happen nothing either',
+      build: () => bloc,
+      seed: () => MyChatsState.error(Rejection('reason')),
+      act: (_) => bloc.add(MyChatsEvent.delete(Chat(1, 'subject', false))),
+      expect: () => [],
+    );
+  });
+
   group('Listen to favorites changes:', () {
     blocTest(
       'should set a flag',

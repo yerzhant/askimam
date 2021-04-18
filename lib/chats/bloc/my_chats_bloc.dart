@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:askimam/chat/domain/chat.dart';
 import 'package:askimam/chat/domain/chat_repository.dart';
 import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/common/utils.dart';
 import 'package:askimam/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:bloc/bloc.dart';
@@ -34,6 +35,7 @@ class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
   @override
   Stream<MyChatsState> mapEventToState(MyChatsEvent event) => event.when(
         show: _show,
+        delete: _delete,
         reload: _reload,
         loadNextPage: _loadNextPage,
         updateFavorites: _updateFavorites,
@@ -78,6 +80,24 @@ class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
       },
       error: (rejection) async* {
         yield MyChatsState.error(rejection);
+      },
+    );
+  }
+
+  Stream<MyChatsState> _delete(Chat chat) async* {
+    yield* state.maybeWhen(
+      (chats) async* {
+        yield MyChatsState.inProgress(chats);
+
+        final result = await _repo.delete(chat);
+
+        yield result.fold(
+          () => MyChatsState(chats.where((c) => c.id != chat.id).toList()),
+          (a) => MyChatsState.error(a),
+        );
+      },
+      orElse: () async* {
+        yield state;
       },
     );
   }
