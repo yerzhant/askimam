@@ -1,10 +1,11 @@
+import 'package:askimam/common/domain/model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'authentication.freezed.dart';
 part 'authentication.g.dart';
 
 @freezed
-abstract class Authentication with _$Authentication {
+abstract class Authentication with _$Authentication, Model {
   factory Authentication(
     String jwt,
     UserType userType,

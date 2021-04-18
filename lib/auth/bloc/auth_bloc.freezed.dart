@@ -383,10 +383,6 @@ abstract class _Login implements AuthEvent {
 class _$AuthStateTearOff {
   const _$AuthStateTearOff();
 
-  _Unauthenticated unauthenticated() {
-    return const _Unauthenticated();
-  }
-
   _InProgress inProgress() {
     return const _InProgress();
   }
@@ -395,6 +391,10 @@ class _$AuthStateTearOff {
     return _Error(
       rejection,
     );
+  }
+
+  _Unauthenticated unauthenticated() {
+    return const _Unauthenticated();
   }
 
   _Authenticated authenticated(Authentication authentication) {
@@ -411,34 +411,34 @@ const $AuthState = _$AuthStateTearOff();
 mixin _$AuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() unauthenticated,
     required TResult Function() inProgress,
     required TResult Function(Rejection rejection) error,
+    required TResult Function() unauthenticated,
     required TResult Function(Authentication authentication) authenticated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? unauthenticated,
     TResult Function()? inProgress,
     TResult Function(Rejection rejection)? error,
+    TResult Function()? unauthenticated,
     TResult Function(Authentication authentication)? authenticated,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Unauthenticated value) unauthenticated,
     required TResult Function(_InProgress value) inProgress,
     required TResult Function(_Error value) error,
+    required TResult Function(_Unauthenticated value) unauthenticated,
     required TResult Function(_Authenticated value) authenticated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Unauthenticated value)? unauthenticated,
     TResult Function(_InProgress value)? inProgress,
     TResult Function(_Error value)? error,
+    TResult Function(_Unauthenticated value)? unauthenticated,
     TResult Function(_Authenticated value)? authenticated,
     required TResult orElse(),
   }) =>
@@ -458,98 +458,6 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
   final AuthState _value;
   // ignore: unused_field
   final $Res Function(AuthState) _then;
-}
-
-/// @nodoc
-abstract class _$UnauthenticatedCopyWith<$Res> {
-  factory _$UnauthenticatedCopyWith(
-          _Unauthenticated value, $Res Function(_Unauthenticated) then) =
-      __$UnauthenticatedCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$UnauthenticatedCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
-    implements _$UnauthenticatedCopyWith<$Res> {
-  __$UnauthenticatedCopyWithImpl(
-      _Unauthenticated _value, $Res Function(_Unauthenticated) _then)
-      : super(_value, (v) => _then(v as _Unauthenticated));
-
-  @override
-  _Unauthenticated get _value => super._value as _Unauthenticated;
-}
-
-/// @nodoc
-class _$_Unauthenticated implements _Unauthenticated {
-  const _$_Unauthenticated();
-
-  @override
-  String toString() {
-    return 'AuthState.unauthenticated()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _Unauthenticated);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() unauthenticated,
-    required TResult Function() inProgress,
-    required TResult Function(Rejection rejection) error,
-    required TResult Function(Authentication authentication) authenticated,
-  }) {
-    return unauthenticated();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? unauthenticated,
-    TResult Function()? inProgress,
-    TResult Function(Rejection rejection)? error,
-    TResult Function(Authentication authentication)? authenticated,
-    required TResult orElse(),
-  }) {
-    if (unauthenticated != null) {
-      return unauthenticated();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Unauthenticated value) unauthenticated,
-    required TResult Function(_InProgress value) inProgress,
-    required TResult Function(_Error value) error,
-    required TResult Function(_Authenticated value) authenticated,
-  }) {
-    return unauthenticated(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Unauthenticated value)? unauthenticated,
-    TResult Function(_InProgress value)? inProgress,
-    TResult Function(_Error value)? error,
-    TResult Function(_Authenticated value)? authenticated,
-    required TResult orElse(),
-  }) {
-    if (unauthenticated != null) {
-      return unauthenticated(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Unauthenticated implements AuthState {
-  const factory _Unauthenticated() = _$_Unauthenticated;
 }
 
 /// @nodoc
@@ -590,9 +498,9 @@ class _$_InProgress implements _InProgress {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() unauthenticated,
     required TResult Function() inProgress,
     required TResult Function(Rejection rejection) error,
+    required TResult Function() unauthenticated,
     required TResult Function(Authentication authentication) authenticated,
   }) {
     return inProgress();
@@ -601,9 +509,9 @@ class _$_InProgress implements _InProgress {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? unauthenticated,
     TResult Function()? inProgress,
     TResult Function(Rejection rejection)? error,
+    TResult Function()? unauthenticated,
     TResult Function(Authentication authentication)? authenticated,
     required TResult orElse(),
   }) {
@@ -616,9 +524,9 @@ class _$_InProgress implements _InProgress {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Unauthenticated value) unauthenticated,
     required TResult Function(_InProgress value) inProgress,
     required TResult Function(_Error value) error,
+    required TResult Function(_Unauthenticated value) unauthenticated,
     required TResult Function(_Authenticated value) authenticated,
   }) {
     return inProgress(this);
@@ -627,9 +535,9 @@ class _$_InProgress implements _InProgress {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Unauthenticated value)? unauthenticated,
     TResult Function(_InProgress value)? inProgress,
     TResult Function(_Error value)? error,
+    TResult Function(_Unauthenticated value)? unauthenticated,
     TResult Function(_Authenticated value)? authenticated,
     required TResult orElse(),
   }) {
@@ -715,9 +623,9 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() unauthenticated,
     required TResult Function() inProgress,
     required TResult Function(Rejection rejection) error,
+    required TResult Function() unauthenticated,
     required TResult Function(Authentication authentication) authenticated,
   }) {
     return error(rejection);
@@ -726,9 +634,9 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? unauthenticated,
     TResult Function()? inProgress,
     TResult Function(Rejection rejection)? error,
+    TResult Function()? unauthenticated,
     TResult Function(Authentication authentication)? authenticated,
     required TResult orElse(),
   }) {
@@ -741,9 +649,9 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Unauthenticated value) unauthenticated,
     required TResult Function(_InProgress value) inProgress,
     required TResult Function(_Error value) error,
+    required TResult Function(_Unauthenticated value) unauthenticated,
     required TResult Function(_Authenticated value) authenticated,
   }) {
     return error(this);
@@ -752,9 +660,9 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Unauthenticated value)? unauthenticated,
     TResult Function(_InProgress value)? inProgress,
     TResult Function(_Error value)? error,
+    TResult Function(_Unauthenticated value)? unauthenticated,
     TResult Function(_Authenticated value)? authenticated,
     required TResult orElse(),
   }) {
@@ -771,6 +679,98 @@ abstract class _Error implements AuthState {
   Rejection get rejection => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$ErrorCopyWith<_Error> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$UnauthenticatedCopyWith<$Res> {
+  factory _$UnauthenticatedCopyWith(
+          _Unauthenticated value, $Res Function(_Unauthenticated) then) =
+      __$UnauthenticatedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$UnauthenticatedCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
+    implements _$UnauthenticatedCopyWith<$Res> {
+  __$UnauthenticatedCopyWithImpl(
+      _Unauthenticated _value, $Res Function(_Unauthenticated) _then)
+      : super(_value, (v) => _then(v as _Unauthenticated));
+
+  @override
+  _Unauthenticated get _value => super._value as _Unauthenticated;
+}
+
+/// @nodoc
+class _$_Unauthenticated implements _Unauthenticated {
+  const _$_Unauthenticated();
+
+  @override
+  String toString() {
+    return 'AuthState.unauthenticated()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _Unauthenticated);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() inProgress,
+    required TResult Function(Rejection rejection) error,
+    required TResult Function() unauthenticated,
+    required TResult Function(Authentication authentication) authenticated,
+  }) {
+    return unauthenticated();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? inProgress,
+    TResult Function(Rejection rejection)? error,
+    TResult Function()? unauthenticated,
+    TResult Function(Authentication authentication)? authenticated,
+    required TResult orElse(),
+  }) {
+    if (unauthenticated != null) {
+      return unauthenticated();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_InProgress value) inProgress,
+    required TResult Function(_Error value) error,
+    required TResult Function(_Unauthenticated value) unauthenticated,
+    required TResult Function(_Authenticated value) authenticated,
+  }) {
+    return unauthenticated(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_InProgress value)? inProgress,
+    TResult Function(_Error value)? error,
+    TResult Function(_Unauthenticated value)? unauthenticated,
+    TResult Function(_Authenticated value)? authenticated,
+    required TResult orElse(),
+  }) {
+    if (unauthenticated != null) {
+      return unauthenticated(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Unauthenticated implements AuthState {
+  const factory _Unauthenticated() = _$_Unauthenticated;
 }
 
 /// @nodoc
@@ -847,9 +847,9 @@ class _$_Authenticated implements _Authenticated {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() unauthenticated,
     required TResult Function() inProgress,
     required TResult Function(Rejection rejection) error,
+    required TResult Function() unauthenticated,
     required TResult Function(Authentication authentication) authenticated,
   }) {
     return authenticated(authentication);
@@ -858,9 +858,9 @@ class _$_Authenticated implements _Authenticated {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? unauthenticated,
     TResult Function()? inProgress,
     TResult Function(Rejection rejection)? error,
+    TResult Function()? unauthenticated,
     TResult Function(Authentication authentication)? authenticated,
     required TResult orElse(),
   }) {
@@ -873,9 +873,9 @@ class _$_Authenticated implements _Authenticated {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Unauthenticated value) unauthenticated,
     required TResult Function(_InProgress value) inProgress,
     required TResult Function(_Error value) error,
+    required TResult Function(_Unauthenticated value) unauthenticated,
     required TResult Function(_Authenticated value) authenticated,
   }) {
     return authenticated(this);
@@ -884,9 +884,9 @@ class _$_Authenticated implements _Authenticated {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Unauthenticated value)? unauthenticated,
     TResult Function(_InProgress value)? inProgress,
     TResult Function(_Error value)? error,
+    TResult Function(_Unauthenticated value)? unauthenticated,
     TResult Function(_Authenticated value)? authenticated,
     required TResult orElse(),
   }) {

@@ -6,4 +6,8 @@ abstract class ApiClient {
   Future<Either<Rejection, List<M>>> getList<M extends Model>(String suffix);
   Future<Option<Rejection>> post<M extends Model>(String suffix, M model);
   Future<Option<Rejection>> delete(String suffix);
+
+  Future<Either<Rejection, R>>
+      postAndGetResponse<R extends Model, M extends Model>(
+          String suffix, M model);
 }
