@@ -2,28 +2,41 @@ import 'package:askimam/chat/bloc/public_chats_bloc.dart';
 import 'package:askimam/chat/domain/chat.dart';
 import 'package:askimam/chat/domain/chat_repository.dart';
 import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/favorites/bloc/favorite_bloc.dart';
+import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart' as mocktail;
 
 import 'public_chats_bloc_test.mocks.dart';
+
+class MockFavoriteBloc extends MockBloc<FavoriteEvent, FavoriteState>
+    implements FavoriteBloc {}
 
 @GenerateMocks([ChatRepository])
 void main() {
   late PublicChatsBloc bloc;
+  late FavoriteBloc favoriteBloc;
   final repo = MockChatRepository();
 
+  setUpAll(() {
+    mocktail.registerFallbackValue<FavoriteState>(FavoriteState([]));
+    mocktail.registerFallbackValue<FavoriteEvent>(FavoriteEvent.show());
+  });
+
   setUp(() {
-    bloc = PublicChatsBloc(repo, 20);
+    favoriteBloc = MockFavoriteBloc();
+    bloc = PublicChatsBloc(repo, favoriteBloc, 20);
   });
 
   test('Initial state', () {
     expect(bloc.state, PublicChatsState.inProgress([]));
   });
 
-  group('Load first page', () {
+  group('Load first page:', () {
     blocTest(
       'should load public chats',
       build: () {
@@ -116,7 +129,7 @@ void main() {
     );
   });
 
-  group('Load next page', () {
+  group('Load next page:', () {
     blocTest(
       'should load next page',
       build: () {
@@ -194,7 +207,7 @@ void main() {
     );
   });
 
-  group('Show tab', () {
+  group('Show tab:', () {
     blocTest(
       'should load first page',
       build: () {
@@ -227,6 +240,117 @@ void main() {
         Chat(3, 'subject', true),
       ]),
       act: (_) => bloc.add(PublicChatsEvent.show()),
+      expect: () => [],
+    );
+  });
+
+  group('Listen to favorites changes:', () {
+    blocTest(
+      'should set a flag',
+      build: () {
+        whenListen(
+          favoriteBloc,
+          Stream.value(FavoriteState([
+            Favorite(1, 1, 'subject'),
+            Favorite(3, 3, 'subject'),
+          ])),
+        );
+        return PublicChatsBloc(repo, favoriteBloc, 20);
+      },
+      seed: () => PublicChatsState([
+        Chat(1, 'subject', false),
+        Chat(2, 'subject', false),
+        Chat(3, 'subject', true),
+      ]),
+      expect: () => [
+        PublicChatsState([
+          Chat(1, 'subject', true),
+          Chat(2, 'subject', false),
+          Chat(3, 'subject', true),
+        ])
+      ],
+    );
+
+    blocTest(
+      'should reset a flag',
+      build: () {
+        whenListen(
+          favoriteBloc,
+          Stream.value(FavoriteState([
+            Favorite(3, 3, 'subject'),
+          ])),
+        );
+        return PublicChatsBloc(repo, favoriteBloc, 20);
+      },
+      seed: () => PublicChatsState([
+        Chat(1, 'subject', true),
+        Chat(2, 'subject', false),
+        Chat(3, 'subject', true),
+      ]),
+      expect: () => [
+        PublicChatsState([
+          Chat(1, 'subject', false),
+          Chat(2, 'subject', false),
+          Chat(3, 'subject', true),
+        ])
+      ],
+    );
+
+    blocTest(
+      'should nothing happen',
+      build: () {
+        whenListen(
+          favoriteBloc,
+          Stream.fromIterable([
+            FavoriteState.inProgress([
+              Favorite(3, 3, 'subject'),
+            ]),
+            FavoriteState.error(Rejection('reason')),
+          ]),
+        );
+        return PublicChatsBloc(repo, favoriteBloc, 20);
+      },
+      seed: () => PublicChatsState([
+        Chat(1, 'subject', true),
+        Chat(2, 'subject', false),
+        Chat(3, 'subject', true),
+      ]),
+      expect: () => [],
+    );
+
+    blocTest(
+      'should nothing happen either',
+      build: () {
+        whenListen(
+          favoriteBloc,
+          Stream.value(FavoriteState([
+            Favorite(1, 1, 'subject'),
+            Favorite(3, 3, 'subject'),
+          ])),
+        );
+        return PublicChatsBloc(repo, favoriteBloc, 20);
+      },
+      seed: () => PublicChatsState.inProgress([
+        Chat(1, 'subject', false),
+        Chat(2, 'subject', false),
+        Chat(3, 'subject', true),
+      ]),
+      expect: () => [],
+    );
+
+    blocTest(
+      'should nothing happen as well',
+      build: () {
+        whenListen(
+          favoriteBloc,
+          Stream.value(FavoriteState([
+            Favorite(1, 1, 'subject'),
+            Favorite(3, 3, 'subject'),
+          ])),
+        );
+        return PublicChatsBloc(repo, favoriteBloc, 20);
+      },
+      seed: () => PublicChatsState.error(Rejection('reason')),
       expect: () => [],
     );
   });

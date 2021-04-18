@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:askimam/chat/domain/chat.dart';
 import 'package:askimam/chat/domain/chat_repository.dart';
 import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/favorites/bloc/favorite_bloc.dart';
+import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -12,9 +14,22 @@ part 'public_chats_bloc.freezed.dart';
 
 class PublicChatsBloc extends Bloc<PublicChatsEvent, PublicChatsState> {
   final ChatRepository _repo;
+  final FavoriteBloc _favoriteBloc;
   final int _pageSize;
+  late StreamSubscription _subscription;
 
-  PublicChatsBloc(this._repo, this._pageSize) : super(_InProgress([]));
+  PublicChatsBloc(
+    this._repo,
+    this._favoriteBloc,
+    this._pageSize,
+  ) : super(_InProgress([])) {
+    _subscription = _favoriteBloc.stream.listen((state) {
+      state.maybeWhen(
+        (favorites) => add(PublicChatsEvent.updateFavorites(favorites)),
+        orElse: () {},
+      );
+    });
+  }
 
   @override
   Stream<PublicChatsState> mapEventToState(PublicChatsEvent event) =>
@@ -22,6 +37,7 @@ class PublicChatsBloc extends Bloc<PublicChatsEvent, PublicChatsState> {
         show: _show,
         reload: _reload,
         loadNextPage: _loadNextPage,
+        updateFavorites: _updateFavorites,
       );
 
   Stream<PublicChatsState> _show() async* {
@@ -65,5 +81,24 @@ class PublicChatsBloc extends Bloc<PublicChatsEvent, PublicChatsState> {
         yield PublicChatsState.error(rejection);
       },
     );
+  }
+
+  Stream<PublicChatsState> _updateFavorites(List<Favorite> favorites) async* {
+    yield state.maybeWhen(
+      (chats) => PublicChatsState(chats
+          .map(
+            (chat) => chat.copyWith(
+              isFavorite: favorites.any((f) => f.chatId == chat.id),
+            ),
+          )
+          .toList()),
+      orElse: () => state,
+    );
+  }
+
+  @override
+  Future<void> close() async {
+    await _subscription.cancel();
+    return super.close();
   }
 }
