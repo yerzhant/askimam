@@ -20,11 +20,13 @@ Chat _$ChatFromJson(Map<String, dynamic> json) {
 class _$ChatTearOff {
   const _$ChatTearOff();
 
-  _Chat call(int id, String subject, bool isFavorite) {
+  _Chat call(int id, String subject, bool isFavorite,
+      {List<Message>? messages}) {
     return _Chat(
       id,
       subject,
       isFavorite,
+      messages: messages,
     );
   }
 
@@ -41,6 +43,7 @@ mixin _$Chat {
   int get id => throw _privateConstructorUsedError;
   String get subject => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
+  List<Message>? get messages => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +54,7 @@ mixin _$Chat {
 abstract class $ChatCopyWith<$Res> {
   factory $ChatCopyWith(Chat value, $Res Function(Chat) then) =
       _$ChatCopyWithImpl<$Res>;
-  $Res call({int id, String subject, bool isFavorite});
+  $Res call({int id, String subject, bool isFavorite, List<Message>? messages});
 }
 
 /// @nodoc
@@ -67,6 +70,7 @@ class _$ChatCopyWithImpl<$Res> implements $ChatCopyWith<$Res> {
     Object? id = freezed,
     Object? subject = freezed,
     Object? isFavorite = freezed,
+    Object? messages = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -81,6 +85,10 @@ class _$ChatCopyWithImpl<$Res> implements $ChatCopyWith<$Res> {
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      messages: messages == freezed
+          ? _value.messages
+          : messages // ignore: cast_nullable_to_non_nullable
+              as List<Message>?,
     ));
   }
 }
@@ -90,7 +98,7 @@ abstract class _$ChatCopyWith<$Res> implements $ChatCopyWith<$Res> {
   factory _$ChatCopyWith(_Chat value, $Res Function(_Chat) then) =
       __$ChatCopyWithImpl<$Res>;
   @override
-  $Res call({int id, String subject, bool isFavorite});
+  $Res call({int id, String subject, bool isFavorite, List<Message>? messages});
 }
 
 /// @nodoc
@@ -107,6 +115,7 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
     Object? id = freezed,
     Object? subject = freezed,
     Object? isFavorite = freezed,
+    Object? messages = freezed,
   }) {
     return _then(_Chat(
       id == freezed
@@ -121,6 +130,10 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      messages: messages == freezed
+          ? _value.messages
+          : messages // ignore: cast_nullable_to_non_nullable
+              as List<Message>?,
     ));
   }
 }
@@ -129,7 +142,7 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_Chat implements _Chat {
-  _$_Chat(this.id, this.subject, this.isFavorite);
+  _$_Chat(this.id, this.subject, this.isFavorite, {this.messages});
 
   factory _$_Chat.fromJson(Map<String, dynamic> json) =>
       _$_$_ChatFromJson(json);
@@ -140,10 +153,12 @@ class _$_Chat implements _Chat {
   final String subject;
   @override
   final bool isFavorite;
+  @override
+  final List<Message>? messages;
 
   @override
   String toString() {
-    return 'Chat(id: $id, subject: $subject, isFavorite: $isFavorite)';
+    return 'Chat(id: $id, subject: $subject, isFavorite: $isFavorite, messages: $messages)';
   }
 
   @override
@@ -157,7 +172,10 @@ class _$_Chat implements _Chat {
                     .equals(other.subject, subject)) &&
             (identical(other.isFavorite, isFavorite) ||
                 const DeepCollectionEquality()
-                    .equals(other.isFavorite, isFavorite)));
+                    .equals(other.isFavorite, isFavorite)) &&
+            (identical(other.messages, messages) ||
+                const DeepCollectionEquality()
+                    .equals(other.messages, messages)));
   }
 
   @override
@@ -165,7 +183,8 @@ class _$_Chat implements _Chat {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(subject) ^
-      const DeepCollectionEquality().hash(isFavorite);
+      const DeepCollectionEquality().hash(isFavorite) ^
+      const DeepCollectionEquality().hash(messages);
 
   @JsonKey(ignore: true)
   @override
@@ -179,7 +198,8 @@ class _$_Chat implements _Chat {
 }
 
 abstract class _Chat implements Chat {
-  factory _Chat(int id, String subject, bool isFavorite) = _$_Chat;
+  factory _Chat(int id, String subject, bool isFavorite,
+      {List<Message>? messages}) = _$_Chat;
 
   factory _Chat.fromJson(Map<String, dynamic> json) = _$_Chat.fromJson;
 
@@ -189,6 +209,8 @@ abstract class _Chat implements Chat {
   String get subject => throw _privateConstructorUsedError;
   @override
   bool get isFavorite => throw _privateConstructorUsedError;
+  @override
+  List<Message>? get messages => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ChatCopyWith<_Chat> get copyWith => throw _privateConstructorUsedError;

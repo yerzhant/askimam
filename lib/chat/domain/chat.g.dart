@@ -11,6 +11,9 @@ _$_Chat _$_$_ChatFromJson(Map<String, dynamic> json) {
     json['id'] as int,
     json['subject'] as String,
     json['isFavorite'] as bool,
+    messages: (json['messages'] as List<dynamic>?)
+        ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
@@ -18,4 +21,5 @@ Map<String, dynamic> _$_$_ChatToJson(_$_Chat instance) => <String, dynamic>{
       'id': instance.id,
       'subject': instance.subject,
       'isFavorite': instance.isFavorite,
+      'messages': instance.messages,
     };

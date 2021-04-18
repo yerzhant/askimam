@@ -26,16 +26,21 @@ class MockChatRepository extends _i1.Mock implements _i3.ChatRepository {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>> getPublic(
-          int? offset, int? pageSize) =>
-      (super.noSuchMethod(Invocation.method(#getPublic, [offset, pageSize]),
-              returnValue:
-                  Future.value(_FakeEither<_i5.Rejection, List<_i6.Chat>>()))
-          as _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>>);
+  _i4.Future<_i2.Either<_i5.Rejection, _i6.Chat>> get(int? id) =>
+      (super.noSuchMethod(Invocation.method(#get, [id]),
+              returnValue: Future.value(_FakeEither<_i5.Rejection, _i6.Chat>()))
+          as _i4.Future<_i2.Either<_i5.Rejection, _i6.Chat>>);
   @override
   _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>> getMy(
           int? offset, int? pageSize) =>
       (super.noSuchMethod(Invocation.method(#getMy, [offset, pageSize]),
+              returnValue:
+                  Future.value(_FakeEither<_i5.Rejection, List<_i6.Chat>>()))
+          as _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>> getPublic(
+          int? offset, int? pageSize) =>
+      (super.noSuchMethod(Invocation.method(#getPublic, [offset, pageSize]),
               returnValue:
                   Future.value(_FakeEither<_i5.Rejection, List<_i6.Chat>>()))
           as _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>>);
@@ -53,8 +58,24 @@ class MockChatRepository extends _i1.Mock implements _i3.ChatRepository {
               returnValue: Future.value(_FakeOption<_i5.Rejection>()))
           as _i4.Future<_i2.Option<_i5.Rejection>>);
   @override
+  _i4.Future<_i2.Option<_i5.Rejection>> updateSubject(
+          int? id, String? subject) =>
+      (super.noSuchMethod(Invocation.method(#updateSubject, [id, subject]),
+              returnValue: Future.value(_FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
+  @override
   _i4.Future<_i2.Option<_i5.Rejection>> delete(_i6.Chat? chat) =>
       (super.noSuchMethod(Invocation.method(#delete, [chat]),
+              returnValue: Future.value(_FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
+  @override
+  _i4.Future<_i2.Option<_i5.Rejection>> setViewedFlag(int? id) =>
+      (super.noSuchMethod(Invocation.method(#setViewedFlag, [id]),
+              returnValue: Future.value(_FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
+  @override
+  _i4.Future<_i2.Option<_i5.Rejection>> returnToUnanswered(int? id) =>
+      (super.noSuchMethod(Invocation.method(#returnToUnanswered, [id]),
               returnValue: Future.value(_FakeOption<_i5.Rejection>()))
           as _i4.Future<_i2.Option<_i5.Rejection>>);
 }

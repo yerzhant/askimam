@@ -1,3 +1,4 @@
+import 'package:askimam/chat/domain/message.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'chat.freezed.dart';
@@ -8,8 +9,9 @@ abstract class Chat with _$Chat {
   factory Chat(
     int id,
     String subject,
-    bool isFavorite,
-  ) = _Chat;
+    bool isFavorite, {
+    List<Message>? messages,
+  }) = _Chat;
 
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
 }
