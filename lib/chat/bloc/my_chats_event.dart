@@ -5,4 +5,6 @@ class MyChatsEvent with _$MyChatsEvent {
   const factory MyChatsEvent.show() = _Show;
   const factory MyChatsEvent.reload() = _Reload;
   const factory MyChatsEvent.loadNextPage() = _LoadNextPage;
+  const factory MyChatsEvent.updateFavorites(List<Favorite> favorites) =
+      _UpdateFavorites;
 }

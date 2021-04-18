@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:askimam/chat/domain/chat.dart';
 import 'package:askimam/chat/domain/chat_repository.dart';
 import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/favorites/bloc/favorite_bloc.dart';
+import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,9 +15,22 @@ part 'unanswered_chats_bloc.freezed.dart';
 class UnansweredChatsBloc
     extends Bloc<UnansweredChatsEvent, UnansweredChatsState> {
   final ChatRepository _repo;
+  final FavoriteBloc _favoriteBloc;
   final int _pageSize;
+  late StreamSubscription _subscription;
 
-  UnansweredChatsBloc(this._repo, this._pageSize) : super(_InProgress([]));
+  UnansweredChatsBloc(
+    this._repo,
+    this._favoriteBloc,
+    this._pageSize,
+  ) : super(_InProgress([])) {
+    _subscription = _favoriteBloc.stream.listen((state) {
+      state.maybeWhen(
+        (favorites) => add(UnansweredChatsEvent.updateFavorites(favorites)),
+        orElse: () {},
+      );
+    });
+  }
 
   @override
   Stream<UnansweredChatsState> mapEventToState(UnansweredChatsEvent event) =>
@@ -23,6 +38,7 @@ class UnansweredChatsBloc
         show: _show,
         reload: _reload,
         loadNextPage: _loadNextPage,
+        updateFavorites: _updateFavorites,
       );
 
   Stream<UnansweredChatsState> _show() async* {
@@ -66,5 +82,25 @@ class UnansweredChatsBloc
         yield UnansweredChatsState.error(rejection);
       },
     );
+  }
+
+  Stream<UnansweredChatsState> _updateFavorites(
+      List<Favorite> favorites) async* {
+    yield state.maybeWhen(
+      (chats) => UnansweredChatsState(chats
+          .map(
+            (chat) => chat.copyWith(
+              isFavorite: favorites.any((f) => f.chatId == chat.id),
+            ),
+          )
+          .toList()),
+      orElse: () => state,
+    );
+  }
+
+  @override
+  Future<void> close() async {
+    await _subscription.cancel();
+    return super.close();
   }
 }

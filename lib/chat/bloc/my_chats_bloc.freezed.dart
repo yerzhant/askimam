@@ -27,6 +27,12 @@ class _$MyChatsEventTearOff {
   _LoadNextPage loadNextPage() {
     return const _LoadNextPage();
   }
+
+  _UpdateFavorites updateFavorites(List<Favorite> favorites) {
+    return _UpdateFavorites(
+      favorites,
+    );
+  }
 }
 
 /// @nodoc
@@ -39,6 +45,7 @@ mixin _$MyChatsEvent {
     required TResult Function() show,
     required TResult Function() reload,
     required TResult Function() loadNextPage,
+    required TResult Function(List<Favorite> favorites) updateFavorites,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -46,6 +53,7 @@ mixin _$MyChatsEvent {
     TResult Function()? show,
     TResult Function()? reload,
     TResult Function()? loadNextPage,
+    TResult Function(List<Favorite> favorites)? updateFavorites,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -54,6 +62,7 @@ mixin _$MyChatsEvent {
     required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
     required TResult Function(_LoadNextPage value) loadNextPage,
+    required TResult Function(_UpdateFavorites value) updateFavorites,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -61,6 +70,7 @@ mixin _$MyChatsEvent {
     TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
     TResult Function(_LoadNextPage value)? loadNextPage,
+    TResult Function(_UpdateFavorites value)? updateFavorites,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -121,6 +131,7 @@ class _$_Show implements _Show {
     required TResult Function() show,
     required TResult Function() reload,
     required TResult Function() loadNextPage,
+    required TResult Function(List<Favorite> favorites) updateFavorites,
   }) {
     return show();
   }
@@ -131,6 +142,7 @@ class _$_Show implements _Show {
     TResult Function()? show,
     TResult Function()? reload,
     TResult Function()? loadNextPage,
+    TResult Function(List<Favorite> favorites)? updateFavorites,
     required TResult orElse(),
   }) {
     if (show != null) {
@@ -145,6 +157,7 @@ class _$_Show implements _Show {
     required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
     required TResult Function(_LoadNextPage value) loadNextPage,
+    required TResult Function(_UpdateFavorites value) updateFavorites,
   }) {
     return show(this);
   }
@@ -155,6 +168,7 @@ class _$_Show implements _Show {
     TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
     TResult Function(_LoadNextPage value)? loadNextPage,
+    TResult Function(_UpdateFavorites value)? updateFavorites,
     required TResult orElse(),
   }) {
     if (show != null) {
@@ -207,6 +221,7 @@ class _$_Reload implements _Reload {
     required TResult Function() show,
     required TResult Function() reload,
     required TResult Function() loadNextPage,
+    required TResult Function(List<Favorite> favorites) updateFavorites,
   }) {
     return reload();
   }
@@ -217,6 +232,7 @@ class _$_Reload implements _Reload {
     TResult Function()? show,
     TResult Function()? reload,
     TResult Function()? loadNextPage,
+    TResult Function(List<Favorite> favorites)? updateFavorites,
     required TResult orElse(),
   }) {
     if (reload != null) {
@@ -231,6 +247,7 @@ class _$_Reload implements _Reload {
     required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
     required TResult Function(_LoadNextPage value) loadNextPage,
+    required TResult Function(_UpdateFavorites value) updateFavorites,
   }) {
     return reload(this);
   }
@@ -241,6 +258,7 @@ class _$_Reload implements _Reload {
     TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
     TResult Function(_LoadNextPage value)? loadNextPage,
+    TResult Function(_UpdateFavorites value)? updateFavorites,
     required TResult orElse(),
   }) {
     if (reload != null) {
@@ -295,6 +313,7 @@ class _$_LoadNextPage implements _LoadNextPage {
     required TResult Function() show,
     required TResult Function() reload,
     required TResult Function() loadNextPage,
+    required TResult Function(List<Favorite> favorites) updateFavorites,
   }) {
     return loadNextPage();
   }
@@ -305,6 +324,7 @@ class _$_LoadNextPage implements _LoadNextPage {
     TResult Function()? show,
     TResult Function()? reload,
     TResult Function()? loadNextPage,
+    TResult Function(List<Favorite> favorites)? updateFavorites,
     required TResult orElse(),
   }) {
     if (loadNextPage != null) {
@@ -319,6 +339,7 @@ class _$_LoadNextPage implements _LoadNextPage {
     required TResult Function(_Show value) show,
     required TResult Function(_Reload value) reload,
     required TResult Function(_LoadNextPage value) loadNextPage,
+    required TResult Function(_UpdateFavorites value) updateFavorites,
   }) {
     return loadNextPage(this);
   }
@@ -329,6 +350,7 @@ class _$_LoadNextPage implements _LoadNextPage {
     TResult Function(_Show value)? show,
     TResult Function(_Reload value)? reload,
     TResult Function(_LoadNextPage value)? loadNextPage,
+    TResult Function(_UpdateFavorites value)? updateFavorites,
     required TResult orElse(),
   }) {
     if (loadNextPage != null) {
@@ -340,6 +362,130 @@ class _$_LoadNextPage implements _LoadNextPage {
 
 abstract class _LoadNextPage implements MyChatsEvent {
   const factory _LoadNextPage() = _$_LoadNextPage;
+}
+
+/// @nodoc
+abstract class _$UpdateFavoritesCopyWith<$Res> {
+  factory _$UpdateFavoritesCopyWith(
+          _UpdateFavorites value, $Res Function(_UpdateFavorites) then) =
+      __$UpdateFavoritesCopyWithImpl<$Res>;
+  $Res call({List<Favorite> favorites});
+}
+
+/// @nodoc
+class __$UpdateFavoritesCopyWithImpl<$Res>
+    extends _$MyChatsEventCopyWithImpl<$Res>
+    implements _$UpdateFavoritesCopyWith<$Res> {
+  __$UpdateFavoritesCopyWithImpl(
+      _UpdateFavorites _value, $Res Function(_UpdateFavorites) _then)
+      : super(_value, (v) => _then(v as _UpdateFavorites));
+
+  @override
+  _UpdateFavorites get _value => super._value as _UpdateFavorites;
+
+  @override
+  $Res call({
+    Object? favorites = freezed,
+  }) {
+    return _then(_UpdateFavorites(
+      favorites == freezed
+          ? _value.favorites
+          : favorites // ignore: cast_nullable_to_non_nullable
+              as List<Favorite>,
+    ));
+  }
+}
+
+/// @nodoc
+class _$_UpdateFavorites implements _UpdateFavorites {
+  const _$_UpdateFavorites(this.favorites);
+
+  @override
+  final List<Favorite> favorites;
+
+  @override
+  String toString() {
+    return 'MyChatsEvent.updateFavorites(favorites: $favorites)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _UpdateFavorites &&
+            (identical(other.favorites, favorites) ||
+                const DeepCollectionEquality()
+                    .equals(other.favorites, favorites)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(favorites);
+
+  @JsonKey(ignore: true)
+  @override
+  _$UpdateFavoritesCopyWith<_UpdateFavorites> get copyWith =>
+      __$UpdateFavoritesCopyWithImpl<_UpdateFavorites>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() show,
+    required TResult Function() reload,
+    required TResult Function() loadNextPage,
+    required TResult Function(List<Favorite> favorites) updateFavorites,
+  }) {
+    return updateFavorites(favorites);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? show,
+    TResult Function()? reload,
+    TResult Function()? loadNextPage,
+    TResult Function(List<Favorite> favorites)? updateFavorites,
+    required TResult orElse(),
+  }) {
+    if (updateFavorites != null) {
+      return updateFavorites(favorites);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Show value) show,
+    required TResult Function(_Reload value) reload,
+    required TResult Function(_LoadNextPage value) loadNextPage,
+    required TResult Function(_UpdateFavorites value) updateFavorites,
+  }) {
+    return updateFavorites(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Show value)? show,
+    TResult Function(_Reload value)? reload,
+    TResult Function(_LoadNextPage value)? loadNextPage,
+    TResult Function(_UpdateFavorites value)? updateFavorites,
+    required TResult orElse(),
+  }) {
+    if (updateFavorites != null) {
+      return updateFavorites(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _UpdateFavorites implements MyChatsEvent {
+  const factory _UpdateFavorites(List<Favorite> favorites) = _$_UpdateFavorites;
+
+  List<Favorite> get favorites => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$UpdateFavoritesCopyWith<_UpdateFavorites> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc

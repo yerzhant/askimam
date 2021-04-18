@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:askimam/chat/domain/chat.dart';
 import 'package:askimam/chat/domain/chat_repository.dart';
 import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/favorites/bloc/favorite_bloc.dart';
+import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -12,15 +14,29 @@ part 'my_chats_bloc.freezed.dart';
 
 class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
   final ChatRepository _repo;
+  final FavoriteBloc _favoriteBloc;
   final int _pageSize;
+  late StreamSubscription _subscription;
 
-  MyChatsBloc(this._repo, this._pageSize) : super(_InProgress([]));
+  MyChatsBloc(
+    this._repo,
+    this._favoriteBloc,
+    this._pageSize,
+  ) : super(_InProgress([])) {
+    _subscription = _favoriteBloc.stream.listen((state) {
+      state.maybeWhen(
+        (favorites) => add(MyChatsEvent.updateFavorites(favorites)),
+        orElse: () {},
+      );
+    });
+  }
 
   @override
   Stream<MyChatsState> mapEventToState(MyChatsEvent event) => event.when(
         show: _show,
         reload: _reload,
         loadNextPage: _loadNextPage,
+        updateFavorites: _updateFavorites,
       );
 
   Stream<MyChatsState> _show() async* {
@@ -64,5 +80,24 @@ class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
         yield MyChatsState.error(rejection);
       },
     );
+  }
+
+  Stream<MyChatsState> _updateFavorites(List<Favorite> favorites) async* {
+    yield state.maybeWhen(
+      (chats) => MyChatsState(chats
+          .map(
+            (chat) => chat.copyWith(
+              isFavorite: favorites.any((f) => f.chatId == chat.id),
+            ),
+          )
+          .toList()),
+      orElse: () => state,
+    );
+  }
+
+  @override
+  Future<void> close() async {
+    await _subscription.cancel();
+    return super.close();
   }
 }
