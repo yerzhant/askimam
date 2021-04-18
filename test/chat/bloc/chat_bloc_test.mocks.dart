@@ -99,4 +99,11 @@ class MockMessageRepository extends _i1.Mock implements _i7.MessageRepository {
       (super.noSuchMethod(Invocation.method(#delete, [chatId, messageId]),
               returnValue: Future.value(_FakeOption<_i5.Rejection>()))
           as _i4.Future<_i2.Option<_i5.Rejection>>);
+  @override
+  _i4.Future<_i2.Option<_i5.Rejection>> updateText(
+          int? chatId, int? messageId, String? text) =>
+      (super.noSuchMethod(
+              Invocation.method(#updateText, [chatId, messageId, text]),
+              returnValue: Future.value(_FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
 }

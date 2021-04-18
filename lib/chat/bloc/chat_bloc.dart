@@ -4,7 +4,6 @@ import 'package:askimam/chat/domain/chat.dart';
 import 'package:askimam/chat/domain/chat_repository.dart';
 import 'package:askimam/chat/domain/message_repository.dart';
 import 'package:askimam/common/domain/rejection.dart';
-import 'package:askimam/common/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -24,6 +23,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         addText: _addText,
         deleteMessage: _deleteMessage,
         updateSubject: _updateSubject,
+        updateTextMessage: _updateTextMessage,
         returnToUnaswered: _returnToUnaswered,
       );
 
@@ -66,6 +66,30 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           (a) async* {
             yield ChatState(chat, rejection: a);
           },
+        );
+      },
+      orElse: () async* {
+        yield state;
+      },
+    );
+  }
+
+  Stream<ChatState> _updateTextMessage(int id, String text) async* {
+    yield* state.maybeWhen(
+      (chat, rejection, isInProgress, isSuccess) async* {
+        yield ChatState(chat, isInProgress: true);
+
+        final result = await _messageRepo.updateText(chat.id, id, text);
+
+        yield result.fold(
+          () => ChatState(
+            chat.copyWith(
+              messages: chat.messages
+                  ?.map((m) => m.id == id ? m.copyWith(text: text) : m)
+                  .toList(),
+            ),
+          ),
+          (a) => ChatState(chat, rejection: a),
         );
       },
       orElse: () async* {

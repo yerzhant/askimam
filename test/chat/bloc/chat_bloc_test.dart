@@ -418,7 +418,7 @@ void main() {
     );
   });
 
-  group('Delete message:', () {
+  group('Delete a message:', () {
     blocTest(
       'should do it',
       build: () {
@@ -498,6 +498,93 @@ void main() {
       build: () => bloc,
       seed: () => ChatState.error(Rejection('reason')),
       act: (_) => bloc.add(ChatEvent.deleteMessage(1)),
+      expect: () => [],
+    );
+  });
+
+  group('Update a message:', () {
+    blocTest(
+      'should do it',
+      build: () {
+        when(messageRepo.updateText(1, 1, 'text 2'))
+            .thenAnswer((_) async => none());
+        return bloc;
+      },
+      seed: () => ChatState(
+        Chat(1, 'subject', false, messages: [
+          Message(1, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+          Message(2, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+        ]),
+      ),
+      act: (_) => bloc.add(ChatEvent.updateTextMessage(1, 'text 2')),
+      expect: () => [
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+            Message(2, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          isInProgress: true,
+        ),
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text 2', 'author',
+                DateTime.parse('20210418'), null),
+            Message(2, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+        ),
+      ],
+    );
+
+    blocTest(
+      'should not do it',
+      build: () {
+        when(messageRepo.updateText(1, 1, 'text 2'))
+            .thenAnswer((_) async => some(Rejection('reason')));
+        return bloc;
+      },
+      seed: () => ChatState(
+        Chat(1, 'subject', false, messages: [
+          Message(1, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+        ]),
+      ),
+      act: (_) => bloc.add(ChatEvent.updateTextMessage(1, 'text 2')),
+      expect: () => [
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          isInProgress: true,
+        ),
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          rejection: Rejection('reason'),
+        ),
+      ],
+    );
+
+    blocTest(
+      'should not even try to',
+      build: () => bloc,
+      seed: () => ChatState.inProgress(),
+      act: (_) => bloc.add(ChatEvent.updateTextMessage(1, 'text 2')),
+      expect: () => [],
+    );
+
+    blocTest(
+      'should not even try to either',
+      build: () => bloc,
+      seed: () => ChatState.error(Rejection('reason')),
+      act: (_) => bloc.add(ChatEvent.updateTextMessage(1, 'text 2')),
       expect: () => [],
     );
   });
