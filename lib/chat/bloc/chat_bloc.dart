@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:askimam/chat/domain/chat.dart';
 import 'package:askimam/chat/domain/chat_repository.dart';
+import 'package:askimam/chat/domain/message_repository.dart';
 import 'package:askimam/common/domain/rejection.dart';
 import 'package:askimam/common/utils.dart';
 import 'package:bloc/bloc.dart';
@@ -13,12 +14,15 @@ part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChatRepository _repo;
+  final MessageRepository _messageRepo;
 
-  ChatBloc(this._repo) : super(_InProgress());
+  ChatBloc(this._repo, this._messageRepo) : super(_InProgress());
 
   @override
   Stream<ChatState> mapEventToState(ChatEvent event) => event.when(
         refresh: _refresh,
+        addText: _addText,
+        deleteMessage: _deleteMessage,
         updateSubject: _updateSubject,
         returnToUnaswered: _returnToUnaswered,
       );
@@ -39,6 +43,55 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           () => ChatState(r),
           (a) => ChatState.error(a),
         );
+      },
+    );
+  }
+
+  Stream<ChatState> _addText(String text) async* {
+    yield* state.maybeWhen(
+      (chat, rejection, isInProgress, isSuccess) async* {
+        yield ChatState(chat, isInProgress: true);
+
+        final result = await _messageRepo.addText(chat.id, text);
+
+        yield* result.fold(
+          () async* {
+            final updateResult = await _repo.get(chat.id);
+
+            yield updateResult.fold(
+              (l) => ChatState(chat, rejection: l),
+              (r) => ChatState(r),
+            );
+          },
+          (a) async* {
+            yield ChatState(chat, rejection: a);
+          },
+        );
+      },
+      orElse: () async* {
+        yield state;
+      },
+    );
+  }
+
+  Stream<ChatState> _deleteMessage(int id) async* {
+    yield* state.maybeWhen(
+      (chat, rejection, isInProgress, isSuccess) async* {
+        yield ChatState(chat, isInProgress: true);
+
+        final result = await _messageRepo.delete(chat.id, id);
+
+        yield result.fold(
+          () => ChatState(
+            chat.copyWith(
+              messages: chat.messages?.whereNot((m) => m.id == id).toList(),
+            ),
+          ),
+          (a) => ChatState(chat, rejection: a),
+        );
+      },
+      orElse: () async* {
+        yield state;
       },
     );
   }

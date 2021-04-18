@@ -31,6 +31,18 @@ class _$ChatEventTearOff {
       subject,
     );
   }
+
+  _AddText addText(String text) {
+    return _AddText(
+      text,
+    );
+  }
+
+  _DeleteMessage deleteMessage(int id) {
+    return _DeleteMessage(
+      id,
+    );
+  }
 }
 
 /// @nodoc
@@ -43,6 +55,8 @@ mixin _$ChatEvent {
     required TResult Function(int id) refresh,
     required TResult Function() returnToUnaswered,
     required TResult Function(String subject) updateSubject,
+    required TResult Function(String text) addText,
+    required TResult Function(int id) deleteMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +64,8 @@ mixin _$ChatEvent {
     TResult Function(int id)? refresh,
     TResult Function()? returnToUnaswered,
     TResult Function(String subject)? updateSubject,
+    TResult Function(String text)? addText,
+    TResult Function(int id)? deleteMessage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -58,6 +74,8 @@ mixin _$ChatEvent {
     required TResult Function(_Refresh value) refresh,
     required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
     required TResult Function(_UpdateSubject value) updateSubject,
+    required TResult Function(_AddText value) addText,
+    required TResult Function(_DeleteMessage value) deleteMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -65,6 +83,8 @@ mixin _$ChatEvent {
     TResult Function(_Refresh value)? refresh,
     TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
     TResult Function(_UpdateSubject value)? updateSubject,
+    TResult Function(_AddText value)? addText,
+    TResult Function(_DeleteMessage value)? deleteMessage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -149,6 +169,8 @@ class _$_Refresh implements _Refresh {
     required TResult Function(int id) refresh,
     required TResult Function() returnToUnaswered,
     required TResult Function(String subject) updateSubject,
+    required TResult Function(String text) addText,
+    required TResult Function(int id) deleteMessage,
   }) {
     return refresh(id);
   }
@@ -159,6 +181,8 @@ class _$_Refresh implements _Refresh {
     TResult Function(int id)? refresh,
     TResult Function()? returnToUnaswered,
     TResult Function(String subject)? updateSubject,
+    TResult Function(String text)? addText,
+    TResult Function(int id)? deleteMessage,
     required TResult orElse(),
   }) {
     if (refresh != null) {
@@ -173,6 +197,8 @@ class _$_Refresh implements _Refresh {
     required TResult Function(_Refresh value) refresh,
     required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
     required TResult Function(_UpdateSubject value) updateSubject,
+    required TResult Function(_AddText value) addText,
+    required TResult Function(_DeleteMessage value) deleteMessage,
   }) {
     return refresh(this);
   }
@@ -183,6 +209,8 @@ class _$_Refresh implements _Refresh {
     TResult Function(_Refresh value)? refresh,
     TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
     TResult Function(_UpdateSubject value)? updateSubject,
+    TResult Function(_AddText value)? addText,
+    TResult Function(_DeleteMessage value)? deleteMessage,
     required TResult orElse(),
   }) {
     if (refresh != null) {
@@ -243,6 +271,8 @@ class _$_ReturnToUnaswered implements _ReturnToUnaswered {
     required TResult Function(int id) refresh,
     required TResult Function() returnToUnaswered,
     required TResult Function(String subject) updateSubject,
+    required TResult Function(String text) addText,
+    required TResult Function(int id) deleteMessage,
   }) {
     return returnToUnaswered();
   }
@@ -253,6 +283,8 @@ class _$_ReturnToUnaswered implements _ReturnToUnaswered {
     TResult Function(int id)? refresh,
     TResult Function()? returnToUnaswered,
     TResult Function(String subject)? updateSubject,
+    TResult Function(String text)? addText,
+    TResult Function(int id)? deleteMessage,
     required TResult orElse(),
   }) {
     if (returnToUnaswered != null) {
@@ -267,6 +299,8 @@ class _$_ReturnToUnaswered implements _ReturnToUnaswered {
     required TResult Function(_Refresh value) refresh,
     required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
     required TResult Function(_UpdateSubject value) updateSubject,
+    required TResult Function(_AddText value) addText,
+    required TResult Function(_DeleteMessage value) deleteMessage,
   }) {
     return returnToUnaswered(this);
   }
@@ -277,6 +311,8 @@ class _$_ReturnToUnaswered implements _ReturnToUnaswered {
     TResult Function(_Refresh value)? refresh,
     TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
     TResult Function(_UpdateSubject value)? updateSubject,
+    TResult Function(_AddText value)? addText,
+    TResult Function(_DeleteMessage value)? deleteMessage,
     required TResult orElse(),
   }) {
     if (returnToUnaswered != null) {
@@ -356,6 +392,8 @@ class _$_UpdateSubject implements _UpdateSubject {
     required TResult Function(int id) refresh,
     required TResult Function() returnToUnaswered,
     required TResult Function(String subject) updateSubject,
+    required TResult Function(String text) addText,
+    required TResult Function(int id) deleteMessage,
   }) {
     return updateSubject(subject);
   }
@@ -366,6 +404,8 @@ class _$_UpdateSubject implements _UpdateSubject {
     TResult Function(int id)? refresh,
     TResult Function()? returnToUnaswered,
     TResult Function(String subject)? updateSubject,
+    TResult Function(String text)? addText,
+    TResult Function(int id)? deleteMessage,
     required TResult orElse(),
   }) {
     if (updateSubject != null) {
@@ -380,6 +420,8 @@ class _$_UpdateSubject implements _UpdateSubject {
     required TResult Function(_Refresh value) refresh,
     required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
     required TResult Function(_UpdateSubject value) updateSubject,
+    required TResult Function(_AddText value) addText,
+    required TResult Function(_DeleteMessage value) deleteMessage,
   }) {
     return updateSubject(this);
   }
@@ -390,6 +432,8 @@ class _$_UpdateSubject implements _UpdateSubject {
     TResult Function(_Refresh value)? refresh,
     TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
     TResult Function(_UpdateSubject value)? updateSubject,
+    TResult Function(_AddText value)? addText,
+    TResult Function(_DeleteMessage value)? deleteMessage,
     required TResult orElse(),
   }) {
     if (updateSubject != null) {
@@ -405,6 +449,256 @@ abstract class _UpdateSubject implements ChatEvent {
   String get subject => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$UpdateSubjectCopyWith<_UpdateSubject> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$AddTextCopyWith<$Res> {
+  factory _$AddTextCopyWith(_AddText value, $Res Function(_AddText) then) =
+      __$AddTextCopyWithImpl<$Res>;
+  $Res call({String text});
+}
+
+/// @nodoc
+class __$AddTextCopyWithImpl<$Res> extends _$ChatEventCopyWithImpl<$Res>
+    implements _$AddTextCopyWith<$Res> {
+  __$AddTextCopyWithImpl(_AddText _value, $Res Function(_AddText) _then)
+      : super(_value, (v) => _then(v as _AddText));
+
+  @override
+  _AddText get _value => super._value as _AddText;
+
+  @override
+  $Res call({
+    Object? text = freezed,
+  }) {
+    return _then(_AddText(
+      text == freezed
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+class _$_AddText implements _AddText {
+  const _$_AddText(this.text);
+
+  @override
+  final String text;
+
+  @override
+  String toString() {
+    return 'ChatEvent.addText(text: $text)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _AddText &&
+            (identical(other.text, text) ||
+                const DeepCollectionEquality().equals(other.text, text)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(text);
+
+  @JsonKey(ignore: true)
+  @override
+  _$AddTextCopyWith<_AddText> get copyWith =>
+      __$AddTextCopyWithImpl<_AddText>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int id) refresh,
+    required TResult Function() returnToUnaswered,
+    required TResult Function(String subject) updateSubject,
+    required TResult Function(String text) addText,
+    required TResult Function(int id) deleteMessage,
+  }) {
+    return addText(text);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int id)? refresh,
+    TResult Function()? returnToUnaswered,
+    TResult Function(String subject)? updateSubject,
+    TResult Function(String text)? addText,
+    TResult Function(int id)? deleteMessage,
+    required TResult orElse(),
+  }) {
+    if (addText != null) {
+      return addText(text);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Refresh value) refresh,
+    required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
+    required TResult Function(_UpdateSubject value) updateSubject,
+    required TResult Function(_AddText value) addText,
+    required TResult Function(_DeleteMessage value) deleteMessage,
+  }) {
+    return addText(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Refresh value)? refresh,
+    TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
+    TResult Function(_UpdateSubject value)? updateSubject,
+    TResult Function(_AddText value)? addText,
+    TResult Function(_DeleteMessage value)? deleteMessage,
+    required TResult orElse(),
+  }) {
+    if (addText != null) {
+      return addText(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _AddText implements ChatEvent {
+  const factory _AddText(String text) = _$_AddText;
+
+  String get text => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$AddTextCopyWith<_AddText> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$DeleteMessageCopyWith<$Res> {
+  factory _$DeleteMessageCopyWith(
+          _DeleteMessage value, $Res Function(_DeleteMessage) then) =
+      __$DeleteMessageCopyWithImpl<$Res>;
+  $Res call({int id});
+}
+
+/// @nodoc
+class __$DeleteMessageCopyWithImpl<$Res> extends _$ChatEventCopyWithImpl<$Res>
+    implements _$DeleteMessageCopyWith<$Res> {
+  __$DeleteMessageCopyWithImpl(
+      _DeleteMessage _value, $Res Function(_DeleteMessage) _then)
+      : super(_value, (v) => _then(v as _DeleteMessage));
+
+  @override
+  _DeleteMessage get _value => super._value as _DeleteMessage;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+  }) {
+    return _then(_DeleteMessage(
+      id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+class _$_DeleteMessage implements _DeleteMessage {
+  const _$_DeleteMessage(this.id);
+
+  @override
+  final int id;
+
+  @override
+  String toString() {
+    return 'ChatEvent.deleteMessage(id: $id)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _DeleteMessage &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(id);
+
+  @JsonKey(ignore: true)
+  @override
+  _$DeleteMessageCopyWith<_DeleteMessage> get copyWith =>
+      __$DeleteMessageCopyWithImpl<_DeleteMessage>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int id) refresh,
+    required TResult Function() returnToUnaswered,
+    required TResult Function(String subject) updateSubject,
+    required TResult Function(String text) addText,
+    required TResult Function(int id) deleteMessage,
+  }) {
+    return deleteMessage(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int id)? refresh,
+    TResult Function()? returnToUnaswered,
+    TResult Function(String subject)? updateSubject,
+    TResult Function(String text)? addText,
+    TResult Function(int id)? deleteMessage,
+    required TResult orElse(),
+  }) {
+    if (deleteMessage != null) {
+      return deleteMessage(id);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Refresh value) refresh,
+    required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
+    required TResult Function(_UpdateSubject value) updateSubject,
+    required TResult Function(_AddText value) addText,
+    required TResult Function(_DeleteMessage value) deleteMessage,
+  }) {
+    return deleteMessage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Refresh value)? refresh,
+    TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
+    TResult Function(_UpdateSubject value)? updateSubject,
+    TResult Function(_AddText value)? addText,
+    TResult Function(_DeleteMessage value)? deleteMessage,
+    required TResult orElse(),
+  }) {
+    if (deleteMessage != null) {
+      return deleteMessage(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _DeleteMessage implements ChatEvent {
+  const factory _DeleteMessage(int id) = _$_DeleteMessage;
+
+  int get id => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$DeleteMessageCopyWith<_DeleteMessage> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

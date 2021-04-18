@@ -2,6 +2,7 @@ import 'package:askimam/chat/bloc/chat_bloc.dart';
 import 'package:askimam/chat/domain/chat.dart';
 import 'package:askimam/chat/domain/chat_repository.dart';
 import 'package:askimam/chat/domain/message.dart';
+import 'package:askimam/chat/domain/message_repository.dart';
 import 'package:askimam/common/domain/rejection.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
@@ -11,13 +12,14 @@ import 'package:mockito/mockito.dart';
 
 import 'chat_bloc_test.mocks.dart';
 
-@GenerateMocks([ChatRepository])
+@GenerateMocks([ChatRepository, MessageRepository])
 void main() {
   late ChatBloc bloc;
   final repo = MockChatRepository();
+  final messageRepo = MockMessageRepository();
 
   setUp(() {
-    bloc = ChatBloc(repo);
+    bloc = ChatBloc(repo, messageRepo);
   });
 
   test('Initial state', () {
@@ -283,6 +285,219 @@ void main() {
       build: () => bloc,
       seed: () => ChatState.error(Rejection('reason')),
       act: (_) => bloc.add(ChatEvent.updateSubject('subject')),
+      expect: () => [],
+    );
+  });
+
+  group('Add text:', () {
+    blocTest(
+      'should add it',
+      build: () {
+        when(messageRepo.addText(1, 'text')).thenAnswer((_) async => none());
+        when(repo.get(1)).thenAnswer(
+          (_) async => right(
+            Chat(1, 'subject', false, messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+              Message(2, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
+          ),
+        );
+
+        return bloc;
+      },
+      seed: () => ChatState(
+        Chat(1, 'subject', false, messages: [
+          Message(1, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+        ]),
+      ),
+      act: (_) => bloc.add(ChatEvent.addText('text')),
+      expect: () => [
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          isInProgress: true,
+        ),
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+            Message(2, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+        ),
+      ],
+    );
+
+    blocTest(
+      'should not add it',
+      build: () {
+        when(messageRepo.addText(1, 'text')).thenAnswer((_) async => none());
+        when(repo.get(1)).thenAnswer(
+          (_) async => left(Rejection('reason')),
+        );
+
+        return bloc;
+      },
+      seed: () => ChatState(
+        Chat(1, 'subject', false, messages: [
+          Message(1, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+        ]),
+      ),
+      act: (_) => bloc.add(ChatEvent.addText('text')),
+      expect: () => [
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          isInProgress: true,
+        ),
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          rejection: Rejection('reason'),
+        ),
+      ],
+    );
+
+    blocTest(
+      'should not add it as well',
+      build: () {
+        when(messageRepo.addText(1, 'text'))
+            .thenAnswer((_) async => some(Rejection('reason')));
+
+        return bloc;
+      },
+      seed: () => ChatState(
+        Chat(1, 'subject', false, messages: [
+          Message(1, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+        ]),
+      ),
+      act: (_) => bloc.add(ChatEvent.addText('text')),
+      expect: () => [
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          isInProgress: true,
+        ),
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          rejection: Rejection('reason'),
+        ),
+      ],
+    );
+
+    blocTest(
+      'should not even try to',
+      build: () => bloc,
+      seed: () => ChatState.inProgress(),
+      act: (_) => bloc.add(ChatEvent.addText('text')),
+      expect: () => [],
+    );
+
+    blocTest(
+      'should not even try to either',
+      build: () => bloc,
+      seed: () => ChatState.error(Rejection('reason')),
+      act: (_) => bloc.add(ChatEvent.addText('text')),
+      expect: () => [],
+    );
+  });
+
+  group('Delete message:', () {
+    blocTest(
+      'should do it',
+      build: () {
+        when(messageRepo.delete(1, 1)).thenAnswer((_) async => none());
+        return bloc;
+      },
+      seed: () => ChatState(
+        Chat(1, 'subject', false, messages: [
+          Message(1, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+          Message(2, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+        ]),
+      ),
+      act: (_) => bloc.add(ChatEvent.deleteMessage(1)),
+      expect: () => [
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+            Message(2, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          isInProgress: true,
+        ),
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(2, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+        ),
+      ],
+    );
+
+    blocTest(
+      'should not do it',
+      build: () {
+        when(messageRepo.delete(1, 1))
+            .thenAnswer((_) async => some(Rejection('reason')));
+        return bloc;
+      },
+      seed: () => ChatState(
+        Chat(1, 'subject', false, messages: [
+          Message(1, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+        ]),
+      ),
+      act: (_) => bloc.add(ChatEvent.deleteMessage(1)),
+      expect: () => [
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          isInProgress: true,
+        ),
+        ChatState(
+          Chat(1, 'subject', false, messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          rejection: Rejection('reason'),
+        ),
+      ],
+    );
+
+    blocTest(
+      'should not even try to',
+      build: () => bloc,
+      seed: () => ChatState.inProgress(),
+      act: (_) => bloc.add(ChatEvent.deleteMessage(1)),
+      expect: () => [],
+    );
+
+    blocTest(
+      'should not even try to either',
+      build: () => bloc,
+      seed: () => ChatState.error(Rejection('reason')),
+      act: (_) => bloc.add(ChatEvent.deleteMessage(1)),
       expect: () => [],
     );
   });

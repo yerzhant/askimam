@@ -6,6 +6,7 @@ import 'dart:async' as _i4;
 
 import 'package:askimam/chat/domain/chat.dart' as _i6;
 import 'package:askimam/chat/domain/chat_repository.dart' as _i3;
+import 'package:askimam/chat/domain/message_repository.dart' as _i7;
 import 'package:askimam/common/domain/rejection.dart' as _i5;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -76,6 +77,26 @@ class MockChatRepository extends _i1.Mock implements _i3.ChatRepository {
   @override
   _i4.Future<_i2.Option<_i5.Rejection>> returnToUnanswered(int? id) =>
       (super.noSuchMethod(Invocation.method(#returnToUnanswered, [id]),
+              returnValue: Future.value(_FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
+}
+
+/// A class which mocks [MessageRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMessageRepository extends _i1.Mock implements _i7.MessageRepository {
+  MockMessageRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<_i2.Option<_i5.Rejection>> addText(int? chatId, String? text) =>
+      (super.noSuchMethod(Invocation.method(#addText, [chatId, text]),
+              returnValue: Future.value(_FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
+  @override
+  _i4.Future<_i2.Option<_i5.Rejection>> delete(int? chatId, int? messageId) =>
+      (super.noSuchMethod(Invocation.method(#delete, [chatId, messageId]),
               returnValue: Future.value(_FakeOption<_i5.Rejection>()))
           as _i4.Future<_i2.Option<_i5.Rejection>>);
 }
