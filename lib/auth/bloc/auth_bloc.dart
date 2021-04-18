@@ -1,0 +1,58 @@
+import 'dart:async';
+
+import 'package:askimam/auth/domain/auth_repository.dart';
+import 'package:askimam/auth/domain/authentication.dart';
+import 'package:askimam/auth/domain/authentication_request.dart';
+import 'package:askimam/common/domain/rejection.dart';
+import 'package:bloc/bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'auth_bloc.freezed.dart';
+part 'auth_event.dart';
+part 'auth_state.dart';
+
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final AuthRepository _repo;
+
+  AuthBloc(this._repo) : super(_Unauthenticated());
+
+  @override
+  Stream<AuthState> mapEventToState(AuthEvent event) => event.when(
+        load: _load,
+        login: _login,
+        logout: _logout,
+      );
+
+  Stream<AuthState> _load() async* {
+    yield AuthState.inProgress();
+
+    final result = await _repo.load();
+
+    yield result.fold(
+      (l) => AuthState.error(l),
+      (r) => AuthState.authenticated(r),
+    );
+  }
+
+  Stream<AuthState> _login(AuthenticationRequest request) async* {
+    yield AuthState.inProgress();
+
+    final result = await _repo.login(request);
+
+    yield result.fold(
+      (l) => AuthState.error(l),
+      (r) => AuthState.authenticated(r),
+    );
+  }
+
+  Stream<AuthState> _logout() async* {
+    yield AuthState.inProgress();
+
+    final result = await _repo.logout();
+
+    yield result.fold(
+      () => AuthState.unauthenticated(),
+      (l) => AuthState.error(l),
+    );
+  }
+}
