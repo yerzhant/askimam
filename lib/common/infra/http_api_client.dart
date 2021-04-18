@@ -71,4 +71,10 @@ class HttpApiClient implements ApiClient {
         if (jwt.trim().isNotEmpty)
           HttpHeaders.authorizationHeader: 'Bearer $jwt',
       };
+
+  @override
+  Future<Option<Rejection>> post<M extends Model>(String suffix, M model) {
+    // TODO: implement post
+    throw UnimplementedError();
+  }
 }

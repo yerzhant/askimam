@@ -26,11 +26,17 @@ class MockApiClient extends _i1.Mock implements _i3.ApiClient {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, List<T>>> getList<T extends _i6.Model>(
+  _i4.Future<_i2.Either<_i5.Rejection, List<M>>> getList<M extends _i6.Model>(
           String? suffix) =>
       (super.noSuchMethod(Invocation.method(#getList, [suffix]),
-              returnValue: Future.value(_FakeEither<_i5.Rejection, List<T>>()))
-          as _i4.Future<_i2.Either<_i5.Rejection, List<T>>>);
+              returnValue: Future.value(_FakeEither<_i5.Rejection, List<M>>()))
+          as _i4.Future<_i2.Either<_i5.Rejection, List<M>>>);
+  @override
+  _i4.Future<_i2.Option<_i5.Rejection>> post<M extends _i6.Model>(
+          String? suffix, M? model) =>
+      (super.noSuchMethod(Invocation.method(#post, [suffix, model]),
+              returnValue: Future.value(_FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
   @override
   _i4.Future<_i2.Option<_i5.Rejection>> delete(String? suffix) =>
       (super.noSuchMethod(Invocation.method(#delete, [suffix]),

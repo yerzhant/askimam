@@ -1,5 +1,6 @@
 import 'package:askimam/common/domain/api_client.dart';
 import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/favorites/domain/add_chat_to_favorites.dart';
 import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:askimam/favorites/infra/http_favorite_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -37,6 +38,26 @@ void main() {
       final result = await repo.get();
 
       expect(result, left(Rejection('error')));
+    });
+  });
+
+  group('Add a favorite', () {
+    test('should add it', () async {
+      when(apiClient.post('favorites', AddChatToFavorites(1)))
+          .thenAnswer((_) async => none());
+
+      final result = await repo.add(Favorite(1, 1, 'subject'));
+
+      expect(result, none());
+    });
+
+    test('should return an error', () async {
+      when(apiClient.post('favorites', AddChatToFavorites(1)))
+          .thenAnswer((_) async => some(Rejection('error')));
+
+      final result = await repo.add(Favorite(1, 1, 'subject'));
+
+      expect(result, some(Rejection('error')));
     });
   });
 
