@@ -1,7 +1,7 @@
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/favorites/bloc/favorite_bloc.dart';
-import 'package:askimam/favorites/domain/favorite.dart';
-import 'package:askimam/favorites/domain/favorite_repository.dart';
+import 'package:askimam/favorites/domain/model/favorite.dart';
+import 'package:askimam/favorites/domain/repo/favorite_repository.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';

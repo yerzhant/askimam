@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
-import 'package:askimam/favorites/domain/favorite.dart';
+import 'package:askimam/favorites/domain/model/favorite.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart';
 
