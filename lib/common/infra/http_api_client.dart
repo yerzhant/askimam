@@ -37,24 +37,18 @@ class HttpApiClient implements ApiClient {
         headers: _getHeaders(),
       );
 
-      if (httpResponse.statusCode == 200) {
-        final response = httpResponse.decodeApiResponse();
-
-        if (response.status == ApiResponseStatus.Ok) {
-          return right(response.value<M>());
-        } else {
-          return left(response.asRejection());
-        }
-      } else {
-        return left(httpResponse.asRejection());
-      }
+      return _processHttpResponse(
+        httpResponse,
+        (response) => right(response.value()),
+        (rejection) => left(rejection),
+      );
     } on Exception catch (e) {
       return left(e.asRejection());
     }
   }
 
   @override
-  Future<Either<Rejection, List<T>>> getList<T extends Model>(
+  Future<Either<Rejection, List<M>>> getList<M extends Model>(
     String suffix,
   ) async {
     try {
@@ -63,17 +57,11 @@ class HttpApiClient implements ApiClient {
         headers: _getHeaders(),
       );
 
-      if (httpResponse.statusCode == 200) {
-        final response = httpResponse.decodeApiResponse();
-
-        if (response.status == ApiResponseStatus.Ok) {
-          return right(response.list<T>());
-        } else {
-          return left(response.asRejection());
-        }
-      } else {
-        return left(httpResponse.asRejection());
-      }
+      return _processHttpResponse(
+        httpResponse,
+        (response) => right(response.list()),
+        (rejection) => left(rejection),
+      );
     } on Exception catch (e) {
       return left(e.asRejection());
     }
@@ -114,19 +102,31 @@ class HttpApiClient implements ApiClient {
         headers: _getHeaders(),
       );
 
-      if (httpResponse.statusCode == 200) {
-        final response = httpResponse.decodeApiResponse();
-
-        if (response.status == ApiResponseStatus.Ok) {
-          return none();
-        } else {
-          return some(response.asRejection());
-        }
-      } else {
-        return some(httpResponse.asRejection());
-      }
+      return _processHttpResponse(
+        httpResponse,
+        (response) => none(),
+        (rejection) => some(rejection),
+      );
     } on Exception catch (e) {
       return some(e.asRejection());
+    }
+  }
+
+  T _processHttpResponse<T>(
+    Response httpResponse,
+    T Function(ApiResponse response) ok,
+    T Function(Rejection rejection) nok,
+  ) {
+    if (httpResponse.statusCode == 200) {
+      final response = httpResponse.decodeApiResponse();
+
+      if (response.status == ApiResponseStatus.Ok) {
+        return ok(response);
+      } else {
+        return nok(response.asRejection());
+      }
+    } else {
+      return nok(httpResponse.asRejection());
     }
   }
 
