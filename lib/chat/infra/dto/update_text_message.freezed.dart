@@ -123,8 +123,8 @@ class __$UpdateTextMessageCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_UpdateTextMessage implements _UpdateTextMessage {
-  _$_UpdateTextMessage(this.text, this.fcmToken);
+class _$_UpdateTextMessage extends _UpdateTextMessage {
+  _$_UpdateTextMessage(this.text, this.fcmToken) : super._();
 
   factory _$_UpdateTextMessage.fromJson(Map<String, dynamic> json) =>
       _$_$_UpdateTextMessageFromJson(json);
@@ -167,9 +167,10 @@ class _$_UpdateTextMessage implements _UpdateTextMessage {
   }
 }
 
-abstract class _UpdateTextMessage implements UpdateTextMessage {
+abstract class _UpdateTextMessage extends UpdateTextMessage {
   factory _UpdateTextMessage(String text, String fcmToken) =
       _$_UpdateTextMessage;
+  _UpdateTextMessage._() : super._();
 
   factory _UpdateTextMessage.fromJson(Map<String, dynamic> json) =
       _$_UpdateTextMessage.fromJson;

@@ -35,6 +35,13 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/suffix/ok') {
         var json = ApiResponse.ok().toJsonString();
         return Response(json, 200);
+      } else if (req.url.path == '/suffix/ok-body') {
+        if (listEquals(req.bodyBytes, UpdateChat('Тема').toJsonUtf8())) {
+          var json = ApiResponse.ok().toJsonString();
+          return Response(json, 200);
+        } else {
+          return Response('', 400);
+        }
       } else if (req.url.path == '/suffix/nok') {
         var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
         return Response.bytes(json, 200);

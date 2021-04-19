@@ -141,8 +141,8 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_Chat implements _Chat {
-  _$_Chat(this.id, this.subject, this.isFavorite, {this.messages});
+class _$_Chat extends _Chat {
+  _$_Chat(this.id, this.subject, this.isFavorite, {this.messages}) : super._();
 
   factory _$_Chat.fromJson(Map<String, dynamic> json) =>
       _$_$_ChatFromJson(json);
@@ -197,9 +197,10 @@ class _$_Chat implements _Chat {
   }
 }
 
-abstract class _Chat implements Chat {
+abstract class _Chat extends Chat {
   factory _Chat(int id, String subject, bool isFavorite,
       {List<Message>? messages}) = _$_Chat;
+  _Chat._() : super._();
 
   factory _Chat.fromJson(Map<String, dynamic> json) = _$_Chat.fromJson;
 

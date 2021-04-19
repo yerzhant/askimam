@@ -135,8 +135,8 @@ class __$AddTextMessageCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_AddTextMessage implements _AddTextMessage {
-  _$_AddTextMessage(this.chatId, this.text, this.fcmToken);
+class _$_AddTextMessage extends _AddTextMessage {
+  _$_AddTextMessage(this.chatId, this.text, this.fcmToken) : super._();
 
   factory _$_AddTextMessage.fromJson(Map<String, dynamic> json) =>
       _$_$_AddTextMessageFromJson(json);
@@ -184,9 +184,10 @@ class _$_AddTextMessage implements _AddTextMessage {
   }
 }
 
-abstract class _AddTextMessage implements AddTextMessage {
+abstract class _AddTextMessage extends AddTextMessage {
   factory _AddTextMessage(int chatId, String text, String fcmToken) =
       _$_AddTextMessage;
+  _AddTextMessage._() : super._();
 
   factory _AddTextMessage.fromJson(Map<String, dynamic> json) =
       _$_AddTextMessage.fromJson;

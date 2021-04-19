@@ -6,7 +6,8 @@ part 'chat.freezed.dart';
 part 'chat.g.dart';
 
 @freezed
-abstract class Chat with _$Chat, Model {
+class Chat with _$Chat, Model {
+  const Chat._();
   factory Chat(
     int id,
     String subject,

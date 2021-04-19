@@ -6,6 +6,7 @@ part 'favorite.g.dart';
 
 @freezed
 class Favorite with _$Favorite, Model {
+  const Favorite._();
   factory Favorite(
     int id,
     int chatId,

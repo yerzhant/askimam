@@ -111,8 +111,8 @@ class __$AddChatToFavoritesCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_AddChatToFavorites implements _AddChatToFavorites {
-  _$_AddChatToFavorites(this.id);
+class _$_AddChatToFavorites extends _AddChatToFavorites {
+  _$_AddChatToFavorites(this.id) : super._();
 
   factory _$_AddChatToFavorites.fromJson(Map<String, dynamic> json) =>
       _$_$_AddChatToFavoritesFromJson(json);
@@ -148,8 +148,9 @@ class _$_AddChatToFavorites implements _AddChatToFavorites {
   }
 }
 
-abstract class _AddChatToFavorites implements AddChatToFavorites {
+abstract class _AddChatToFavorites extends AddChatToFavorites {
   factory _AddChatToFavorites(int id) = _$_AddChatToFavorites;
+  _AddChatToFavorites._() : super._();
 
   factory _AddChatToFavorites.fromJson(Map<String, dynamic> json) =
       _$_AddChatToFavorites.fromJson;

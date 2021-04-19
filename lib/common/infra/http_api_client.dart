@@ -101,9 +101,22 @@ class HttpApiClient implements ApiClient {
 
   @override
   Future<Option<Rejection>> patchWithBody<M extends Model>(
-      String suffix, M model) {
-    // TODO: implement patchWithBody
-    throw UnimplementedError();
+      String suffix, M model) async {
+    try {
+      final httpResponse = await _client.patch(
+        _constructUrl(suffix),
+        headers: _getHeaders(),
+        body: model.toJsonUtf8(),
+      );
+
+      return _processHttpResponse(
+        httpResponse,
+        (_) => none(),
+        (rejection) => some(rejection),
+      );
+    } on Exception catch (e) {
+      return some(e.asRejection());
+    }
   }
 
   @override

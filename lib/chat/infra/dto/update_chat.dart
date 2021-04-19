@@ -5,7 +5,8 @@ part 'update_chat.freezed.dart';
 part 'update_chat.g.dart';
 
 @freezed
-abstract class UpdateChat with _$UpdateChat, Model {
+class UpdateChat with _$UpdateChat, Model {
+  const UpdateChat._();
   factory UpdateChat(String subject) = _UpdateChat;
 
   factory UpdateChat.fromJson(Map<String, dynamic> json) =>

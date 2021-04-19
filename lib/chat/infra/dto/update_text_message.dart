@@ -5,7 +5,8 @@ part 'update_text_message.freezed.dart';
 part 'update_text_message.g.dart';
 
 @freezed
-abstract class UpdateTextMessage with _$UpdateTextMessage, Model {
+class UpdateTextMessage with _$UpdateTextMessage, Model {
+  const UpdateTextMessage._();
   factory UpdateTextMessage(
     String text,
     String fcmToken,

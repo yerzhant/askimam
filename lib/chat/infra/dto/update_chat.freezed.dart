@@ -108,8 +108,8 @@ class __$UpdateChatCopyWithImpl<$Res> extends _$UpdateChatCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_UpdateChat implements _UpdateChat {
-  _$_UpdateChat(this.subject);
+class _$_UpdateChat extends _UpdateChat {
+  _$_UpdateChat(this.subject) : super._();
 
   factory _$_UpdateChat.fromJson(Map<String, dynamic> json) =>
       _$_$_UpdateChatFromJson(json);
@@ -145,8 +145,9 @@ class _$_UpdateChat implements _UpdateChat {
   }
 }
 
-abstract class _UpdateChat implements UpdateChat {
+abstract class _UpdateChat extends UpdateChat {
   factory _UpdateChat(String subject) = _$_UpdateChat;
+  _UpdateChat._() : super._();
 
   factory _UpdateChat.fromJson(Map<String, dynamic> json) =
       _$_UpdateChat.fromJson;

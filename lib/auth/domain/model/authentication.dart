@@ -5,7 +5,8 @@ part 'authentication.freezed.dart';
 part 'authentication.g.dart';
 
 @freezed
-abstract class Authentication with _$Authentication, Model {
+class Authentication with _$Authentication, Model {
+  const Authentication._();
   factory Authentication(
     String jwt,
     UserType userType,

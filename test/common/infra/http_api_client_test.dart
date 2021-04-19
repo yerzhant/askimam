@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/chat/infra/dto/update_chat.dart';
+import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/infra/dto/api_response.dart';
@@ -8,6 +12,7 @@ import 'package:askimam/common/infra/http_api_client.dart';
 import 'package:askimam/favorites/domain/model/favorite.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
@@ -161,6 +166,46 @@ void main() {
 
     test('should return some exception', () async {
       final result = await apiClient.patch('suffix/4');
+
+      expect(result, some(Rejection('Exception: Unhandled PATCH: /suffix/4')));
+    });
+  });
+
+  group('Patch with body:', () {
+    test('should return none', () async {
+      final result =
+          await apiClient.patchWithBody('suffix/ok-body', UpdateChat('Тема'));
+
+      expect(result, none());
+    });
+
+    test('should return some rejection reason', () async {
+      final result =
+          await apiClient.patchWithBody('suffix/nok', UpdateChat('Тема'));
+
+      expect(result, some(Rejection('Что-то пошло не так')));
+    });
+
+    test('should return an unauthorized', () async {
+      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+
+      final result =
+          await apiClient.patchWithBody('suffix/ok-body', UpdateChat('Тема'));
+
+      expect(result, some(Rejection('Unauthorized.')));
+    });
+
+    test('should return some nok', () async {
+      final result =
+          await apiClient.patchWithBody('suffix/500', UpdateChat('Тема'));
+
+      expect(result, some(Rejection('Response: 500, boom!')));
+    });
+
+    test('should return some exception', () async {
+      final result =
+          await apiClient.patchWithBody('suffix/4', UpdateChat('Тема'));
 
       expect(result, some(Rejection('Exception: Unhandled PATCH: /suffix/4')));
     });

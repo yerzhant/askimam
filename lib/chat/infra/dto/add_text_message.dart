@@ -5,7 +5,8 @@ part 'add_text_message.freezed.dart';
 part 'add_text_message.g.dart';
 
 @freezed
-abstract class AddTextMessage with _$AddTextMessage, Model {
+class AddTextMessage with _$AddTextMessage, Model {
+  const AddTextMessage._();
   factory AddTextMessage(
     int chatId,
     String text,

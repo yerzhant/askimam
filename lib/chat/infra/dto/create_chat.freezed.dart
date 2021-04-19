@@ -145,8 +145,8 @@ class __$CreateChatCopyWithImpl<$Res> extends _$CreateChatCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_CreateChat implements _CreateChat {
-  _$_CreateChat(this.type, this.subject, this.text, this.fcmToken);
+class _$_CreateChat extends _CreateChat {
+  _$_CreateChat(this.type, this.subject, this.text, this.fcmToken) : super._();
 
   factory _$_CreateChat.fromJson(Map<String, dynamic> json) =>
       _$_$_CreateChatFromJson(json);
@@ -200,10 +200,11 @@ class _$_CreateChat implements _CreateChat {
   }
 }
 
-abstract class _CreateChat implements CreateChat {
+abstract class _CreateChat extends CreateChat {
   factory _CreateChat(
           ChatType type, String? subject, String text, String fcmToken) =
       _$_CreateChat;
+  _CreateChat._() : super._();
 
   factory _CreateChat.fromJson(Map<String, dynamic> json) =
       _$_CreateChat.fromJson;

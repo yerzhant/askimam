@@ -6,7 +6,8 @@ part 'create_chat.freezed.dart';
 part 'create_chat.g.dart';
 
 @freezed
-abstract class CreateChat with _$CreateChat, Model {
+class CreateChat with _$CreateChat, Model {
+  const CreateChat._();
   factory CreateChat(
     ChatType type,
     String? subject,

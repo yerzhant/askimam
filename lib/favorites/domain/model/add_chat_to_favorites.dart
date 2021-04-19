@@ -6,6 +6,7 @@ part 'add_chat_to_favorites.g.dart';
 
 @freezed
 class AddChatToFavorites with _$AddChatToFavorites, Model {
+  const AddChatToFavorites._();
   factory AddChatToFavorites(int id) = _AddChatToFavorites;
 
   factory AddChatToFavorites.fromJson(Map<String, dynamic> json) =>

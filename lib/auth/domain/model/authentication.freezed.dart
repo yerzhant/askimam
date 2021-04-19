@@ -123,8 +123,8 @@ class __$AuthenticationCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_Authentication implements _Authentication {
-  _$_Authentication(this.jwt, this.userType);
+class _$_Authentication extends _Authentication {
+  _$_Authentication(this.jwt, this.userType) : super._();
 
   factory _$_Authentication.fromJson(Map<String, dynamic> json) =>
       _$_$_AuthenticationFromJson(json);
@@ -167,8 +167,9 @@ class _$_Authentication implements _Authentication {
   }
 }
 
-abstract class _Authentication implements Authentication {
+abstract class _Authentication extends Authentication {
   factory _Authentication(String jwt, UserType userType) = _$_Authentication;
+  _Authentication._() : super._();
 
   factory _Authentication.fromJson(Map<String, dynamic> json) =
       _$_Authentication.fromJson;

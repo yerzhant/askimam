@@ -124,8 +124,8 @@ class __$AuthenticationRequestCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_AuthenticationRequest implements _AuthenticationRequest {
-  _$_AuthenticationRequest(this.login, this.password);
+class _$_AuthenticationRequest extends _AuthenticationRequest {
+  _$_AuthenticationRequest(this.login, this.password) : super._();
 
   factory _$_AuthenticationRequest.fromJson(Map<String, dynamic> json) =>
       _$_$_AuthenticationRequestFromJson(json);
@@ -169,9 +169,10 @@ class _$_AuthenticationRequest implements _AuthenticationRequest {
   }
 }
 
-abstract class _AuthenticationRequest implements AuthenticationRequest {
+abstract class _AuthenticationRequest extends AuthenticationRequest {
   factory _AuthenticationRequest(String login, String password) =
       _$_AuthenticationRequest;
+  _AuthenticationRequest._() : super._();
 
   factory _AuthenticationRequest.fromJson(Map<String, dynamic> json) =
       _$_AuthenticationRequest.fromJson;

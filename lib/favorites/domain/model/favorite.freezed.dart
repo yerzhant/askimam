@@ -129,8 +129,8 @@ class __$FavoriteCopyWithImpl<$Res> extends _$FavoriteCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_Favorite implements _Favorite {
-  _$_Favorite(this.id, this.chatId, this.subject);
+class _$_Favorite extends _Favorite {
+  _$_Favorite(this.id, this.chatId, this.subject) : super._();
 
   factory _$_Favorite.fromJson(Map<String, dynamic> json) =>
       _$_$_FavoriteFromJson(json);
@@ -177,8 +177,9 @@ class _$_Favorite implements _Favorite {
   }
 }
 
-abstract class _Favorite implements Favorite {
+abstract class _Favorite extends Favorite {
   factory _Favorite(int id, int chatId, String subject) = _$_Favorite;
+  _Favorite._() : super._();
 
   factory _Favorite.fromJson(Map<String, dynamic> json) = _$_Favorite.fromJson;
 
