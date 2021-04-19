@@ -1,64 +1,47 @@
+import 'package:askimam/auth/bloc/auth_bloc.dart';
+import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
-import 'package:askimam/common/infra/http_api_client.dart';
+import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/infra/dto/api_response.dart';
+import 'package:askimam/common/infra/http_api_client.dart';
 import 'package:askimam/favorites/domain/model/favorite.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
+import 'package:mocktail/mocktail.dart' as mocktail;
+
+part 'http_api_client_test.client.dart';
 
 const apiUrl = 'https://server';
 
+class MockAuthBloc extends MockBloc<AuthEvent, AuthState> implements AuthBloc {}
+
 void main() {
-  final httpClient = MockClient((req) async {
-    switch (req.method) {
-      case 'DELETE':
-        if (!_isAuthorized(req)) {
-          return Response('', 401);
-        } else if (req.url.path == '/suffix/1') {
-          var json = ApiResponse.ok().toJsonString();
-          return Response(json, 200);
-        } else if (req.url.path == '/suffix/2') {
-          var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
-          return Response.bytes(json, 200);
-        } else if (req.url.path == '/suffix/3') {
-          return Response('', 500, reasonPhrase: 'boom!');
-        } else {
-          throw Exception('x');
-        }
+  late ApiClient apiClient;
+  late AuthBloc authBloc;
 
-      case 'GET':
-        if (req.url.path == '/list') {
-          final json = ApiResponse.data([
-            Favorite(1, 1, 'Тема'),
-            Favorite(2, 2, 'Тема'),
-          ]).toJsonUtf8();
-          return Response.bytes(json, 200);
-        } else if (req.url.path == '/auth-list' && _isAuthorized(req)) {
-          final json = ApiResponse.data([
-            Favorite(1, 1, 'Тема'),
-            Favorite(2, 2, 'Тема'),
-          ]).toJsonUtf8();
-          return Response.bytes(json, 200);
-        } else if (req.url.path == '/list-rejection') {
-          var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
-          return Response.bytes(json, 200);
-        } else if (req.url.path == '/list-nok') {
-          return Response('', 500, reasonPhrase: 'boom!');
-        } else {
-          throw Exception('x');
-        }
-
-      default:
-        throw Exception('Unhandled method');
-    }
+  setUpAll(() {
+    mocktail.registerFallbackValue<AuthState>(AuthState.unauthenticated());
+    mocktail.registerFallbackValue<AuthEvent>(AuthEvent.load());
   });
 
-  final apiClient = HttpApiClient(httpClient, apiUrl, jwt: '123');
+  setUp(() {
+    authBloc = MockAuthBloc();
+    whenListen(
+      authBloc,
+      Stream.value(
+        AuthState.authenticated(Authentication('123', UserType.Inquirer)),
+      ),
+    );
+    apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+  });
 
-  group('Get list', () {
+  group('Get list:', () {
     test('should return a list', () async {
-      final apiClient = HttpApiClient(httpClient, apiUrl);
+      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+
       final result = await apiClient.getList<Favorite>('list');
 
       expect(
@@ -101,7 +84,7 @@ void main() {
     });
   });
 
-  group('Delete', () {
+  group('Delete:', () {
     test('should return none', () async {
       final result = await apiClient.delete('suffix/1');
 

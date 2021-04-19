@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
@@ -9,10 +11,23 @@ import 'package:http/http.dart';
 
 class HttpApiClient implements ApiClient {
   final Client _client;
+  final AuthBloc authBloc;
   final String _url;
-  final String jwt;
+  String _jwt = '';
+  late StreamSubscription subscription;
 
-  const HttpApiClient(this._client, this._url, {this.jwt = ''});
+  HttpApiClient(this._client, this.authBloc, this._url) {
+    subscription = authBloc.stream.listen((state) {
+      state.maybeWhen(
+        authenticated: (auth) {
+          _jwt = auth.jwt;
+        },
+        orElse: () {
+          _jwt = '';
+        },
+      );
+    });
+  }
 
   @override
   Future<Option<Rejection>> delete(String suffix) async {
@@ -68,8 +83,7 @@ class HttpApiClient implements ApiClient {
 
   Map<String, String> _getHeaders() => {
         HttpHeaders.acceptHeader: ContentType.json.value,
-        if (jwt.trim().isNotEmpty)
-          HttpHeaders.authorizationHeader: 'Bearer $jwt',
+        if (_jwt.isNotEmpty) HttpHeaders.authorizationHeader: 'Bearer $_jwt',
       };
 
   @override
