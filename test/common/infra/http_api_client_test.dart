@@ -1,15 +1,15 @@
-import 'dart:convert';
-
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/chat/infra/dto/add_text_message.dart';
+import 'package:askimam/chat/infra/dto/create_chat.dart';
 import 'package:askimam/chat/infra/dto/update_chat.dart';
 import 'package:askimam/chat/infra/dto/update_text_message.dart';
-import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/infra/dto/api_response.dart';
 import 'package:askimam/common/infra/http_api_client.dart';
+import 'package:askimam/favorites/domain/model/add_chat_to_favorites.dart';
 import 'package:askimam/favorites/domain/model/favorite.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
@@ -17,7 +17,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
-import 'package:mocktail/mocktail.dart' as mocktail;
+import 'package:mocktail/mocktail.dart';
 
 part 'http_api_client_test.client.dart';
 
@@ -30,8 +30,8 @@ void main() {
   late AuthBloc authBloc;
 
   setUpAll(() {
-    mocktail.registerFallbackValue<AuthState>(AuthState.unauthenticated());
-    mocktail.registerFallbackValue<AuthEvent>(AuthEvent.load());
+    registerFallbackValue<AuthState>(AuthState.unauthenticated());
+    registerFallbackValue<AuthEvent>(AuthEvent.load());
   });
 
   setUp(() {
@@ -134,6 +134,60 @@ void main() {
       final result = await apiClient.getList<Favorite>('x');
 
       expect(result, left(Rejection('Exception: Unhandled GET: /x')));
+    });
+  });
+
+  group('Post:', () {
+    test('should return none - chat', () async {
+      final result = await apiClient.post('suffix/ok-chat',
+          CreateChat(ChatType.Public, 'Тема', 'Текст', '123'));
+
+      expect(result, none());
+    });
+
+    test('should return none - message', () async {
+      final result = await apiClient.post(
+          'suffix/ok-message', AddTextMessage(1, 'Текст', '123'));
+
+      expect(result, none());
+    });
+
+    test('should return none - favorite', () async {
+      final result =
+          await apiClient.post('suffix/ok-favorite', AddChatToFavorites(1));
+
+      expect(result, none());
+    });
+
+    test('should return some rejection reason', () async {
+      final result = await apiClient.post(
+          'suffix/nok', CreateChat(ChatType.Public, 'Тема', 'Текст', '123'));
+
+      expect(result, some(Rejection('Что-то пошло не так')));
+    });
+
+    test('should return an unauthorized', () async {
+      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+
+      final result = await apiClient.post(
+          'suffix/ok-message', AddTextMessage(1, 'Текст', '123'));
+
+      expect(result, some(Rejection('Unauthorized.')));
+    });
+
+    test('should return some nok', () async {
+      final result =
+          await apiClient.post('suffix/500', AddTextMessage(1, 'Текст', '123'));
+
+      expect(result, some(Rejection('Response: 500, boom!')));
+    });
+
+    test('should return some exception', () async {
+      final result =
+          await apiClient.post('suffix/4', AddTextMessage(1, 'Текст', '123'));
+
+      expect(result, some(Rejection('Exception: Unhandled POST: /suffix/4')));
     });
   });
 

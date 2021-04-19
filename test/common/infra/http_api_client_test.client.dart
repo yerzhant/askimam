@@ -29,6 +29,48 @@ final httpClient = MockClient((req) async {
         throw Exception('Unhandled ${req.method}: ${req.url.path}');
       }
 
+    case 'POST':
+      if (!_isAuthorized(req)) {
+        return Response('', 401);
+      } else if (req.url.path == '/suffix/ok-chat') {
+        if (listEquals(
+          req.bodyBytes,
+          CreateChat(ChatType.Public, 'Тема', 'Текст', '123').toJsonUtf8(),
+        )) {
+          var json = ApiResponse.ok().toJsonString();
+          return Response(json, 200);
+        } else {
+          return Response('', 400);
+        }
+      } else if (req.url.path == '/suffix/ok-message') {
+        if (listEquals(
+          req.bodyBytes,
+          AddTextMessage(1, 'Текст', '123').toJsonUtf8(),
+        )) {
+          var json = ApiResponse.ok().toJsonString();
+          return Response(json, 200);
+        } else {
+          return Response('', 400);
+        }
+      } else if (req.url.path == '/suffix/ok-favorite') {
+        if (listEquals(
+          req.bodyBytes,
+          AddChatToFavorites(1).toJsonUtf8(),
+        )) {
+          var json = ApiResponse.ok().toJsonString();
+          return Response(json, 200);
+        } else {
+          return Response('', 400);
+        }
+      } else if (req.url.path == '/suffix/nok') {
+        var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
+        return Response.bytes(json, 200);
+      } else if (req.url.path == '/suffix/500') {
+        return Response('', 500, reasonPhrase: 'boom!');
+      } else {
+        throw Exception('Unhandled ${req.method}: ${req.url.path}');
+      }
+
     case 'PATCH':
       if (!_isAuthorized(req)) {
         return Response('', 401);

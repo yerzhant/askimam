@@ -68,9 +68,23 @@ class HttpApiClient implements ApiClient {
   }
 
   @override
-  Future<Option<Rejection>> post<M extends Model>(String suffix, M model) {
-    // TODO: implement post
-    throw UnimplementedError();
+  Future<Option<Rejection>> post<M extends Model>(
+      String suffix, M model) async {
+    try {
+      final httpResponse = await _client.post(
+        _constructUrl(suffix),
+        headers: _getHeaders(),
+        body: model.toJsonUtf8(),
+      );
+
+      return _processHttpResponse(
+        httpResponse,
+        (_) => none(),
+        (rejection) => some(rejection),
+      );
+    } on Exception catch (e) {
+      return some(e.asRejection());
+    }
   }
 
   @override
