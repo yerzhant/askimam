@@ -1,7 +1,7 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
-import 'package:askimam/auth/domain/auth_repository.dart';
-import 'package:askimam/auth/domain/authentication.dart';
-import 'package:askimam/auth/domain/authentication_request.dart';
+import 'package:askimam/auth/domain/repo/auth_repository.dart';
+import 'package:askimam/auth/domain/model/authentication.dart';
+import 'package:askimam/auth/domain/model/authentication_request.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';

@@ -1,5 +1,5 @@
-import 'package:askimam/auth/domain/authentication.dart';
-import 'package:askimam/auth/domain/authentication_request.dart';
+import 'package:askimam/auth/domain/model/authentication.dart';
+import 'package:askimam/auth/domain/model/authentication_request.dart';
 import 'package:askimam/auth/infra/http_auth_repository.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
