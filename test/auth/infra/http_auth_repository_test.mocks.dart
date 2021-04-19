@@ -86,16 +86,16 @@ class MockSettings extends _i1.Mock implements _i7.Settings {
           as _i4.Future<_i2.Option<_i5.Rejection>>);
   @override
   _i4.Future<_i2.Either<_i5.Rejection, _i8.Authentication>>
-      getAuthentication() =>
-          (super.noSuchMethod(Invocation.method(#getAuthentication, []),
+      loadAuthentication() =>
+          (super.noSuchMethod(Invocation.method(#loadAuthentication, []),
                   returnValue: Future.value(
                       _FakeEither<_i5.Rejection, _i8.Authentication>()))
               as _i4.Future<_i2.Either<_i5.Rejection, _i8.Authentication>>);
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, _i8.Authentication>> setAuthentication(
+  _i4.Future<_i2.Either<_i5.Rejection, _i8.Authentication>> saveAuthentication(
           _i8.Authentication? authentication) =>
       (super.noSuchMethod(
-              Invocation.method(#setAuthentication, [authentication]),
+              Invocation.method(#saveAuthentication, [authentication]),
               returnValue: Future.value(
                   _FakeEither<_i5.Rejection, _i8.Authentication>()))
           as _i4.Future<_i2.Either<_i5.Rejection, _i8.Authentication>>);

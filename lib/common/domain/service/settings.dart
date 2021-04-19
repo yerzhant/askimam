@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 
 abstract class Settings {
   Future<Option<Rejection>> clearAuthentication();
-  Future<Either<Rejection, Authentication>> getAuthentication();
-  Future<Either<Rejection, Authentication>> setAuthentication(
+  Future<Either<Rejection, Authentication>> loadAuthentication();
+  Future<Either<Rejection, Authentication>> saveAuthentication(
       Authentication authentication);
 }

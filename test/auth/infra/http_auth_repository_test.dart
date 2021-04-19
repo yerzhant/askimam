@@ -27,7 +27,8 @@ void main() {
       ).thenAnswer(
         (_) async => right(Authentication('jwt', UserType.Inquirer)),
       );
-      when(settings.setAuthentication(Authentication('jwt', UserType.Inquirer)))
+      when(settings
+              .saveAuthentication(Authentication('jwt', UserType.Inquirer)))
           .thenAnswer((p) async => right(p.positionalArguments[0]));
 
       final result =
@@ -36,7 +37,7 @@ void main() {
       expect(result, right(Authentication('jwt', UserType.Inquirer)));
 
       verify(
-        settings.setAuthentication(Authentication('jwt', UserType.Inquirer)),
+        settings.saveAuthentication(Authentication('jwt', UserType.Inquirer)),
       ).called(1);
     });
 
@@ -49,7 +50,8 @@ void main() {
       ).thenAnswer(
         (_) async => right(Authentication('jwt', UserType.Inquirer)),
       );
-      when(settings.setAuthentication(Authentication('jwt', UserType.Inquirer)))
+      when(settings
+              .saveAuthentication(Authentication('jwt', UserType.Inquirer)))
           .thenAnswer((p) async => left(Rejection('reason')));
 
       final result =
@@ -96,7 +98,7 @@ void main() {
 
   group('Load:', () {
     test('should be ok', () async {
-      when(settings.getAuthentication())
+      when(settings.loadAuthentication())
           .thenAnswer((_) async => right(Authentication('jwt', UserType.Imam)));
 
       final result = await repo.load();
@@ -105,7 +107,7 @@ void main() {
     });
 
     test('should not be ok', () async {
-      when(settings.getAuthentication())
+      when(settings.loadAuthentication())
           .thenAnswer((_) async => left(Rejection('reason')));
 
       final result = await repo.load();

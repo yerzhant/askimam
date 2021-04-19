@@ -16,7 +16,7 @@ class HttpAuthRepository implements AuthRepository {
 
   @override
   Future<Either<Rejection, Authentication>> load() =>
-      _settings.getAuthentication();
+      _settings.loadAuthentication();
 
   @override
   Future<Either<Rejection, Authentication>> login(
@@ -27,7 +27,7 @@ class HttpAuthRepository implements AuthRepository {
 
     return result.fold(
       (l) => left(l),
-      (r) => _settings.setAuthentication(r),
+      (r) => _settings.saveAuthentication(r),
     );
   }
 
