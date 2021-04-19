@@ -26,6 +26,12 @@ class MockApiClient extends _i1.Mock implements _i3.ApiClient {
   }
 
   @override
+  _i4.Future<_i2.Either<_i5.Rejection, M>> get<M extends _i6.Model>(
+          String? suffix) =>
+      (super.noSuchMethod(Invocation.method(#get, [suffix]),
+              returnValue: Future.value(_FakeEither<_i5.Rejection, M>()))
+          as _i4.Future<_i2.Either<_i5.Rejection, M>>);
+  @override
   _i4.Future<_i2.Either<_i5.Rejection, List<M>>> getList<M extends _i6.Model>(
           String? suffix) =>
       (super.noSuchMethod(Invocation.method(#getList, [suffix]),
@@ -38,8 +44,19 @@ class MockApiClient extends _i1.Mock implements _i3.ApiClient {
               returnValue: Future.value(_FakeOption<_i5.Rejection>()))
           as _i4.Future<_i2.Option<_i5.Rejection>>);
   @override
+  _i4.Future<_i2.Option<_i5.Rejection>> patch(String? suffix) =>
+      (super.noSuchMethod(Invocation.method(#patch, [suffix]),
+              returnValue: Future.value(_FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
+  @override
   _i4.Future<_i2.Option<_i5.Rejection>> delete(String? suffix) =>
       (super.noSuchMethod(Invocation.method(#delete, [suffix]),
+              returnValue: Future.value(_FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
+  @override
+  _i4.Future<_i2.Option<_i5.Rejection>> patchWithBody<M extends _i6.Model>(
+          String? suffix, M? model) =>
+      (super.noSuchMethod(Invocation.method(#patchWithBody, [suffix, model]),
               returnValue: Future.value(_FakeOption<_i5.Rejection>()))
           as _i4.Future<_i2.Option<_i5.Rejection>>);
   @override

@@ -85,4 +85,23 @@ class HttpApiClient implements ApiClient {
     // TODO: implement postAndGetResponse
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Rejection, M>> get<M extends Model>(String suffix) {
+    // TODO: implement get
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Option<Rejection>> patch(String suffix) {
+    // TODO: implement patch
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Option<Rejection>> patchWithBody<M extends Model>(
+      String suffix, M model) {
+    // TODO: implement patchWithBody
+    throw UnimplementedError();
+  }
 }

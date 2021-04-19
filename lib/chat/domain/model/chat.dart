@@ -1,11 +1,12 @@
 import 'package:askimam/chat/domain/model/message.dart';
+import 'package:askimam/common/domain/model/model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'chat.freezed.dart';
 part 'chat.g.dart';
 
 @freezed
-abstract class Chat with _$Chat {
+abstract class Chat with _$Chat, Model {
   factory Chat(
     int id,
     String subject,
