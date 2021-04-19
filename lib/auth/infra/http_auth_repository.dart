@@ -1,9 +1,9 @@
 import 'package:askimam/auth/domain/auth_repository.dart';
-import 'package:askimam/common/domain/api_client.dart';
-import 'package:askimam/common/domain/settings.dart';
+import 'package:askimam/common/domain/service/api_client.dart';
+import 'package:askimam/common/domain/service/settings.dart';
 import 'package:askimam/common/utils.dart';
 import 'package:dartz/dartz.dart';
-import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/auth/domain/authentication_request.dart';
 import 'package:askimam/auth/domain/authentication.dart';
 

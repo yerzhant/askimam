@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:askimam/auth/domain/auth_repository.dart';
 import 'package:askimam/auth/domain/authentication.dart';
 import 'package:askimam/auth/domain/authentication_request.dart';
-import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

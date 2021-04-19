@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/repo/chat_repository.dart';
 import 'package:askimam/chat/domain/repo/message_repository.dart';
-import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

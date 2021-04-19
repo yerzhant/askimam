@@ -3,7 +3,7 @@ import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/repo/chat_repository.dart';
 import 'package:askimam/chat/domain/model/message.dart';
 import 'package:askimam/chat/domain/repo/message_repository.dart';
-import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';

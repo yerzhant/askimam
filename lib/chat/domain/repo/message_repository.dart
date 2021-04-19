@@ -1,4 +1,4 @@
-import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class MessageRepository {

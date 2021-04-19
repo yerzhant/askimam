@@ -1,4 +1,4 @@
-import 'package:askimam/common/domain/model.dart';
+import 'package:askimam/common/domain/model/model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'authentication.freezed.dart';

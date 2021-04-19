@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:askimam/common/domain/model.dart';
-import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/common/domain/model/model.dart';
+import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart';

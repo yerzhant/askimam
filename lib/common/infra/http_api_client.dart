@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:askimam/common/domain/api_client.dart';
-import 'package:askimam/common/domain/model.dart';
-import 'package:askimam/common/domain/rejection.dart';
-import 'package:askimam/common/web/api_response.dart';
+import 'package:askimam/common/domain/service/api_client.dart';
+import 'package:askimam/common/domain/model/model.dart';
+import 'package:askimam/common/domain/model/rejection.dart';
+import 'package:askimam/common/infra/dto/api_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart';
 

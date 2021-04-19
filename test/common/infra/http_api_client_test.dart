@@ -1,6 +1,6 @@
-import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/infra/http_api_client.dart';
-import 'package:askimam/common/web/api_response.dart';
+import 'package:askimam/common/infra/dto/api_response.dart';
 import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';

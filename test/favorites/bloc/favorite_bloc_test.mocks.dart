@@ -4,7 +4,7 @@
 
 import 'dart:async' as _i4;
 
-import 'package:askimam/common/domain/rejection.dart' as _i5;
+import 'package:askimam/common/domain/model/rejection.dart' as _i5;
 import 'package:askimam/favorites/domain/favorite.dart' as _i6;
 import 'package:askimam/favorites/domain/favorite_repository.dart' as _i3;
 import 'package:dartz/dartz.dart' as _i2;

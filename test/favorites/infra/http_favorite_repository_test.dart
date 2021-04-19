@@ -1,5 +1,5 @@
-import 'package:askimam/common/domain/api_client.dart';
-import 'package:askimam/common/domain/rejection.dart';
+import 'package:askimam/common/domain/service/api_client.dart';
+import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/favorites/domain/add_chat_to_favorites.dart';
 import 'package:askimam/favorites/domain/favorite.dart';
 import 'package:askimam/favorites/infra/http_favorite_repository.dart';
