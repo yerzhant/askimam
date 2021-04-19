@@ -2,21 +2,6 @@ part of 'http_api_client_test.dart';
 
 final httpClient = MockClient((req) async {
   switch (req.method) {
-    case 'DELETE':
-      if (!_isAuthorized(req)) {
-        return Response('', 401);
-      } else if (req.url.path == '/suffix/1') {
-        var json = ApiResponse.ok().toJsonString();
-        return Response(json, 200);
-      } else if (req.url.path == '/suffix/2') {
-        var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
-        return Response.bytes(json, 200);
-      } else if (req.url.path == '/suffix/3') {
-        return Response('', 500, reasonPhrase: 'boom!');
-      } else {
-        throw Exception('x');
-      }
-
     case 'GET':
       if (req.url.path == '/list') {
         final json = ApiResponse.data([
@@ -41,7 +26,37 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/nok') {
         return Response('', 500, reasonPhrase: 'boom!');
       } else {
-        throw Exception('Unhandled GET: ${req.url.path}');
+        throw Exception('Unhandled ${req.method}: ${req.url.path}');
+      }
+
+    case 'PATCH':
+      if (!_isAuthorized(req)) {
+        return Response('', 401);
+      } else if (req.url.path == '/suffix/ok') {
+        var json = ApiResponse.ok().toJsonString();
+        return Response(json, 200);
+      } else if (req.url.path == '/suffix/nok') {
+        var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
+        return Response.bytes(json, 200);
+      } else if (req.url.path == '/suffix/500') {
+        return Response('', 500, reasonPhrase: 'boom!');
+      } else {
+        throw Exception('Unhandled ${req.method}: ${req.url.path}');
+      }
+
+    case 'DELETE':
+      if (!_isAuthorized(req)) {
+        return Response('', 401);
+      } else if (req.url.path == '/suffix/ok') {
+        var json = ApiResponse.ok().toJsonString();
+        return Response(json, 200);
+      } else if (req.url.path == '/suffix/nok') {
+        var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
+        return Response.bytes(json, 200);
+      } else if (req.url.path == '/suffix/500') {
+        return Response('', 500, reasonPhrase: 'boom!');
+      } else {
+        throw Exception('Unhandled ${req.method}: ${req.url.path}');
       }
 
     default:

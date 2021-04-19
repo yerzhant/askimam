@@ -82,9 +82,21 @@ class HttpApiClient implements ApiClient {
   }
 
   @override
-  Future<Option<Rejection>> patch(String suffix) {
-    // TODO: implement patch
-    throw UnimplementedError();
+  Future<Option<Rejection>> patch(String suffix) async {
+    try {
+      final httpResponse = await _client.patch(
+        _constructUrl(suffix),
+        headers: _getHeaders(),
+      );
+
+      return _processHttpResponse(
+        httpResponse,
+        (_) => none(),
+        (rejection) => some(rejection),
+      );
+    } on Exception catch (e) {
+      return some(e.asRejection());
+    }
   }
 
   @override

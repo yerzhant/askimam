@@ -131,31 +131,65 @@ void main() {
     });
   });
 
-  group('Delete:', () {
+  group('Patch:', () {
     test('should return none', () async {
-      final result = await apiClient.delete('suffix/1');
+      final result = await apiClient.patch('suffix/ok');
 
       expect(result, none());
     });
 
     test('should return some rejection reason', () async {
-      final result = await apiClient.delete('suffix/2');
+      final result = await apiClient.patch('suffix/nok');
 
       expect(result, some(Rejection('Что-то пошло не так')));
     });
 
     test('should return an unauthorized', () async {
-      authBloc = MockAuthBloc();
       whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
       apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
 
-      final result = await apiClient.delete('suffix/unauth');
+      final result = await apiClient.patch('suffix/ok');
 
       expect(result, some(Rejection('Unauthorized.')));
     });
 
     test('should return some nok', () async {
-      final result = await apiClient.delete('suffix/3');
+      final result = await apiClient.patch('suffix/500');
+
+      expect(result, some(Rejection('Response: 500, boom!')));
+    });
+
+    test('should return some exception', () async {
+      final result = await apiClient.patch('suffix/4');
+
+      expect(result, some(Rejection('Exception: Unhandled PATCH: /suffix/4')));
+    });
+  });
+
+  group('Delete:', () {
+    test('should return none', () async {
+      final result = await apiClient.delete('suffix/ok');
+
+      expect(result, none());
+    });
+
+    test('should return some rejection reason', () async {
+      final result = await apiClient.delete('suffix/nok');
+
+      expect(result, some(Rejection('Что-то пошло не так')));
+    });
+
+    test('should return an unauthorized', () async {
+      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+
+      final result = await apiClient.delete('suffix/ok');
+
+      expect(result, some(Rejection('Unauthorized.')));
+    });
+
+    test('should return some nok', () async {
+      final result = await apiClient.delete('suffix/500');
 
       expect(result, some(Rejection('Response: 500, boom!')));
     });
@@ -163,7 +197,7 @@ void main() {
     test('should return some exception', () async {
       final result = await apiClient.delete('suffix/4');
 
-      expect(result, some(Rejection('Exception: x')));
+      expect(result, some(Rejection('Exception: Unhandled DELETE: /suffix/4')));
     });
   });
 }
