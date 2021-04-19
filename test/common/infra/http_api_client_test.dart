@@ -52,14 +52,20 @@ void main() {
       expect(result, left(Rejection('Что-то пошло не так')));
     });
 
+    test('should return an Unauthenticated', () async {
+      final result = await apiClient.get<Chat>('not-auth');
+
+      expect(result, left(Rejection('Unauthorized.')));
+    });
+
     test('should return a nok', () async {
-      final result = await apiClient.getList<Favorite>('nok');
+      final result = await apiClient.get<Chat>('nok');
 
       expect(result, left(Rejection('Response: 500, boom!')));
     });
 
     test('should return an exception', () async {
-      final result = await apiClient.getList<Favorite>('x');
+      final result = await apiClient.get<Chat>('x');
 
       expect(result, left(Rejection('Exception: Unhandled GET: /x')));
     });
@@ -98,6 +104,12 @@ void main() {
       expect(result, left(Rejection('Что-то пошло не так')));
     });
 
+    test('should return an unauthorized', () async {
+      final result = await apiClient.getList<Favorite>('not-auth');
+
+      expect(result, left(Rejection('Unauthorized.')));
+    });
+
     test('should return a nok', () async {
       final result = await apiClient.getList<Favorite>('nok');
 
@@ -122,6 +134,12 @@ void main() {
       final result = await apiClient.delete('suffix/2');
 
       expect(result, some(Rejection('Что-то пошло не так')));
+    });
+
+    test('should return an unauthorized', () async {
+      final result = await apiClient.delete('suffix/unauth');
+
+      expect(result, some(Rejection('Unauthorized.')));
     });
 
     test('should return some nok', () async {

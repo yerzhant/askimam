@@ -104,7 +104,7 @@ class HttpApiClient implements ApiClient {
 
       return _processHttpResponse(
         httpResponse,
-        (response) => none(),
+        (_) => none(),
         (rejection) => some(rejection),
       );
     } on Exception catch (e) {
@@ -125,6 +125,8 @@ class HttpApiClient implements ApiClient {
       } else {
         return nok(response.asRejection());
       }
+    } else if (httpResponse.statusCode == 401) {
+      return nok(Rejection('Unauthorized.'));
     } else {
       return nok(httpResponse.asRejection());
     }
