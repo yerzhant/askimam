@@ -1,8 +1,8 @@
 import 'package:askimam/chat/bloc/chat_bloc.dart';
-import 'package:askimam/chat/domain/chat.dart';
-import 'package:askimam/chat/domain/chat_repository.dart';
-import 'package:askimam/chat/domain/message.dart';
-import 'package:askimam/chat/domain/message_repository.dart';
+import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/chat/domain/repo/chat_repository.dart';
+import 'package:askimam/chat/domain/model/message.dart';
+import 'package:askimam/chat/domain/repo/message_repository.dart';
 import 'package:askimam/common/domain/rejection.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';

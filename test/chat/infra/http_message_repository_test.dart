@@ -1,4 +1,4 @@
-import 'package:askimam/chat/domain/message_repository.dart';
+import 'package:askimam/chat/domain/repo/message_repository.dart';
 import 'package:askimam/chat/infra/dto/add_text_message.dart';
 import 'package:askimam/chat/infra/dto/update_text_message.dart';
 import 'package:askimam/chat/infra/http_message_repository.dart';
