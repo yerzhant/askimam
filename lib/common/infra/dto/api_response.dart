@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/favorites/domain/model/favorite.dart';
@@ -37,19 +38,24 @@ abstract class ApiResponse with _$ApiResponse {
   String toJsonString() => jsonEncode(toJson());
   List<int> toJsonUtf8() => utf8.encode(jsonEncode(toJson()));
 
-  List<T> list<T extends Model>() {
-    final factories = <Type, Function>{
-      Favorite: (json) => Favorite.fromJson(json),
-    };
+  M value<M extends Model>() {
+    return _fromJsonfactories[M]!(data);
+  }
 
+  List<M> list<M extends Model>() {
     final list = data as List<dynamic>;
-    return list.map((e) => factories[T]!(e) as T).toList();
+    return list.map((e) => _fromJsonfactories[M]!(e) as M).toList();
   }
 
   Rejection asRejection() => Rejection(error ?? 'Unknown error.');
 }
 
 enum ApiResponseStatus { Ok, Error }
+
+final _fromJsonfactories = <Type, Function>{
+  Favorite: (json) => Favorite.fromJson(json),
+  Chat: (json) => Chat.fromJson(json),
+};
 
 extension StringExt on Response {
   ApiResponse decodeApiResponse() =>

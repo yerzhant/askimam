@@ -30,9 +30,9 @@ class HttpApiClient implements ApiClient {
   }
 
   @override
-  Future<Option<Rejection>> delete(String suffix) async {
+  Future<Either<Rejection, M>> get<M extends Model>(String suffix) async {
     try {
-      final httpResponse = await _client.delete(
+      final httpResponse = await _client.get(
         _constructUrl(suffix),
         headers: _getHeaders(),
       );
@@ -41,15 +41,15 @@ class HttpApiClient implements ApiClient {
         final response = httpResponse.decodeApiResponse();
 
         if (response.status == ApiResponseStatus.Ok) {
-          return none();
+          return right(response.value<M>());
         } else {
-          return some(response.asRejection());
+          return left(response.asRejection());
         }
       } else {
-        return some(httpResponse.asRejection());
+        return left(httpResponse.asRejection());
       }
     } on Exception catch (e) {
-      return some(e.asRejection());
+      return left(e.asRejection());
     }
   }
 
@@ -79,13 +79,6 @@ class HttpApiClient implements ApiClient {
     }
   }
 
-  Uri _constructUrl(String suffix) => Uri.parse('$_url/$suffix');
-
-  Map<String, String> _getHeaders() => {
-        HttpHeaders.acceptHeader: ContentType.json.value,
-        if (_jwt.isNotEmpty) HttpHeaders.authorizationHeader: 'Bearer $_jwt',
-      };
-
   @override
   Future<Option<Rejection>> post<M extends Model>(String suffix, M model) {
     // TODO: implement post
@@ -101,12 +94,6 @@ class HttpApiClient implements ApiClient {
   }
 
   @override
-  Future<Either<Rejection, M>> get<M extends Model>(String suffix) {
-    // TODO: implement get
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Option<Rejection>> patch(String suffix) {
     // TODO: implement patch
     throw UnimplementedError();
@@ -118,4 +105,35 @@ class HttpApiClient implements ApiClient {
     // TODO: implement patchWithBody
     throw UnimplementedError();
   }
+
+  @override
+  Future<Option<Rejection>> delete(String suffix) async {
+    try {
+      final httpResponse = await _client.delete(
+        _constructUrl(suffix),
+        headers: _getHeaders(),
+      );
+
+      if (httpResponse.statusCode == 200) {
+        final response = httpResponse.decodeApiResponse();
+
+        if (response.status == ApiResponseStatus.Ok) {
+          return none();
+        } else {
+          return some(response.asRejection());
+        }
+      } else {
+        return some(httpResponse.asRejection());
+      }
+    } on Exception catch (e) {
+      return some(e.asRejection());
+    }
+  }
+
+  Uri _constructUrl(String suffix) => Uri.parse('$_url/$suffix');
+
+  Map<String, String> _getHeaders() => {
+        HttpHeaders.acceptHeader: ContentType.json.value,
+        if (_jwt.isNotEmpty) HttpHeaders.authorizationHeader: 'Bearer $_jwt',
+      };
 }

@@ -24,22 +24,27 @@ final httpClient = MockClient((req) async {
           Favorite(2, 2, 'Тема'),
         ]).toJsonUtf8();
         return Response.bytes(json, 200);
+      } else if (req.url.path == '/one') {
+        final json = ApiResponse.data(Chat(1, 'subject', false)).toJsonUtf8();
+        return Response.bytes(json, 200);
       } else if (req.url.path == '/auth-list' && _isAuthorized(req)) {
         final json = ApiResponse.data([
           Favorite(1, 1, 'Тема'),
           Favorite(2, 2, 'Тема'),
         ]).toJsonUtf8();
         return Response.bytes(json, 200);
-      } else if (req.url.path == '/list-rejection') {
+      } else if (req.url.path == '/rejection') {
         var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
         return Response.bytes(json, 200);
-      } else if (req.url.path == '/list-nok') {
+      } else if (req.url.path == '/nok') {
         return Response('', 500, reasonPhrase: 'boom!');
       } else {
-        throw Exception('x');
+        throw Exception('Unhandled GET: ${req.url.path}');
       }
 
     default:
-      throw Exception('Unhandled method');
+      throw Exception('Unhandled method ${req.method}');
   }
 });
+
+bool _isAuthorized(Request req) => req.headers['Authorization'] == 'Bearer 123';

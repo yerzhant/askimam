@@ -1,5 +1,6 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
+import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/infra/dto/api_response.dart';
@@ -38,6 +39,32 @@ void main() {
     apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
   });
 
+  group('Get one:', () {
+    test('should return an item', () async {
+      final result = await apiClient.get<Chat>('one');
+
+      expect(result, right(Chat(1, 'subject', false)));
+    });
+
+    test('should return a rejection', () async {
+      final result = await apiClient.get<Chat>('rejection');
+
+      expect(result, left(Rejection('Что-то пошло не так')));
+    });
+
+    test('should return a nok', () async {
+      final result = await apiClient.getList<Favorite>('nok');
+
+      expect(result, left(Rejection('Response: 500, boom!')));
+    });
+
+    test('should return an exception', () async {
+      final result = await apiClient.getList<Favorite>('x');
+
+      expect(result, left(Rejection('Exception: Unhandled GET: /x')));
+    });
+  });
+
   group('Get list:', () {
     test('should return a list', () async {
       whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
@@ -66,21 +93,21 @@ void main() {
     });
 
     test('should return a rejection', () async {
-      final result = await apiClient.getList<Favorite>('list-rejection');
+      final result = await apiClient.getList<Favorite>('rejection');
 
       expect(result, left(Rejection('Что-то пошло не так')));
     });
 
     test('should return a nok', () async {
-      final result = await apiClient.getList<Favorite>('list-nok');
+      final result = await apiClient.getList<Favorite>('nok');
 
       expect(result, left(Rejection('Response: 500, boom!')));
     });
 
     test('should return an exception', () async {
-      final result = await apiClient.getList<Favorite>('list-x');
+      final result = await apiClient.getList<Favorite>('x');
 
-      expect(result, left(Rejection('Exception: x')));
+      expect(result, left(Rejection('Exception: Unhandled GET: /x')));
     });
   });
 
@@ -110,5 +137,3 @@ void main() {
     });
   });
 }
-
-bool _isAuthorized(Request req) => req.headers['Authorization'] == 'Bearer 123';
