@@ -11,8 +11,6 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/suffix/2') {
         var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
         return Response.bytes(json, 200);
-      } else if (req.url.path == '/suffix/unauth') {
-        return Response('', 401, reasonPhrase: 'Unauth');
       } else if (req.url.path == '/suffix/3') {
         return Response('', 500, reasonPhrase: 'boom!');
       } else {
@@ -26,9 +24,11 @@ final httpClient = MockClient((req) async {
           Favorite(2, 2, 'Тема'),
         ]).toJsonUtf8();
         return Response.bytes(json, 200);
-      } else if (req.url.path == '/one') {
+      } else if (req.url.path == '/one' && _isAuthorized(req)) {
         final json = ApiResponse.data(Chat(1, 'subject', false)).toJsonUtf8();
         return Response.bytes(json, 200);
+      } else if (req.url.path == '/auth' && !_isAuthorized(req)) {
+        return Response('', 401);
       } else if (req.url.path == '/auth-list' && _isAuthorized(req)) {
         final json = ApiResponse.data([
           Favorite(1, 1, 'Тема'),
@@ -38,8 +38,6 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/rejection') {
         var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
         return Response.bytes(json, 200);
-      } else if (req.url.path == '/not-auth') {
-        return Response('', 401, reasonPhrase: 'Unauthorized.');
       } else if (req.url.path == '/nok') {
         return Response('', 500, reasonPhrase: 'boom!');
       } else {

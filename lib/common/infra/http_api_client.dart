@@ -11,13 +11,13 @@ import 'package:http/http.dart';
 
 class HttpApiClient implements ApiClient {
   final Client _client;
-  final AuthBloc authBloc;
+  final AuthBloc _authBloc;
   final String _url;
   String _jwt = '';
-  late StreamSubscription subscription;
+  late StreamSubscription _subscription;
 
-  HttpApiClient(this._client, this.authBloc, this._url) {
-    subscription = authBloc.stream.listen((state) {
+  HttpApiClient(this._client, this._authBloc, this._url) {
+    _subscription = _authBloc.stream.listen((state) {
       state.maybeWhen(
         authenticated: (auth) {
           _jwt = auth.jwt;
@@ -138,4 +138,9 @@ class HttpApiClient implements ApiClient {
         HttpHeaders.acceptHeader: ContentType.json.value,
         if (_jwt.isNotEmpty) HttpHeaders.authorizationHeader: 'Bearer $_jwt',
       };
+
+  @override
+  void close() async {
+    await _subscription.cancel();
+  }
 }

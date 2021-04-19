@@ -53,7 +53,10 @@ void main() {
     });
 
     test('should return an Unauthenticated', () async {
-      final result = await apiClient.get<Chat>('not-auth');
+      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+
+      final result = await apiClient.get<Chat>('auth');
 
       expect(result, left(Rejection('Unauthorized.')));
     });
@@ -73,7 +76,9 @@ void main() {
 
   group('Get list:', () {
     test('should return a list', () async {
+      authBloc = MockAuthBloc();
       whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
 
       final result = await apiClient.getList<Favorite>('list');
 
@@ -105,7 +110,10 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      final result = await apiClient.getList<Favorite>('not-auth');
+      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+
+      final result = await apiClient.getList<Favorite>('auth');
 
       expect(result, left(Rejection('Unauthorized.')));
     });
@@ -137,6 +145,10 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
+      authBloc = MockAuthBloc();
+      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+
       final result = await apiClient.delete('suffix/unauth');
 
       expect(result, some(Rejection('Unauthorized.')));
