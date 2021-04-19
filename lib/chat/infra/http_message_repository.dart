@@ -50,7 +50,7 @@ class HttpMessageRepository implements MessageRepository {
     return tokenResult.fold(
       (l) => some(l),
       (r) async {
-        final result = await _api.post(
+        final result = await _api.patchWithBody(
             '$_url/$chatId/$messageId', UpdateTextMessage(text, r));
 
         return result.fold(

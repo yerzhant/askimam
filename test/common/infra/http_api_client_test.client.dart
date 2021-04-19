@@ -35,8 +35,18 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/suffix/ok') {
         var json = ApiResponse.ok().toJsonString();
         return Response(json, 200);
-      } else if (req.url.path == '/suffix/ok-body') {
+      } else if (req.url.path == '/suffix/ok-body-chat') {
         if (listEquals(req.bodyBytes, UpdateChat('Тема').toJsonUtf8())) {
+          var json = ApiResponse.ok().toJsonString();
+          return Response(json, 200);
+        } else {
+          return Response('', 400);
+        }
+      } else if (req.url.path == '/suffix/ok-body-message') {
+        if (listEquals(
+          req.bodyBytes,
+          UpdateTextMessage('Тема', '123').toJsonUtf8(),
+        )) {
           var json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
         } else {

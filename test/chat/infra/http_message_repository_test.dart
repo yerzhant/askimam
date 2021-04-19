@@ -60,20 +60,21 @@ void main() {
   group('Update text:', () {
     test('should update a text message', () async {
       when(nService.getFcmToken()).thenAnswer((_) async => right('123'));
-      when(api.post('messages/1/2', UpdateTextMessage('text', '123')))
+      when(api.patchWithBody('messages/1/2', UpdateTextMessage('text', '123')))
           .thenAnswer((_) async => none());
 
       final result = await repo.updateText(1, 2, 'text');
 
       expect(result, none());
       verify(nService.getFcmToken()).called(1);
-      verify(api.post('messages/1/2', UpdateTextMessage('text', '123')))
+      verify(api.patchWithBody(
+              'messages/1/2', UpdateTextMessage('text', '123')))
           .called(1);
     });
 
     test('should not add it', () async {
       when(nService.getFcmToken()).thenAnswer((_) async => right('123'));
-      when(api.post('messages/1/2', UpdateTextMessage('text', '123')))
+      when(api.patchWithBody('messages/1/2', UpdateTextMessage('text', '123')))
           .thenAnswer((_) async => some(Rejection('reason')));
 
       final result = await repo.updateText(1, 2, 'text');

@@ -4,6 +4,7 @@ import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/infra/dto/update_chat.dart';
+import 'package:askimam/chat/infra/dto/update_text_message.dart';
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
@@ -172,9 +173,16 @@ void main() {
   });
 
   group('Patch with body:', () {
-    test('should return none', () async {
-      final result =
-          await apiClient.patchWithBody('suffix/ok-body', UpdateChat('Тема'));
+    test('should return none - chat', () async {
+      final result = await apiClient.patchWithBody(
+          'suffix/ok-body-chat', UpdateChat('Тема'));
+
+      expect(result, none());
+    });
+
+    test('should return none - message', () async {
+      final result = await apiClient.patchWithBody(
+          'suffix/ok-body-message', UpdateTextMessage('Тема', '123'));
 
       expect(result, none());
     });
