@@ -90,9 +90,22 @@ class HttpApiClient implements ApiClient {
   @override
   Future<Either<Rejection, R>>
       postAndGetResponse<R extends Model, M extends Model>(
-          String suffix, M model) {
-    // TODO: implement postAndGetResponse
-    throw UnimplementedError();
+          String suffix, M model) async {
+    try {
+      final httpResponse = await _client.post(
+        _constructUrl(suffix),
+        headers: _getHeaders(),
+        body: model.toJsonUtf8(),
+      );
+
+      return _processHttpResponse(
+        httpResponse,
+        (r) => right(r.value()),
+        (rejection) => left(rejection),
+      );
+    } on Exception catch (e) {
+      return left(e.asRejection());
+    }
   }
 
   @override

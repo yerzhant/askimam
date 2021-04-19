@@ -1,5 +1,6 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
+import 'package:askimam/auth/domain/model/authentication_request.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/infra/dto/add_text_message.dart';
 import 'package:askimam/chat/infra/dto/create_chat.dart';
@@ -188,6 +189,50 @@ void main() {
           await apiClient.post('suffix/4', AddTextMessage(1, 'Текст', '123'));
 
       expect(result, some(Rejection('Exception: Unhandled POST: /suffix/4')));
+    });
+  });
+  group('Post and get response:', () {
+    test('should return response', () async {
+      final result = await apiClient
+          .postAndGetResponse<Authentication, AuthenticationRequest>(
+              'suffix/ok', AuthenticationRequest('login', 'password'));
+
+      expect(result, right(Authentication('123', UserType.Inquirer)));
+    });
+
+    test('should return some rejection reason', () async {
+      final result = await apiClient
+          .postAndGetResponse<Authentication, AuthenticationRequest>(
+              'suffix/nok', AuthenticationRequest('login', 'password'));
+
+      expect(result, left(Rejection('Что-то пошло не так')));
+    });
+
+    test('should return an unauthorized', () async {
+      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+
+      final result = await apiClient
+          .postAndGetResponse<Authentication, AuthenticationRequest>(
+              'suffix/ok', AuthenticationRequest('login', 'password'));
+
+      expect(result, left(Rejection('Unauthorized.')));
+    });
+
+    test('should return some nok', () async {
+      final result = await apiClient
+          .postAndGetResponse<Authentication, AuthenticationRequest>(
+              'suffix/500', AuthenticationRequest('login', 'password'));
+
+      expect(result, left(Rejection('Response: 500, boom!')));
+    });
+
+    test('should return some exception', () async {
+      final result = await apiClient
+          .postAndGetResponse<Authentication, AuthenticationRequest>(
+              'suffix/4', AuthenticationRequest('login', 'password'));
+
+      expect(result, left(Rejection('Exception: Unhandled POST: /suffix/4')));
     });
   });
 

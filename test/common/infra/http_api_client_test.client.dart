@@ -32,6 +32,17 @@ final httpClient = MockClient((req) async {
     case 'POST':
       if (!_isAuthorized(req)) {
         return Response('', 401);
+      } else if (req.url.path == '/suffix/ok') {
+        if (listEquals(
+          req.bodyBytes,
+          AuthenticationRequest('login', 'password').toJsonUtf8(),
+        )) {
+          var json = ApiResponse.data(Authentication('123', UserType.Inquirer))
+              .toJsonString();
+          return Response(json, 200);
+        } else {
+          return Response('', 400);
+        }
       } else if (req.url.path == '/suffix/ok-chat') {
         if (listEquals(
           req.bodyBytes,

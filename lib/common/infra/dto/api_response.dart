@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:askimam/auth/domain/model/authentication.dart';
+import 'package:askimam/auth/domain/model/authentication_request.dart';
+import 'package:askimam/auth/domain/repo/auth_repository.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
@@ -55,6 +58,7 @@ enum ApiResponseStatus { Ok, Error }
 final _fromJsonfactories = <Type, Function>{
   Favorite: (json) => Favorite.fromJson(json),
   Chat: (json) => Chat.fromJson(json),
+  Authentication: (json) => Authentication.fromJson(json),
 };
 
 extension StringExt on Response {
