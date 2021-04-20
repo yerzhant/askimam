@@ -1,11 +1,10 @@
 import 'package:askimam/chat/domain/repo/message_repository.dart';
 import 'package:askimam/chat/infra/dto/add_text_message.dart';
 import 'package:askimam/chat/infra/dto/update_text_message.dart';
+import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/service/notification_service.dart';
-import 'package:askimam/common/utils.dart';
 import 'package:dartz/dartz.dart';
-import 'package:askimam/common/domain/model/rejection.dart';
 
 const _url = 'messages';
 

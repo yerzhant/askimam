@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:askimam/auth/domain/model/authentication.dart';
-import 'package:askimam/auth/domain/model/authentication_request.dart';
-import 'package:askimam/auth/domain/repo/auth_repository.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';

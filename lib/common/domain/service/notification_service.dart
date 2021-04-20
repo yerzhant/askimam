@@ -1,4 +1,3 @@
-// TODO: to be implemented
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:dartz/dartz.dart';
 
