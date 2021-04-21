@@ -2,12 +2,13 @@ include: package:pedantic/analysis_options.yaml
 
 linter:
   rules:
-    - unnecessary_string_interpolations
-    - prefer_const_constructors
-    - prefer_final_locals
+    - avoid_positional_boolean_parameters
+    # - avoid_print
     - avoid_redundant_argument_values
     - avoid_void_async
-    # - avoid_print
-    - unnecessary_await_in_return
+    - cancel_subscriptions
+    - prefer_const_constructors
+    - prefer_final_locals
     - sort_unnamed_constructors_first
-    - avoid_positional_boolean_parameters
+    - unnecessary_string_interpolations
+    - unnecessary_await_in_return

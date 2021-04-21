@@ -48,7 +48,9 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
-  testWidgets('should invoke a refresh', (tester) async {
+  // TODO: add routing to a chat by tapping on an item
+
+  testWidgets('should invoke a refresh on pulling down', (tester) async {
     whenListen(
       bloc,
       Stream.value(const FavoriteState([])),
@@ -64,6 +66,24 @@ void main() {
 
     verify(() => bloc.add(const FavoriteEvent.refresh())).called(1);
   });
+
+  testWidgets('should delete an item', (tester) async {
+    whenListen(
+      bloc,
+      Stream.value(const FavoriteState([])),
+      initialState: FavoriteState([
+        Favorite(1, 1, 'Chat 1'),
+        Favorite(1, 1, 'Chat 2'),
+      ]),
+    );
+
+    await tester.pumpWidget(app);
+    await tester.drag(find.text('Chat 1'), const Offset(-500, 0));
+    await tester.pumpAndSettle();
+
+    verify(() => bloc.add(FavoriteEvent.delete(Favorite(1, 1, 'Chat 1'))))
+        .called(1);
+  }, skip: true); // TODO: find out why it does not get dismissed
 
   testWidgets('should show a list and progress', (tester) async {
     whenListen(

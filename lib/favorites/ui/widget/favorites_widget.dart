@@ -31,10 +31,20 @@ class FavoritesWidget extends StatelessWidget {
           context.read<FavoriteBloc>().add(const FavoriteEvent.refresh()),
       child: ListView.builder(
         itemCount: items.length,
-        itemBuilder: (_, i) => ListTile(
-          title: Text(items[i].subject),
-        ),
-        physics: const AlwaysScrollableScrollPhysics(),
+        itemBuilder: (_, i) {
+          final item = items[i];
+
+          return Dismissible(
+            key: Key('$item'),
+            onDismissed: (_) {
+              print('****************');
+              context.read<FavoriteBloc>().add(FavoriteEvent.delete(item));
+            },
+            background: Container(color: Colors.red),
+            child: ListTile(title: Text(item.subject)),
+          );
+        },
+        // physics: const AlwaysScrollableScrollPhysics(),
       ),
     );
   }
