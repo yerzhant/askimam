@@ -7,13 +7,14 @@ part 'create_chat.g.dart';
 
 @freezed
 class CreateChat with _$CreateChat, Model {
-  const CreateChat._();
   factory CreateChat(
     ChatType type,
     String? subject,
     String text,
     String fcmToken,
   ) = _CreateChat;
+
+  const CreateChat._();
 
   factory CreateChat.fromJson(Map<String, dynamic> json) =>
       _$CreateChatFromJson(json);

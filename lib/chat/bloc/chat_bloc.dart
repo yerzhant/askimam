@@ -15,7 +15,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChatRepository _repo;
   final MessageRepository _messageRepo;
 
-  ChatBloc(this._repo, this._messageRepo) : super(_InProgress());
+  ChatBloc(this._repo, this._messageRepo) : super(const _InProgress());
 
   @override
   Stream<ChatState> mapEventToState(ChatEvent event) => event.when(
@@ -28,7 +28,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
 
   Stream<ChatState> _refresh(int id) async* {
-    yield ChatState.inProgress();
+    yield const ChatState.inProgress();
 
     final result = await _repo.get(id);
 

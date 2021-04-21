@@ -6,12 +6,12 @@ part 'authentication_request.g.dart';
 
 @freezed
 class AuthenticationRequest with _$AuthenticationRequest, Model {
-  const AuthenticationRequest._();
-
   factory AuthenticationRequest(
     String login,
     String password,
   ) = _AuthenticationRequest;
+
+  const AuthenticationRequest._();
 
   factory AuthenticationRequest.fromJson(Map<String, dynamic> json) =>
       _$AuthenticationRequestFromJson(json);

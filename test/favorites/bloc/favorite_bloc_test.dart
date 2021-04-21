@@ -20,7 +20,7 @@ void main() {
   });
 
   test('Initial state', () {
-    expect(bloc.state, FavoriteState.inProgress([]));
+    expect(bloc.state, const FavoriteState.inProgress([]));
   });
 
   group('Get my favorites:', () {
@@ -34,9 +34,9 @@ void main() {
             ]));
         return bloc;
       },
-      act: (_) => bloc.add(FavoriteEvent.refresh()),
+      act: (_) => bloc.add(const FavoriteEvent.refresh()),
       expect: () => [
-        FavoriteState.inProgress([]),
+        const FavoriteState.inProgress([]),
         FavoriteState([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
@@ -53,9 +53,9 @@ void main() {
         );
         return bloc;
       },
-      act: (_) => bloc.add(FavoriteEvent.refresh()),
+      act: (_) => bloc.add(const FavoriteEvent.refresh()),
       expect: () => [
-        FavoriteState.inProgress([]),
+        const FavoriteState.inProgress([]),
         FavoriteState.error(Rejection('oops!')),
       ],
     );
@@ -71,9 +71,9 @@ void main() {
         return bloc;
       },
       seed: () => FavoriteState.error(Rejection('x')),
-      act: (_) => bloc.add(FavoriteEvent.refresh()),
+      act: (_) => bloc.add(const FavoriteEvent.refresh()),
       expect: () => [
-        FavoriteState.inProgress([]),
+        const FavoriteState.inProgress([]),
         FavoriteState([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
@@ -261,9 +261,9 @@ void main() {
             ]));
         return bloc;
       },
-      act: (_) => bloc.add(FavoriteEvent.show()),
+      act: (_) => bloc.add(const FavoriteEvent.show()),
       expect: () => [
-        FavoriteState.inProgress([]),
+        const FavoriteState.inProgress([]),
         FavoriteState([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
@@ -280,7 +280,7 @@ void main() {
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.show()),
+      act: (_) => bloc.add(const FavoriteEvent.show()),
       expect: () => [],
     );
   });

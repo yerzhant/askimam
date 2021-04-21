@@ -18,7 +18,7 @@ class FavoritesWidget extends StatelessWidget {
           error: (rejection) => RejectionWidget(
             rejection: rejection,
             onRefresh: () =>
-                context.read<FavoriteBloc>().add(FavoriteEvent.refresh()),
+                context.read<FavoriteBloc>().add(const FavoriteEvent.refresh()),
           ),
         );
       },
@@ -28,13 +28,13 @@ class FavoritesWidget extends StatelessWidget {
   Widget _list(List<Favorite> items, BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async =>
-          context.read<FavoriteBloc>().add(FavoriteEvent.refresh()),
+          context.read<FavoriteBloc>().add(const FavoriteEvent.refresh()),
       child: ListView.builder(
         itemCount: items.length,
         itemBuilder: (_, i) => ListTile(
           title: Text(items[i].subject),
         ),
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
       ),
     );
   }

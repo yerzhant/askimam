@@ -6,12 +6,13 @@ part 'add_text_message.g.dart';
 
 @freezed
 class AddTextMessage with _$AddTextMessage, Model {
-  const AddTextMessage._();
   factory AddTextMessage(
     int chatId,
     String text,
     String fcmToken,
   ) = _AddTextMessage;
+
+  const AddTextMessage._();
 
   factory AddTextMessage.fromJson(Map<String, dynamic> json) =>
       _$AddTextMessageFromJson(json);

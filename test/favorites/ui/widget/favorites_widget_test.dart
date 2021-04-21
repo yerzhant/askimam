@@ -16,8 +16,8 @@ void main() {
   late Widget app;
 
   setUpAll(() {
-    registerFallbackValue<FavoriteState>(FavoriteState([]));
-    registerFallbackValue<FavoriteEvent>(FavoriteEvent.show());
+    registerFallbackValue<FavoriteState>(const FavoriteState([]));
+    registerFallbackValue<FavoriteEvent>(const FavoriteEvent.show());
   });
 
   setUp(() {
@@ -26,7 +26,7 @@ void main() {
     app = MaterialApp(
       home: BlocProvider(
         create: (BuildContext context) => bloc,
-        child: Material(child: FavoritesWidget()),
+        child: const Material(child: FavoritesWidget()),
       ),
     );
   });
@@ -34,7 +34,7 @@ void main() {
   testWidgets('should show a list', (tester) async {
     whenListen(
       bloc,
-      Stream.value(FavoriteState([])),
+      Stream.value(const FavoriteState([])),
       initialState: FavoriteState([
         Favorite(1, 1, 'Chat 1'),
         Favorite(1, 1, 'Chat 2'),
@@ -51,7 +51,7 @@ void main() {
   testWidgets('should invoke a refresh', (tester) async {
     whenListen(
       bloc,
-      Stream.value(FavoriteState([])),
+      Stream.value(const FavoriteState([])),
       initialState: FavoriteState([
         Favorite(1, 1, 'Chat 1'),
         Favorite(1, 1, 'Chat 2'),
@@ -62,13 +62,13 @@ void main() {
     await tester.fling(find.text('Chat 1'), const Offset(0.0, 300.0), 1000.0);
     await tester.pumpAndSettle();
 
-    verify(() => bloc.add(FavoriteEvent.refresh())).called(1);
+    verify(() => bloc.add(const FavoriteEvent.refresh())).called(1);
   });
 
   testWidgets('should show a list and progress', (tester) async {
     whenListen(
       bloc,
-      Stream.value(FavoriteState([])),
+      Stream.value(const FavoriteState([])),
       initialState: FavoriteState.inProgress([
         Favorite(1, 1, 'Chat 1'),
         Favorite(1, 1, 'Chat 2'),
@@ -85,7 +85,7 @@ void main() {
   testWidgets('should show an error', (tester) async {
     whenListen(
       bloc,
-      Stream.value(FavoriteState([])),
+      Stream.value(const FavoriteState([])),
       initialState: FavoriteState.error(Rejection('reason')),
     );
 
@@ -97,13 +97,13 @@ void main() {
   testWidgets('should invoke a refresh on rejection', (tester) async {
     whenListen(
       bloc,
-      Stream.value(FavoriteState([])),
+      Stream.value(const FavoriteState([])),
       initialState: FavoriteState.error(Rejection('reason')),
     );
 
     await tester.pumpWidget(app);
     await tester.tap(find.text('ОБНОВИТЬ'));
 
-    verify(() => bloc.add(FavoriteEvent.refresh())).called(1);
+    verify(() => bloc.add(const FavoriteEvent.refresh())).called(1);
   });
 }

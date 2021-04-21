@@ -14,7 +14,7 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _repo;
 
-  AuthBloc(this._repo) : super(_Unauthenticated());
+  AuthBloc(this._repo) : super(const _Unauthenticated());
 
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) => event.when(
@@ -24,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
 
   Stream<AuthState> _load() async* {
-    yield AuthState.inProgress();
+    yield const AuthState.inProgress();
 
     final result = await _repo.load();
 
@@ -35,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _login(AuthenticationRequest request) async* {
-    yield AuthState.inProgress();
+    yield const AuthState.inProgress();
 
     final result = await _repo.login(request);
 
@@ -46,12 +46,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _logout() async* {
-    yield AuthState.inProgress();
+    yield const AuthState.inProgress();
 
     final result = await _repo.logout();
 
     yield result.fold(
-      () => AuthState.unauthenticated(),
+      () => const AuthState.unauthenticated(),
       (l) => AuthState.error(l),
     );
   }

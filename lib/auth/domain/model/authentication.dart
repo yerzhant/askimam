@@ -6,11 +6,12 @@ part 'authentication.g.dart';
 
 @freezed
 class Authentication with _$Authentication, Model {
-  const Authentication._();
   factory Authentication(
     String jwt,
     UserType userType,
   ) = _Authentication;
+
+  const Authentication._();
 
   factory Authentication.fromJson(Map<String, dynamic> json) =>
       _$AuthenticationFromJson(json);

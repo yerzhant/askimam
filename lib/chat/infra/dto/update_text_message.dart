@@ -6,11 +6,12 @@ part 'update_text_message.g.dart';
 
 @freezed
 class UpdateTextMessage with _$UpdateTextMessage, Model {
-  const UpdateTextMessage._();
   factory UpdateTextMessage(
     String text,
     String fcmToken,
   ) = _UpdateTextMessage;
+
+  const UpdateTextMessage._();
 
   factory UpdateTextMessage.fromJson(Map<String, dynamic> json) =>
       _$UpdateTextMessageFromJson(json);
