@@ -44,7 +44,7 @@ class FavoritesWidget extends StatelessWidget {
             child: ListTile(title: Text(item.subject)),
           );
         },
-        // physics: const AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
       ),
     );
   }

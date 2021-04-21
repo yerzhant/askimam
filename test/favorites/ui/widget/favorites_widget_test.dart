@@ -16,8 +16,8 @@ void main() {
   late Widget app;
 
   setUpAll(() {
-    registerFallbackValue<FavoriteState>(const FavoriteState([]));
-    registerFallbackValue<FavoriteEvent>(const FavoriteEvent.show());
+    registerFallbackValue(const FavoriteState([]));
+    registerFallbackValue(const FavoriteEvent.show());
   });
 
   setUp(() {
@@ -32,16 +32,7 @@ void main() {
   });
 
   testWidgets('should show a list', (tester) async {
-    whenListen(
-      bloc,
-      Stream.value(const FavoriteState([])),
-      initialState: FavoriteState([
-        Favorite(1, 1, 'Chat 1'),
-        Favorite(1, 1, 'Chat 2'),
-      ]),
-    );
-
-    await tester.pumpWidget(app);
+    await _standartFixture(tester, bloc, app);
 
     expect(find.text('Chat 1'), findsOneWidget);
     expect(find.text('Chat 2'), findsOneWidget);
@@ -51,16 +42,7 @@ void main() {
   // TODO: add routing to a chat by tapping on an item
 
   testWidgets('should invoke a refresh on pulling down', (tester) async {
-    whenListen(
-      bloc,
-      Stream.value(const FavoriteState([])),
-      initialState: FavoriteState([
-        Favorite(1, 1, 'Chat 1'),
-        Favorite(1, 1, 'Chat 2'),
-      ]),
-    );
-
-    await tester.pumpWidget(app);
+    await _standartFixture(tester, bloc, app);
     await tester.fling(find.text('Chat 1'), const Offset(0.0, 300.0), 1000.0);
     await tester.pumpAndSettle();
 
@@ -68,16 +50,7 @@ void main() {
   });
 
   testWidgets('should delete an item', (tester) async {
-    whenListen(
-      bloc,
-      Stream.value(const FavoriteState([])),
-      initialState: FavoriteState([
-        Favorite(1, 1, 'Chat 1'),
-        Favorite(1, 1, 'Chat 2'),
-      ]),
-    );
-
-    await tester.pumpWidget(app);
+    await _standartFixture(tester, bloc, app);
     await tester.drag(find.text('Chat 1'), const Offset(-500, 0));
     await tester.pumpAndSettle();
 
@@ -103,27 +76,42 @@ void main() {
   });
 
   testWidgets('should show an error', (tester) async {
-    whenListen(
-      bloc,
-      Stream.value(const FavoriteState([])),
-      initialState: FavoriteState.error(Rejection('reason')),
-    );
-
-    await tester.pumpWidget(app);
+    await _errorFixture(bloc, tester, app);
 
     expect(find.text('reason'), findsOneWidget);
   });
 
   testWidgets('should invoke a refresh on rejection', (tester) async {
-    whenListen(
-      bloc,
-      Stream.value(const FavoriteState([])),
-      initialState: FavoriteState.error(Rejection('reason')),
-    );
-
-    await tester.pumpWidget(app);
+    await _errorFixture(bloc, tester, app);
     await tester.tap(find.text('ОБНОВИТЬ'));
 
     verify(() => bloc.add(const FavoriteEvent.refresh())).called(1);
   });
+}
+
+Future _errorFixture(FavoriteBloc bloc, WidgetTester tester, Widget app) async {
+  whenListen(
+    bloc,
+    Stream.value(const FavoriteState([])),
+    initialState: FavoriteState.error(Rejection('reason')),
+  );
+
+  await tester.pumpWidget(app);
+}
+
+Future<void> _standartFixture(
+  WidgetTester tester,
+  FavoriteBloc bloc,
+  Widget app,
+) async {
+  whenListen(
+    bloc,
+    Stream.value(const FavoriteState([])),
+    initialState: FavoriteState([
+      Favorite(1, 1, 'Chat 1'),
+      Favorite(1, 1, 'Chat 2'),
+    ]),
+  );
+
+  await tester.pumpWidget(app);
 }
