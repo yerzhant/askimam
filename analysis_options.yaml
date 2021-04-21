@@ -1,10 +1,5 @@
 include: package:pedantic/analysis_options.yaml
 
-# analyzer:
-#   errors:
-#     return_of_invalid_type: ignore
-#     argument_type_not_assignable: ignore
-
 linter:
   rules:
     - unnecessary_string_interpolations
@@ -16,4 +11,3 @@ linter:
     - unnecessary_await_in_return
     - sort_unnamed_constructors_first
     - avoid_positional_boolean_parameters
-    

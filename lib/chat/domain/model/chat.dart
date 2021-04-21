@@ -9,8 +9,8 @@ part 'chat.g.dart';
 class Chat with _$Chat, Model {
   factory Chat(
     int id,
-    String subject,
-    bool isFavorite, {
+    String subject, {
+    @Default(false) bool isFavorite,
     List<Message>? messages,
   }) = _Chat;
 

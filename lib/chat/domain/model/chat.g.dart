@@ -10,7 +10,7 @@ _$_Chat _$_$_ChatFromJson(Map<String, dynamic> json) {
   return _$_Chat(
     json['id'] as int,
     json['subject'] as String,
-    json['isFavorite'] as bool,
+    isFavorite: json['isFavorite'] as bool? ?? false,
     messages: (json['messages'] as List<dynamic>?)
         ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
         .toList(),

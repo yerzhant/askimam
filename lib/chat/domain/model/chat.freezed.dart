@@ -20,12 +20,12 @@ Chat _$ChatFromJson(Map<String, dynamic> json) {
 class _$ChatTearOff {
   const _$ChatTearOff();
 
-  _Chat call(int id, String subject, bool isFavorite,
-      {List<Message>? messages}) {
+  _Chat call(int id, String subject,
+      {bool isFavorite = false, List<Message>? messages}) {
     return _Chat(
       id,
       subject,
-      isFavorite,
+      isFavorite: isFavorite,
       messages: messages,
     );
   }
@@ -126,7 +126,7 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
           ? _value.subject
           : subject // ignore: cast_nullable_to_non_nullable
               as String,
-      isFavorite == freezed
+      isFavorite: isFavorite == freezed
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -142,7 +142,8 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_Chat extends _Chat {
-  _$_Chat(this.id, this.subject, this.isFavorite, {this.messages}) : super._();
+  _$_Chat(this.id, this.subject, {this.isFavorite = false, this.messages})
+      : super._();
 
   factory _$_Chat.fromJson(Map<String, dynamic> json) =>
       _$_$_ChatFromJson(json);
@@ -151,6 +152,7 @@ class _$_Chat extends _Chat {
   final int id;
   @override
   final String subject;
+  @JsonKey(defaultValue: false)
   @override
   final bool isFavorite;
   @override
@@ -198,8 +200,8 @@ class _$_Chat extends _Chat {
 }
 
 abstract class _Chat extends Chat {
-  factory _Chat(int id, String subject, bool isFavorite,
-      {List<Message>? messages}) = _$_Chat;
+  factory _Chat(int id, String subject,
+      {bool isFavorite, List<Message>? messages}) = _$_Chat;
   _Chat._() : super._();
 
   factory _Chat.fromJson(Map<String, dynamic> json) = _$_Chat.fromJson;
