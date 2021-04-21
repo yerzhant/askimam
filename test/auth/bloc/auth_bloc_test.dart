@@ -21,7 +21,7 @@ void main() {
   });
 
   test('Initial state', () {
-    expect(bloc.state, AuthState.unauthenticated());
+    expect(bloc.state, const AuthState.unauthenticated());
   });
 
   group('Login:', () {
@@ -36,7 +36,7 @@ void main() {
       act: (_) =>
           bloc.add(AuthEvent.login(AuthenticationRequest('login', 'password'))),
       expect: () => [
-        AuthState.inProgress(),
+        const AuthState.inProgress(),
         AuthState.authenticated(Authentication('123', UserType.Inquirer)),
       ],
     );
@@ -52,7 +52,7 @@ void main() {
       act: (_) =>
           bloc.add(AuthEvent.login(AuthenticationRequest('login', 'password'))),
       expect: () => [
-        AuthState.inProgress(),
+        const AuthState.inProgress(),
         AuthState.error(Rejection('reason')),
       ],
     );
@@ -67,10 +67,10 @@ void main() {
       },
       seed: () =>
           AuthState.authenticated(Authentication('jwt', UserType.Inquirer)),
-      act: (_) => bloc.add(AuthEvent.logout()),
+      act: (_) => bloc.add(const AuthEvent.logout()),
       expect: () => [
-        AuthState.inProgress(),
-        AuthState.unauthenticated(),
+        const AuthState.inProgress(),
+        const AuthState.unauthenticated(),
       ],
     );
 
@@ -82,9 +82,9 @@ void main() {
       },
       seed: () =>
           AuthState.authenticated(Authentication('jwt', UserType.Inquirer)),
-      act: (_) => bloc.add(AuthEvent.logout()),
+      act: (_) => bloc.add(const AuthEvent.logout()),
       expect: () => [
-        AuthState.inProgress(),
+        const AuthState.inProgress(),
         AuthState.error(Rejection('reason')),
       ],
     );
@@ -98,9 +98,9 @@ void main() {
             (_) async => right(Authentication('jwt', UserType.Inquirer)));
         return bloc;
       },
-      act: (_) => bloc.add(AuthEvent.load()),
+      act: (_) => bloc.add(const AuthEvent.load()),
       expect: () => [
-        AuthState.inProgress(),
+        const AuthState.inProgress(),
         AuthState.authenticated(Authentication('jwt', UserType.Inquirer)),
       ],
     );
@@ -111,9 +111,9 @@ void main() {
         when(repo.load()).thenAnswer((_) async => left(Rejection('reason')));
         return bloc;
       },
-      act: (_) => bloc.add(AuthEvent.load()),
+      act: (_) => bloc.add(const AuthEvent.load()),
       expect: () => [
-        AuthState.inProgress(),
+        const AuthState.inProgress(),
         AuthState.error(Rejection('reason')),
       ],
     );

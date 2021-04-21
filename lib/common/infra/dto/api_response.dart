@@ -13,15 +13,15 @@ part 'api_response.g.dart';
 
 @freezed
 abstract class ApiResponse with _$ApiResponse {
-  const ApiResponse._();
-
   const factory ApiResponse(
     ApiResponseStatus status, {
     Object? data,
     String? error,
   }) = _ApiResponse;
 
-  factory ApiResponse.ok() => ApiResponse(ApiResponseStatus.Ok);
+  const ApiResponse._();
+
+  factory ApiResponse.ok() => const ApiResponse(ApiResponseStatus.Ok);
 
   factory ApiResponse.data(Object data) => ApiResponse(
         ApiResponseStatus.Ok,
@@ -44,6 +44,7 @@ abstract class ApiResponse with _$ApiResponse {
   }
 
   List<M> list<M extends Model>() {
+    // ignore: cast_nullable_to_non_nullable
     final list = data as List<dynamic>;
     return list.map((e) => _fromJsonfactories[M]!(e) as M).toList();
   }
@@ -51,6 +52,7 @@ abstract class ApiResponse with _$ApiResponse {
   Rejection asRejection() => Rejection(error ?? 'Unknown error.');
 }
 
+// ignore: constant_identifier_names
 enum ApiResponseStatus { Ok, Error }
 
 final _fromJsonfactories = <Type, Function>{

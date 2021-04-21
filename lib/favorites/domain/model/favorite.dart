@@ -6,7 +6,6 @@ part 'favorite.g.dart';
 
 @freezed
 class Favorite with _$Favorite, Model {
-  const Favorite._();
   factory Favorite(
     int id,
     int chatId,
@@ -15,4 +14,6 @@ class Favorite with _$Favorite, Model {
 
   factory Favorite.fromJson(Map<String, dynamic> json) =>
       _$FavoriteFromJson(json);
+
+  const Favorite._();
 }

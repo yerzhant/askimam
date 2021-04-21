@@ -23,7 +23,7 @@ void main() {
   });
 
   test('Initial state', () {
-    expect(bloc.state, ChatState.inProgress());
+    expect(bloc.state, const ChatState.inProgress());
   });
 
   group('Get a chat:', () {
@@ -44,9 +44,9 @@ void main() {
 
         return bloc;
       },
-      act: (_) => bloc.add(ChatEvent.refresh(1)),
+      act: (_) => bloc.add(const ChatEvent.refresh(1)),
       expect: () => [
-        ChatState.inProgress(),
+        const ChatState.inProgress(),
         ChatState(
           Chat(1, 'subject', false, messages: [
             Message(1, MessageType.Text, 'text', 'author',
@@ -79,9 +79,9 @@ void main() {
 
         return bloc;
       },
-      act: (_) => bloc.add(ChatEvent.refresh(1)),
+      act: (_) => bloc.add(const ChatEvent.refresh(1)),
       expect: () => [
-        ChatState.inProgress(),
+        const ChatState.inProgress(),
         ChatState.error(Rejection('reason')),
       ],
       verify: (_) {
@@ -95,9 +95,9 @@ void main() {
         when(repo.get(1)).thenAnswer((_) async => left(Rejection('reason')));
         return bloc;
       },
-      act: (_) => bloc.add(ChatEvent.refresh(1)),
+      act: (_) => bloc.add(const ChatEvent.refresh(1)),
       expect: () => [
-        ChatState.inProgress(),
+        const ChatState.inProgress(),
         ChatState.error(Rejection('reason')),
       ],
     );
@@ -118,7 +118,7 @@ void main() {
               DateTime.parse('20210418'), null),
         ]),
       ),
-      act: (_) => bloc.add(ChatEvent.returnToUnaswered()),
+      act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
       expect: () => [
         ChatState(
           Chat(1, 'subject', false, messages: [
@@ -156,7 +156,7 @@ void main() {
               DateTime.parse('20210418'), null),
         ]),
       ),
-      act: (_) => bloc.add(ChatEvent.returnToUnaswered()),
+      act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
       expect: () => [
         ChatState(
           Chat(1, 'subject', false, messages: [
@@ -182,8 +182,8 @@ void main() {
     blocTest(
       "shouldn't even try",
       build: () => bloc,
-      seed: () => ChatState.inProgress(),
-      act: (_) => bloc.add(ChatEvent.returnToUnaswered()),
+      seed: () => const ChatState.inProgress(),
+      act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
       expect: () => [],
     );
 
@@ -191,7 +191,7 @@ void main() {
       "shouldn't even try either",
       build: () => bloc,
       seed: () => ChatState.error(Rejection('reason')),
-      act: (_) => bloc.add(ChatEvent.returnToUnaswered()),
+      act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
       expect: () => [],
     );
   });
@@ -211,7 +211,7 @@ void main() {
               DateTime.parse('20210418'), null),
         ]),
       ),
-      act: (_) => bloc.add(ChatEvent.updateSubject('subject')),
+      act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
       expect: () => [
         ChatState(
           Chat(1, 'subject', false, messages: [
@@ -249,7 +249,7 @@ void main() {
               DateTime.parse('20210418'), null),
         ]),
       ),
-      act: (_) => bloc.add(ChatEvent.updateSubject('subject')),
+      act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
       expect: () => [
         ChatState(
           Chat(1, 'subject', false, messages: [
@@ -275,8 +275,8 @@ void main() {
     blocTest(
       "shouldn't even try",
       build: () => bloc,
-      seed: () => ChatState.inProgress(),
-      act: (_) => bloc.add(ChatEvent.updateSubject('subject')),
+      seed: () => const ChatState.inProgress(),
+      act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
       expect: () => [],
     );
 
@@ -284,7 +284,7 @@ void main() {
       "shouldn't even try either",
       build: () => bloc,
       seed: () => ChatState.error(Rejection('reason')),
-      act: (_) => bloc.add(ChatEvent.updateSubject('subject')),
+      act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
       expect: () => [],
     );
   });
@@ -313,7 +313,7 @@ void main() {
               DateTime.parse('20210418'), null),
         ]),
       ),
-      act: (_) => bloc.add(ChatEvent.addText('text')),
+      act: (_) => bloc.add(const ChatEvent.addText('text')),
       expect: () => [
         ChatState(
           Chat(1, 'subject', false, messages: [
@@ -349,7 +349,7 @@ void main() {
               DateTime.parse('20210418'), null),
         ]),
       ),
-      act: (_) => bloc.add(ChatEvent.addText('text')),
+      act: (_) => bloc.add(const ChatEvent.addText('text')),
       expect: () => [
         ChatState(
           Chat(1, 'subject', false, messages: [
@@ -382,7 +382,7 @@ void main() {
               DateTime.parse('20210418'), null),
         ]),
       ),
-      act: (_) => bloc.add(ChatEvent.addText('text')),
+      act: (_) => bloc.add(const ChatEvent.addText('text')),
       expect: () => [
         ChatState(
           Chat(1, 'subject', false, messages: [
@@ -404,8 +404,8 @@ void main() {
     blocTest(
       'should not even try to',
       build: () => bloc,
-      seed: () => ChatState.inProgress(),
-      act: (_) => bloc.add(ChatEvent.addText('text')),
+      seed: () => const ChatState.inProgress(),
+      act: (_) => bloc.add(const ChatEvent.addText('text')),
       expect: () => [],
     );
 
@@ -413,7 +413,7 @@ void main() {
       'should not even try to either',
       build: () => bloc,
       seed: () => ChatState.error(Rejection('reason')),
-      act: (_) => bloc.add(ChatEvent.addText('text')),
+      act: (_) => bloc.add(const ChatEvent.addText('text')),
       expect: () => [],
     );
   });
@@ -433,7 +433,7 @@ void main() {
               DateTime.parse('20210418'), null),
         ]),
       ),
-      act: (_) => bloc.add(ChatEvent.deleteMessage(1)),
+      act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
       expect: () => [
         ChatState(
           Chat(1, 'subject', false, messages: [
@@ -466,7 +466,7 @@ void main() {
               DateTime.parse('20210418'), null),
         ]),
       ),
-      act: (_) => bloc.add(ChatEvent.deleteMessage(1)),
+      act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
       expect: () => [
         ChatState(
           Chat(1, 'subject', false, messages: [
@@ -488,8 +488,8 @@ void main() {
     blocTest(
       'should not even try to',
       build: () => bloc,
-      seed: () => ChatState.inProgress(),
-      act: (_) => bloc.add(ChatEvent.deleteMessage(1)),
+      seed: () => const ChatState.inProgress(),
+      act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
       expect: () => [],
     );
 
@@ -497,7 +497,7 @@ void main() {
       'should not even try to either',
       build: () => bloc,
       seed: () => ChatState.error(Rejection('reason')),
-      act: (_) => bloc.add(ChatEvent.deleteMessage(1)),
+      act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
       expect: () => [],
     );
   });
@@ -518,7 +518,7 @@ void main() {
               DateTime.parse('20210418'), null),
         ]),
       ),
-      act: (_) => bloc.add(ChatEvent.updateTextMessage(1, 'text 2')),
+      act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
       expect: () => [
         ChatState(
           Chat(1, 'subject', false, messages: [
@@ -553,7 +553,7 @@ void main() {
               DateTime.parse('20210418'), null),
         ]),
       ),
-      act: (_) => bloc.add(ChatEvent.updateTextMessage(1, 'text 2')),
+      act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
       expect: () => [
         ChatState(
           Chat(1, 'subject', false, messages: [
@@ -575,8 +575,8 @@ void main() {
     blocTest(
       'should not even try to',
       build: () => bloc,
-      seed: () => ChatState.inProgress(),
-      act: (_) => bloc.add(ChatEvent.updateTextMessage(1, 'text 2')),
+      seed: () => const ChatState.inProgress(),
+      act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
       expect: () => [],
     );
 
@@ -584,7 +584,7 @@ void main() {
       'should not even try to either',
       build: () => bloc,
       seed: () => ChatState.error(Rejection('reason')),
-      act: (_) => bloc.add(ChatEvent.updateTextMessage(1, 'text 2')),
+      act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
       expect: () => [],
     );
   });

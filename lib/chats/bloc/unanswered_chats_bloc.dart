@@ -23,7 +23,7 @@ class UnansweredChatsBloc
     this._repo,
     this._favoriteBloc,
     this._pageSize,
-  ) : super(_InProgress([])) {
+  ) : super(const _InProgress([])) {
     _subscription = _favoriteBloc.stream.listen((state) {
       state.maybeWhen(
         (favorites) => add(UnansweredChatsEvent.updateFavorites(favorites)),
@@ -47,12 +47,12 @@ class UnansweredChatsBloc
       (chats) async* {
         yield UnansweredChatsState(chats);
       },
-      orElse: () => add(UnansweredChatsEvent.reload()),
+      orElse: () => add(const UnansweredChatsEvent.reload()),
     );
   }
 
   Stream<UnansweredChatsState> _reload() async* {
-    yield UnansweredChatsState.inProgress([]);
+    yield const UnansweredChatsState.inProgress([]);
 
     final result = await _repo.getUnanswered(0, _pageSize);
 

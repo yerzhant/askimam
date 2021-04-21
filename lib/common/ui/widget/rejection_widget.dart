@@ -16,14 +16,14 @@ class RejectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('Ошибка:'),
-        SizedBox(height: interElementPadding),
+        const Text('Ошибка:'),
+        const SizedBox(height: interElementPadding),
         Text(rejection.reason),
-        SizedBox(height: interElementPadding),
+        const SizedBox(height: interElementPadding),
         ElevatedButton.icon(
           onPressed: onRefresh,
-          icon: Icon(Icons.refresh),
-          label: Text('ОБНОВИТЬ'),
+          icon: const Icon(Icons.refresh),
+          label: const Text('ОБНОВИТЬ'),
         ),
       ],
     );

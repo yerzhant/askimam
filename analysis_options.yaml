@@ -1,1 +1,19 @@
 include: package:pedantic/analysis_options.yaml
+
+# analyzer:
+#   errors:
+#     return_of_invalid_type: ignore
+#     argument_type_not_assignable: ignore
+
+linter:
+  rules:
+    - unnecessary_string_interpolations
+    - prefer_const_constructors
+    - prefer_final_locals
+    - avoid_redundant_argument_values
+    - avoid_void_async
+    # - avoid_print
+    - unnecessary_await_in_return
+    - sort_unnamed_constructors_first
+    - avoid_positional_boolean_parameters
+    

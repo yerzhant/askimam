@@ -13,7 +13,7 @@ part 'favorite_bloc.freezed.dart';
 class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   final FavoriteRepository _repo;
 
-  FavoriteBloc(this._repo) : super(_InProgress([]));
+  FavoriteBloc(this._repo) : super(const _InProgress([]));
 
   @override
   Stream<FavoriteState> mapEventToState(FavoriteEvent event) => event.when(
@@ -26,12 +26,12 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   Stream<FavoriteState> _show() async* {
     state.maybeWhen(
       (favorites) => FavoriteState(favorites),
-      orElse: () => add(FavoriteEvent.refresh()),
+      orElse: () => add(const FavoriteEvent.refresh()),
     );
   }
 
   Stream<FavoriteState> _refresh() async* {
-    yield FavoriteState.inProgress([]);
+    yield const FavoriteState.inProgress([]);
 
     final result = await _repo.get();
 

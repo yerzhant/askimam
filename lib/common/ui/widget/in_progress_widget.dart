@@ -10,7 +10,7 @@ class InProgressWidget extends StatelessWidget {
     return Stack(
       children: [
         child,
-        CircularProgressIndicator(),
+        const CircularProgressIndicator(),
       ],
     );
   }

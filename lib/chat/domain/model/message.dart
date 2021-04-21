@@ -18,4 +18,5 @@ abstract class Message with _$Message {
       _$MessageFromJson(json);
 }
 
+// ignore: constant_identifier_names
 enum MessageType { Text, Audio }

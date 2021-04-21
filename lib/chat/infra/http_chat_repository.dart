@@ -26,7 +26,7 @@ class HttpChatRepository implements ChatRepository {
       (l) => some(l),
       (r) async {
         final result = await _api.post(
-          '$_url',
+          _url,
           CreateChat(type, subject, text, r),
         );
 

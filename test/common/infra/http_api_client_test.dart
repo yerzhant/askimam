@@ -31,8 +31,8 @@ void main() {
   late AuthBloc authBloc;
 
   setUpAll(() {
-    registerFallbackValue<AuthState>(AuthState.unauthenticated());
-    registerFallbackValue<AuthEvent>(AuthEvent.load());
+    registerFallbackValue<AuthState>(const AuthState.unauthenticated());
+    registerFallbackValue<AuthEvent>(const AuthEvent.load());
   });
 
   setUp(() {
@@ -60,7 +60,7 @@ void main() {
     });
 
     test('should return an Unauthenticated', () async {
-      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
       apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
 
       final result = await apiClient.get<Chat>('auth');
@@ -84,7 +84,7 @@ void main() {
   group('Get list:', () {
     test('should return a list', () async {
       authBloc = MockAuthBloc();
-      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
       apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
 
       final result = await apiClient.getList<Favorite>('list');
@@ -117,7 +117,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
       apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
 
       final result = await apiClient.getList<Favorite>('auth');
@@ -168,7 +168,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
       apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
 
       final result = await apiClient.post(
@@ -209,7 +209,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
       apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
 
       final result = await apiClient
@@ -250,7 +250,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
       apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
 
       final result = await apiClient.patch('suffix/ok');
@@ -294,7 +294,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
       apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
 
       final result =
@@ -332,7 +332,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(AuthState.unauthenticated()));
+      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
       apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
 
       final result = await apiClient.delete('suffix/ok');

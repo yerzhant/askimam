@@ -7,13 +7,14 @@ part 'chat.g.dart';
 
 @freezed
 class Chat with _$Chat, Model {
-  const Chat._();
   factory Chat(
     int id,
     String subject,
     bool isFavorite, {
     List<Message>? messages,
   }) = _Chat;
+
+  const Chat._();
 
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
 }

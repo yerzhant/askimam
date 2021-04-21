@@ -22,7 +22,7 @@ class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
     this._repo,
     this._favoriteBloc,
     this._pageSize,
-  ) : super(_InProgress([])) {
+  ) : super(const _InProgress([])) {
     _subscription = _favoriteBloc.stream.listen((state) {
       state.maybeWhen(
         (favorites) => add(MyChatsEvent.updateFavorites(favorites)),
@@ -46,12 +46,12 @@ class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
       (chats) async* {
         yield MyChatsState(chats);
       },
-      orElse: () => add(MyChatsEvent.reload()),
+      orElse: () => add(const MyChatsEvent.reload()),
     );
   }
 
   Stream<MyChatsState> _reload() async* {
-    yield MyChatsState.inProgress([]);
+    yield const MyChatsState.inProgress([]);
 
     final result = await _repo.getMy(0, _pageSize);
 
@@ -94,7 +94,7 @@ class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
 
         yield* result.fold(
           () async* {
-            add(MyChatsEvent.reload());
+            add(const MyChatsEvent.reload());
           },
           (a) async* {
             yield MyChatsState.error(a);

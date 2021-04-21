@@ -23,8 +23,8 @@ void main() {
   final repo = MockChatRepository();
 
   setUpAll(() {
-    mocktail.registerFallbackValue<FavoriteState>(FavoriteState([]));
-    mocktail.registerFallbackValue<FavoriteEvent>(FavoriteEvent.show());
+    mocktail.registerFallbackValue<FavoriteState>(const FavoriteState([]));
+    mocktail.registerFallbackValue<FavoriteEvent>(const FavoriteEvent.show());
   });
 
   setUp(() {
@@ -33,7 +33,7 @@ void main() {
   });
 
   test('Initial state', () {
-    expect(bloc.state, UnansweredChatsState.inProgress([]));
+    expect(bloc.state, const UnansweredChatsState.inProgress([]));
   });
 
   group('Load first page:', () {
@@ -49,9 +49,9 @@ void main() {
         );
         return bloc;
       },
-      act: (_) => bloc.add(UnansweredChatsEvent.reload()),
+      act: (_) => bloc.add(const UnansweredChatsEvent.reload()),
       expect: () => [
-        UnansweredChatsState.inProgress([]),
+        const UnansweredChatsState.inProgress([]),
         UnansweredChatsState([
           Chat(1, 'subject', false),
           Chat(2, 'subject', false),
@@ -67,9 +67,9 @@ void main() {
             .thenAnswer((_) async => left(Rejection('reason')));
         return bloc;
       },
-      act: (_) => bloc.add(UnansweredChatsEvent.reload()),
+      act: (_) => bloc.add(const UnansweredChatsEvent.reload()),
       expect: () => [
-        UnansweredChatsState.inProgress([]),
+        const UnansweredChatsState.inProgress([]),
         UnansweredChatsState.error(Rejection('reason')),
       ],
     );
@@ -87,9 +87,9 @@ void main() {
         return bloc;
       },
       seed: () => UnansweredChatsState.error(Rejection('reason')),
-      act: (_) => bloc.add(UnansweredChatsEvent.reload()),
+      act: (_) => bloc.add(const UnansweredChatsEvent.reload()),
       expect: () => [
-        UnansweredChatsState.inProgress([]),
+        const UnansweredChatsState.inProgress([]),
         UnansweredChatsState([
           Chat(1, 'subject', false),
           Chat(2, 'subject', false),
@@ -116,9 +116,9 @@ void main() {
         Chat(2, 'subject', false),
         Chat(3, 'subject', true),
       ]),
-      act: (_) => bloc.add(UnansweredChatsEvent.reload()),
+      act: (_) => bloc.add(const UnansweredChatsEvent.reload()),
       expect: () => [
-        UnansweredChatsState.inProgress([]),
+        const UnansweredChatsState.inProgress([]),
         UnansweredChatsState([
           Chat(1, 'subject', false),
           Chat(2, 'subject', false),
@@ -145,7 +145,7 @@ void main() {
         Chat(19, 'subject', false),
         Chat(20, 'subject', true),
       ]),
-      act: (_) => bloc.add(UnansweredChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(const UnansweredChatsEvent.loadNextPage()),
       expect: () => [
         UnansweredChatsState.inProgress([
           ...List.generate(18, (i) => Chat(i + 1, 'subject', false)),
@@ -171,7 +171,7 @@ void main() {
         Chat(19, 'subject', false),
         Chat(20, 'subject', true),
       ]),
-      act: (_) => bloc.add(UnansweredChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(const UnansweredChatsEvent.loadNextPage()),
       expect: () => [],
     );
 
@@ -179,7 +179,7 @@ void main() {
       'should reject to load next page if already has been rejected',
       build: () => bloc,
       seed: () => UnansweredChatsState.error(Rejection('reason')),
-      act: (_) => bloc.add(UnansweredChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(const UnansweredChatsEvent.loadNextPage()),
       expect: () => [],
     );
 
@@ -195,7 +195,7 @@ void main() {
         Chat(19, 'subject', false),
         Chat(20, 'subject', true),
       ]),
-      act: (_) => bloc.add(UnansweredChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(const UnansweredChatsEvent.loadNextPage()),
       expect: () => [
         UnansweredChatsState.inProgress([
           ...List.generate(18, (i) => Chat(i + 1, 'subject', false)),
@@ -220,9 +220,9 @@ void main() {
         );
         return bloc;
       },
-      act: (_) => bloc.add(UnansweredChatsEvent.show()),
+      act: (_) => bloc.add(const UnansweredChatsEvent.show()),
       expect: () => [
-        UnansweredChatsState.inProgress([]),
+        const UnansweredChatsState.inProgress([]),
         UnansweredChatsState([
           Chat(1, 'subject', false),
           Chat(2, 'subject', false),
@@ -239,7 +239,7 @@ void main() {
         Chat(2, 'subject', false),
         Chat(3, 'subject', true),
       ]),
-      act: (_) => bloc.add(UnansweredChatsEvent.show()),
+      act: (_) => bloc.add(const UnansweredChatsEvent.show()),
       expect: () => [],
     );
   });

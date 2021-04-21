@@ -21,7 +21,7 @@ final httpClient = MockClient((req) async {
         ]).toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/rejection') {
-        var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
+        final json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/nok') {
         return Response('', 500, reasonPhrase: 'boom!');
@@ -37,8 +37,9 @@ final httpClient = MockClient((req) async {
           req.bodyBytes,
           AuthenticationRequest('login', 'password').toJsonUtf8(),
         )) {
-          var json = ApiResponse.data(Authentication('123', UserType.Inquirer))
-              .toJsonString();
+          final json =
+              ApiResponse.data(Authentication('123', UserType.Inquirer))
+                  .toJsonString();
           return Response(json, 200);
         } else {
           return Response('', 400);
@@ -48,7 +49,7 @@ final httpClient = MockClient((req) async {
           req.bodyBytes,
           CreateChat(ChatType.Public, 'Тема', 'Текст', '123').toJsonUtf8(),
         )) {
-          var json = ApiResponse.ok().toJsonString();
+          final json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
         } else {
           return Response('', 400);
@@ -58,7 +59,7 @@ final httpClient = MockClient((req) async {
           req.bodyBytes,
           AddTextMessage(1, 'Текст', '123').toJsonUtf8(),
         )) {
-          var json = ApiResponse.ok().toJsonString();
+          final json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
         } else {
           return Response('', 400);
@@ -68,13 +69,13 @@ final httpClient = MockClient((req) async {
           req.bodyBytes,
           AddChatToFavorites(1).toJsonUtf8(),
         )) {
-          var json = ApiResponse.ok().toJsonString();
+          final json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
         } else {
           return Response('', 400);
         }
       } else if (req.url.path == '/suffix/nok') {
-        var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
+        final json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/suffix/500') {
         return Response('', 500, reasonPhrase: 'boom!');
@@ -86,11 +87,11 @@ final httpClient = MockClient((req) async {
       if (!_isAuthorized(req)) {
         return Response('', 401);
       } else if (req.url.path == '/suffix/ok') {
-        var json = ApiResponse.ok().toJsonString();
+        final json = ApiResponse.ok().toJsonString();
         return Response(json, 200);
       } else if (req.url.path == '/suffix/ok-body-chat') {
         if (listEquals(req.bodyBytes, UpdateChat('Тема').toJsonUtf8())) {
-          var json = ApiResponse.ok().toJsonString();
+          final json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
         } else {
           return Response('', 400);
@@ -100,13 +101,13 @@ final httpClient = MockClient((req) async {
           req.bodyBytes,
           UpdateTextMessage('Тема', '123').toJsonUtf8(),
         )) {
-          var json = ApiResponse.ok().toJsonString();
+          final json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
         } else {
           return Response('', 400);
         }
       } else if (req.url.path == '/suffix/nok') {
-        var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
+        final json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/suffix/500') {
         return Response('', 500, reasonPhrase: 'boom!');
@@ -118,10 +119,10 @@ final httpClient = MockClient((req) async {
       if (!_isAuthorized(req)) {
         return Response('', 401);
       } else if (req.url.path == '/suffix/ok') {
-        var json = ApiResponse.ok().toJsonString();
+        final json = ApiResponse.ok().toJsonString();
         return Response(json, 200);
       } else if (req.url.path == '/suffix/nok') {
-        var json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
+        final json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/suffix/500') {
         return Response('', 500, reasonPhrase: 'boom!');

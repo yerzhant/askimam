@@ -192,7 +192,5 @@ class HttpApiClient implements ApiClient {
       };
 
   @override
-  void close() async {
-    await _subscription.cancel();
-  }
+  Future<void> close() async => _subscription.cancel();
 }
