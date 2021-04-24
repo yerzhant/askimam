@@ -1,28 +1,38 @@
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:askimam/home/chats/ui/widget/my_chats_widget.dart';
-import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_modular/src/core/interfaces/modular_navigator_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart' as tail;
+
+import 'my_chats_widget_test.mocks.dart';
 
 class MockMyChatsBloc extends MockBloc<MyChatsEvent, MyChatsState>
     implements MyChatsBloc {}
 
+@GenerateMocks([IModularNavigator])
 void main() {
   late MyChatsBloc bloc;
+  late IModularNavigator navigator;
   late Widget app;
 
   setUpAll(() {
-    registerFallbackValue(const MyChatsState([]));
-    registerFallbackValue(const MyChatsEvent.reload());
+    tail.registerFallbackValue(const MyChatsState([]));
+    tail.registerFallbackValue(const MyChatsEvent.reload());
   });
 
   setUp(() {
     bloc = MockMyChatsBloc();
+    navigator = MockIModularNavigator();
+    // Modular.navigatorDelegate = navigator;
 
     app = MaterialApp(
       home: BlocProvider(
@@ -41,7 +51,7 @@ void main() {
   });
 
   // TODO: fix it
-  testWidgets('should load a next page', (tester) async {
+  testWidgets('should load the next page', (tester) async {
     await _fixture(bloc, tester, app, count: 12);
     expect(find.text('Chat 12'), findsNothing);
     // await tester.drag(find.text('Chat 5'), const Offset(0.0, -300.0));
@@ -85,10 +95,18 @@ void main() {
     await tester.fling(find.text('Chat 1'), const Offset(0.0, 300.0), 1000.0);
     await tester.pumpAndSettle();
 
-    verify(() => bloc.add(const MyChatsEvent.reload())).called(1);
+    tail.verify(() => bloc.add(const MyChatsEvent.reload())).called(1);
   });
 
   // TODO: add routing to a chat on tapping on an item
+  testWidgets('should route to a chat', (tester) async {
+    await _fixture(bloc, tester, app);
+    await tester.tap(find.text('Chat 1'));
+    // await tester.pumpAndSettle();
+
+    verify(navigator.navigate('/chat/1')).called(1);
+  }, skip: true); // TODO: waiting for a modular to fix navigator mocking
+
   // TODO: add favorites stuff
 
   testWidgets('should show an error', (tester) async {
@@ -101,7 +119,7 @@ void main() {
     await _errorFixture(bloc, tester, app);
     await tester.tap(find.text('ОБНОВИТЬ'));
 
-    verify(() => bloc.add(const MyChatsEvent.reload())).called(1);
+    tail.verify(() => bloc.add(const MyChatsEvent.reload())).called(1);
   });
 }
 

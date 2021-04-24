@@ -4,6 +4,7 @@ import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class MyChatsWidget extends StatelessWidget {
   const MyChatsWidget();
@@ -38,7 +39,10 @@ class MyChatsWidget extends StatelessWidget {
             key: Key('$item'),
             onDismissed: (_) =>
                 context.read<MyChatsBloc>().add(MyChatsEvent.delete(item)),
-            child: ListTile(title: Text(item.subject)),
+            child: ListTile(
+              title: Text(item.subject),
+              // onTap: () => Modular.to.navigate('/chat/${item.id}'),
+            ),
           );
         },
         physics: const AlwaysScrollableScrollPhysics(),
