@@ -1,3 +1,4 @@
+import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/chat/bloc/chat_bloc.dart';
 import 'package:askimam/chat/infra/http_chat_repository.dart';
 import 'package:askimam/chat/infra/http_message_repository.dart';
@@ -19,8 +20,9 @@ class ChatModule extends Module {
         ChildRoute(
           '/:id',
           child: (_, args) => ChatPage(
-            Modular.get<ChatBloc>(),
             args.params['id'],
+            Modular.get<ChatBloc>(),
+            Modular.get<AuthBloc>(),
           ),
         ),
       ];

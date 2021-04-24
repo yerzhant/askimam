@@ -4,9 +4,10 @@
 
 import 'dart:async' as _i3;
 
+import 'package:askimam/auth/bloc/auth_bloc.dart' as _i4;
 import 'package:askimam/chat/bloc/chat_bloc.dart' as _i2;
-import 'package:bloc/src/bloc.dart' as _i5;
-import 'package:bloc/src/transition.dart' as _i4;
+import 'package:bloc/src/bloc.dart' as _i6;
+import 'package:bloc/src/transition.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: comment_references
@@ -16,6 +17,8 @@ class _FakeChatState extends _i1.Fake implements _i2.ChatState {}
 
 class _FakeStreamSubscription<T> extends _i1.Fake
     implements _i3.StreamSubscription<T> {}
+
+class _FakeAuthState extends _i1.Fake implements _i4.AuthState {}
 
 /// A class which mocks [ChatBloc].
 ///
@@ -46,31 +49,31 @@ class MockChatBloc extends _i1.Mock implements _i2.ChatBloc {
       super.noSuchMethod(Invocation.method(#onEvent, [event]),
           returnValueForMissingStub: null);
   @override
-  _i3.Stream<_i4.Transition<_i2.ChatEvent, _i2.ChatState>> transformEvents(
+  _i3.Stream<_i5.Transition<_i2.ChatEvent, _i2.ChatState>> transformEvents(
           _i3.Stream<_i2.ChatEvent>? events,
-          _i5.TransitionFunction<_i2.ChatEvent, _i2.ChatState>? transitionFn) =>
+          _i6.TransitionFunction<_i2.ChatEvent, _i2.ChatState>? transitionFn) =>
       (super.noSuchMethod(
               Invocation.method(#transformEvents, [events, transitionFn]),
               returnValue:
-                  Stream<_i4.Transition<_i2.ChatEvent, _i2.ChatState>>.empty())
-          as _i3.Stream<_i4.Transition<_i2.ChatEvent, _i2.ChatState>>);
+                  Stream<_i5.Transition<_i2.ChatEvent, _i2.ChatState>>.empty())
+          as _i3.Stream<_i5.Transition<_i2.ChatEvent, _i2.ChatState>>);
   @override
   void emit(_i2.ChatState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
-  void onTransition(_i4.Transition<_i2.ChatEvent, _i2.ChatState>? transition) =>
+  void onTransition(_i5.Transition<_i2.ChatEvent, _i2.ChatState>? transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i3.Stream<_i4.Transition<_i2.ChatEvent, _i2.ChatState>> transformTransitions(
-          _i3.Stream<_i4.Transition<_i2.ChatEvent, _i2.ChatState>>?
+  _i3.Stream<_i5.Transition<_i2.ChatEvent, _i2.ChatState>> transformTransitions(
+          _i3.Stream<_i5.Transition<_i2.ChatEvent, _i2.ChatState>>?
               transitions) =>
       (super.noSuchMethod(
               Invocation.method(#transformTransitions, [transitions]),
               returnValue:
-                  Stream<_i4.Transition<_i2.ChatEvent, _i2.ChatState>>.empty())
-          as _i3.Stream<_i4.Transition<_i2.ChatEvent, _i2.ChatState>>);
+                  Stream<_i5.Transition<_i2.ChatEvent, _i2.ChatState>>.empty())
+          as _i3.Stream<_i5.Transition<_i2.ChatEvent, _i2.ChatState>>);
   @override
   _i3.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
       returnValue: Future.value(null),
@@ -92,7 +95,95 @@ class MockChatBloc extends _i1.Mock implements _i2.ChatBloc {
               returnValue: _FakeStreamSubscription<_i2.ChatState>())
           as _i3.StreamSubscription<_i2.ChatState>);
   @override
-  void onChange(_i4.Change<_i2.ChatState>? change) =>
+  void onChange(_i5.Change<_i2.ChatState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+}
+
+/// A class which mocks [AuthBloc].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthBloc extends _i1.Mock implements _i4.AuthBloc {
+  MockAuthBloc() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.AuthState get state => (super.noSuchMethod(Invocation.getter(#state),
+      returnValue: _FakeAuthState()) as _i4.AuthState);
+  @override
+  _i3.Stream<_i4.AuthState> get stream => (super.noSuchMethod(
+      Invocation.getter(#stream),
+      returnValue: Stream<_i4.AuthState>.empty()) as _i3.Stream<_i4.AuthState>);
+  @override
+  _i3.Stream<_i4.AuthState> mapEventToState(_i4.AuthEvent? event) =>
+      (super.noSuchMethod(Invocation.method(#mapEventToState, [event]),
+              returnValue: Stream<_i4.AuthState>.empty())
+          as _i3.Stream<_i4.AuthState>);
+  @override
+  void add(_i4.AuthEvent? event) =>
+      super.noSuchMethod(Invocation.method(#add, [event]),
+          returnValueForMissingStub: null);
+  @override
+  void onEvent(_i4.AuthEvent? event) =>
+      super.noSuchMethod(Invocation.method(#onEvent, [event]),
+          returnValueForMissingStub: null);
+  @override
+  _i3.Stream<_i5.Transition<_i4.AuthEvent, _i4.AuthState>> transformEvents(
+          _i3.Stream<_i4.AuthEvent>? events,
+          _i6.TransitionFunction<_i4.AuthEvent, _i4.AuthState>? transitionFn) =>
+      (super.noSuchMethod(
+              Invocation.method(#transformEvents, [events, transitionFn]),
+              returnValue:
+                  Stream<_i5.Transition<_i4.AuthEvent, _i4.AuthState>>.empty())
+          as _i3.Stream<_i5.Transition<_i4.AuthEvent, _i4.AuthState>>);
+  @override
+  void emit(_i4.AuthState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+  @override
+  void onTransition(_i5.Transition<_i4.AuthEvent, _i4.AuthState>? transition) =>
+      super.noSuchMethod(Invocation.method(#onTransition, [transition]),
+          returnValueForMissingStub: null);
+  @override
+  _i3.Stream<_i5.Transition<_i4.AuthEvent, _i4.AuthState>> transformTransitions(
+          _i3.Stream<_i5.Transition<_i4.AuthEvent, _i4.AuthState>>?
+              transitions) =>
+      (super.noSuchMethod(
+              Invocation.method(#transformTransitions, [transitions]),
+              returnValue:
+                  Stream<_i5.Transition<_i4.AuthEvent, _i4.AuthState>>.empty())
+          as _i3.Stream<_i5.Transition<_i4.AuthEvent, _i4.AuthState>>);
+  @override
+  _i3.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future.value(null),
+      returnValueForMissingStub: Future.value()) as _i3.Future<void>);
+  @override
+  _i3.StreamSubscription<_i4.AuthState> listen(
+          void Function(_i4.AuthState)? onData,
+          {Function? onError,
+          void Function()? onDone,
+          bool? cancelOnError}) =>
+      (super.noSuchMethod(
+              Invocation.method(#listen, [
+                onData
+              ], {
+                #onError: onError,
+                #onDone: onDone,
+                #cancelOnError: cancelOnError
+              }),
+              returnValue: _FakeStreamSubscription<_i4.AuthState>())
+          as _i3.StreamSubscription<_i4.AuthState>);
+  @override
+  void onChange(_i5.Change<_i4.AuthState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
