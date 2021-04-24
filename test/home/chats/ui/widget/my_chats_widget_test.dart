@@ -1,6 +1,6 @@
 import 'package:askimam/chat/domain/model/chat.dart';
-import 'package:askimam/chats/bloc/my_chats_bloc.dart';
-import 'package:askimam/chats/ui/widget/my_chats_widget.dart';
+import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
+import 'package:askimam/home/chats/ui/widget/my_chats_widget.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/cupertino.dart';

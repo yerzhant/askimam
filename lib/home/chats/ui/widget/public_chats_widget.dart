@@ -1,5 +1,5 @@
 import 'package:askimam/chat/domain/model/chat.dart';
-import 'package:askimam/chats/bloc/public_chats_bloc.dart';
+import 'package:askimam/home/chats/bloc/public_chats_bloc.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:flutter/material.dart';
