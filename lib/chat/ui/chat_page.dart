@@ -43,7 +43,8 @@ class ChatPage extends StatelessWidget {
               inProgress: () => InProgressWidget(child: Container()),
               error: (rejection) => RejectionWidget(
                 rejection: rejection,
-                onRefresh: () {},
+                onRefresh: () =>
+                    context.read<ChatBloc>().add(ChatEvent.refresh(id)),
               ),
             ),
           );
