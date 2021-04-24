@@ -45,6 +45,14 @@ void main() {
     verify(bloc.add(const ChatEvent.refresh(1))).called(2);
   });
 
+  testWidgets('should delete a chat', (tester) async {
+    await _fixture(tester, bloc);
+    await tester.drag(find.text('text 2'), const Offset(500, 0));
+    await tester.pumpAndSettle();
+
+    verify(bloc.add(const ChatEvent.deleteMessage(2))).called(1);
+  });
+
   testWidgets('should be in progress', (tester) async {
     when(bloc.state).thenReturn(const ChatState.inProgress());
 

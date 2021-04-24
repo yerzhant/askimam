@@ -59,7 +59,16 @@ class ChatPage extends StatelessWidget {
           context.read<ChatBloc>().add(ChatEvent.refresh(id)),
       child: ListView.builder(
         itemCount: items.length,
-        itemBuilder: (_, i) => ListTile(title: Text(items[i].text)),
+        itemBuilder: (_, i) {
+          final item = items[i];
+
+          return Dismissible(
+            key: Key(item.id.toString()),
+            onDismissed: (_) =>
+                context.read<ChatBloc>().add(ChatEvent.deleteMessage(item.id)),
+            child: ListTile(title: Text(item.text)),
+          );
+        },
         physics: const AlwaysScrollableScrollPhysics(),
       ),
     );
