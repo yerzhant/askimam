@@ -53,6 +53,33 @@ void main() {
     verify(bloc.add(const ChatEvent.deleteMessage(2))).called(1);
   });
 
+  testWidgets('should create a message', (tester) async {
+    await _fixture(tester, bloc);
+    await tester.enterText(find.byType(TextField), 'text 3');
+    await tester.tap(find.byIcon(Icons.send));
+    await tester.pumpAndSettle();
+
+    verify(bloc.add(const ChatEvent.addText('text 3'))).called(1);
+  });
+
+  testWidgets('should trim a message', (tester) async {
+    await _fixture(tester, bloc);
+    await tester.enterText(find.byType(TextField), ' text 3 ');
+    await tester.tap(find.byIcon(Icons.send));
+    await tester.pumpAndSettle();
+
+    verify(bloc.add(const ChatEvent.addText('text 3'))).called(1);
+  });
+
+  testWidgets('should not send an empty message', (tester) async {
+    await _fixture(tester, bloc);
+    await tester.enterText(find.byType(TextField), ' ');
+    await tester.tap(find.byIcon(Icons.send));
+    await tester.pumpAndSettle();
+
+    verifyNever(bloc.add(const ChatEvent.addText('')));
+  });
+
   testWidgets('should be in progress', (tester) async {
     when(bloc.state).thenReturn(const ChatState.inProgress());
 

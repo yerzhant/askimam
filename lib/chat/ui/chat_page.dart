@@ -1,5 +1,6 @@
 import 'package:askimam/chat/bloc/chat_bloc.dart';
 import 'package:askimam/chat/domain/model/message.dart';
+import 'package:askimam/chat/ui/widget/message_composer.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class ChatPage extends StatelessWidget {
                       context,
                     ),
                   ),
-                  _textEditor(context),
+                  const MessageComposer(),
                 ],
               ),
               inProgress: () => InProgressWidget(child: Container()),
@@ -73,18 +74,4 @@ class ChatPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _textEditor(BuildContext context) => Row(
-        children: [
-          const Expanded(
-            child: TextField(
-              decoration: InputDecoration(hintText: 'Введите сообщение'),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: () {},
-          ),
-        ],
-      );
 }
