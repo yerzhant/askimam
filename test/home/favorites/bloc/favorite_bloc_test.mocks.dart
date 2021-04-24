@@ -5,8 +5,9 @@
 import 'dart:async' as _i4;
 
 import 'package:askimam/common/domain/model/rejection.dart' as _i5;
-import 'package:askimam/favorites/domain/model/favorite.dart' as _i6;
-import 'package:askimam/favorites/domain/repo/favorite_repository.dart' as _i3;
+import 'package:askimam/home/favorites/domain/model/favorite.dart' as _i6;
+import 'package:askimam/home/favorites/domain/repo/favorite_repository.dart'
+    as _i3;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 

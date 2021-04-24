@@ -4,7 +4,7 @@ import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
-import 'package:askimam/favorites/domain/model/favorite.dart';
+import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart';
 

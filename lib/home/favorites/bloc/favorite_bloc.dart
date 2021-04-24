@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:askimam/common/domain/model/rejection.dart';
-import 'package:askimam/favorites/domain/model/favorite.dart';
-import 'package:askimam/favorites/domain/repo/favorite_repository.dart';
+import 'package:askimam/home/favorites/domain/model/favorite.dart';
+import 'package:askimam/home/favorites/domain/repo/favorite_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

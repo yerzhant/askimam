@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/repo/chat_repository.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
-import 'package:askimam/favorites/bloc/favorite_bloc.dart';
-import 'package:askimam/favorites/domain/model/favorite.dart';
+import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
+import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

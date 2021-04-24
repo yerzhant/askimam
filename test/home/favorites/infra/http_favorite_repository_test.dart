@@ -1,8 +1,8 @@
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
-import 'package:askimam/favorites/domain/model/add_chat_to_favorites.dart';
-import 'package:askimam/favorites/domain/model/favorite.dart';
-import 'package:askimam/favorites/infra/http_favorite_repository.dart';
+import 'package:askimam/home/favorites/domain/model/add_chat_to_favorites.dart';
+import 'package:askimam/home/favorites/domain/model/favorite.dart';
+import 'package:askimam/home/favorites/infra/http_favorite_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

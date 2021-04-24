@@ -1,5 +1,5 @@
 import 'package:askimam/common/domain/model/rejection.dart';
-import 'package:askimam/favorites/domain/model/favorite.dart';
+import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class FavoriteRepository {
