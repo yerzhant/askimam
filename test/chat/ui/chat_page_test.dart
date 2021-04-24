@@ -93,6 +93,16 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
 
+  testWidgets('should show an intermediate rejection', (tester) async {
+    when(bloc.stream).thenAnswer((_) => Stream.value(
+        ChatState(Chat(1, 'subject'), rejection: Rejection('reason'))));
+
+    await _fixture(tester, bloc);
+    await tester.pumpAndSettle();
+
+    expect(find.text('reason'), findsOneWidget);
+  });
+
   testWidgets('should be in progress', (tester) async {
     when(bloc.state).thenReturn(const ChatState.inProgress());
 

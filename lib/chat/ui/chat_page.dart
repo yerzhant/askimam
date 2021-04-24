@@ -18,7 +18,20 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: bloc,
-      child: BlocBuilder<ChatBloc, ChatState>(
+      child: BlocConsumer<ChatBloc, ChatState>(
+        listenWhen: (_, current) => current.maybeWhen(
+          (chat, rejection, isInProgress, isSuccess) => rejection != null,
+          orElse: () => false,
+        ),
+        listener: (context, state) {
+          state.maybeWhen(
+            (chat, rejection, isInProgress, isSuccess) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text(rejection!.reason)));
+            },
+            orElse: () {},
+          );
+        },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
