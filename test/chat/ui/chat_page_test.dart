@@ -80,6 +80,19 @@ void main() {
     verifyNever(bloc.add(const ChatEvent.addText('')));
   });
 
+  testWidgets('should be in progress with messages', (tester) async {
+    when(bloc.state).thenReturn(ChatState(
+        Chat(1, 'Subject', messages: [
+          Message(1, MessageType.Text, 'text 1', 'author',
+              DateTime.parse('20210424'), null),
+        ]),
+        isInProgress: true));
+
+    await _fixture(tester, bloc);
+
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
+
   testWidgets('should be in progress', (tester) async {
     when(bloc.state).thenReturn(const ChatState.inProgress());
 

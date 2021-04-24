@@ -33,9 +33,12 @@ class ChatPage extends StatelessWidget {
               (chat, rejection, isInProgress, isSuccess) => Column(
                 children: [
                   Expanded(
-                    child: _list(
-                      chat.messages ?? [],
-                      context,
+                    child: InProgressWidget(
+                      isInProgress: isInProgress,
+                      child: _list(
+                        chat.messages ?? [],
+                        context,
+                      ),
                     ),
                   ),
                   const MessageComposer(),
