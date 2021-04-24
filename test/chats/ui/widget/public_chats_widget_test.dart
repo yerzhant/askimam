@@ -40,6 +40,18 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
+  // TODO: fix it
+  testWidgets('should load a next page', (tester) async {
+    await _fixture(bloc, tester, app, count: 12);
+    expect(find.text('Chat 12'), findsNothing);
+    await tester.drag(find.text('Chat 1'), const Offset(0.0, -300.0));
+    await tester.pump();
+
+    expect(find.text('Chat 12'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    verify(() => bloc.add(const PublicChatsEvent.loadNextPage())).called(1);
+  }, skip: true);
+
   testWidgets('should show a list and a progress circle', (tester) async {
     whenListen(
       bloc,
@@ -81,13 +93,17 @@ void main() {
   });
 }
 
-Future _fixture(PublicChatsBloc bloc, WidgetTester tester, Widget app) async {
+Future _fixture(
+  PublicChatsBloc bloc,
+  WidgetTester tester,
+  Widget app, {
+  int count = 2,
+}) async {
   whenListen(
     bloc,
     Stream.value(const PublicChatsState([])),
     initialState: PublicChatsState([
-      Chat(1, 'Chat 1'),
-      Chat(2, 'Chat 2'),
+      for (var i = 1; i <= count; i++) Chat(i, 'Chat $i'),
     ]),
   );
 
