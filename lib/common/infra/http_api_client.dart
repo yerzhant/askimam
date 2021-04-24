@@ -1,34 +1,19 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:askimam/auth/bloc/auth_bloc.dart';
-import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
+import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/infra/dto/api_response.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart';
 
-class HttpApiClient implements ApiClient, Disposable {
+class HttpApiClient implements ApiClient {
   final Client _client;
-  final AuthBloc _authBloc;
   final String _url;
   String _jwt = '';
-  late StreamSubscription _subscription;
 
-  HttpApiClient(this._client, this._authBloc, this._url) {
-    _subscription = _authBloc.stream.listen((state) {
-      state.maybeWhen(
-        authenticated: (auth) {
-          _jwt = auth.jwt;
-        },
-        orElse: () {
-          _jwt = '';
-        },
-      );
-    });
-  }
+  HttpApiClient(this._client, this._url);
 
   @override
   Future<Either<Rejection, M>> get<M extends Model>(String suffix) async {
@@ -185,13 +170,16 @@ class HttpApiClient implements ApiClient, Disposable {
     }
   }
 
+  @override
+  void setJwt(String jwt) => _jwt = jwt;
+
+  @override
+  void resetJwt() => _jwt = '';
+
   Uri _constructUrl(String suffix) => Uri.parse('$_url/$suffix');
 
   Map<String, String> _getHeaders() => {
         HttpHeaders.acceptHeader: ContentType.json.value,
         if (_jwt.isNotEmpty) HttpHeaders.authorizationHeader: 'Bearer $_jwt',
       };
-
-  @override
-  Future<void> dispose() async => _subscription.cancel();
 }

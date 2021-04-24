@@ -1,4 +1,3 @@
-import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/auth/domain/model/authentication_request.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
@@ -12,38 +11,22 @@ import 'package:askimam/common/infra/dto/api_response.dart';
 import 'package:askimam/common/infra/http_api_client.dart';
 import 'package:askimam/home/favorites/domain/model/add_chat_to_favorites.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
-import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
-import 'package:mocktail/mocktail.dart';
 
 part 'http_api_client_test.client.dart';
 
 const apiUrl = 'https://server';
 
-class MockAuthBloc extends MockBloc<AuthEvent, AuthState> implements AuthBloc {}
-
 void main() {
   late ApiClient apiClient;
-  late AuthBloc authBloc;
-
-  setUpAll(() {
-    registerFallbackValue<AuthState>(const AuthState.unauthenticated());
-    registerFallbackValue<AuthEvent>(const AuthEvent.load());
-  });
 
   setUp(() {
-    authBloc = MockAuthBloc();
-    whenListen(
-      authBloc,
-      Stream.value(
-        AuthState.authenticated(Authentication('123', UserType.Inquirer)),
-      ),
-    );
-    apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+    apiClient = HttpApiClient(httpClient, apiUrl);
+    apiClient.setJwt('123');
   });
 
   group('Get one:', () {
@@ -60,8 +43,7 @@ void main() {
     });
 
     test('should return an Unauthenticated', () async {
-      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
-      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+      apiClient.resetJwt();
 
       final result = await apiClient.get<Chat>('auth');
 
@@ -83,9 +65,7 @@ void main() {
 
   group('Get list:', () {
     test('should return a list', () async {
-      authBloc = MockAuthBloc();
-      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
-      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+      apiClient.resetJwt();
 
       final result = await apiClient.getList<Favorite>('list');
 
@@ -117,8 +97,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
-      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+      apiClient.resetJwt();
 
       final result = await apiClient.getList<Favorite>('auth');
 
@@ -168,8 +147,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
-      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+      apiClient.resetJwt();
 
       final result = await apiClient.post(
           'suffix/ok-message', AddTextMessage(1, 'Текст', '123'));
@@ -209,8 +187,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
-      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+      apiClient.resetJwt();
 
       final result = await apiClient
           .postAndGetResponse<Authentication, AuthenticationRequest>(
@@ -250,8 +227,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
-      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+      apiClient.resetJwt();
 
       final result = await apiClient.patch('suffix/ok');
 
@@ -294,8 +270,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
-      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+      apiClient.resetJwt();
 
       final result =
           await apiClient.patchWithBody('suffix/ok-body', UpdateChat('Тема'));
@@ -332,8 +307,7 @@ void main() {
     });
 
     test('should return an unauthorized', () async {
-      whenListen(authBloc, Stream.value(const AuthState.unauthenticated()));
-      apiClient = HttpApiClient(httpClient, authBloc, apiUrl);
+      apiClient.resetJwt();
 
       final result = await apiClient.delete('suffix/ok');
 
