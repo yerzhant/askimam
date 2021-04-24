@@ -67,4 +67,8 @@ class MockApiClient extends _i1.Mock implements _i3.ApiClient {
                   Invocation.method(#postAndGetResponse, [suffix, model]),
                   returnValue: Future.value(_FakeEither<_i5.Rejection, R>()))
               as _i4.Future<_i2.Either<_i5.Rejection, R>>);
+  @override
+  void setJwt(String? jwt) =>
+      super.noSuchMethod(Invocation.method(#setJwt, [jwt]),
+          returnValueForMissingStub: null);
 }
