@@ -7,9 +7,10 @@ import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/infra/dto/api_response.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart';
 
-class HttpApiClient implements ApiClient {
+class HttpApiClient implements ApiClient, Disposable {
   final Client _client;
   final AuthBloc _authBloc;
   final String _url;
@@ -192,5 +193,5 @@ class HttpApiClient implements ApiClient {
       };
 
   @override
-  Future<void> close() async => _subscription.cancel();
+  Future<void> dispose() async => _subscription.cancel();
 }

@@ -16,6 +16,4 @@ abstract class ApiClient {
   Future<Either<Rejection, R>>
       postAndGetResponse<R extends Model, M extends Model>(
           String suffix, M model);
-
-  Future<void> close();
 }

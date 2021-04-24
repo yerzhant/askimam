@@ -69,10 +69,6 @@ class MockApiClient extends _i1.Mock implements _i3.ApiClient {
                   Invocation.method(#postAndGetResponse, [suffix, model]),
                   returnValue: Future.value(_FakeEither<_i5.Rejection, R>()))
               as _i4.Future<_i2.Either<_i5.Rejection, R>>);
-  @override
-  _i4.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
-      returnValue: Future.value(null),
-      returnValueForMissingStub: Future.value()) as _i4.Future<void>);
 }
 
 /// A class which mocks [Settings].
