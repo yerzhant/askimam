@@ -12,7 +12,7 @@ class HomeModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        ChildRoute('/', child: (_, __) => HomePage()),
+        // ChildRoute('/', child: (_, __) => HomePage()),
         // ChildRoute('/new-question', child: (_, __) => NewQPage()),
       ];
 }
