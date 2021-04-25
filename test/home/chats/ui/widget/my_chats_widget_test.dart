@@ -39,18 +39,15 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
-  // TODO: fix it
   testWidgets('should load the next page', (tester) async {
     await _fixture(bloc, tester, app, count: 12);
     expect(find.text('Chat 12'), findsNothing);
-    // await tester.drag(find.text('Chat 5'), const Offset(0.0, -300.0));
     await tester.fling(find.text('Chat 5'), const Offset(0.0, -300.0), 1000);
     await tester.pumpAndSettle();
 
     expect(find.text('Chat 12'), findsOneWidget);
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    // verify(bloc.add(const MyChatsEvent.loadNextPage())).called(1);
-  }, skip: false);
+    verify(bloc.add(const MyChatsEvent.loadNextPage())).called(1);
+  });
 
   testWidgets('should delete a chat', (tester) async {
     await _fixture(bloc, tester, app);

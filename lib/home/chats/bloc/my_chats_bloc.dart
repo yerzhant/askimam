@@ -12,6 +12,7 @@ part 'my_chats_bloc.freezed.dart';
 part 'my_chats_event.dart';
 part 'my_chats_state.dart';
 
+// TODO: make ..chats blocs disposible
 class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
   final ChatRepository _repo;
   final FavoriteBloc _favoriteBloc;

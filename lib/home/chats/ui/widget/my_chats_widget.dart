@@ -5,8 +5,35 @@ import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MyChatsWidget extends StatelessWidget {
+class MyChatsWidget extends StatefulWidget {
   const MyChatsWidget();
+
+  @override
+  _MyChatsWidgetState createState() => _MyChatsWidgetState();
+}
+
+class _MyChatsWidgetState extends State<MyChatsWidget> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_loadNextPage);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_loadNextPage);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _loadNextPage() {
+    if (_scrollController.position.maxScrollExtent ==
+        _scrollController.position.pixels) {
+      context.read<MyChatsBloc>().add(const MyChatsEvent.loadNextPage());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +57,7 @@ class MyChatsWidget extends StatelessWidget {
       onRefresh: () async =>
           context.read<MyChatsBloc>().add(const MyChatsEvent.reload()),
       child: ListView.builder(
+        controller: _scrollController,
         itemCount: items.length,
         itemBuilder: (_, i) {
           final item = items[i];
