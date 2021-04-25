@@ -2,6 +2,7 @@ import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/chats/bloc/public_chats_bloc.dart';
 import 'package:askimam/home/chats/ui/widget/public_chats_widget.dart';
+import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,19 +12,25 @@ import 'package:mockito/mockito.dart';
 
 import 'public_chats_widget_test.mocks.dart';
 
-@GenerateMocks([PublicChatsBloc])
+@GenerateMocks([PublicChatsBloc, FavoriteBloc])
 void main() {
   late PublicChatsBloc bloc;
+  late FavoriteBloc favoriteBloc;
   late Widget app;
 
   setUp(() {
     bloc = MockPublicChatsBloc();
+    favoriteBloc = MockFavoriteBloc();
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
+    when(favoriteBloc.stream).thenAnswer((_) => const Stream.empty());
 
     app = MaterialApp(
-      home: BlocProvider(
-        create: (BuildContext context) => bloc,
-        child: const Material(child: PublicChatsWidget()),
+      home: BlocProvider.value(
+        value: favoriteBloc,
+        child: BlocProvider(
+          create: (BuildContext context) => bloc,
+          child: const Material(child: PublicChatsWidget()),
+        ),
       ),
     );
   });
@@ -70,7 +77,20 @@ void main() {
   });
 
   // TODO: add routing to a chat on tapping on an item
-  // TODO: add Add to/Remove from favorites + Show a favorite icon
+
+  testWidgets('should bookmark a chat', (tester) async {
+    await _fixture(bloc, tester, app);
+    await tester.tap(find.byIcon(Icons.bookmark_border));
+
+    verify(favoriteBloc.add(FavoriteEvent.add(Chat(1, 1, 'Chat 1')))).called(1);
+  });
+
+  testWidgets('should unbookmark a chat', (tester) async {
+    await _fixture(bloc, tester, app);
+    await tester.tap(find.byIcon(Icons.bookmark));
+
+    verify(favoriteBloc.add(const FavoriteEvent.delete(2))).called(1);
+  });
 
   testWidgets('should show an error', (tester) async {
     await _errorFixture(bloc, tester, app);
@@ -94,7 +114,8 @@ Future _fixture(
 }) async {
   when(bloc.state).thenReturn(
     PublicChatsState([
-      for (var i = 1; i <= count; i++) Chat(i, 1, 'Chat $i'),
+      for (var i = 1; i <= count; i++)
+        Chat(i, 1, 'Chat $i', isFavorite: i == 2),
     ]),
   );
 

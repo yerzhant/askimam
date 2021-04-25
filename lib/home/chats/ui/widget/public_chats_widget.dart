@@ -2,6 +2,7 @@ import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/home/chats/bloc/public_chats_bloc.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
+import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -62,7 +63,23 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
       child: ListView.builder(
         controller: _scrollController,
         itemCount: items.length,
-        itemBuilder: (_, i) => ListTile(title: Text(items[i].subject)),
+        itemBuilder: (_, i) {
+          final item = items[i];
+
+          return ListTile(
+            title: Text(item.subject),
+            trailing: IconButton(
+              icon: Icon(
+                item.isFavorite ? Icons.bookmark : Icons.bookmark_border,
+              ),
+              onPressed: () => context.read<FavoriteBloc>().add(
+                    item.isFavorite
+                        ? FavoriteEvent.delete(item.id)
+                        : FavoriteEvent.add(item),
+                  ),
+            ),
+          );
+        },
         physics: const AlwaysScrollableScrollPhysics(),
       ),
     );

@@ -3,36 +3,21 @@ import 'dart:async';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/repo/chat_repository.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
-import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'unanswered_chats_bloc.freezed.dart';
 part 'unanswered_chats_event.dart';
 part 'unanswered_chats_state.dart';
-part 'unanswered_chats_bloc.freezed.dart';
 
 class UnansweredChatsBloc
-    extends Bloc<UnansweredChatsEvent, UnansweredChatsState>
-    implements Disposable {
+    extends Bloc<UnansweredChatsEvent, UnansweredChatsState> {
   final ChatRepository _repo;
-  final FavoriteBloc _favoriteBloc;
   final int _pageSize;
-  late StreamSubscription _subscription;
 
-  UnansweredChatsBloc(
-    this._repo,
-    this._favoriteBloc,
-    this._pageSize,
-  ) : super(const _InProgress([])) {
-    _subscription = _favoriteBloc.stream.listen((state) {
-      state.maybeWhen(
-        (favorites) => add(UnansweredChatsEvent.updateFavorites(favorites)),
-        orElse: () {},
-      );
-    });
-  }
+  UnansweredChatsBloc(this._repo, this._pageSize)
+      : super(const _InProgress([]));
 
   @override
   Stream<UnansweredChatsState> mapEventToState(UnansweredChatsEvent event) =>
@@ -119,13 +104,4 @@ class UnansweredChatsBloc
       orElse: () => state,
     );
   }
-
-  @override
-  Future<void> close() async {
-    await _subscription.cancel();
-    return super.close();
-  }
-
-  @override
-  void dispose() => close();
 }

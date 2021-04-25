@@ -21,8 +21,8 @@ void main() {
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
     app = MaterialApp(
-      home: BlocProvider(
-        create: (BuildContext context) => bloc,
+      home: BlocProvider.value(
+        value: bloc,
         child: const Material(child: UnansweredChatsWidget()),
       ),
     );
@@ -79,7 +79,6 @@ void main() {
   });
 
   // TODO: add routing to a chat on tapping on an item
-  // TODO: add favorites stuff
 
   testWidgets('should show an error', (tester) async {
     await _errorFixture(bloc, tester, app);

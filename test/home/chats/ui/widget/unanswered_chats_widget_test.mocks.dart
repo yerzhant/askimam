@@ -43,10 +43,6 @@ class MockUnansweredChatsBloc extends _i1.Mock
               returnValue: Stream<_i2.UnansweredChatsState>.empty())
           as _i3.Stream<_i2.UnansweredChatsState>);
   @override
-  _i3.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
-      returnValue: Future.value(null),
-      returnValueForMissingStub: Future.value()) as _i3.Future<void>);
-  @override
   void add(_i2.UnansweredChatsEvent? event) =>
       super.noSuchMethod(Invocation.method(#add, [event]),
           returnValueForMissingStub: null);
@@ -87,6 +83,10 @@ class MockUnansweredChatsBloc extends _i1.Mock
                       Stream<_i4.Transition<_i2.UnansweredChatsEvent, _i2.UnansweredChatsState>>.empty())
               as _i3.Stream<
                   _i4.Transition<_i2.UnansweredChatsEvent, _i2.UnansweredChatsState>>);
+  @override
+  _i3.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future.value(null),
+      returnValueForMissingStub: Future.value()) as _i3.Future<void>);
   @override
   _i3.StreamSubscription<_i2.UnansweredChatsState> listen(
           void Function(_i2.UnansweredChatsState)? onData,

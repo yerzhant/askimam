@@ -2,6 +2,7 @@ import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:askimam/home/chats/ui/widget/my_chats_widget.dart';
+import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,22 +13,28 @@ import 'package:mockito/mockito.dart';
 
 import 'my_chats_widget_test.mocks.dart';
 
-@GenerateMocks([MyChatsBloc, IModularNavigator])
+@GenerateMocks([MyChatsBloc, FavoriteBloc, IModularNavigator])
 void main() {
   late MyChatsBloc bloc;
+  late FavoriteBloc favoriteBloc;
   late IModularNavigator navigator;
   late Widget app;
 
   setUp(() {
     bloc = MockMyChatsBloc();
+    favoriteBloc = MockFavoriteBloc();
     navigator = MockIModularNavigator();
     // Modular.navigatorDelegate = navigator;
 
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
+    when(favoriteBloc.stream).thenAnswer((_) => const Stream.empty());
 
     app = BlocProvider.value(
       value: bloc,
-      child: const MaterialApp(home: Scaffold(body: MyChatsWidget())),
+      child: BlocProvider.value(
+        value: favoriteBloc,
+        child: const MaterialApp(home: Scaffold(body: MyChatsWidget())),
+      ),
     );
   });
 
@@ -54,7 +61,9 @@ void main() {
     await tester.drag(find.text('Chat 2'), const Offset(5000, 0));
     await tester.pumpAndSettle();
 
-    verify(bloc.add(MyChatsEvent.delete(Chat(2, 1, 'Chat 2')))).called(1);
+    verify(
+      bloc.add(MyChatsEvent.delete(Chat(2, 1, 'Chat 2', isFavorite: true))),
+    ).called(1);
   });
 
   testWidgets('should show a list and a progress circle', (tester) async {
@@ -87,7 +96,19 @@ void main() {
     verify(navigator.navigate('/chat/1')).called(1);
   }, skip: true); // TODO: waiting for a modular to fix navigator mocking
 
-  // TODO: add favorites stuff
+  testWidgets('should bookmark a chat', (tester) async {
+    await _fixture(bloc, tester, app);
+    await tester.tap(find.byIcon(Icons.bookmark_border));
+
+    verify(favoriteBloc.add(FavoriteEvent.add(Chat(1, 1, 'Chat 1')))).called(1);
+  });
+
+  testWidgets('should unbookmark a chat', (tester) async {
+    await _fixture(bloc, tester, app);
+    await tester.tap(find.byIcon(Icons.bookmark));
+
+    verify(favoriteBloc.add(const FavoriteEvent.delete(2))).called(1);
+  });
 
   testWidgets('should show an error', (tester) async {
     await _errorFixture(bloc, tester, app);
@@ -110,7 +131,7 @@ Future _fixture(
   int count = 2,
 }) async {
   when(bloc.state).thenReturn(MyChatsState([
-    for (var i = 1; i <= count; i++) Chat(i, 1, 'Chat $i'),
+    for (var i = 1; i <= count; i++) Chat(i, 1, 'Chat $i', isFavorite: i == 2),
   ]));
 
   await tester.pumpWidget(app);

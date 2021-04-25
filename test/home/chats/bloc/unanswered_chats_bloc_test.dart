@@ -1,35 +1,22 @@
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/repo/chat_repository.dart';
-import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
-import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
-import 'package:askimam/home/favorites/domain/model/favorite.dart';
+import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mocktail/mocktail.dart' as mocktail;
 
 import 'unanswered_chats_bloc_test.mocks.dart';
-
-class MockFavoriteBloc extends MockBloc<FavoriteEvent, FavoriteState>
-    implements FavoriteBloc {}
 
 @GenerateMocks([ChatRepository])
 void main() {
   late UnansweredChatsBloc bloc;
-  late FavoriteBloc favoriteBloc;
   final repo = MockChatRepository();
 
-  setUpAll(() {
-    mocktail.registerFallbackValue<FavoriteState>(const FavoriteState([]));
-    mocktail.registerFallbackValue<FavoriteEvent>(const FavoriteEvent.show());
-  });
-
   setUp(() {
-    favoriteBloc = MockFavoriteBloc();
-    bloc = UnansweredChatsBloc(repo, favoriteBloc, 20);
+    bloc = UnansweredChatsBloc(repo, 20);
   });
 
   test('Initial state', () {
@@ -311,117 +298,6 @@ void main() {
       build: () => bloc,
       seed: () => UnansweredChatsState.error(Rejection('reason')),
       act: (_) => bloc.add(UnansweredChatsEvent.delete(Chat(1, 1, 'subject'))),
-      expect: () => [],
-    );
-  });
-
-  group('Listen to favorites changes:', () {
-    blocTest(
-      'should set a flag',
-      build: () {
-        whenListen(
-          favoriteBloc,
-          Stream.value(FavoriteState([
-            Favorite(1, 1, 'subject'),
-            Favorite(3, 3, 'subject'),
-          ])),
-        );
-        return UnansweredChatsBloc(repo, favoriteBloc, 20);
-      },
-      seed: () => UnansweredChatsState([
-        Chat(1, 1, 'subject'),
-        Chat(2, 1, 'subject'),
-        Chat(3, 1, 'subject', isFavorite: true),
-      ]),
-      expect: () => [
-        UnansweredChatsState([
-          Chat(1, 1, 'subject', isFavorite: true),
-          Chat(2, 1, 'subject'),
-          Chat(3, 1, 'subject', isFavorite: true),
-        ])
-      ],
-    );
-
-    blocTest(
-      'should reset a flag',
-      build: () {
-        whenListen(
-          favoriteBloc,
-          Stream.value(FavoriteState([
-            Favorite(3, 3, 'subject'),
-          ])),
-        );
-        return UnansweredChatsBloc(repo, favoriteBloc, 20);
-      },
-      seed: () => UnansweredChatsState([
-        Chat(1, 1, 'subject', isFavorite: true),
-        Chat(2, 1, 'subject'),
-        Chat(3, 1, 'subject', isFavorite: true),
-      ]),
-      expect: () => [
-        UnansweredChatsState([
-          Chat(1, 1, 'subject'),
-          Chat(2, 1, 'subject'),
-          Chat(3, 1, 'subject', isFavorite: true),
-        ])
-      ],
-    );
-
-    blocTest(
-      'should nothing happen',
-      build: () {
-        whenListen(
-          favoriteBloc,
-          Stream.fromIterable([
-            FavoriteState.inProgress([
-              Favorite(3, 3, 'subject'),
-            ]),
-            FavoriteState.error(Rejection('reason')),
-          ]),
-        );
-        return UnansweredChatsBloc(repo, favoriteBloc, 20);
-      },
-      seed: () => UnansweredChatsState([
-        Chat(1, 1, 'subject', isFavorite: true),
-        Chat(2, 1, 'subject'),
-        Chat(3, 1, 'subject', isFavorite: true),
-      ]),
-      expect: () => [],
-    );
-
-    blocTest(
-      'should nothing happen either',
-      build: () {
-        whenListen(
-          favoriteBloc,
-          Stream.value(FavoriteState([
-            Favorite(1, 1, 'subject'),
-            Favorite(3, 3, 'subject'),
-          ])),
-        );
-        return UnansweredChatsBloc(repo, favoriteBloc, 20);
-      },
-      seed: () => UnansweredChatsState.inProgress([
-        Chat(1, 1, 'subject'),
-        Chat(2, 1, 'subject'),
-        Chat(3, 1, 'subject', isFavorite: true),
-      ]),
-      expect: () => [],
-    );
-
-    blocTest(
-      'should nothing happen as well',
-      build: () {
-        whenListen(
-          favoriteBloc,
-          Stream.value(FavoriteState([
-            Favorite(1, 1, 'subject'),
-            Favorite(3, 3, 'subject'),
-          ])),
-        );
-        return UnansweredChatsBloc(repo, favoriteBloc, 20);
-      },
-      seed: () => UnansweredChatsState.error(Rejection('reason')),
       expect: () => [],
     );
   });
