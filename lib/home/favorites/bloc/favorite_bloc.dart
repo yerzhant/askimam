@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:askimam/home/favorites/domain/repo/favorite_repository.dart';
@@ -41,21 +42,25 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     );
   }
 
-  Stream<FavoriteState> _add(Favorite favorite) async* {
-    Stream<FavoriteState> add(List<Favorite> favorites) async* {
+  Stream<FavoriteState> _add(Chat chat) async* {
+    Stream<FavoriteState> addIt(List<Favorite> favorites) async* {
       yield FavoriteState.inProgress(favorites);
 
-      final result = await _repo.add(favorite);
+      final result = await _repo.add(chat);
 
-      yield result.fold(
-        () => FavoriteState(favorites..insert(0, favorite)),
-        (a) => FavoriteState.error(a),
+      yield* result.fold(
+        () async* {
+          add(const FavoriteEvent.refresh());
+        },
+        (a) async* {
+          yield FavoriteState.error(a);
+        },
       );
     }
 
     yield* state.when(
-      (favorites) => add(favorites),
-      inProgress: (favorites) => add(favorites),
+      (favorites) => addIt(favorites),
+      inProgress: (favorites) => addIt(favorites),
       error: (rejection) async* {
         yield FavoriteState.error(rejection);
       },

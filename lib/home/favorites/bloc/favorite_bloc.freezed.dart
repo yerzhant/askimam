@@ -24,9 +24,9 @@ class _$FavoriteEventTearOff {
     return const _Refresh();
   }
 
-  _Add add(Favorite favorite) {
+  _Add add(Chat chat) {
     return _Add(
-      favorite,
+      chat,
     );
   }
 
@@ -46,7 +46,7 @@ mixin _$FavoriteEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() refresh,
-    required TResult Function(Favorite favorite) add,
+    required TResult Function(Chat chat) add,
     required TResult Function(Favorite favorite) delete,
   }) =>
       throw _privateConstructorUsedError;
@@ -54,7 +54,7 @@ mixin _$FavoriteEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? refresh,
-    TResult Function(Favorite favorite)? add,
+    TResult Function(Chat chat)? add,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
   }) =>
@@ -133,7 +133,7 @@ class _$_Show implements _Show {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() refresh,
-    required TResult Function(Favorite favorite) add,
+    required TResult Function(Chat chat) add,
     required TResult Function(Favorite favorite) delete,
   }) {
     return show();
@@ -144,7 +144,7 @@ class _$_Show implements _Show {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? refresh,
-    TResult Function(Favorite favorite)? add,
+    TResult Function(Chat chat)? add,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
   }) {
@@ -223,7 +223,7 @@ class _$_Refresh implements _Refresh {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() refresh,
-    required TResult Function(Favorite favorite) add,
+    required TResult Function(Chat chat) add,
     required TResult Function(Favorite favorite) delete,
   }) {
     return refresh();
@@ -234,7 +234,7 @@ class _$_Refresh implements _Refresh {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? refresh,
-    TResult Function(Favorite favorite)? add,
+    TResult Function(Chat chat)? add,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
   }) {
@@ -279,9 +279,9 @@ abstract class _Refresh implements FavoriteEvent {
 abstract class _$AddCopyWith<$Res> {
   factory _$AddCopyWith(_Add value, $Res Function(_Add) then) =
       __$AddCopyWithImpl<$Res>;
-  $Res call({Favorite favorite});
+  $Res call({Chat chat});
 
-  $FavoriteCopyWith<$Res> get favorite;
+  $ChatCopyWith<$Res> get chat;
 }
 
 /// @nodoc
@@ -295,48 +295,47 @@ class __$AddCopyWithImpl<$Res> extends _$FavoriteEventCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? favorite = freezed,
+    Object? chat = freezed,
   }) {
     return _then(_Add(
-      favorite == freezed
-          ? _value.favorite
-          : favorite // ignore: cast_nullable_to_non_nullable
-              as Favorite,
+      chat == freezed
+          ? _value.chat
+          : chat // ignore: cast_nullable_to_non_nullable
+              as Chat,
     ));
   }
 
   @override
-  $FavoriteCopyWith<$Res> get favorite {
-    return $FavoriteCopyWith<$Res>(_value.favorite, (value) {
-      return _then(_value.copyWith(favorite: value));
+  $ChatCopyWith<$Res> get chat {
+    return $ChatCopyWith<$Res>(_value.chat, (value) {
+      return _then(_value.copyWith(chat: value));
     });
   }
 }
 
 /// @nodoc
 class _$_Add implements _Add {
-  const _$_Add(this.favorite);
+  const _$_Add(this.chat);
 
   @override
-  final Favorite favorite;
+  final Chat chat;
 
   @override
   String toString() {
-    return 'FavoriteEvent.add(favorite: $favorite)';
+    return 'FavoriteEvent.add(chat: $chat)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Add &&
-            (identical(other.favorite, favorite) ||
-                const DeepCollectionEquality()
-                    .equals(other.favorite, favorite)));
+            (identical(other.chat, chat) ||
+                const DeepCollectionEquality().equals(other.chat, chat)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(favorite);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(chat);
 
   @JsonKey(ignore: true)
   @override
@@ -348,10 +347,10 @@ class _$_Add implements _Add {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() refresh,
-    required TResult Function(Favorite favorite) add,
+    required TResult Function(Chat chat) add,
     required TResult Function(Favorite favorite) delete,
   }) {
-    return add(favorite);
+    return add(chat);
   }
 
   @override
@@ -359,12 +358,12 @@ class _$_Add implements _Add {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? refresh,
-    TResult Function(Favorite favorite)? add,
+    TResult Function(Chat chat)? add,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
   }) {
     if (add != null) {
-      return add(favorite);
+      return add(chat);
     }
     return orElse();
   }
@@ -397,9 +396,9 @@ class _$_Add implements _Add {
 }
 
 abstract class _Add implements FavoriteEvent {
-  const factory _Add(Favorite favorite) = _$_Add;
+  const factory _Add(Chat chat) = _$_Add;
 
-  Favorite get favorite => throw _privateConstructorUsedError;
+  Chat get chat => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$AddCopyWith<_Add> get copyWith => throw _privateConstructorUsedError;
 }
@@ -477,7 +476,7 @@ class _$_Delete implements _Delete {
   TResult when<TResult extends Object?>({
     required TResult Function() show,
     required TResult Function() refresh,
-    required TResult Function(Favorite favorite) add,
+    required TResult Function(Chat chat) add,
     required TResult Function(Favorite favorite) delete,
   }) {
     return delete(favorite);
@@ -488,7 +487,7 @@ class _$_Delete implements _Delete {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? show,
     TResult Function()? refresh,
-    TResult Function(Favorite favorite)? add,
+    TResult Function(Chat chat)? add,
     TResult Function(Favorite favorite)? delete,
     required TResult orElse(),
   }) {

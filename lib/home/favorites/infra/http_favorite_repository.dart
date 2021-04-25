@@ -1,3 +1,4 @@
+import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/domain/model/add_chat_to_favorites.dart';
@@ -18,8 +19,8 @@ class HttpFavoriteRepository implements FavoriteRepository {
   }
 
   @override
-  Future<Option<Rejection>> add(Favorite favorite) async {
-    return _apiClient.post(_url, AddChatToFavorites(favorite.chatId));
+  Future<Option<Rejection>> add(Chat chat) async {
+    return _apiClient.post(_url, AddChatToFavorites(chat.id));
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/domain/model/add_chat_to_favorites.dart';
@@ -46,7 +47,7 @@ void main() {
       when(apiClient.post('favorites', AddChatToFavorites(1)))
           .thenAnswer((_) async => none());
 
-      final result = await repo.add(Favorite(1, 1, 'subject'));
+      final result = await repo.add(Chat(1, 1, 'subject'));
 
       expect(result, none());
     });
@@ -55,7 +56,7 @@ void main() {
       when(apiClient.post('favorites', AddChatToFavorites(1)))
           .thenAnswer((_) async => some(Rejection('error')));
 
-      final result = await repo.add(Favorite(1, 1, 'subject'));
+      final result = await repo.add(Chat(1, 1, 'subject'));
 
       expect(result, some(Rejection('error')));
     });

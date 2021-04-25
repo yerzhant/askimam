@@ -4,6 +4,7 @@
 
 import 'dart:async' as _i4;
 
+import 'package:askimam/chat/domain/model/chat.dart' as _i7;
 import 'package:askimam/common/domain/model/rejection.dart' as _i5;
 import 'package:askimam/home/favorites/domain/model/favorite.dart' as _i6;
 import 'package:askimam/home/favorites/domain/repo/favorite_repository.dart'
@@ -34,8 +35,8 @@ class MockFavoriteRepository extends _i1.Mock
                   _FakeEither<_i5.Rejection, List<_i6.Favorite>>()))
           as _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Favorite>>>);
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> add(_i6.Favorite? favorite) =>
-      (super.noSuchMethod(Invocation.method(#add, [favorite]),
+  _i4.Future<_i2.Option<_i5.Rejection>> add(_i7.Chat? chat) =>
+      (super.noSuchMethod(Invocation.method(#add, [chat]),
               returnValue: Future.value(_FakeOption<_i5.Rejection>()))
           as _i4.Future<_i2.Option<_i5.Rejection>>);
   @override

@@ -1,3 +1,4 @@
+import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
@@ -87,23 +88,28 @@ void main() {
     blocTest(
       'should add it',
       build: () {
-        when(repo.add(Favorite(1, 1, 'Subject 1'))).thenAnswer(
+        when(repo.add(Chat(1, 1, 'Subject 1'))).thenAnswer(
           (realInvocation) async => none(),
         );
+        when(repo.get()).thenAnswer((_) async => right([
+              Favorite(1, 1, 'Subject 1'),
+              Favorite(2, 2, 'Subject 2'),
+              Favorite(3, 3, 'Subject 3'),
+            ]));
+
         return bloc;
       },
       seed: () => FavoriteState([
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.add(Favorite(1, 1, 'Subject 1'))),
+      act: (_) => bloc.add(FavoriteEvent.add(Chat(1, 1, 'Subject 1'))),
       expect: () => [
         FavoriteState.inProgress([
-          // updating the same myFavorites list
-          Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
         ]),
+        const FavoriteState.inProgress([]),
         FavoriteState([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
@@ -115,17 +121,24 @@ void main() {
     blocTest(
       'should add it while in progress',
       build: () {
-        when(repo.add(Favorite(1, 1, 'Subject 1'))).thenAnswer(
+        when(repo.add(Chat(1, 1, 'Subject 1'))).thenAnswer(
           (realInvocation) async => none(),
         );
+        when(repo.get()).thenAnswer((_) async => right([
+              Favorite(1, 1, 'Subject 1'),
+              Favorite(2, 2, 'Subject 2'),
+              Favorite(3, 3, 'Subject 3'),
+            ]));
+
         return bloc;
       },
       seed: () => FavoriteState.inProgress([
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.add(Favorite(1, 1, 'Subject 1'))),
+      act: (_) => bloc.add(FavoriteEvent.add(Chat(1, 1, 'Subject 1'))),
       expect: () => [
+        const FavoriteState.inProgress([]),
         FavoriteState([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
@@ -137,7 +150,7 @@ void main() {
     blocTest(
       'should not add it',
       build: () {
-        when(repo.add(Favorite(1, 1, 'Subject 1'))).thenAnswer(
+        when(repo.add(Chat(1, 1, 'Subject 1'))).thenAnswer(
           (realInvocation) async => some(Rejection('reason')),
         );
         return bloc;
@@ -146,7 +159,7 @@ void main() {
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.add(Favorite(1, 1, 'Subject 1'))),
+      act: (_) => bloc.add(FavoriteEvent.add(Chat(1, 1, 'Subject 1'))),
       expect: () => [
         FavoriteState.inProgress([
           Favorite(2, 2, 'Subject 2'),
@@ -160,7 +173,7 @@ void main() {
       'should return a previous error',
       build: () => bloc,
       seed: () => FavoriteState.error(Rejection('reason')),
-      act: (_) => bloc.add(FavoriteEvent.add(Favorite(1, 1, 'Subject 1'))),
+      act: (_) => bloc.add(FavoriteEvent.add(Chat(1, 1, 'Subject 1'))),
       expect: () => [],
     );
   });
