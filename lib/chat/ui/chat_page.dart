@@ -124,7 +124,7 @@ class ChatPage extends StatelessWidget {
           final item = items[i];
 
           return Dismissible(
-            key: Key(item.id.toString()),
+            key: ValueKey(item.id),
             confirmDismiss: (_) => Future.value(
               authState.maybeWhen(
                 authenticated: (auth) {

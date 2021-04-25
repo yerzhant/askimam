@@ -5,8 +5,37 @@ import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PublicChatsWidget extends StatelessWidget {
+class PublicChatsWidget extends StatefulWidget {
   const PublicChatsWidget();
+
+  @override
+  _PublicChatsWidgetState createState() => _PublicChatsWidgetState();
+}
+
+class _PublicChatsWidgetState extends State<PublicChatsWidget> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_loadNextPage);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_loadNextPage);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _loadNextPage() {
+    if (_scrollController.position.maxScrollExtent ==
+        _scrollController.position.pixels) {
+      context
+          .read<PublicChatsBloc>()
+          .add(const PublicChatsEvent.loadNextPage());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +60,7 @@ class PublicChatsWidget extends StatelessWidget {
       onRefresh: () async =>
           context.read<PublicChatsBloc>().add(const PublicChatsEvent.reload()),
       child: ListView.builder(
+        controller: _scrollController,
         itemCount: items.length,
         itemBuilder: (_, i) => ListTile(title: Text(items[i].subject)),
         physics: const AlwaysScrollableScrollPhysics(),
