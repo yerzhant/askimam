@@ -10,7 +10,8 @@ final httpClient = MockClient((req) async {
         ]).toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/one' && _isAuthorized(req)) {
-        final json = ApiResponse.data(Chat(1, 1, 'subject')).toJsonUtf8();
+        final json = ApiResponse.data(Chat(1, ChatType.Public, 1, 'subject'))
+            .toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/auth' && !_isAuthorized(req)) {
         return Response('', 401);

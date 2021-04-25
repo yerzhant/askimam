@@ -56,8 +56,8 @@ void main() {
   testWidgets('should show a list and a progress circle', (tester) async {
     when(bloc.state).thenReturn(
       PublicChatsState.inProgress([
-        Chat(1, 1, 'Chat 1'),
-        Chat(2, 1, 'Chat 2'),
+        Chat(1, ChatType.Public, 1, 'Chat 1'),
+        Chat(2, ChatType.Public, 1, 'Chat 2'),
       ]),
     );
 
@@ -82,7 +82,9 @@ void main() {
     await _fixture(bloc, tester, app);
     await tester.tap(find.byIcon(Icons.bookmark_border));
 
-    verify(favoriteBloc.add(FavoriteEvent.add(Chat(1, 1, 'Chat 1')))).called(1);
+    verify(favoriteBloc
+            .add(FavoriteEvent.add(Chat(1, ChatType.Public, 1, 'Chat 1'))))
+        .called(1);
   });
 
   testWidgets('should unbookmark a chat', (tester) async {
@@ -115,7 +117,7 @@ Future _fixture(
   when(bloc.state).thenReturn(
     PublicChatsState([
       for (var i = 1; i <= count; i++)
-        Chat(i, 1, 'Chat $i', isFavorite: i == 2),
+        Chat(i, ChatType.Public, 1, 'Chat $i', isFavorite: i == 2),
     ]),
   );
 

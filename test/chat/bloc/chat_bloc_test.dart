@@ -32,7 +32,7 @@ void main() {
       build: () {
         when(repo.get(1)).thenAnswer(
           (_) async => right(
-            Chat(1, 1, 'subject', messages: [
+            Chat(1, ChatType.Public, 1, 'subject', messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210418'), null),
               Message(2, MessageType.Text, 'text', 'author',
@@ -48,7 +48,7 @@ void main() {
       expect: () => [
         const ChatState.inProgress(),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -66,7 +66,7 @@ void main() {
       build: () {
         when(repo.get(1)).thenAnswer(
           (_) async => right(
-            Chat(1, 1, 'subject', messages: [
+            Chat(1, ChatType.Public, 1, 'subject', messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210418'), null),
               Message(2, MessageType.Text, 'text', 'author',
@@ -111,7 +111,7 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, 1, 'subject', messages: [
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
           Message(1, MessageType.Text, 'text', 'author',
               DateTime.parse('20210418'), null),
           Message(2, MessageType.Text, 'text', 'author',
@@ -121,7 +121,7 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
       expect: () => [
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -130,7 +130,7 @@ void main() {
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -149,7 +149,7 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, 1, 'subject', messages: [
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
           Message(1, MessageType.Text, 'text', 'author',
               DateTime.parse('20210418'), null),
           Message(2, MessageType.Text, 'text', 'author',
@@ -159,7 +159,7 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
       expect: () => [
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -168,7 +168,7 @@ void main() {
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -204,7 +204,7 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, 1, 'subject', messages: [
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
           Message(1, MessageType.Text, 'text', 'author',
               DateTime.parse('20210418'), null),
           Message(2, MessageType.Text, 'text', 'author',
@@ -214,7 +214,7 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
       expect: () => [
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -223,7 +223,7 @@ void main() {
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -242,7 +242,7 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, 1, 'subject', messages: [
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
           Message(1, MessageType.Text, 'text', 'author',
               DateTime.parse('20210418'), null),
           Message(2, MessageType.Text, 'text', 'author',
@@ -252,7 +252,7 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
       expect: () => [
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -261,7 +261,7 @@ void main() {
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -296,7 +296,7 @@ void main() {
         when(messageRepo.addText(1, 'text')).thenAnswer((_) async => none());
         when(repo.get(1)).thenAnswer(
           (_) async => right(
-            Chat(1, 1, 'subject', messages: [
+            Chat(1, ChatType.Public, 1, 'subject', messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210418'), null),
               Message(2, MessageType.Text, 'text', 'author',
@@ -308,7 +308,7 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, 1, 'subject', messages: [
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
           Message(1, MessageType.Text, 'text', 'author',
               DateTime.parse('20210418'), null),
         ]),
@@ -316,14 +316,14 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.addText('text')),
       expect: () => [
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -344,7 +344,7 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, 1, 'subject', messages: [
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
           Message(1, MessageType.Text, 'text', 'author',
               DateTime.parse('20210418'), null),
         ]),
@@ -352,14 +352,14 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.addText('text')),
       expect: () => [
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),
@@ -377,7 +377,7 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, 1, 'subject', messages: [
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
           Message(1, MessageType.Text, 'text', 'author',
               DateTime.parse('20210418'), null),
         ]),
@@ -385,14 +385,14 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.addText('text')),
       expect: () => [
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),
@@ -426,7 +426,7 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, 1, 'subject', messages: [
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
           Message(1, MessageType.Text, 'text', 'author',
               DateTime.parse('20210418'), null),
           Message(2, MessageType.Text, 'text', 'author',
@@ -436,7 +436,7 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
       expect: () => [
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -445,7 +445,7 @@ void main() {
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(2, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),
@@ -461,7 +461,7 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, 1, 'subject', messages: [
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
           Message(1, MessageType.Text, 'text', 'author',
               DateTime.parse('20210418'), null),
         ]),
@@ -469,14 +469,14 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
       expect: () => [
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),
@@ -511,7 +511,7 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, 1, 'subject', messages: [
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
           Message(1, MessageType.Text, 'text', 'author',
               DateTime.parse('20210418'), null),
           Message(2, MessageType.Text, 'text', 'author',
@@ -521,7 +521,7 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
       expect: () => [
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -530,7 +530,7 @@ void main() {
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text 2', 'author',
                 DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
@@ -548,7 +548,7 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, 1, 'subject', messages: [
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
           Message(1, MessageType.Text, 'text', 'author',
               DateTime.parse('20210418'), null),
         ]),
@@ -556,14 +556,14 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
       expect: () => [
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),

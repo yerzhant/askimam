@@ -71,7 +71,12 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
             onDismissed: (_) => context
                 .read<UnansweredChatsBloc>()
                 .add(UnansweredChatsEvent.delete(item)),
-            child: ListTile(title: Text(item.subject)),
+            child: ListTile(
+              title: Text(item.subject),
+              leading: Icon(
+                item.type == ChatType.Public ? Icons.public : Icons.lock,
+              ),
+            ),
           );
         },
         physics: const AlwaysScrollableScrollPhysics(),

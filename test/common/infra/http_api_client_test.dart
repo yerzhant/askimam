@@ -33,7 +33,7 @@ void main() {
     test('should return an item', () async {
       final result = await apiClient.get<Chat>('one');
 
-      expect(result, right(Chat(1, 1, 'subject')));
+      expect(result, right(Chat(1, ChatType.Public, 1, 'subject')));
     });
 
     test('should return a rejection', () async {

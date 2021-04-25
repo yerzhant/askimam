@@ -28,12 +28,13 @@ void main() {
 
   group('Get public:', () {
     test('should get it', () async {
-      when(api.getList<Chat>('chats/public/0/20'))
-          .thenAnswer((_) async => right([Chat(1, 1, 'subject')]));
+      when(api.getList<Chat>('chats/public/0/20')).thenAnswer(
+          (_) async => right([Chat(1, ChatType.Public, 1, 'subject')]));
 
       final resutl = await repo.getPublic(0, 20);
 
-      expect(resutl.getOrElse(() => Todo), [Chat(1, 1, 'subject')]);
+      expect(resutl.getOrElse(() => Todo),
+          [Chat(1, ChatType.Public, 1, 'subject')]);
     });
 
     test('should not get it', () async {
@@ -48,12 +49,13 @@ void main() {
 
   group('Get my:', () {
     test('should get it', () async {
-      when(api.getList<Chat>('chats/my/0/20'))
-          .thenAnswer((_) async => right([Chat(1, 1, 'subject')]));
+      when(api.getList<Chat>('chats/my/0/20')).thenAnswer(
+          (_) async => right([Chat(1, ChatType.Public, 1, 'subject')]));
 
       final resutl = await repo.getMy(0, 20);
 
-      expect(resutl.getOrElse(() => Todo), [Chat(1, 1, 'subject')]);
+      expect(resutl.getOrElse(() => Todo),
+          [Chat(1, ChatType.Public, 1, 'subject')]);
     });
 
     test('should not get it', () async {
@@ -68,12 +70,13 @@ void main() {
 
   group('Get unanswered:', () {
     test('should get it', () async {
-      when(api.getList<Chat>('chats/unanswered/0/20'))
-          .thenAnswer((_) async => right([Chat(1, 1, 'subject')]));
+      when(api.getList<Chat>('chats/unanswered/0/20')).thenAnswer(
+          (_) async => right([Chat(1, ChatType.Public, 1, 'subject')]));
 
       final resutl = await repo.getUnanswered(0, 20);
 
-      expect(resutl.getOrElse(() => Todo), [Chat(1, 1, 'subject')]);
+      expect(resutl.getOrElse(() => Todo),
+          [Chat(1, ChatType.Public, 1, 'subject')]);
     });
 
     test('should not get it', () async {
@@ -89,7 +92,7 @@ void main() {
   group('Read a chat:', () {
     test('should get it', () async {
       when(api.get<Chat>('chats/messages/1')).thenAnswer((_) async => right(
-            Chat(1, 1, 'subject', messages: [
+            Chat(1, ChatType.Public, 1, 'subject', messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210419'), null),
             ]),
@@ -100,7 +103,7 @@ void main() {
       expect(
         resutl,
         right(
-          Chat(1, 1, 'subject', messages: [
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
             Message(1, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210419'), null),
           ]),
@@ -177,7 +180,7 @@ void main() {
     test('should delete it', () async {
       when(api.delete('chats/1')).thenAnswer((_) async => none());
 
-      final resutl = await repo.delete(Chat(1, 1, 'subject'));
+      final resutl = await repo.delete(Chat(1, ChatType.Public, 1, 'subject'));
 
       expect(resutl, none());
     });
@@ -186,7 +189,7 @@ void main() {
       when(api.delete('chats/1'))
           .thenAnswer((_) async => some(Rejection('reason')));
 
-      final resutl = await repo.delete(Chat(1, 1, 'subject'));
+      final resutl = await repo.delete(Chat(1, ChatType.Public, 1, 'subject'));
 
       expect(resutl, some(Rejection('reason')));
     });

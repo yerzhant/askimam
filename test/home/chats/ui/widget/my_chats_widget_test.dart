@@ -43,6 +43,8 @@ void main() {
 
     expect(find.text('Chat 1'), findsOneWidget);
     expect(find.text('Chat 2'), findsOneWidget);
+    expect(find.byIcon(Icons.public), findsOneWidget);
+    expect(find.byIcon(Icons.lock), findsOneWidget);
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
@@ -62,14 +64,15 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(
-      bloc.add(MyChatsEvent.delete(Chat(2, 1, 'Chat 2', isFavorite: true))),
+      bloc.add(MyChatsEvent.delete(
+          Chat(2, ChatType.Private, 1, 'Chat 2', isFavorite: true))),
     ).called(1);
   });
 
   testWidgets('should show a list and a progress circle', (tester) async {
     when(bloc.state).thenReturn(MyChatsState.inProgress([
-      Chat(1, 1, 'Chat 1'),
-      Chat(2, 1, 'Chat 2'),
+      Chat(1, ChatType.Public, 1, 'Chat 1'),
+      Chat(2, ChatType.Private, 1, 'Chat 2'),
     ]));
 
     await tester.pumpWidget(app);
@@ -100,7 +103,11 @@ void main() {
     await _fixture(bloc, tester, app);
     await tester.tap(find.byIcon(Icons.bookmark_border));
 
-    verify(favoriteBloc.add(FavoriteEvent.add(Chat(1, 1, 'Chat 1')))).called(1);
+    verify(
+      favoriteBloc.add(
+        FavoriteEvent.add(Chat(1, ChatType.Public, 1, 'Chat 1')),
+      ),
+    ).called(1);
   });
 
   testWidgets('should unbookmark a chat', (tester) async {
@@ -131,7 +138,14 @@ Future _fixture(
   int count = 2,
 }) async {
   when(bloc.state).thenReturn(MyChatsState([
-    for (var i = 1; i <= count; i++) Chat(i, 1, 'Chat $i', isFavorite: i == 2),
+    for (var i = 1; i <= count; i++)
+      Chat(
+        i,
+        i == 1 ? ChatType.Public : ChatType.Private,
+        1,
+        'Chat $i',
+        isFavorite: i == 2,
+      ),
   ]));
 
   await tester.pumpWidget(app);

@@ -69,6 +69,9 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
                 context.read<MyChatsBloc>().add(MyChatsEvent.delete(item)),
             child: ListTile(
               title: Text(item.subject),
+              leading: Icon(
+                item.type == ChatType.Public ? Icons.public : Icons.lock,
+              ),
               trailing: IconButton(
                 icon: Icon(
                   item.isFavorite ? Icons.bookmark : Icons.bookmark_border,

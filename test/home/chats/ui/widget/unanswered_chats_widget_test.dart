@@ -33,6 +33,8 @@ void main() {
 
     expect(find.text('Chat 1'), findsOneWidget);
     expect(find.text('Chat 2'), findsOneWidget);
+    expect(find.byIcon(Icons.public), findsOneWidget);
+    expect(find.byIcon(Icons.lock), findsOneWidget);
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
@@ -51,15 +53,18 @@ void main() {
     await tester.drag(find.text('Chat 2'), const Offset(500, 0));
     await tester.pumpAndSettle();
 
-    verify(bloc.add(UnansweredChatsEvent.delete(Chat(2, 1, 'Chat 2'))))
-        .called(1);
+    verify(
+      bloc.add(
+        UnansweredChatsEvent.delete(Chat(2, ChatType.Private, 1, 'Chat 2')),
+      ),
+    ).called(1);
   });
 
   testWidgets('should show a list and a progress circle', (tester) async {
     when(bloc.state).thenReturn(
       UnansweredChatsState.inProgress([
-        Chat(1, 1, 'Chat 1'),
-        Chat(2, 1, 'Chat 2'),
+        Chat(1, ChatType.Public, 1, 'Chat 1'),
+        Chat(2, ChatType.Public, 1, 'Chat 2'),
       ]),
     );
 
@@ -102,7 +107,13 @@ Future _fixture(
 }) async {
   when(bloc.state).thenReturn(
     UnansweredChatsState([
-      for (var i = 1; i <= count; i++) Chat(i, 1, 'Chat $i'),
+      for (var i = 1; i <= count; i++)
+        Chat(
+          i,
+          i == 1 ? ChatType.Public : ChatType.Private,
+          1,
+          'Chat $i',
+        ),
     ]),
   );
 
