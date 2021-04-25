@@ -1,4 +1,4 @@
-import 'package:askimam/chat/ui/new_question_page.dart';
+import 'package:askimam/home/chats/ui/new_question_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
