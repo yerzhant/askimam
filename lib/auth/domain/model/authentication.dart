@@ -8,6 +8,7 @@ part 'authentication.g.dart';
 class Authentication with _$Authentication, Model {
   factory Authentication(
     String jwt,
+    int userId,
     UserType userType,
   ) = _Authentication;
 

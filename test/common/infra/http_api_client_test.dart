@@ -175,7 +175,7 @@ void main() {
           .postAndGetResponse<Authentication, AuthenticationRequest>(
               'suffix/ok', AuthenticationRequest('login', 'password'));
 
-      expect(result, right(Authentication('123', UserType.Inquirer)));
+      expect(result, right(Authentication('123', 1, UserType.Inquirer)));
     });
 
     test('should return some rejection reason', () async {

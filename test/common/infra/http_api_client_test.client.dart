@@ -38,7 +38,7 @@ final httpClient = MockClient((req) async {
           AuthenticationRequest('login', 'password').toJsonUtf8(),
         )) {
           final json =
-              ApiResponse.data(Authentication('123', UserType.Inquirer))
+              ApiResponse.data(Authentication('123', 1, UserType.Inquirer))
                   .toJsonString();
           return Response(json, 200);
         } else {

@@ -25,19 +25,20 @@ void main() {
           AuthenticationRequest('login', 'password'),
         ),
       ).thenAnswer(
-        (_) async => right(Authentication('jwt', UserType.Inquirer)),
+        (_) async => right(Authentication('jwt', 1, UserType.Inquirer)),
       );
       when(settings
-              .saveAuthentication(Authentication('jwt', UserType.Inquirer)))
+              .saveAuthentication(Authentication('jwt', 1, UserType.Inquirer)))
           .thenAnswer((p) async => right(p.positionalArguments[0]));
 
       final result =
           await repo.login(AuthenticationRequest('login', 'password'));
 
-      expect(result, right(Authentication('jwt', UserType.Inquirer)));
+      expect(result, right(Authentication('jwt', 1, UserType.Inquirer)));
 
       verify(
-        settings.saveAuthentication(Authentication('jwt', UserType.Inquirer)),
+        settings
+            .saveAuthentication(Authentication('jwt', 1, UserType.Inquirer)),
       ).called(1);
     });
 
@@ -48,10 +49,10 @@ void main() {
           AuthenticationRequest('login', 'password'),
         ),
       ).thenAnswer(
-        (_) async => right(Authentication('jwt', UserType.Inquirer)),
+        (_) async => right(Authentication('jwt', 1, UserType.Inquirer)),
       );
       when(settings
-              .saveAuthentication(Authentication('jwt', UserType.Inquirer)))
+              .saveAuthentication(Authentication('jwt', 1, UserType.Inquirer)))
           .thenAnswer((p) async => left(Rejection('reason')));
 
       final result =
@@ -98,12 +99,12 @@ void main() {
 
   group('Load:', () {
     test('should be ok', () async {
-      when(settings.loadAuthentication())
-          .thenAnswer((_) async => right(Authentication('jwt', UserType.Imam)));
+      when(settings.loadAuthentication()).thenAnswer(
+          (_) async => right(Authentication('jwt', 1, UserType.Imam)));
 
       final result = await repo.load();
 
-      expect(result, right(Authentication('jwt', UserType.Imam)));
+      expect(result, right(Authentication('jwt', 1, UserType.Imam)));
     });
 
     test('should not be ok', () async {

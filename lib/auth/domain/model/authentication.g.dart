@@ -9,6 +9,7 @@ part of 'authentication.dart';
 _$_Authentication _$_$_AuthenticationFromJson(Map<String, dynamic> json) {
   return _$_Authentication(
     json['jwt'] as String,
+    json['userId'] as int,
     _$enumDecode(_$UserTypeEnumMap, json['userType']),
   );
 }
@@ -16,6 +17,7 @@ _$_Authentication _$_$_AuthenticationFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$_$_AuthenticationToJson(_$_Authentication instance) =>
     <String, dynamic>{
       'jwt': instance.jwt,
+      'userId': instance.userId,
       'userType': _$UserTypeEnumMap[instance.userType],
     };
 

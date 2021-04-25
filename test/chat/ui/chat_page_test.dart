@@ -29,7 +29,7 @@ void main() {
 
     authBloc = MockAuthBloc();
     when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', UserType.Inquirer)));
+        AuthState.authenticated(Authentication('jwt', 1, UserType.Inquirer)));
     when(authBloc.stream).thenAnswer((_) => const Stream.empty());
   });
 
@@ -48,7 +48,7 @@ void main() {
 
   testWidgets('should have additinal elements for imams', (tester) async {
     when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', UserType.Imam)));
+        AuthState.authenticated(Authentication('jwt', 2, UserType.Imam)));
     await _fixture(tester, bloc, authBloc);
 
     expect(find.byIcon(Icons.assignment_return), findsOneWidget);
@@ -56,7 +56,7 @@ void main() {
 
   testWidgets('should return a chat to unanswered ones', (tester) async {
     when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', UserType.Imam)));
+        AuthState.authenticated(Authentication('jwt', 2, UserType.Imam)));
     await _fixture(tester, bloc, authBloc);
     await tester.tap(find.byIcon(Icons.assignment_return));
 

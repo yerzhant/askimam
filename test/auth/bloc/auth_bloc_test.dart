@@ -29,7 +29,7 @@ void main() {
       'should login',
       build: () {
         when(repo.login(AuthenticationRequest('login', 'password'))).thenAnswer(
-            (_) async => right(Authentication('123', UserType.Inquirer)));
+            (_) async => right(Authentication('123', 1, UserType.Inquirer)));
 
         return bloc;
       },
@@ -37,7 +37,7 @@ void main() {
           bloc.add(AuthEvent.login(AuthenticationRequest('login', 'password'))),
       expect: () => [
         const AuthState.inProgress(),
-        AuthState.authenticated(Authentication('123', UserType.Inquirer)),
+        AuthState.authenticated(Authentication('123', 1, UserType.Inquirer)),
       ],
     );
 
@@ -66,7 +66,7 @@ void main() {
         return bloc;
       },
       seed: () =>
-          AuthState.authenticated(Authentication('jwt', UserType.Inquirer)),
+          AuthState.authenticated(Authentication('jwt', 1, UserType.Inquirer)),
       act: (_) => bloc.add(const AuthEvent.logout()),
       expect: () => [
         const AuthState.inProgress(),
@@ -81,7 +81,7 @@ void main() {
         return bloc;
       },
       seed: () =>
-          AuthState.authenticated(Authentication('jwt', UserType.Inquirer)),
+          AuthState.authenticated(Authentication('jwt', 1, UserType.Inquirer)),
       act: (_) => bloc.add(const AuthEvent.logout()),
       expect: () => [
         const AuthState.inProgress(),
@@ -95,13 +95,13 @@ void main() {
       'should get an authentication',
       build: () {
         when(repo.load()).thenAnswer(
-            (_) async => right(Authentication('jwt', UserType.Inquirer)));
+            (_) async => right(Authentication('jwt', 1, UserType.Inquirer)));
         return bloc;
       },
       act: (_) => bloc.add(const AuthEvent.load()),
       expect: () => [
         const AuthState.inProgress(),
-        AuthState.authenticated(Authentication('jwt', UserType.Inquirer)),
+        AuthState.authenticated(Authentication('jwt', 1, UserType.Inquirer)),
       ],
     );
 

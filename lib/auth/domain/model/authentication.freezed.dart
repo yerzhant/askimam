@@ -20,9 +20,10 @@ Authentication _$AuthenticationFromJson(Map<String, dynamic> json) {
 class _$AuthenticationTearOff {
   const _$AuthenticationTearOff();
 
-  _Authentication call(String jwt, UserType userType) {
+  _Authentication call(String jwt, int userId, UserType userType) {
     return _Authentication(
       jwt,
+      userId,
       userType,
     );
   }
@@ -38,6 +39,7 @@ const $Authentication = _$AuthenticationTearOff();
 /// @nodoc
 mixin _$Authentication {
   String get jwt => throw _privateConstructorUsedError;
+  int get userId => throw _privateConstructorUsedError;
   UserType get userType => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +53,7 @@ abstract class $AuthenticationCopyWith<$Res> {
   factory $AuthenticationCopyWith(
           Authentication value, $Res Function(Authentication) then) =
       _$AuthenticationCopyWithImpl<$Res>;
-  $Res call({String jwt, UserType userType});
+  $Res call({String jwt, int userId, UserType userType});
 }
 
 /// @nodoc
@@ -66,6 +68,7 @@ class _$AuthenticationCopyWithImpl<$Res>
   @override
   $Res call({
     Object? jwt = freezed,
+    Object? userId = freezed,
     Object? userType = freezed,
   }) {
     return _then(_value.copyWith(
@@ -73,6 +76,10 @@ class _$AuthenticationCopyWithImpl<$Res>
           ? _value.jwt
           : jwt // ignore: cast_nullable_to_non_nullable
               as String,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int,
       userType: userType == freezed
           ? _value.userType
           : userType // ignore: cast_nullable_to_non_nullable
@@ -88,7 +95,7 @@ abstract class _$AuthenticationCopyWith<$Res>
           _Authentication value, $Res Function(_Authentication) then) =
       __$AuthenticationCopyWithImpl<$Res>;
   @override
-  $Res call({String jwt, UserType userType});
+  $Res call({String jwt, int userId, UserType userType});
 }
 
 /// @nodoc
@@ -105,6 +112,7 @@ class __$AuthenticationCopyWithImpl<$Res>
   @override
   $Res call({
     Object? jwt = freezed,
+    Object? userId = freezed,
     Object? userType = freezed,
   }) {
     return _then(_Authentication(
@@ -112,6 +120,10 @@ class __$AuthenticationCopyWithImpl<$Res>
           ? _value.jwt
           : jwt // ignore: cast_nullable_to_non_nullable
               as String,
+      userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int,
       userType == freezed
           ? _value.userType
           : userType // ignore: cast_nullable_to_non_nullable
@@ -124,7 +136,7 @@ class __$AuthenticationCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_Authentication extends _Authentication {
-  _$_Authentication(this.jwt, this.userType) : super._();
+  _$_Authentication(this.jwt, this.userId, this.userType) : super._();
 
   factory _$_Authentication.fromJson(Map<String, dynamic> json) =>
       _$_$_AuthenticationFromJson(json);
@@ -132,11 +144,13 @@ class _$_Authentication extends _Authentication {
   @override
   final String jwt;
   @override
+  final int userId;
+  @override
   final UserType userType;
 
   @override
   String toString() {
-    return 'Authentication(jwt: $jwt, userType: $userType)';
+    return 'Authentication(jwt: $jwt, userId: $userId, userType: $userType)';
   }
 
   @override
@@ -145,6 +159,8 @@ class _$_Authentication extends _Authentication {
         (other is _Authentication &&
             (identical(other.jwt, jwt) ||
                 const DeepCollectionEquality().equals(other.jwt, jwt)) &&
+            (identical(other.userId, userId) ||
+                const DeepCollectionEquality().equals(other.userId, userId)) &&
             (identical(other.userType, userType) ||
                 const DeepCollectionEquality()
                     .equals(other.userType, userType)));
@@ -154,6 +170,7 @@ class _$_Authentication extends _Authentication {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(jwt) ^
+      const DeepCollectionEquality().hash(userId) ^
       const DeepCollectionEquality().hash(userType);
 
   @JsonKey(ignore: true)
@@ -168,7 +185,8 @@ class _$_Authentication extends _Authentication {
 }
 
 abstract class _Authentication extends Authentication {
-  factory _Authentication(String jwt, UserType userType) = _$_Authentication;
+  factory _Authentication(String jwt, int userId, UserType userType) =
+      _$_Authentication;
   _Authentication._() : super._();
 
   factory _Authentication.fromJson(Map<String, dynamic> json) =
@@ -176,6 +194,8 @@ abstract class _Authentication extends Authentication {
 
   @override
   String get jwt => throw _privateConstructorUsedError;
+  @override
+  int get userId => throw _privateConstructorUsedError;
   @override
   UserType get userType => throw _privateConstructorUsedError;
   @override
