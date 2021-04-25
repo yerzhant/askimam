@@ -40,8 +40,8 @@ class MockFavoriteRepository extends _i1.Mock
               returnValue: Future.value(_FakeOption<_i5.Rejection>()))
           as _i4.Future<_i2.Option<_i5.Rejection>>);
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> delete(_i6.Favorite? favorite) =>
-      (super.noSuchMethod(Invocation.method(#delete, [favorite]),
+  _i4.Future<_i2.Option<_i5.Rejection>> delete(int? chatId) =>
+      (super.noSuchMethod(Invocation.method(#delete, [chatId]),
               returnValue: Future.value(_FakeOption<_i5.Rejection>()))
           as _i4.Future<_i2.Option<_i5.Rejection>>);
 }

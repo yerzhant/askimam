@@ -30,9 +30,9 @@ class _$FavoriteEventTearOff {
     );
   }
 
-  _Delete delete(Favorite favorite) {
+  _Delete delete(int chatId) {
     return _Delete(
-      favorite,
+      chatId,
     );
   }
 }
@@ -47,7 +47,7 @@ mixin _$FavoriteEvent {
     required TResult Function() show,
     required TResult Function() refresh,
     required TResult Function(Chat chat) add,
-    required TResult Function(Favorite favorite) delete,
+    required TResult Function(int chatId) delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,7 +55,7 @@ mixin _$FavoriteEvent {
     TResult Function()? show,
     TResult Function()? refresh,
     TResult Function(Chat chat)? add,
-    TResult Function(Favorite favorite)? delete,
+    TResult Function(int chatId)? delete,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -134,7 +134,7 @@ class _$_Show implements _Show {
     required TResult Function() show,
     required TResult Function() refresh,
     required TResult Function(Chat chat) add,
-    required TResult Function(Favorite favorite) delete,
+    required TResult Function(int chatId) delete,
   }) {
     return show();
   }
@@ -145,7 +145,7 @@ class _$_Show implements _Show {
     TResult Function()? show,
     TResult Function()? refresh,
     TResult Function(Chat chat)? add,
-    TResult Function(Favorite favorite)? delete,
+    TResult Function(int chatId)? delete,
     required TResult orElse(),
   }) {
     if (show != null) {
@@ -224,7 +224,7 @@ class _$_Refresh implements _Refresh {
     required TResult Function() show,
     required TResult Function() refresh,
     required TResult Function(Chat chat) add,
-    required TResult Function(Favorite favorite) delete,
+    required TResult Function(int chatId) delete,
   }) {
     return refresh();
   }
@@ -235,7 +235,7 @@ class _$_Refresh implements _Refresh {
     TResult Function()? show,
     TResult Function()? refresh,
     TResult Function(Chat chat)? add,
-    TResult Function(Favorite favorite)? delete,
+    TResult Function(int chatId)? delete,
     required TResult orElse(),
   }) {
     if (refresh != null) {
@@ -348,7 +348,7 @@ class _$_Add implements _Add {
     required TResult Function() show,
     required TResult Function() refresh,
     required TResult Function(Chat chat) add,
-    required TResult Function(Favorite favorite) delete,
+    required TResult Function(int chatId) delete,
   }) {
     return add(chat);
   }
@@ -359,7 +359,7 @@ class _$_Add implements _Add {
     TResult Function()? show,
     TResult Function()? refresh,
     TResult Function(Chat chat)? add,
-    TResult Function(Favorite favorite)? delete,
+    TResult Function(int chatId)? delete,
     required TResult orElse(),
   }) {
     if (add != null) {
@@ -407,9 +407,7 @@ abstract class _Add implements FavoriteEvent {
 abstract class _$DeleteCopyWith<$Res> {
   factory _$DeleteCopyWith(_Delete value, $Res Function(_Delete) then) =
       __$DeleteCopyWithImpl<$Res>;
-  $Res call({Favorite favorite});
-
-  $FavoriteCopyWith<$Res> get favorite;
+  $Res call({int chatId});
 }
 
 /// @nodoc
@@ -423,48 +421,40 @@ class __$DeleteCopyWithImpl<$Res> extends _$FavoriteEventCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? favorite = freezed,
+    Object? chatId = freezed,
   }) {
     return _then(_Delete(
-      favorite == freezed
-          ? _value.favorite
-          : favorite // ignore: cast_nullable_to_non_nullable
-              as Favorite,
+      chatId == freezed
+          ? _value.chatId
+          : chatId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
-  }
-
-  @override
-  $FavoriteCopyWith<$Res> get favorite {
-    return $FavoriteCopyWith<$Res>(_value.favorite, (value) {
-      return _then(_value.copyWith(favorite: value));
-    });
   }
 }
 
 /// @nodoc
 class _$_Delete implements _Delete {
-  const _$_Delete(this.favorite);
+  const _$_Delete(this.chatId);
 
   @override
-  final Favorite favorite;
+  final int chatId;
 
   @override
   String toString() {
-    return 'FavoriteEvent.delete(favorite: $favorite)';
+    return 'FavoriteEvent.delete(chatId: $chatId)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Delete &&
-            (identical(other.favorite, favorite) ||
-                const DeepCollectionEquality()
-                    .equals(other.favorite, favorite)));
+            (identical(other.chatId, chatId) ||
+                const DeepCollectionEquality().equals(other.chatId, chatId)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(favorite);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(chatId);
 
   @JsonKey(ignore: true)
   @override
@@ -477,9 +467,9 @@ class _$_Delete implements _Delete {
     required TResult Function() show,
     required TResult Function() refresh,
     required TResult Function(Chat chat) add,
-    required TResult Function(Favorite favorite) delete,
+    required TResult Function(int chatId) delete,
   }) {
-    return delete(favorite);
+    return delete(chatId);
   }
 
   @override
@@ -488,11 +478,11 @@ class _$_Delete implements _Delete {
     TResult Function()? show,
     TResult Function()? refresh,
     TResult Function(Chat chat)? add,
-    TResult Function(Favorite favorite)? delete,
+    TResult Function(int chatId)? delete,
     required TResult orElse(),
   }) {
     if (delete != null) {
-      return delete(favorite);
+      return delete(chatId);
     }
     return orElse();
   }
@@ -525,9 +515,9 @@ class _$_Delete implements _Delete {
 }
 
 abstract class _Delete implements FavoriteEvent {
-  const factory _Delete(Favorite favorite) = _$_Delete;
+  const factory _Delete(int chatId) = _$_Delete;
 
-  Favorite get favorite => throw _privateConstructorUsedError;
+  int get chatId => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$DeleteCopyWith<_Delete> get copyWith => throw _privateConstructorUsedError;
 }

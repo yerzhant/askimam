@@ -182,9 +182,7 @@ void main() {
     blocTest(
       'should delete it',
       build: () {
-        when(repo.delete(Favorite(1, 1, 'Subject 1'))).thenAnswer(
-          (realInvocation) async => none(),
-        );
+        when(repo.delete(1)).thenAnswer((realInvocation) async => none());
         return bloc;
       },
       seed: () => FavoriteState([
@@ -192,7 +190,7 @@ void main() {
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.delete(Favorite(1, 1, 'Subject 1'))),
+      act: (_) => bloc.add(const FavoriteEvent.delete(1)),
       expect: () => [
         FavoriteState.inProgress([
           Favorite(1, 1, 'Subject 1'),
@@ -209,9 +207,7 @@ void main() {
     blocTest(
       'should return an error',
       build: () {
-        when(repo.delete(Favorite(1, 1, 'Subject 1'))).thenAnswer(
-          (realInvocation) async => some(Rejection('error')),
-        );
+        when(repo.delete(1)).thenAnswer((_) async => some(Rejection('error')));
         return bloc;
       },
       seed: () => FavoriteState([
@@ -219,7 +215,7 @@ void main() {
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.delete(Favorite(1, 1, 'Subject 1'))),
+      act: (_) => bloc.add(const FavoriteEvent.delete(1)),
       expect: () => [
         FavoriteState.inProgress([
           Favorite(1, 1, 'Subject 1'),
@@ -234,18 +230,14 @@ void main() {
       'should return an earlier error',
       build: () => bloc,
       seed: () => FavoriteState.error(Rejection('error')),
-      act: (_) => bloc.add(
-        FavoriteEvent.delete(Favorite(1, 1, 'Subject 1')),
-      ),
+      act: (_) => bloc.add(const FavoriteEvent.delete(1)),
       expect: () => [],
     );
 
     blocTest(
       'should delete it while deleting another one',
       build: () {
-        when(repo.delete(Favorite(2, 2, 'Subject 2'))).thenAnswer(
-          (realInvocation) async => none(),
-        );
+        when(repo.delete(2)).thenAnswer((realInvocation) async => none());
         return bloc;
       },
       seed: () => FavoriteState.inProgress([
@@ -253,7 +245,7 @@ void main() {
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.delete(Favorite(2, 2, 'Subject 2'))),
+      act: (_) => bloc.add(const FavoriteEvent.delete(2)),
       expect: () => [
         FavoriteState([
           Favorite(1, 1, 'Subject 1'),

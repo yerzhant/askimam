@@ -24,7 +24,7 @@ class HttpFavoriteRepository implements FavoriteRepository {
   }
 
   @override
-  Future<Option<Rejection>> delete(Favorite favorite) async {
-    return _apiClient.delete('$_url/${favorite.id}');
+  Future<Option<Rejection>> delete(int chatId) async {
+    return _apiClient.delete('$_url/$chatId');
   }
 }

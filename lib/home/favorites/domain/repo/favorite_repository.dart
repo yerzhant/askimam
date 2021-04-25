@@ -6,5 +6,5 @@ import 'package:dartz/dartz.dart';
 abstract class FavoriteRepository {
   Future<Either<Rejection, List<Favorite>>> get();
   Future<Option<Rejection>> add(Chat chat);
-  Future<Option<Rejection>> delete(Favorite favorite);
+  Future<Option<Rejection>> delete(int chatId);
 }

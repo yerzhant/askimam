@@ -66,7 +66,7 @@ void main() {
     test('should delete it', () async {
       when(apiClient.delete('favorites/1')).thenAnswer((_) async => none());
 
-      final result = await repo.delete(Favorite(1, 1, 'subject'));
+      final result = await repo.delete(1);
 
       expect(result, none());
     });
@@ -75,7 +75,7 @@ void main() {
       when(apiClient.delete('favorites/1'))
           .thenAnswer((_) async => some(Rejection('error')));
 
-      final result = await repo.delete(Favorite(1, 1, 'subject'));
+      final result = await repo.delete(1);
 
       expect(result, some(Rejection('error')));
     });

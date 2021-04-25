@@ -67,15 +67,15 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     );
   }
 
-  Stream<FavoriteState> _delete(Favorite favorite) async* {
+  Stream<FavoriteState> _delete(int chatId) async* {
     Stream<FavoriteState> delete(List<Favorite> favorites) async* {
       yield FavoriteState.inProgress(favorites);
 
-      final result = await _repo.delete(favorite);
+      final result = await _repo.delete(chatId);
 
       yield result.fold(
         () => FavoriteState(
-          favorites.where((element) => element != favorite).toList(),
+          favorites.whereNot((f) => f.chatId == chatId).toList(),
         ),
         (a) => FavoriteState.error(a),
       );
