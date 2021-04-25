@@ -35,11 +35,10 @@ class FavoritesWidget extends StatelessWidget {
           final item = items[i];
 
           return Dismissible(
-            key: Key('$item'),
-            onDismissed: (_) {
-              print('****************');
-              context.read<FavoriteBloc>().add(FavoriteEvent.delete(item));
-            },
+            key: ValueKey(item.id),
+            onDismissed: (_) => context
+                .read<FavoriteBloc>()
+                .add(FavoriteEvent.delete(item.chatId)),
             background: Container(color: Colors.red),
             child: ListTile(title: Text(item.subject)),
           );

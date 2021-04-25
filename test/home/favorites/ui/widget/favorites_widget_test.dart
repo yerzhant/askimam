@@ -2,30 +2,26 @@ import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:askimam/home/favorites/ui/widget/favorites_widget.dart';
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
-class MockFavoriteBloc extends MockBloc<FavoriteEvent, FavoriteState>
-    implements FavoriteBloc {}
+import 'favorites_widget_test.mocks.dart';
 
+@GenerateMocks([FavoriteBloc])
 void main() {
   late FavoriteBloc bloc;
   late Widget app;
 
-  setUpAll(() {
-    registerFallbackValue(const FavoriteState([]));
-    registerFallbackValue(const FavoriteEvent.show());
-  });
-
   setUp(() {
     bloc = MockFavoriteBloc();
+    when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
     app = MaterialApp(
-      home: BlocProvider(
-        create: (BuildContext context) => bloc,
+      home: BlocProvider.value(
+        value: bloc,
         child: const Material(child: FavoritesWidget()),
       ),
     );
@@ -46,7 +42,7 @@ void main() {
     await tester.fling(find.text('Chat 1'), const Offset(0.0, 300.0), 1000.0);
     await tester.pumpAndSettle();
 
-    verify(() => bloc.add(const FavoriteEvent.refresh())).called(1);
+    verify(bloc.add(const FavoriteEvent.refresh())).called(1);
   });
 
   testWidgets('should delete an item', (tester) async {
@@ -54,15 +50,12 @@ void main() {
     await tester.drag(find.text('Chat 1'), const Offset(-500, 0));
     await tester.pumpAndSettle();
 
-    verify(() => bloc.add(FavoriteEvent.delete(Favorite(1, 1, 'Chat 1'))))
-        .called(1);
-  }, skip: true); // TODO: find out why it does not get dismissed
+    verify(bloc.add(const FavoriteEvent.delete(1))).called(1);
+  });
 
   testWidgets('should show a list and progress', (tester) async {
-    whenListen(
-      bloc,
-      Stream.value(const FavoriteState([])),
-      initialState: FavoriteState.inProgress([
+    when(bloc.state).thenReturn(
+      FavoriteState.inProgress([
         Favorite(1, 1, 'Chat 1'),
         Favorite(1, 1, 'Chat 2'),
       ]),
@@ -85,16 +78,12 @@ void main() {
     await _errorFixture(bloc, tester, app);
     await tester.tap(find.text('ОБНОВИТЬ'));
 
-    verify(() => bloc.add(const FavoriteEvent.refresh())).called(1);
+    verify(bloc.add(const FavoriteEvent.refresh())).called(1);
   });
 }
 
 Future _errorFixture(FavoriteBloc bloc, WidgetTester tester, Widget app) async {
-  whenListen(
-    bloc,
-    Stream.value(const FavoriteState([])),
-    initialState: FavoriteState.error(Rejection('reason')),
-  );
+  when(bloc.state).thenReturn(FavoriteState.error(Rejection('reason')));
 
   await tester.pumpWidget(app);
 }
@@ -104,10 +93,8 @@ Future<void> _standartFixture(
   FavoriteBloc bloc,
   Widget app,
 ) async {
-  whenListen(
-    bloc,
-    Stream.value(const FavoriteState([])),
-    initialState: FavoriteState([
+  when(bloc.state).thenReturn(
+    FavoriteState([
       Favorite(1, 1, 'Chat 1'),
       Favorite(1, 1, 'Chat 2'),
     ]),
