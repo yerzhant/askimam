@@ -1,6 +1,7 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/bloc/chat_bloc.dart';
+import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/model/message.dart';
 import 'package:askimam/chat/ui/widget/message_composer.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
@@ -75,10 +76,22 @@ class ChatPage extends StatelessWidget {
                           child: _list(
                             chat.messages ?? [],
                             context,
+                            chat,
+                            authState,
                           ),
                         ),
                       ),
-                      const MessageComposer(),
+                      authState.maybeWhen(
+                        authenticated: (auth) {
+                          if (auth.userId == chat.askedBy ||
+                              auth.userType == UserType.Imam) {
+                            return const MessageComposer();
+                          } else {
+                            return Container();
+                          }
+                        },
+                        orElse: () => Container(),
+                      ),
                     ],
                   ),
                   inProgress: () => InProgressWidget(child: Container()),
@@ -96,7 +109,12 @@ class ChatPage extends StatelessWidget {
     );
   }
 
-  Widget _list(List<Message> items, BuildContext context) {
+  Widget _list(
+    List<Message> items,
+    BuildContext context,
+    Chat chat,
+    AuthState authState,
+  ) {
     return RefreshIndicator(
       onRefresh: () async =>
           context.read<ChatBloc>().add(ChatEvent.refresh(id)),
@@ -107,6 +125,19 @@ class ChatPage extends StatelessWidget {
 
           return Dismissible(
             key: Key(item.id.toString()),
+            confirmDismiss: (_) => Future.value(
+              authState.maybeWhen(
+                authenticated: (auth) {
+                  if (auth.userId == chat.askedBy ||
+                      auth.userType == UserType.Imam) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                },
+                orElse: () => false,
+              ),
+            ),
             onDismissed: (_) =>
                 context.read<ChatBloc>().add(ChatEvent.deleteMessage(item.id)),
             child: ListTile(title: Text(item.text)),

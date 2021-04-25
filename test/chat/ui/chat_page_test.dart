@@ -4,6 +4,7 @@ import 'package:askimam/chat/bloc/chat_bloc.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/model/message.dart';
 import 'package:askimam/chat/ui/chat_page.dart';
+import 'package:askimam/chat/ui/widget/message_composer.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -46,11 +47,37 @@ void main() {
     verify(bloc.add(const ChatEvent.refresh(1))).called(1);
   });
 
+  testWidgets('should have public elements only - unauth', (tester) async {
+    when(authBloc.state).thenReturn(const AuthState.unauthenticated());
+    await _fixture(tester, bloc, authBloc);
+
+    expect(find.text('Subject'), findsOneWidget);
+    expect(find.text('text 1'), findsOneWidget);
+    expect(find.text('text 2'), findsOneWidget);
+    expect(find.byType(TextField), findsNothing);
+    expect(find.byIcon(Icons.send), findsNothing);
+    expect(find.byIcon(Icons.assignment_return), findsNothing);
+  });
+
+  testWidgets('should have public elements only - auth', (tester) async {
+    when(authBloc.state).thenReturn(
+        AuthState.authenticated(Authentication('jwt', 10, UserType.Inquirer)));
+    await _fixture(tester, bloc, authBloc);
+
+    expect(find.text('Subject'), findsOneWidget);
+    expect(find.text('text 1'), findsOneWidget);
+    expect(find.text('text 2'), findsOneWidget);
+    expect(find.byType(TextField), findsNothing);
+    expect(find.byIcon(Icons.send), findsNothing);
+    expect(find.byIcon(Icons.assignment_return), findsNothing);
+  });
+
   testWidgets('should have additinal elements for imams', (tester) async {
     when(authBloc.state).thenReturn(
         AuthState.authenticated(Authentication('jwt', 2, UserType.Imam)));
     await _fixture(tester, bloc, authBloc);
 
+    expect(find.byType(MessageComposer), findsOneWidget);
     expect(find.byIcon(Icons.assignment_return), findsOneWidget);
   });
 
@@ -72,6 +99,26 @@ void main() {
   });
 
   testWidgets('should delete a chat', (tester) async {
+    await _fixture(tester, bloc, authBloc);
+    await tester.drag(find.text('text 2'), const Offset(500, 0));
+    await tester.pumpAndSettle();
+
+    verify(bloc.add(const ChatEvent.deleteMessage(2))).called(1);
+  });
+
+  testWidgets('should not allow to delete a chat', (tester) async {
+    when(authBloc.state).thenReturn(
+        AuthState.authenticated(Authentication('jwt', 2, UserType.Inquirer)));
+    await _fixture(tester, bloc, authBloc);
+    await tester.drag(find.text('text 2'), const Offset(500, 0));
+    await tester.pumpAndSettle();
+
+    verifyNever(bloc.add(const ChatEvent.deleteMessage(2)));
+  });
+
+  testWidgets('should allow to delete a chat to an imam', (tester) async {
+    when(authBloc.state).thenReturn(
+        AuthState.authenticated(Authentication('jwt', 20, UserType.Imam)));
     await _fixture(tester, bloc, authBloc);
     await tester.drag(find.text('text 2'), const Offset(500, 0));
     await tester.pumpAndSettle();
