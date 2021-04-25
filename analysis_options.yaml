@@ -1,5 +1,11 @@
 include: package:pedantic/analysis_options.yaml
 
+analyzer:
+  exclude:
+    - "**/*.mocks.dart"
+    # - "**/*.g.dart"
+    # - "**/*.freezed.dart"
+
 linter:
   rules:
     - avoid_positional_boolean_parameters

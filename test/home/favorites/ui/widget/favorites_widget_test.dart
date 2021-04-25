@@ -4,19 +4,24 @@ import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:askimam/home/favorites/ui/widget/favorites_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'favorites_widget_test.mocks.dart';
 
-@GenerateMocks([FavoriteBloc])
+@GenerateMocks([FavoriteBloc, IModularNavigator])
 void main() {
   late FavoriteBloc bloc;
+  late IModularNavigator navigator;
   late Widget app;
 
   setUp(() {
     bloc = MockFavoriteBloc();
+    navigator = MockIModularNavigator();
+    Modular.navigatorDelegate = navigator;
+
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
     app = MaterialApp(
@@ -35,7 +40,12 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
-  // TODO: add routing to a chat by tapping on an item
+  testWidgets('should route to a chat', (tester) async {
+    await _standartFixture(tester, bloc, app);
+    await tester.tap(find.text('Chat 1'));
+
+    verify(navigator.navigate('/chat/11')).called(1);
+  });
 
   testWidgets('should invoke a refresh on pulling down', (tester) async {
     await _standartFixture(tester, bloc, app);
@@ -50,7 +60,7 @@ void main() {
     await tester.drag(find.text('Chat 1'), const Offset(-500, 0));
     await tester.pumpAndSettle();
 
-    verify(bloc.add(const FavoriteEvent.delete(1))).called(1);
+    verify(bloc.add(const FavoriteEvent.delete(11))).called(1);
   });
 
   testWidgets('should show a list and progress', (tester) async {
@@ -95,8 +105,8 @@ Future<void> _standartFixture(
 ) async {
   when(bloc.state).thenReturn(
     FavoriteState([
-      Favorite(1, 1, 'Chat 1'),
-      Favorite(1, 1, 'Chat 2'),
+      Favorite(1, 11, 'Chat 1'),
+      Favorite(1, 12, 'Chat 2'),
     ]),
   );
 

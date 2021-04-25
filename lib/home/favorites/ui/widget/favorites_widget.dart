@@ -4,6 +4,7 @@ import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class FavoritesWidget extends StatelessWidget {
   const FavoritesWidget();
@@ -40,7 +41,10 @@ class FavoritesWidget extends StatelessWidget {
                 .read<FavoriteBloc>()
                 .add(FavoriteEvent.delete(item.chatId)),
             background: Container(color: Colors.red),
-            child: ListTile(title: Text(item.subject)),
+            child: ListTile(
+              title: Text(item.subject),
+              onTap: () => Modular.to.navigate('/chat/${item.chatId}'),
+            ),
           );
         },
         physics: const AlwaysScrollableScrollPhysics(),
