@@ -35,7 +35,7 @@ class MyChatsWidget extends StatelessWidget {
           final item = items[i];
 
           return Dismissible(
-            key: Key('$item'),
+            key: ValueKey(item.id),
             onDismissed: (_) =>
                 context.read<MyChatsBloc>().add(MyChatsEvent.delete(item)),
             child: ListTile(
