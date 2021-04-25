@@ -4,6 +4,7 @@ import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class UnansweredChatsWidget extends StatefulWidget {
   const UnansweredChatsWidget();
@@ -76,6 +77,7 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
               leading: Icon(
                 item.type == ChatType.Public ? Icons.public : Icons.lock,
               ),
+              onTap: () => Modular.to.navigate('/chat/${item.id}'),
             ),
           );
         },

@@ -5,19 +5,24 @@ import 'package:askimam/home/chats/ui/widget/unanswered_chats_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'unanswered_chats_widget_test.mocks.dart';
 
-@GenerateMocks([UnansweredChatsBloc])
+@GenerateMocks([UnansweredChatsBloc, IModularNavigator])
 void main() {
   late UnansweredChatsBloc bloc;
+  late IModularNavigator navigator;
   late Widget app;
 
   setUp(() {
     bloc = MockUnansweredChatsBloc();
+    navigator = MockIModularNavigator();
+    Modular.navigatorDelegate = navigator;
+
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
     app = MaterialApp(
@@ -83,7 +88,12 @@ void main() {
     verify(bloc.add(const UnansweredChatsEvent.reload())).called(1);
   });
 
-  // TODO: add routing to a chat on tapping on an item
+  testWidgets('should route to a chat', (tester) async {
+    await _fixture(bloc, tester, app);
+    await tester.tap(find.text('Chat 1'));
+
+    verify(navigator.navigate('/chat/1')).called(1);
+  });
 
   testWidgets('should show an error', (tester) async {
     await _errorFixture(bloc, tester, app);

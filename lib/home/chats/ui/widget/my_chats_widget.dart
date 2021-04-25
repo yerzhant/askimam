@@ -5,6 +5,7 @@ import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class MyChatsWidget extends StatefulWidget {
   const MyChatsWidget();
@@ -82,7 +83,7 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
                           : FavoriteEvent.add(item),
                     ),
               ),
-              // onTap: () => Modular.to.navigate('/chat/${item.id}'),
+              onTap: () => Modular.to.navigate('/chat/${item.id}'),
             ),
           );
         },

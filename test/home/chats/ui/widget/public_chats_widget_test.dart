@@ -6,21 +6,26 @@ import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'public_chats_widget_test.mocks.dart';
 
-@GenerateMocks([PublicChatsBloc, FavoriteBloc])
+@GenerateMocks([PublicChatsBloc, FavoriteBloc, IModularNavigator])
 void main() {
   late PublicChatsBloc bloc;
   late FavoriteBloc favoriteBloc;
+  late IModularNavigator navigator;
   late Widget app;
 
   setUp(() {
     bloc = MockPublicChatsBloc();
     favoriteBloc = MockFavoriteBloc();
+    navigator = MockIModularNavigator();
+    Modular.navigatorDelegate = navigator;
+
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
     when(favoriteBloc.stream).thenAnswer((_) => const Stream.empty());
 
@@ -76,7 +81,12 @@ void main() {
     verify(bloc.add(const PublicChatsEvent.reload())).called(1);
   });
 
-  // TODO: add routing to a chat on tapping on an item
+  testWidgets('should route to a chat', (tester) async {
+    await _fixture(bloc, tester, app);
+    await tester.tap(find.text('Chat 1'));
+
+    verify(navigator.navigate('/chat/1')).called(1);
+  });
 
   testWidgets('should bookmark a chat', (tester) async {
     await _fixture(bloc, tester, app);
