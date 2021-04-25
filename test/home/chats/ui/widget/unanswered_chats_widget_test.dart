@@ -61,7 +61,7 @@ void main() {
     await tester.drag(find.text('Chat 2'), const Offset(500, 0));
     await tester.pumpAndSettle();
 
-    verify(() => bloc.add(UnansweredChatsEvent.delete(Chat(2, 'Chat 2'))))
+    verify(() => bloc.add(UnansweredChatsEvent.delete(Chat(2, 1, 'Chat 2'))))
         .called(1);
   }, skip: true);
 
@@ -70,8 +70,8 @@ void main() {
       bloc,
       Stream.value(const UnansweredChatsState([])),
       initialState: UnansweredChatsState.inProgress([
-        Chat(1, 'Chat 1'),
-        Chat(2, 'Chat 2'),
+        Chat(1, 1, 'Chat 1'),
+        Chat(2, 1, 'Chat 2'),
       ]),
     );
 
@@ -117,7 +117,7 @@ Future _fixture(
     bloc,
     Stream.value(const UnansweredChatsState([])),
     initialState: UnansweredChatsState([
-      for (var i = 1; i <= count; i++) Chat(i, 'Chat $i'),
+      for (var i = 1; i <= count; i++) Chat(i, 1, 'Chat $i'),
     ]),
   );
 

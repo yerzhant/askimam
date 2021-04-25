@@ -6,7 +6,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_modular/src/core/interfaces/modular_navigator_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -70,7 +69,7 @@ void main() {
     await tester.drag(find.text('Chat 2'), const Offset(500, 0));
     await tester.pumpAndSettle();
 
-    verify(() => bloc.add(MyChatsEvent.delete(Chat(2, 'Chat 2')))).called(1);
+    verify(() => bloc.add(MyChatsEvent.delete(Chat(2, 1, 'Chat 2')))).called(1);
   }, skip: true);
 
   testWidgets('should show a list and a progress circle', (tester) async {
@@ -78,8 +77,8 @@ void main() {
       bloc,
       Stream.value(const MyChatsState([])),
       initialState: MyChatsState.inProgress([
-        Chat(1, 'Chat 1'),
-        Chat(2, 'Chat 2'),
+        Chat(1, 1, 'Chat 1'),
+        Chat(2, 1, 'Chat 2'),
       ]),
     );
 
@@ -133,7 +132,7 @@ Future _fixture(
     bloc,
     Stream.value(const MyChatsState([])),
     initialState: MyChatsState([
-      for (var i = 1; i <= count; i++) Chat(i, 'Chat $i'),
+      for (var i = 1; i <= count; i++) Chat(i, 1, 'Chat $i'),
     ]),
   );
 

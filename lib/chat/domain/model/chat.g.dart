@@ -9,6 +9,7 @@ part of 'chat.dart';
 _$_Chat _$_$_ChatFromJson(Map<String, dynamic> json) {
   return _$_Chat(
     json['id'] as int,
+    json['askedBy'] as int,
     json['subject'] as String,
     isFavorite: json['isFavorite'] as bool? ?? false,
     messages: (json['messages'] as List<dynamic>?)
@@ -19,6 +20,7 @@ _$_Chat _$_$_ChatFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$_$_ChatToJson(_$_Chat instance) => <String, dynamic>{
       'id': instance.id,
+      'askedBy': instance.askedBy,
       'subject': instance.subject,
       'isFavorite': instance.isFavorite,
       'messages': instance.messages,

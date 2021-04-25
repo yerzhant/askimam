@@ -20,10 +20,11 @@ Chat _$ChatFromJson(Map<String, dynamic> json) {
 class _$ChatTearOff {
   const _$ChatTearOff();
 
-  _Chat call(int id, String subject,
+  _Chat call(int id, int askedBy, String subject,
       {bool isFavorite = false, List<Message>? messages}) {
     return _Chat(
       id,
+      askedBy,
       subject,
       isFavorite: isFavorite,
       messages: messages,
@@ -41,6 +42,7 @@ const $Chat = _$ChatTearOff();
 /// @nodoc
 mixin _$Chat {
   int get id => throw _privateConstructorUsedError;
+  int get askedBy => throw _privateConstructorUsedError;
   String get subject => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
   List<Message>? get messages => throw _privateConstructorUsedError;
@@ -54,7 +56,12 @@ mixin _$Chat {
 abstract class $ChatCopyWith<$Res> {
   factory $ChatCopyWith(Chat value, $Res Function(Chat) then) =
       _$ChatCopyWithImpl<$Res>;
-  $Res call({int id, String subject, bool isFavorite, List<Message>? messages});
+  $Res call(
+      {int id,
+      int askedBy,
+      String subject,
+      bool isFavorite,
+      List<Message>? messages});
 }
 
 /// @nodoc
@@ -68,6 +75,7 @@ class _$ChatCopyWithImpl<$Res> implements $ChatCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
+    Object? askedBy = freezed,
     Object? subject = freezed,
     Object? isFavorite = freezed,
     Object? messages = freezed,
@@ -76,6 +84,10 @@ class _$ChatCopyWithImpl<$Res> implements $ChatCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      askedBy: askedBy == freezed
+          ? _value.askedBy
+          : askedBy // ignore: cast_nullable_to_non_nullable
               as int,
       subject: subject == freezed
           ? _value.subject
@@ -98,7 +110,12 @@ abstract class _$ChatCopyWith<$Res> implements $ChatCopyWith<$Res> {
   factory _$ChatCopyWith(_Chat value, $Res Function(_Chat) then) =
       __$ChatCopyWithImpl<$Res>;
   @override
-  $Res call({int id, String subject, bool isFavorite, List<Message>? messages});
+  $Res call(
+      {int id,
+      int askedBy,
+      String subject,
+      bool isFavorite,
+      List<Message>? messages});
 }
 
 /// @nodoc
@@ -113,6 +130,7 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? askedBy = freezed,
     Object? subject = freezed,
     Object? isFavorite = freezed,
     Object? messages = freezed,
@@ -121,6 +139,10 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
       id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      askedBy == freezed
+          ? _value.askedBy
+          : askedBy // ignore: cast_nullable_to_non_nullable
               as int,
       subject == freezed
           ? _value.subject
@@ -142,7 +164,8 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_Chat extends _Chat {
-  _$_Chat(this.id, this.subject, {this.isFavorite = false, this.messages})
+  _$_Chat(this.id, this.askedBy, this.subject,
+      {this.isFavorite = false, this.messages})
       : super._();
 
   factory _$_Chat.fromJson(Map<String, dynamic> json) =>
@@ -150,6 +173,8 @@ class _$_Chat extends _Chat {
 
   @override
   final int id;
+  @override
+  final int askedBy;
   @override
   final String subject;
   @JsonKey(defaultValue: false)
@@ -160,7 +185,7 @@ class _$_Chat extends _Chat {
 
   @override
   String toString() {
-    return 'Chat(id: $id, subject: $subject, isFavorite: $isFavorite, messages: $messages)';
+    return 'Chat(id: $id, askedBy: $askedBy, subject: $subject, isFavorite: $isFavorite, messages: $messages)';
   }
 
   @override
@@ -169,6 +194,9 @@ class _$_Chat extends _Chat {
         (other is _Chat &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.askedBy, askedBy) ||
+                const DeepCollectionEquality()
+                    .equals(other.askedBy, askedBy)) &&
             (identical(other.subject, subject) ||
                 const DeepCollectionEquality()
                     .equals(other.subject, subject)) &&
@@ -184,6 +212,7 @@ class _$_Chat extends _Chat {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(askedBy) ^
       const DeepCollectionEquality().hash(subject) ^
       const DeepCollectionEquality().hash(isFavorite) ^
       const DeepCollectionEquality().hash(messages);
@@ -200,7 +229,7 @@ class _$_Chat extends _Chat {
 }
 
 abstract class _Chat extends Chat {
-  factory _Chat(int id, String subject,
+  factory _Chat(int id, int askedBy, String subject,
       {bool isFavorite, List<Message>? messages}) = _$_Chat;
   _Chat._() : super._();
 
@@ -208,6 +237,8 @@ abstract class _Chat extends Chat {
 
   @override
   int get id => throw _privateConstructorUsedError;
+  @override
+  int get askedBy => throw _privateConstructorUsedError;
   @override
   String get subject => throw _privateConstructorUsedError;
   @override

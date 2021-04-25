@@ -57,8 +57,8 @@ void main() {
       bloc,
       Stream.value(const PublicChatsState([])),
       initialState: PublicChatsState.inProgress([
-        Chat(1, 'Chat 1'),
-        Chat(2, 'Chat 2'),
+        Chat(1, 1, 'Chat 1'),
+        Chat(2, 1, 'Chat 2'),
       ]),
     );
 
@@ -104,7 +104,7 @@ Future _fixture(
     bloc,
     Stream.value(const PublicChatsState([])),
     initialState: PublicChatsState([
-      for (var i = 1; i <= count; i++) Chat(i, 'Chat $i'),
+      for (var i = 1; i <= count; i++) Chat(i, 1, 'Chat $i'),
     ]),
   );
 

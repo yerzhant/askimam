@@ -19,7 +19,7 @@ void main() {
 
   setUp(() {
     bloc = MockChatBloc();
-    when(bloc.state).thenReturn(ChatState(Chat(1, 'Subject', messages: [
+    when(bloc.state).thenReturn(ChatState(Chat(1, 1, 'Subject', messages: [
       Message(1, MessageType.Text, 'text 1', 'author',
           DateTime.parse('20210424'), null),
       Message(2, MessageType.Text, 'text 2', 'author',
@@ -108,7 +108,7 @@ void main() {
 
   testWidgets('should be in progress with messages', (tester) async {
     when(bloc.state).thenReturn(ChatState(
-        Chat(1, 'Subject', messages: [
+        Chat(1, 1, 'Subject', messages: [
           Message(1, MessageType.Text, 'text 1', 'author',
               DateTime.parse('20210424'), null),
         ]),
@@ -121,7 +121,7 @@ void main() {
 
   testWidgets('should show an intermediate rejection', (tester) async {
     when(bloc.stream).thenAnswer((_) => Stream.value(
-        ChatState(Chat(1, 'subject'), rejection: Rejection('reason'))));
+        ChatState(Chat(1, 1, 'subject'), rejection: Rejection('reason'))));
 
     await _fixture(tester, bloc, authBloc);
     await tester.pumpAndSettle();
