@@ -6,14 +6,15 @@ import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'my_chats_bloc.freezed.dart';
 part 'my_chats_event.dart';
 part 'my_chats_state.dart';
 
-// TODO: make ..chats blocs disposible
-class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
+class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState>
+    implements Disposable {
   final ChatRepository _repo;
   final FavoriteBloc _favoriteBloc;
   final int _pageSize;
@@ -144,4 +145,7 @@ class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState> {
     await _subscription.cancel();
     return super.close();
   }
+
+  @override
+  void dispose() => close();
 }

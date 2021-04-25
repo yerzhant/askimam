@@ -6,13 +6,15 @@ import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'public_chats_event.dart';
 part 'public_chats_state.dart';
 part 'public_chats_bloc.freezed.dart';
 
-class PublicChatsBloc extends Bloc<PublicChatsEvent, PublicChatsState> {
+class PublicChatsBloc extends Bloc<PublicChatsEvent, PublicChatsState>
+    implements Disposable {
   final ChatRepository _repo;
   final FavoriteBloc _favoriteBloc;
   final int _pageSize;
@@ -101,4 +103,7 @@ class PublicChatsBloc extends Bloc<PublicChatsEvent, PublicChatsState> {
     await _subscription.cancel();
     return super.close();
   }
+
+  @override
+  void dispose() => close();
 }
