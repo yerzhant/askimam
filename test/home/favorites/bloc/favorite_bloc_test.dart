@@ -88,7 +88,7 @@ void main() {
     blocTest(
       'should add it',
       build: () {
-        when(repo.add(Chat(1, 1, 'Subject 1'))).thenAnswer(
+        when(repo.add(Chat(1, ChatType.Public, 1, 'Subject 1'))).thenAnswer(
           (realInvocation) async => none(),
         );
         when(repo.get()).thenAnswer((_) async => right([
@@ -103,7 +103,8 @@ void main() {
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.add(Chat(1, 1, 'Subject 1'))),
+      act: (_) =>
+          bloc.add(FavoriteEvent.add(Chat(1, ChatType.Public, 1, 'Subject 1'))),
       expect: () => [
         FavoriteState.inProgress([
           Favorite(2, 2, 'Subject 2'),
@@ -121,7 +122,7 @@ void main() {
     blocTest(
       'should add it while in progress',
       build: () {
-        when(repo.add(Chat(1, 1, 'Subject 1'))).thenAnswer(
+        when(repo.add(Chat(1, ChatType.Public, 1, 'Subject 1'))).thenAnswer(
           (realInvocation) async => none(),
         );
         when(repo.get()).thenAnswer((_) async => right([
@@ -136,7 +137,8 @@ void main() {
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.add(Chat(1, 1, 'Subject 1'))),
+      act: (_) =>
+          bloc.add(FavoriteEvent.add(Chat(1, ChatType.Public, 1, 'Subject 1'))),
       expect: () => [
         const FavoriteState.inProgress([]),
         FavoriteState([
@@ -150,7 +152,7 @@ void main() {
     blocTest(
       'should not add it',
       build: () {
-        when(repo.add(Chat(1, 1, 'Subject 1'))).thenAnswer(
+        when(repo.add(Chat(1, ChatType.Public, 1, 'Subject 1'))).thenAnswer(
           (realInvocation) async => some(Rejection('reason')),
         );
         return bloc;
@@ -159,7 +161,8 @@ void main() {
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.add(Chat(1, 1, 'Subject 1'))),
+      act: (_) =>
+          bloc.add(FavoriteEvent.add(Chat(1, ChatType.Public, 1, 'Subject 1'))),
       expect: () => [
         FavoriteState.inProgress([
           Favorite(2, 2, 'Subject 2'),
@@ -173,7 +176,8 @@ void main() {
       'should return a previous error',
       build: () => bloc,
       seed: () => FavoriteState.error(Rejection('reason')),
-      act: (_) => bloc.add(FavoriteEvent.add(Chat(1, 1, 'Subject 1'))),
+      act: (_) =>
+          bloc.add(FavoriteEvent.add(Chat(1, ChatType.Public, 1, 'Subject 1'))),
       expect: () => [],
     );
   });

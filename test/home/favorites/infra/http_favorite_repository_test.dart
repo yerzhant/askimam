@@ -47,7 +47,7 @@ void main() {
       when(apiClient.post('favorites', AddChatToFavorites(1)))
           .thenAnswer((_) async => none());
 
-      final result = await repo.add(Chat(1, 1, 'subject'));
+      final result = await repo.add(Chat(1, ChatType.Public, 1, 'subject'));
 
       expect(result, none());
     });
@@ -56,7 +56,7 @@ void main() {
       when(apiClient.post('favorites', AddChatToFavorites(1)))
           .thenAnswer((_) async => some(Rejection('error')));
 
-      final result = await repo.add(Chat(1, 1, 'subject'));
+      final result = await repo.add(Chat(1, ChatType.Public, 1, 'subject'));
 
       expect(result, some(Rejection('error')));
     });
