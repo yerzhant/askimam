@@ -74,50 +74,8 @@ class _HomePageState extends State<HomePage> {
             ),
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _getIndex(),
-              onTap: (index) {
-                state.maybeWhen(
-                  authenticated: (auth) {
-                    final ix = auth.userType == UserType.Imam ? index : ++index;
-                    switch (HomePageView.values[ix]) {
-                      case HomePageView.New:
-                        widget.unansweredChatsBloc
-                            .add(const UnansweredChatsEvent.show());
-                        break;
-                      case HomePageView.My:
-                        widget.myChatsBloc.add(const MyChatsEvent.show());
-                        break;
-                      case HomePageView.Public:
-                        widget.publicChatsBloc
-                            .add(const PublicChatsEvent.show());
-                        break;
-                      case HomePageView.Favorites:
-                        widget.favoriteBloc.add(const FavoriteEvent.show());
-                        break;
-                    }
-
-                    _pageController.animateToPage(
-                      index,
-                      curve: Curves.ease,
-                      duration: const Duration(milliseconds: 300),
-                    );
-                  },
-                  orElse: () {},
-                );
-              },
-              items: state.maybeWhen(
-                authenticated: (auth) => [
-                  if (auth.userType == UserType.Imam) _newItem(),
-                  _myItem(),
-                  _publicItem(),
-                  _favoritesItem(),
-                ],
-                unauthenticated: () => [
-                  _publicItem(),
-                  _myItem(),
-                  _favoritesItem(),
-                ],
-                orElse: () => [],
-              ),
+              onTap: (index) => _onBottomNavTap(state, index),
+              items: _items(state),
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () => state.maybeWhen(
@@ -130,6 +88,49 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  void _onBottomNavTap(AuthState state, int index) {
+    state.maybeWhen(
+      authenticated: (auth) {
+        final ix = auth.userType == UserType.Imam ? index : ++index;
+        switch (HomePageView.values[ix]) {
+          case HomePageView.New:
+            widget.unansweredChatsBloc.add(const UnansweredChatsEvent.show());
+            break;
+          case HomePageView.My:
+            widget.myChatsBloc.add(const MyChatsEvent.show());
+            break;
+          case HomePageView.Public:
+            widget.publicChatsBloc.add(const PublicChatsEvent.show());
+            break;
+          case HomePageView.Favorites:
+            widget.favoriteBloc.add(const FavoriteEvent.show());
+            break;
+        }
+
+        _pageController.animateToPage(
+          index,
+          curve: Curves.ease,
+          duration: const Duration(milliseconds: 300),
+        );
+      },
+      orElse: () {},
+    );
+  }
+
+  List<BottomNavigationBarItem> _items(AuthState state) => state.maybeWhen(
+        authenticated: (auth) => [
+          if (auth.userType == UserType.Imam) _newItem(),
+          _myItem(),
+          _publicItem(),
+          _favoritesItem(),
+        ],
+        orElse: () => [
+          _publicItem(),
+          _myItem(),
+          _favoritesItem(),
+        ],
+      );
 
   BottomNavigationBarItem _favoritesItem() {
     return const BottomNavigationBarItem(
