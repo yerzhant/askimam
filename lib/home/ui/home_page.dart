@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
           duration: const Duration(milliseconds: 300),
         );
       },
-      orElse: () {},
+      orElse: () => Modular.to.navigate('/auth/login'),
     );
   }
 

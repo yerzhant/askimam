@@ -172,7 +172,7 @@ void main() {
   });
 
   testWidgets(
-    'should go to login page on tapping on new question button',
+    'should go to login page on tapping on new question button and nav items',
     (tester) async {
       when(authBloc.state).thenReturn(const AuthState.unauthenticated());
       await _fixture(
@@ -184,8 +184,10 @@ void main() {
         authBloc,
       );
       await tester.tap(find.byType(FloatingActionButton));
+      await tester.tap(find.text('Мои'));
+      await tester.tap(find.text('Избранные'));
 
-      verify(navigator.navigate('/auth/login')).called(1);
+      verify(navigator.navigate('/auth/login')).called(3);
     },
   );
 }
