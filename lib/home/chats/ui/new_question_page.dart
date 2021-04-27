@@ -58,7 +58,6 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                 controller: _subject,
                 decoration: const InputDecoration(
                   labelText: 'Тема',
-                  hintText: 'Введите тему',
                   helperText: 'Не обязательное поле',
                 ),
               ),
@@ -74,19 +73,15 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                   }
                 },
               ),
-              WideButton(
-                'ОТПРАВИТЬ',
-                Icons.send,
-                () {
-                  if (_formKey.currentState!.validate()) {
-                    widget._bloc.add(MyChatsEvent.add(
-                      _type,
-                      _getSubject,
-                      _text.text.trim(),
-                    ));
-                  }
-                },
-              ),
+              WideButton('ОТПРАВИТЬ', Icons.send, () {
+                if (_formKey.currentState!.validate()) {
+                  widget._bloc.add(MyChatsEvent.add(
+                    _type,
+                    _getSubject,
+                    _text.text.trim(),
+                  ));
+                }
+              }),
             ],
           ),
         ),

@@ -4,19 +4,21 @@ class WideButton extends StatelessWidget {
   final String _title;
   final IconData _icon;
   final VoidCallback _onPressed;
+  final bool isInProgress;
 
   const WideButton(
     this._title,
     this._icon,
     this._onPressed, {
     Key? key,
+    this.isInProgress = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: _onPressed,
-      icon: Icon(_icon),
+      icon: isInProgress ? const CircularProgressIndicator() : Icon(_icon),
       label: Text(_title),
     );
   }
