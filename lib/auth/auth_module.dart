@@ -7,6 +7,6 @@ class AuthModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        ChildRoute('/', child: (_, __) => LoginPage(Modular.get())),
+        ChildRoute('/login', child: (_, __) => LoginPage(Modular.get())),
       ];
 }
