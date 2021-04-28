@@ -16,14 +16,14 @@ void main() {
   testWidgets('should have texts', (tester) async {
     await tester.pumpWidget(app);
 
-    expect(find.text('Ошибка:'), findsOneWidget);
+    expect(find.text('Ой, шо-то пошло не так!'), findsOneWidget);
     expect(find.text('reason'), findsOneWidget);
-    expect(find.text('ОБНОВИТЬ'), findsOneWidget);
+    expect(find.text('ПОВТОРИТЬ'), findsOneWidget);
   });
 
   testWidgets('should be refreshed', (tester) async {
     await tester.pumpWidget(app);
-    await tester.tap(find.text('ОБНОВИТЬ'));
+    await tester.tap(find.text('ПОВТОРИТЬ'));
 
     expect(isRefreshed, true);
   });
