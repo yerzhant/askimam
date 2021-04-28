@@ -2,6 +2,7 @@ import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/ui/widget/wide_button.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class NewQuestionPage extends StatefulWidget {
   final MyChatsBloc _bloc;
@@ -80,6 +81,9 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                     _getSubject,
                     _text.text.trim(),
                   ));
+                  Modular.to.pop();
+                  Modular.to.navigate('/my');
+                  // Modular.to.popAndPushNamed('/my');
                 }
               }),
             ],

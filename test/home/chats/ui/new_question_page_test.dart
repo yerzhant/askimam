@@ -2,20 +2,25 @@ import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:askimam/home/chats/ui/new_question_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'new_question_page_test.mocks.dart';
 
-@GenerateMocks([MyChatsBloc])
+@GenerateMocks([MyChatsBloc, IModularNavigator])
 void main() {
   late MyChatsBloc bloc;
+  late IModularNavigator navigator;
 
   setUp(() {
     bloc = MockMyChatsBloc();
     when(bloc.state).thenReturn(const MyChatsState([]));
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
+
+    navigator = MockIModularNavigator();
+    Modular.navigatorDelegate = navigator;
   });
 
   testWidgets('should have elements', (tester) async {
@@ -30,6 +35,8 @@ void main() {
   });
 
   testWidgets('should send a new question', (tester) async {
+    // when(navigator.popAndPushNamed('/my')).thenAnswer((_) async => null);
+
     await _fixture(tester, bloc);
     await tester.tap(find.text('Публичный'));
     await tester.enterText(find.byType(TextField).first, ' subject ');
@@ -38,8 +45,9 @@ void main() {
 
     verify(bloc.add(const MyChatsEvent.add(ChatType.Public, 'subject', 'text')))
         .called(1);
-
-    // TODO: add route to my chats with popping itself
+    verify(navigator.pop()).called(1);
+    verify(navigator.navigate('/my')).called(1);
+    // verify(navigator.popAndPushNamed('/my')).called(1);
   });
 
   testWidgets('should send a new question without a subject', (tester) async {
