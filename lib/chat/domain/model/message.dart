@@ -4,7 +4,7 @@ part 'message.freezed.dart';
 part 'message.g.dart';
 
 @freezed
-abstract class Message with _$Message {
+class Message with _$Message {
   factory Message(
     int id,
     MessageType type,

@@ -12,7 +12,7 @@ part 'api_response.freezed.dart';
 part 'api_response.g.dart';
 
 @freezed
-abstract class ApiResponse with _$ApiResponse {
+class ApiResponse with _$ApiResponse {
   const factory ApiResponse(
     ApiResponseStatus status, {
     Object? data,
