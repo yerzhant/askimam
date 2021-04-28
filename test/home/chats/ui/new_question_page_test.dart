@@ -23,7 +23,8 @@ void main() {
 
     expect(find.text('Публичный'), findsOneWidget);
     expect(find.text('Приватный'), findsOneWidget);
-    expect(find.text('Введите тему'), findsOneWidget);
+    expect(find.text('Тема'), findsOneWidget);
+    expect(find.text('Вопрос'), findsOneWidget);
     expect(find.text('Введите вопрос'), findsOneWidget);
     expect(find.text('ОТПРАВИТЬ'), findsOneWidget);
   });
