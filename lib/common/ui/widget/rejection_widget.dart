@@ -19,9 +19,12 @@ class RejectionWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Ой, шо-то пошло не так!'),
+          Text(
+            'Ой, шо-то пошло не так!',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
           const SizedBox(height: interElementPadding),
-          Text(rejection.reason),
+          Text(rejection.message),
           const SizedBox(height: interElementPadding),
           ElevatedButton.icon(
             onPressed: onRefresh,
