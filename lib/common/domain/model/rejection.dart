@@ -6,8 +6,20 @@ part 'rejection.freezed.dart';
 class Rejection with _$Rejection {
   @Assert('reason.trim().isNotEmpty', 'reason may not be empty')
   factory Rejection(String reason) = _Rejection;
+
+  Rejection._();
+
+  String get message =>
+      _messages.entries
+          .firstWhereOrNull((entry) => RegExp(entry.key).hasMatch(reason))
+          ?.value ??
+      reason;
 }
 
 extension RejectionExt on Exception {
   Rejection asRejection() => Rejection(toString());
 }
+
+const _messages = {
+  r'^SocketException: .*': 'Ошибка соединения.',
+};

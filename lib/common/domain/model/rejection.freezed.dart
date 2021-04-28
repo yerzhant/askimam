@@ -95,9 +95,10 @@ class __$RejectionCopyWithImpl<$Res> extends _$RejectionCopyWithImpl<$Res>
 }
 
 /// @nodoc
-class _$_Rejection implements _Rejection {
+class _$_Rejection extends _Rejection {
   _$_Rejection(this.reason)
-      : assert(reason.trim().isNotEmpty, 'reason may not be empty');
+      : assert(reason.trim().isNotEmpty, 'reason may not be empty'),
+        super._();
 
   @override
   final String reason;
@@ -125,8 +126,9 @@ class _$_Rejection implements _Rejection {
       __$RejectionCopyWithImpl<_Rejection>(this, _$identity);
 }
 
-abstract class _Rejection implements Rejection {
+abstract class _Rejection extends Rejection {
   factory _Rejection(String reason) = _$_Rejection;
+  _Rejection._() : super._();
 
   @override
   String get reason => throw _privateConstructorUsedError;
