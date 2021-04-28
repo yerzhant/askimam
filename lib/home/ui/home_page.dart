@@ -19,14 +19,16 @@ class HomePage extends StatefulWidget {
   final FavoriteBloc favoriteBloc;
   final AuthBloc authBloc;
 
-  const HomePage({
+  HomePage({
     Key? key,
     required this.publicChatsBloc,
     required this.myChatsBloc,
     required this.unansweredChatsBloc,
     required this.favoriteBloc,
     required this.authBloc,
-  }) : super(key: key);
+  }) : super(key: key) {
+    publicChatsBloc.add(const PublicChatsEvent.show());
+  }
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -54,6 +56,7 @@ class _HomePageState extends State<HomePage> {
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           return Scaffold(
+            appBar: AppBar(title: const Text('Вопрос имаму')),
             body: PageView(
               controller: _pageController,
               children: state.maybeWhen(

@@ -7,9 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 Future<void> main() async {
-  await Firebase.initializeApp();
-  await _requestMessagingPermissions();
-
+  // await Firebase.initializeApp();
+  // await _requestMessagingPermissions();
   runApp(ModularApp(module: AppModule(apiUrl), child: AppWidget()));
 }
 

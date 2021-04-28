@@ -1,3 +1,4 @@
+import 'package:askimam/auth/auth_module.dart';
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/infra/http_auth_repository.dart';
 import 'package:askimam/chat/chat_module.dart';
@@ -16,14 +17,15 @@ class AppModule extends Module {
   List<Bind<Object>> get binds => [
         Bind.singleton((i) => IOClient()),
         Bind.singleton((i) => LocalStorage()),
+        Bind.singleton((i) => HttpApiClient(i(), _url)),
         Bind.singleton((i) => HttpAuthRepository(i(), i())),
         Bind.singleton((i) => AuthBloc(i())),
-        Bind.singleton((i) => HttpApiClient(i(), _url)),
       ];
 
   @override
   List<ModularRoute> get routes => [
         ModuleRoute('/', module: HomeModule()),
         ModuleRoute('/chat', module: ChatModule()),
+        ModuleRoute('/auth', module: AuthModule()),
       ];
 }

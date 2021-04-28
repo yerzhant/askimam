@@ -9,7 +9,7 @@ include: package:pedantic/analysis_options.yaml
 linter:
   rules:
     - avoid_positional_boolean_parameters
-    # - avoid_print
+    - avoid_print
     - avoid_redundant_argument_values
     - avoid_void_async
     - cancel_subscriptions
