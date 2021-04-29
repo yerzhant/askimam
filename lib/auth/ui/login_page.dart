@@ -4,6 +4,7 @@ import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/wide_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -68,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: const InputDecoration(
                           labelText: 'Логин',
                         ),
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Введите логин';
@@ -80,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: const InputDecoration(
                           labelText: 'Пароль',
                         ),
+                        obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Введите пароль';
@@ -107,7 +110,9 @@ class _LoginPageState extends State<LoginPage> {
                               if (_form.currentState!.validate()) {
                                 widget.bloc.add(AuthEvent.login(
                                   AuthenticationRequest(
-                                      _login.text, _password.text),
+                                    _login.text,
+                                    _password.text,
+                                  ),
                                 ));
                               }
                             },
