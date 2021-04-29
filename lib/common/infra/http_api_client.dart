@@ -180,6 +180,7 @@ class HttpApiClient implements ApiClient {
 
   Map<String, String> _getHeaders() => {
         HttpHeaders.acceptHeader: ContentType.json.value,
+        HttpHeaders.contentTypeHeader: ContentType.json.value,
         if (_jwt.isNotEmpty) HttpHeaders.authorizationHeader: 'Bearer $_jwt',
       };
 }
