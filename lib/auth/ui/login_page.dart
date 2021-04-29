@@ -37,110 +37,114 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: primaryLightColor,
         body: Form(
           key: _form,
-          child: Padding(
-            padding: const EdgeInsets.all(padding),
-            child: Theme(
-              data: Theme.of(context).copyWith(
-                colorScheme: Theme.of(context).colorScheme.copyWith(
-                      primary: primaryDarkColor,
-                      onSurface: primaryDarkColor,
-                    ),
-                inputDecorationTheme: const InputDecorationTheme(
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 50,
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      color: primaryDarkColor,
-                      fit: BoxFit.cover,
+          child: Center(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.all(padding),
+                child: Theme(
+                  data: Theme.of(context).copyWith(
+                    colorScheme: Theme.of(context).colorScheme.copyWith(
+                          primary: primaryDarkColor,
+                          onSurface: primaryDarkColor,
+                        ),
+                    inputDecorationTheme: const InputDecorationTheme(
+                      border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 70),
-                  TextFormField(
-                    controller: _login,
-                    decoration: const InputDecoration(
-                      labelText: 'Логин',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Введите логин';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: interElementMargin),
-                  TextFormField(
-                    controller: _password,
-                    decoration: const InputDecoration(
-                      labelText: 'Пароль',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Введите пароль';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: interElementMargin * 2),
-                  BlocConsumer<AuthBloc, AuthState>(
-                    listener: (context, state) {
-                      state.maybeWhen(
-                        authenticated: (_) => Modular.to.navigate('/'),
-                        error: (rejection) {
-                          return ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(rejection.message)),
-                          );
-                        },
-                        orElse: () {},
-                      );
-                    },
-                    builder: (context, state) {
-                      return WideButton(
-                        'ВОЙТИ',
-                        Icons.login,
-                        () {
-                          if (_form.currentState!.validate()) {
-                            widget.bloc.add(AuthEvent.login(
-                              AuthenticationRequest(
-                                  _login.text, _password.text),
-                            ));
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          color: primaryDarkColor,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(height: 70),
+                      TextFormField(
+                        controller: _login,
+                        decoration: const InputDecoration(
+                          labelText: 'Логин',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Введите логин';
                           }
                         },
-                        isInProgress: state.maybeWhen(
-                          inProgress: () => true,
-                          orElse: () => false,
-                        ),
-                      );
-                    },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        onPressed: () => launch('https://azan.kz/signup'),
-                        child: const Text(
-                          'Регистрация',
-                          style: TextStyle(fontSize: 12),
-                        ),
                       ),
-                      const Text(
-                        '|',
-                        style: TextStyle(color: primaryColor),
-                      ),
-                      TextButton(
-                        onPressed: () => launch(
-                            'https://azan.kz/site/request-password-reset'),
-                        child: const Text(
-                          'Забыли пароль?',
-                          style: TextStyle(fontSize: 12),
+                      const SizedBox(height: interElementMargin),
+                      TextFormField(
+                        controller: _password,
+                        decoration: const InputDecoration(
+                          labelText: 'Пароль',
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Введите пароль';
+                          }
+                        },
+                      ),
+                      const SizedBox(height: interElementMargin * 2),
+                      BlocConsumer<AuthBloc, AuthState>(
+                        listener: (context, state) {
+                          state.maybeWhen(
+                            authenticated: (_) => Modular.to.navigate('/'),
+                            error: (rejection) {
+                              return ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(rejection.message)),
+                              );
+                            },
+                            orElse: () {},
+                          );
+                        },
+                        builder: (context, state) {
+                          return WideButton(
+                            'ВОЙТИ',
+                            Icons.login,
+                            () {
+                              if (_form.currentState!.validate()) {
+                                widget.bloc.add(AuthEvent.login(
+                                  AuthenticationRequest(
+                                      _login.text, _password.text),
+                                ));
+                              }
+                            },
+                            isInProgress: state.maybeWhen(
+                              inProgress: () => true,
+                              orElse: () => false,
+                            ),
+                          );
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: () => launch('https://azan.kz/signup'),
+                            child: const Text(
+                              'Регистрация',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ),
+                          const Text(
+                            '|',
+                            style: TextStyle(color: primaryColor),
+                          ),
+                          TextButton(
+                            onPressed: () => launch(
+                                'https://azan.kz/site/request-password-reset'),
+                            child: const Text(
+                              'Забыли пароль?',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
