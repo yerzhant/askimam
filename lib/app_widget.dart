@@ -14,14 +14,14 @@ class AppWidget extends StatelessWidget {
           primaryVariant: primaryDarkColor,
           secondary: secondaryColor,
           secondaryVariant: secondaryDarkColor,
-          surface: Colors.red,
-          background: Colors.red,
-          error: Colors.red,
+          surface: Colors.green,
+          background: Colors.yellow,
+          error: Colors.green,
           onPrimary: primaryTextColor,
           onSecondary: secondaryTextColor,
-          onSurface: Colors.red,
-          onBackground: Colors.red,
-          onError: Colors.red,
+          onSurface: secondaryDarkColor,
+          onBackground: Colors.black,
+          onError: Colors.amber,
           brightness: Brightness.light,
         ),
         appBarTheme: const AppBarTheme(
@@ -29,6 +29,9 @@ class AppWidget extends StatelessWidget {
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           unselectedItemColor: primaryColor,
+        ),
+        snackBarTheme: const SnackBarThemeData(
+          behavior: SnackBarBehavior.floating,
         ),
       ),
     ).modular();

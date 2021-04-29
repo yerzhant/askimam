@@ -23,9 +23,9 @@ class RejectionWidget extends StatelessWidget {
             'Ой, шо-то пошло не так!',
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          const SizedBox(height: interElementPadding),
+          const SizedBox(height: interElementMargin),
           Text(rejection.message),
-          const SizedBox(height: interElementPadding),
+          const SizedBox(height: interElementMargin),
           ElevatedButton.icon(
             onPressed: onRefresh,
             icon: const Icon(Icons.repeat),

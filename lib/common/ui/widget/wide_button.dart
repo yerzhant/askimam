@@ -16,10 +16,13 @@ class WideButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: _onPressed,
-      icon: isInProgress ? const CircularProgressIndicator() : Icon(_icon),
-      label: Text(_title),
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: _onPressed,
+        icon: isInProgress ? const CircularProgressIndicator() : Icon(_icon),
+        label: Text(_title),
+      ),
     );
   }
 }

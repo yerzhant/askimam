@@ -1,5 +1,7 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication_request.dart';
+import 'package:askimam/common/ui/theme.dart';
+import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/wide_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,73 +34,114 @@ class _LoginPageState extends State<LoginPage> {
     return BlocProvider.value(
       value: widget.bloc,
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Form(
-            key: _form,
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: _login,
-                  decoration: const InputDecoration(
-                    labelText: 'Логин',
+        backgroundColor: primaryLightColor,
+        body: Form(
+          key: _form,
+          child: Padding(
+            padding: const EdgeInsets.all(padding),
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: Theme.of(context).colorScheme.copyWith(
+                      primary: primaryDarkColor,
+                      onSurface: primaryDarkColor,
+                    ),
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 50,
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      color: primaryDarkColor,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Введите логин';
-                    }
-                  },
-                ),
-                TextFormField(
-                  controller: _password,
-                  decoration: const InputDecoration(
-                    labelText: 'Пароль',
+                  const SizedBox(height: 70),
+                  TextFormField(
+                    controller: _login,
+                    decoration: const InputDecoration(
+                      labelText: 'Логин',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Введите логин';
+                      }
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Введите пароль';
-                    }
-                  },
-                ),
-                TextButton(
-                  onPressed: () => launch('https://azan.kz/signup'),
-                  child: const Text('Регистрация'),
-                ),
-                TextButton(
-                  onPressed: () =>
-                      launch('https://azan.kz/site/request-password-reset'),
-                  child: const Text('Забыли пароль?'),
-                ),
-                BlocConsumer<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    state.maybeWhen(
-                      authenticated: (_) => Modular.to.navigate('/'),
-                      error: (rejection) {
-                        return ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(rejection.reason)),
-                        );
-                      },
-                      orElse: () {},
-                    );
-                  },
-                  builder: (context, state) {
-                    return WideButton(
-                      'ВОЙТИ',
-                      Icons.login,
-                      () {
-                        if (_form.currentState!.validate()) {
-                          widget.bloc.add(AuthEvent.login(
-                            AuthenticationRequest(_login.text, _password.text),
-                          ));
-                        }
-                      },
-                      isInProgress: state.maybeWhen(
-                        inProgress: () => true,
-                        orElse: () => false,
+                  const SizedBox(height: interElementMargin),
+                  TextFormField(
+                    controller: _password,
+                    decoration: const InputDecoration(
+                      labelText: 'Пароль',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Введите пароль';
+                      }
+                    },
+                  ),
+                  const SizedBox(height: interElementMargin * 2),
+                  BlocConsumer<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      state.maybeWhen(
+                        authenticated: (_) => Modular.to.navigate('/'),
+                        error: (rejection) {
+                          return ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(rejection.message)),
+                          );
+                        },
+                        orElse: () {},
+                      );
+                    },
+                    builder: (context, state) {
+                      return WideButton(
+                        'ВОЙТИ',
+                        Icons.login,
+                        () {
+                          if (_form.currentState!.validate()) {
+                            widget.bloc.add(AuthEvent.login(
+                              AuthenticationRequest(
+                                  _login.text, _password.text),
+                            ));
+                          }
+                        },
+                        isInProgress: state.maybeWhen(
+                          inProgress: () => true,
+                          orElse: () => false,
+                        ),
+                      );
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () => launch('https://azan.kz/signup'),
+                        child: const Text(
+                          'Регистрация',
+                          style: TextStyle(fontSize: 12),
+                        ),
                       ),
-                    );
-                  },
-                ),
-              ],
+                      const Text(
+                        '|',
+                        style: TextStyle(color: primaryColor),
+                      ),
+                      TextButton(
+                        onPressed: () => launch(
+                            'https://azan.kz/site/request-password-reset'),
+                        child: const Text(
+                          'Забыли пароль?',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
