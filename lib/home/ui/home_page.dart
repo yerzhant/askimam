@@ -85,6 +85,7 @@ class _HomePageState extends State<HomePage> {
                 authenticated: (_) => Modular.to.navigate('/new-question'),
                 orElse: () => Modular.to.navigate('/auth/login'),
               ),
+              mini: true,
             ),
           );
         },

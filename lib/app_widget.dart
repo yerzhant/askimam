@@ -9,6 +9,7 @@ class AppWidget extends StatelessWidget {
       title: 'Вопрос имаму',
       initialRoute: '/',
       theme: ThemeData(
+        accentColor: secondaryDarkColor,
         colorScheme: const ColorScheme(
           primary: primaryColor,
           primaryVariant: primaryDarkColor,
@@ -19,7 +20,7 @@ class AppWidget extends StatelessWidget {
           error: Colors.green,
           onPrimary: primaryTextColor,
           onSecondary: secondaryTextColor,
-          onSurface: secondaryDarkColor,
+          onSurface: Colors.red,
           onBackground: Colors.black,
           onError: Colors.amber,
           brightness: Brightness.light,

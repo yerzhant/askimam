@@ -15,7 +15,14 @@ class InProgressWidget extends StatelessWidget {
     return Stack(
       children: [
         child,
-        if (isInProgress) const CircularProgressIndicator(),
+        if (isInProgress)
+          const Center(
+            child: SizedBox(
+              width: 30,
+              height: 30,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          ),
       ],
     );
   }
