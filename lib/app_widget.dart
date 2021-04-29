@@ -33,6 +33,8 @@ class AppWidget extends StatelessWidget {
         ),
         snackBarTheme: const SnackBarThemeData(
           behavior: SnackBarBehavior.floating,
+          backgroundColor: secondaryColor,
+          contentTextStyle: TextStyle(color: secondaryTextColor),
         ),
       ),
     ).modular();
