@@ -1,3 +1,5 @@
+import 'package:askimam/auth/bloc/auth_bloc.dart';
+import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/chats/bloc/public_chats_bloc.dart';
@@ -13,29 +15,42 @@ import 'package:mockito/mockito.dart';
 
 import 'public_chats_widget_test.mocks.dart';
 
-@GenerateMocks([PublicChatsBloc, FavoriteBloc, IModularNavigator])
+@GenerateMocks([
+  AuthBloc,
+  FavoriteBloc,
+  PublicChatsBloc,
+  IModularNavigator,
+])
 void main() {
+  late AuthBloc authBloc;
   late PublicChatsBloc bloc;
   late FavoriteBloc favoriteBloc;
   late IModularNavigator navigator;
   late Widget app;
 
   setUp(() {
+    authBloc = MockAuthBloc();
     bloc = MockPublicChatsBloc();
     favoriteBloc = MockFavoriteBloc();
     navigator = MockIModularNavigator();
     Modular.navigatorDelegate = navigator;
 
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
+    when(authBloc.stream).thenAnswer((_) => const Stream.empty());
     when(favoriteBloc.stream).thenAnswer((_) => const Stream.empty());
 
+    when(authBloc.state).thenReturn(AuthState.authenticated(
+      Authentication('123', 1, UserType.Inquirer),
+    ));
+
     app = MaterialApp(
-      home: BlocProvider.value(
-        value: favoriteBloc,
-        child: BlocProvider(
-          create: (BuildContext context) => bloc,
-          child: const Material(child: PublicChatsWidget()),
-        ),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: bloc),
+          BlocProvider.value(value: authBloc),
+          BlocProvider.value(value: favoriteBloc),
+        ],
+        child: const Material(child: PublicChatsWidget()),
       ),
     );
   });
@@ -45,7 +60,16 @@ void main() {
 
     expect(find.text('Chat 1'), findsOneWidget);
     expect(find.text('Chat 2'), findsOneWidget);
+    expect(find.byIcon(Icons.bookmark_border), findsOneWidget);
     expect(find.byType(CircularProgressIndicator), findsNothing);
+  });
+
+  testWidgets('should not contain bookmarks', (tester) async {
+    when(authBloc.state).thenReturn(const AuthState.unauthenticated());
+    await _fixture(bloc, tester, app);
+
+    expect(find.byIcon(Icons.bookmark), findsNothing);
+    expect(find.byIcon(Icons.bookmark_border), findsNothing);
   });
 
   testWidgets('should load a next page', (tester) async {
@@ -92,9 +116,9 @@ void main() {
     await _fixture(bloc, tester, app);
     await tester.tap(find.byIcon(Icons.bookmark_border));
 
-    verify(favoriteBloc
-            .add(FavoriteEvent.add(Chat(1, ChatType.Public, 1, 'Chat 1'))))
-        .called(1);
+    verify(favoriteBloc.add(
+      FavoriteEvent.add(Chat(1, ChatType.Public, 1, 'Chat 1')),
+    )).called(1);
   });
 
   testWidgets('should unbookmark a chat', (tester) async {
