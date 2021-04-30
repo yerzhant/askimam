@@ -1,4 +1,5 @@
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
@@ -87,7 +88,9 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
             ),
           );
         },
-        physics: const AlwaysScrollableScrollPhysics(),
+        key: const PageStorageKey('my-chats'),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(vertical: basePadding),
       ),
     );
   }

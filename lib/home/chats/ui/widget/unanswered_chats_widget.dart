@@ -1,4 +1,5 @@
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
@@ -81,7 +82,9 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
             ),
           );
         },
-        physics: const AlwaysScrollableScrollPhysics(),
+        key: const PageStorageKey('unanswered-chats'),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(vertical: basePadding),
       ),
     );
   }

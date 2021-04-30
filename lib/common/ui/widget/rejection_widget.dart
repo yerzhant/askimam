@@ -15,7 +15,7 @@ class RejectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(padding),
+      padding: const EdgeInsets.all(basePadding),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

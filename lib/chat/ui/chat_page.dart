@@ -4,6 +4,7 @@ import 'package:askimam/chat/bloc/chat_bloc.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/model/message.dart';
 import 'package:askimam/chat/ui/widget/message_composer.dart';
+import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:flutter/material.dart';
@@ -143,7 +144,9 @@ class ChatPage extends StatelessWidget {
             child: ListTile(title: Text(item.text)),
           );
         },
-        physics: const AlwaysScrollableScrollPhysics(),
+        key: const PageStorageKey('chat'),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(vertical: basePadding),
       ),
     );
   }

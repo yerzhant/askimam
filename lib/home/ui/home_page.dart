@@ -61,6 +61,7 @@ class _HomePageState extends State<HomePage> {
               centerTitle: true,
             ),
             body: PageView(
+              physics: const BouncingScrollPhysics(),
               controller: _pageController,
               children: state.maybeWhen(
                 authenticated: (auth) => [

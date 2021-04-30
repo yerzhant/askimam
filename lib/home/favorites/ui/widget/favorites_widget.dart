@@ -1,3 +1,4 @@
+import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
@@ -47,7 +48,9 @@ class FavoritesWidget extends StatelessWidget {
             ),
           );
         },
-        physics: const AlwaysScrollableScrollPhysics(),
+        key: const PageStorageKey('favorites'),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(vertical: basePadding),
       ),
     );
   }

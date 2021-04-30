@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(
-                padding: const EdgeInsets.all(padding),
+                padding: const EdgeInsets.all(basePadding),
                 child: Theme(
                   data: Theme.of(context).copyWith(
                     colorScheme: Theme.of(context).colorScheme.copyWith(
