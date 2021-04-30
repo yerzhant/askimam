@@ -63,6 +63,9 @@ class _HomePageState extends State<HomePage> {
             body: PageView(
               physics: const BouncingScrollPhysics(),
               controller: _pageController,
+              onPageChanged: (_) {
+                setState(() {});
+              },
               children: state.maybeWhen(
                 authenticated: (auth) => [
                   if (auth.userType == UserType.Imam)
@@ -99,7 +102,7 @@ class _HomePageState extends State<HomePage> {
   void _onBottomNavTap(AuthState state, int index) {
     state.maybeWhen(
       authenticated: (auth) {
-        final ix = auth.userType == UserType.Imam ? index : ++index;
+        final ix = auth.userType == UserType.Imam ? index : index + 1;
         switch (HomePageView.values[ix]) {
           case HomePageView.New:
             widget.unansweredChatsBloc.add(const UnansweredChatsEvent.show());
