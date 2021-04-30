@@ -123,7 +123,7 @@ void main() {
 
   testWidgets('should invoke a refresh on rejection', (tester) async {
     await _errorFixture(bloc, tester, app);
-    await tester.tap(find.text('ОБНОВИТЬ'));
+    await tester.tap(find.text('ПОВТОРИТЬ'));
 
     verify(bloc.add(const MyChatsEvent.reload())).called(1);
   });

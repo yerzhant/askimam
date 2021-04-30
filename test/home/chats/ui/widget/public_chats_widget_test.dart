@@ -52,7 +52,7 @@ void main() {
     await _fixture(bloc, tester, app, count: 12);
     expect(find.text('Chat 12'), findsNothing);
     await tester.drag(find.text('Chat 1'), const Offset(0.0, -300.0));
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     expect(find.text('Chat 12'), findsOneWidget);
     verify(bloc.add(const PublicChatsEvent.loadNextPage())).called(1);
@@ -112,7 +112,7 @@ void main() {
 
   testWidgets('should invoke a refresh on rejection', (tester) async {
     await _errorFixture(bloc, tester, app);
-    await tester.tap(find.text('ОБНОВИТЬ'));
+    await tester.tap(find.text('ПОВТОРИТЬ'));
 
     verify(bloc.add(const PublicChatsEvent.reload())).called(1);
   });

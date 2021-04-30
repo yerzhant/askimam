@@ -198,7 +198,7 @@ void main() {
     when(bloc.state).thenReturn(ChatState.error(Rejection('reason')));
 
     await _fixture(tester, bloc, authBloc);
-    await tester.tap(find.text('ОБНОВИТЬ'));
+    await tester.tap(find.text('ПОВТОРИТЬ'));
 
     verify(bloc.add(const ChatEvent.refresh(1))).called(2);
   });
