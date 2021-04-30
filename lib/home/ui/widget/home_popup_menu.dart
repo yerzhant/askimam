@@ -8,31 +8,51 @@ enum HomePopupMenuAction { logout, azanKz, shareApp }
 class HomePopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      itemBuilder: (_) => [
-        const PopupMenuItem(
-          value: HomePopupMenuAction.azanKz,
-          child: Text('Azan.kz'),
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      return PopupMenuButton(
+        itemBuilder: (_) => state.maybeWhen(
+          authenticated: (_) => [
+            _azanKz(),
+            _shareApp(),
+            _logout(),
+          ],
+          orElse: () => [
+            _azanKz(),
+            _shareApp(),
+          ],
         ),
-        const PopupMenuItem(
-          value: HomePopupMenuAction.logout,
-          child: Text('Поделится'),
-        ),
-        const PopupMenuItem(
-          value: HomePopupMenuAction.shareApp,
-          child: Text('Выйти'),
-        ),
-      ],
-      onSelected: (action) {
-        switch (action) {
-          case HomePopupMenuAction.azanKz:
-            launch('https://azan.kz');
-            break;
-          case HomePopupMenuAction.logout:
-            context.read<AuthBloc>().add(const AuthEvent.logout());
-            break;
-        }
-      },
+        onSelected: (action) {
+          switch (action) {
+            case HomePopupMenuAction.azanKz:
+              launch('https://azan.kz');
+              break;
+            case HomePopupMenuAction.logout:
+              context.read<AuthBloc>().add(const AuthEvent.logout());
+              break;
+          }
+        },
+      );
+    });
+  }
+
+  PopupMenuItem<HomePopupMenuAction> _azanKz() {
+    return const PopupMenuItem(
+      value: HomePopupMenuAction.azanKz,
+      child: Text('Azan.kz'),
+    );
+  }
+
+  PopupMenuItem<HomePopupMenuAction> _shareApp() {
+    return const PopupMenuItem(
+      value: HomePopupMenuAction.logout,
+      child: Text('Поделится'),
+    );
+  }
+
+  PopupMenuItem<HomePopupMenuAction> _logout() {
+    return const PopupMenuItem(
+      value: HomePopupMenuAction.shareApp,
+      child: Text('Выйти'),
     );
   }
 }
