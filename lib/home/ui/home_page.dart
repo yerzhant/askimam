@@ -8,6 +8,7 @@ import 'package:askimam/home/chats/ui/widget/public_chats_widget.dart';
 import 'package:askimam/home/chats/ui/widget/unanswered_chats_widget.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/ui/widget/favorites_widget.dart';
+import 'package:askimam/home/ui/widget/home_popup_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -59,6 +60,7 @@ class _HomePageState extends State<HomePage> {
             appBar: AppBar(
               title: const Text('Вопрос имаму'),
               centerTitle: true,
+              actions: [HomePopupMenu()],
             ),
             body: PageView(
               controller: _pageController,
