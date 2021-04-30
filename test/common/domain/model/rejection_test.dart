@@ -5,6 +5,7 @@ void main() {
   group('should convert:', () {
     const map = {
       'SocketException: abc': 'Ошибка соединения.',
+      'Unauthorized.': 'Доступ запрещён.',
     };
 
     map.forEach((key, value) {

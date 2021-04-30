@@ -14,7 +14,9 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _repo;
 
-  AuthBloc(this._repo) : super(const _Unauthenticated());
+  AuthBloc(this._repo) : super(const _Unauthenticated()) {
+    add(const AuthEvent.load());
+  }
 
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) => event.when(

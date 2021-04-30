@@ -17,6 +17,8 @@ void main() {
   final repo = MockAuthRepository();
 
   setUp(() {
+    when(repo.load()).thenAnswer(
+        (_) async => right(Authentication('jwt', 1, UserType.Inquirer)));
     bloc = AuthBloc(repo);
   });
 
@@ -33,8 +35,10 @@ void main() {
 
         return bloc;
       },
+      seed: () => const AuthState.unauthenticated(),
       act: (_) =>
           bloc.add(AuthEvent.login(AuthenticationRequest('login', 'password'))),
+      skip: 2,
       expect: () => [
         const AuthState.inProgress(),
         AuthState.authenticated(Authentication('123', 1, UserType.Inquirer)),
@@ -49,8 +53,10 @@ void main() {
 
         return bloc;
       },
+      seed: () => const AuthState.unauthenticated(),
       act: (_) =>
           bloc.add(AuthEvent.login(AuthenticationRequest('login', 'password'))),
+      skip: 2,
       expect: () => [
         const AuthState.inProgress(),
         AuthState.error(Rejection('reason')),
@@ -68,6 +74,7 @@ void main() {
       seed: () =>
           AuthState.authenticated(Authentication('jwt', 1, UserType.Inquirer)),
       act: (_) => bloc.add(const AuthEvent.logout()),
+      skip: 2,
       expect: () => [
         const AuthState.inProgress(),
         const AuthState.unauthenticated(),
@@ -83,6 +90,7 @@ void main() {
       seed: () =>
           AuthState.authenticated(Authentication('jwt', 1, UserType.Inquirer)),
       act: (_) => bloc.add(const AuthEvent.logout()),
+      skip: 2,
       expect: () => [
         const AuthState.inProgress(),
         AuthState.error(Rejection('reason')),
@@ -93,12 +101,7 @@ void main() {
   group('Init from a local storage:', () {
     blocTest(
       'should get an authentication',
-      build: () {
-        when(repo.load()).thenAnswer(
-            (_) async => right(Authentication('jwt', 1, UserType.Inquirer)));
-        return bloc;
-      },
-      act: (_) => bloc.add(const AuthEvent.load()),
+      build: () => bloc,
       expect: () => [
         const AuthState.inProgress(),
         AuthState.authenticated(Authentication('jwt', 1, UserType.Inquirer)),
@@ -109,9 +112,8 @@ void main() {
       'should not load an authentication',
       build: () {
         when(repo.load()).thenAnswer((_) async => left(Rejection('reason')));
-        return bloc;
+        return AuthBloc(repo);
       },
-      act: (_) => bloc.add(const AuthEvent.load()),
       expect: () => [
         const AuthState.inProgress(),
         AuthState.error(Rejection('reason')),
