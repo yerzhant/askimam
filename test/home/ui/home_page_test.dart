@@ -139,7 +139,7 @@ void main() {
     await tester.tap(find.text('Публичные'));
     await tester.pumpAndSettle();
 
-    verify(publicChatsBloc.add(const PublicChatsEvent.show())).called(1);
+    verify(publicChatsBloc.add(const PublicChatsEvent.show())).called(2);
   });
 
   testWidgets('should show favorites', (tester) async {
