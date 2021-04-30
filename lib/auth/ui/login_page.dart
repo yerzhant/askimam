@@ -46,12 +46,21 @@ class _LoginPageState extends State<LoginPage> {
                 child: Theme(
                   data: Theme.of(context).copyWith(
                     colorScheme: Theme.of(context).colorScheme.copyWith(
-                          primary: primaryDarkColor,
                           onSurface: primaryDarkColor,
                         ),
                     inputDecorationTheme: const InputDecorationTheme(
                       border: OutlineInputBorder(),
+                      labelStyle: TextStyle(color: primaryDarkColor),
                     ),
+                    textButtonTheme: TextButtonThemeData(
+                      style: TextButton.styleFrom(
+                        primary: primaryDarkColor,
+                        textStyle: const TextStyle(fontSize: 12),
+                      ),
+                    ),
+                    textTheme: Theme.of(context).textTheme.copyWith(
+                          subtitle1: const TextStyle(color: primaryDarkColor),
+                        ),
                   ),
                   child: Column(
                     children: [
@@ -128,10 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           TextButton(
                             onPressed: () => launch('https://azan.kz/signup'),
-                            child: const Text(
-                              'Регистрация',
-                              style: TextStyle(fontSize: 12),
-                            ),
+                            child: const Text('Регистрация'),
                           ),
                           const Text(
                             '|',
@@ -140,10 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                           TextButton(
                             onPressed: () => launch(
                                 'https://azan.kz/site/request-password-reset'),
-                            child: const Text(
-                              'Забыли пароль?',
-                              style: TextStyle(fontSize: 12),
-                            ),
+                            child: const Text('Забыли пароль?'),
                           ),
                         ],
                       ),

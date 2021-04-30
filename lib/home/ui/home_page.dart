@@ -56,7 +56,10 @@ class _HomePageState extends State<HomePage> {
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Вопрос имаму')),
+            appBar: AppBar(
+              title: const Text('Вопрос имаму'),
+              centerTitle: true,
+            ),
             body: PageView(
               controller: _pageController,
               children: state.maybeWhen(
@@ -67,12 +70,11 @@ class _HomePageState extends State<HomePage> {
                   const PublicChatsWidget(),
                   const FavoritesWidget(),
                 ],
-                unauthenticated: () => [
+                orElse: () => [
                   const PublicChatsWidget(),
                   // const MyChatsWidget(),
                   // const FavoritesWidget(),
                 ],
-                orElse: () => [],
               ),
             ),
             bottomNavigationBar: BottomNavigationBar(

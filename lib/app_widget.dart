@@ -9,7 +9,8 @@ class AppWidget extends StatelessWidget {
       title: 'Вопрос имаму',
       initialRoute: '/',
       theme: ThemeData(
-        accentColor: secondaryDarkColor,
+        primaryColor: primaryColor,
+        accentColor: secondaryColor,
         colorScheme: const ColorScheme(
           primary: primaryColor,
           primaryVariant: primaryDarkColor,
@@ -25,10 +26,8 @@ class AppWidget extends StatelessWidget {
           onError: Colors.amber,
           brightness: Brightness.light,
         ),
-        appBarTheme: const AppBarTheme(
-          color: primaryColor,
-        ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedItemColor: primaryDarkColor,
           unselectedItemColor: primaryColor,
         ),
         snackBarTheme: const SnackBarThemeData(
