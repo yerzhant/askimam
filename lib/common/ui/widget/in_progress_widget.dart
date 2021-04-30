@@ -1,4 +1,4 @@
-import 'package:askimam/common/ui/widget/circular_progress_widget.dart';
+import 'package:askimam/common/ui/widget/circular_progress.dart';
 import 'package:flutter/material.dart';
 
 class InProgressWidget extends StatelessWidget {
@@ -16,7 +16,7 @@ class InProgressWidget extends StatelessWidget {
     return Stack(
       children: [
         child,
-        if (isInProgress) const Center(child: CircularProgressWidget()),
+        if (isInProgress) const Center(child: CircularProgress()),
       ],
     );
   }

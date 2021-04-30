@@ -10,7 +10,7 @@ class AppWidget extends StatelessWidget {
       initialRoute: '/',
       theme: ThemeData(
         primaryColor: primaryColor,
-        accentColor: secondaryColor,
+        accentColor: primaryDarkColor,
         colorScheme: const ColorScheme(
           primary: primaryColor,
           primaryVariant: primaryDarkColor,
