@@ -3,6 +3,7 @@ import 'package:askimam/auth/domain/repo/auth_repository.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/auth/domain/model/authentication_request.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
+import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,15 +12,17 @@ import 'package:mockito/mockito.dart';
 
 import 'auth_bloc_test.mocks.dart';
 
-@GenerateMocks([AuthRepository])
+@GenerateMocks([AuthRepository, ApiClient])
 void main() {
   late AuthBloc bloc;
+  late ApiClient apiClient;
   final repo = MockAuthRepository();
 
   setUp(() {
     when(repo.load()).thenAnswer(
         (_) async => right(Authentication('jwt', 1, UserType.Inquirer)));
-    bloc = AuthBloc(repo);
+    apiClient = MockApiClient();
+    bloc = AuthBloc(repo, apiClient);
   });
 
   test('Initial state', () {
@@ -32,7 +35,6 @@ void main() {
       build: () {
         when(repo.login(AuthenticationRequest('login', 'password'))).thenAnswer(
             (_) async => right(Authentication('123', 1, UserType.Inquirer)));
-
         return bloc;
       },
       seed: () => const AuthState.unauthenticated(),
@@ -43,6 +45,7 @@ void main() {
         const AuthState.inProgress(),
         AuthState.authenticated(Authentication('123', 1, UserType.Inquirer)),
       ],
+      verify: (_) => verify(apiClient.setJwt('123')).called(1),
     );
 
     blocTest(
@@ -79,6 +82,7 @@ void main() {
         const AuthState.inProgress(),
         const AuthState.unauthenticated(),
       ],
+      verify: (_) => verify(apiClient.resetJwt()).called(1),
     );
 
     blocTest(
@@ -106,13 +110,14 @@ void main() {
         const AuthState.inProgress(),
         AuthState.authenticated(Authentication('jwt', 1, UserType.Inquirer)),
       ],
+      verify: (_) => verify(apiClient.setJwt('jwt')).called(1),
     );
 
     blocTest(
       'should not load an authentication',
       build: () {
         when(repo.load()).thenAnswer((_) async => left(Rejection('reason')));
-        return AuthBloc(repo);
+        return AuthBloc(repo, apiClient);
       },
       expect: () => [
         const AuthState.inProgress(),

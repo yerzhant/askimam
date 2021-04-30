@@ -4,6 +4,7 @@ import 'package:askimam/auth/domain/repo/auth_repository.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/auth/domain/model/authentication_request.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
+import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,8 +14,9 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _repo;
+  final ApiClient _apiClient;
 
-  AuthBloc(this._repo) : super(const _Unauthenticated()) {
+  AuthBloc(this._repo, this._apiClient) : super(const _Unauthenticated()) {
     add(const AuthEvent.load());
   }
 
@@ -32,7 +34,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     yield result.fold(
       (l) => AuthState.error(l),
-      (r) => AuthState.authenticated(r),
+      (r) {
+        _apiClient.setJwt(r.jwt);
+        return AuthState.authenticated(r);
+      },
     );
   }
 
@@ -43,7 +48,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     yield result.fold(
       (l) => AuthState.error(l),
-      (r) => AuthState.authenticated(r),
+      (r) {
+        _apiClient.setJwt(r.jwt);
+        return AuthState.authenticated(r);
+      },
     );
   }
 
@@ -53,7 +61,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await _repo.logout();
 
     yield result.fold(
-      () => const AuthState.unauthenticated(),
+      () {
+        _apiClient.resetJwt();
+        return const AuthState.unauthenticated();
+      },
       (l) => AuthState.error(l),
     );
   }

@@ -19,7 +19,7 @@ class AppModule extends Module {
         Bind.singleton((i) => LocalStorage()),
         Bind.singleton((i) => HttpApiClient(i(), _url)),
         Bind.singleton((i) => HttpAuthRepository(i(), i())),
-        Bind.singleton((i) => AuthBloc(i())),
+        Bind.singleton((i) => AuthBloc(i(), i())),
       ];
 
   @override
