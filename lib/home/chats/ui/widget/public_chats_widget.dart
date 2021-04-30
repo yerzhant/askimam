@@ -84,8 +84,10 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
           );
         },
         key: const PageStorageKey('public-chats'),
-        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: basePadding),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
       ),
     );
   }
