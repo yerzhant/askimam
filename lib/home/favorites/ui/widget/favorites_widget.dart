@@ -49,7 +49,9 @@ class FavoritesWidget extends StatelessWidget {
           );
         },
         key: const PageStorageKey('favorites'),
-        physics: const BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: const EdgeInsets.symmetric(vertical: basePadding),
       ),
     );

@@ -61,8 +61,10 @@ class _HomePageState extends State<HomePage> {
               centerTitle: true,
             ),
             body: PageView(
-              physics: const BouncingScrollPhysics(),
               controller: _pageController,
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
               onPageChanged: (_) {
                 setState(() {});
               },

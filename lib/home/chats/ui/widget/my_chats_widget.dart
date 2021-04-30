@@ -89,8 +89,10 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
           );
         },
         key: const PageStorageKey('my-chats'),
-        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: basePadding),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
       ),
     );
   }

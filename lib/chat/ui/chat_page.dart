@@ -145,8 +145,10 @@ class ChatPage extends StatelessWidget {
           );
         },
         key: const PageStorageKey('chat'),
-        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: basePadding),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
       ),
     );
   }
