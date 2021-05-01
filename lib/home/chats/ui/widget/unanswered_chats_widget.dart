@@ -78,7 +78,7 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
               leading: Icon(
                 item.type == ChatType.Public ? Icons.public : Icons.lock,
               ),
-              onTap: () => Modular.to.navigate('/chat/${item.id}'),
+              onTap: () => Modular.to.pushNamed('/chat/${item.id}'),
             ),
           );
         },

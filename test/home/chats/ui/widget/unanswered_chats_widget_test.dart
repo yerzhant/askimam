@@ -89,10 +89,12 @@ void main() {
   });
 
   testWidgets('should route to a chat', (tester) async {
+    when(navigator.pushNamed('/chat/1')).thenAnswer((_) async => null);
+
     await _fixture(bloc, tester, app);
     await tester.tap(find.text('Chat 1'));
 
-    verify(navigator.navigate('/chat/1')).called(1);
+    verify(navigator.pushNamed('/chat/1')).called(1);
   });
 
   testWidgets('should show an error', (tester) async {

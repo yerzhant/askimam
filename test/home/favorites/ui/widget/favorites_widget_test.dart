@@ -41,10 +41,12 @@ void main() {
   });
 
   testWidgets('should route to a chat', (tester) async {
+    when(navigator.pushNamed('/chat/11')).thenAnswer((_) async => null);
+
     await _standartFixture(tester, bloc, app);
     await tester.tap(find.text('Chat 1'));
 
-    verify(navigator.navigate('/chat/11')).called(1);
+    verify(navigator.pushNamed('/chat/11')).called(1);
   });
 
   testWidgets('should invoke a refresh on pulling down', (tester) async {

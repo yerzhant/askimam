@@ -88,7 +88,7 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
                 );
               },
             ),
-            onTap: () => Modular.to.navigate('/chat/${item.id}'),
+            onTap: () => Modular.to.pushNamed('/chat/${item.id}'),
           );
         },
         key: const PageStorageKey('public-chats'),

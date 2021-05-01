@@ -84,7 +84,7 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
                           : FavoriteEvent.add(item),
                     ),
               ),
-              onTap: () => Modular.to.navigate('/chat/${item.id}'),
+              onTap: () => Modular.to.pushNamed('/chat/${item.id}'),
             ),
           );
         },

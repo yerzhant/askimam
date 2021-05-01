@@ -44,7 +44,7 @@ class FavoritesWidget extends StatelessWidget {
             background: Container(color: Colors.red),
             child: ListTile(
               title: Text(item.subject),
-              onTap: () => Modular.to.navigate('/chat/${item.chatId}'),
+              onTap: () => Modular.to.pushNamed('/chat/${item.chatId}'),
             ),
           );
         },
