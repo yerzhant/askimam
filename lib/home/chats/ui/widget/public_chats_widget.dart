@@ -1,5 +1,6 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
@@ -78,6 +79,7 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
                   authenticated: (_) => IconButton(
                     icon: Icon(
                       item.isFavorite ? Icons.bookmark : Icons.bookmark_border,
+                      color: primaryColor,
                     ),
                     onPressed: () => context.read<FavoriteBloc>().add(
                           item.isFavorite

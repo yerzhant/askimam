@@ -13,12 +13,12 @@ class HomePopupMenu extends StatelessWidget {
         itemBuilder: (_) => state.maybeWhen(
           authenticated: (_) => [
             _azanKz(),
-            _shareApp(),
+            // _shareApp(),
             _logout(),
           ],
           orElse: () => [
             _azanKz(),
-            _shareApp(),
+            // _shareApp(),
           ],
         ),
         onSelected: (action) {

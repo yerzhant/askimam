@@ -1,4 +1,5 @@
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
@@ -70,6 +71,7 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
             key: ValueKey(item.id),
             onDismissed: (_) =>
                 context.read<MyChatsBloc>().add(MyChatsEvent.delete(item)),
+            background: Container(color: secondaryColor),
             child: ListTile(
               title: AutoDirection(
                 text: item.subject,
@@ -77,10 +79,14 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
               ),
               leading: Icon(
                 item.type == ChatType.Public ? Icons.public : Icons.lock,
+                color: item.type == ChatType.Public
+                    ? primaryColor
+                    : secondaryColor,
               ),
               trailing: IconButton(
                 icon: Icon(
                   item.isFavorite ? Icons.bookmark : Icons.bookmark_border,
+                  color: primaryColor,
                 ),
                 onPressed: () => context.read<FavoriteBloc>().add(
                       item.isFavorite

@@ -1,4 +1,5 @@
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
@@ -74,6 +75,7 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
             onDismissed: (_) => context
                 .read<UnansweredChatsBloc>()
                 .add(UnansweredChatsEvent.delete(item)),
+            background: Container(color: secondaryColor),
             child: ListTile(
               title: AutoDirection(
                 text: item.subject,
@@ -81,6 +83,9 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
               ),
               leading: Icon(
                 item.type == ChatType.Public ? Icons.public : Icons.lock,
+                color: item.type == ChatType.Public
+                    ? primaryColor
+                    : secondaryColor,
               ),
               onTap: () => Modular.to.pushNamed('/chat/${item.id}'),
             ),

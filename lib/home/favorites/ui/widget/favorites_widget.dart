@@ -1,3 +1,4 @@
+import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
@@ -42,7 +43,7 @@ class FavoritesWidget extends StatelessWidget {
             onDismissed: (_) => context
                 .read<FavoriteBloc>()
                 .add(FavoriteEvent.delete(item.chatId)),
-            background: Container(color: Colors.red),
+            background: Container(color: secondaryColor),
             child: ListTile(
               title: AutoDirection(
                 text: item.subject,
