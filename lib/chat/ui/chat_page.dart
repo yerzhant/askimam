@@ -3,12 +3,17 @@ import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/bloc/chat_bloc.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/model/message.dart';
+import 'package:askimam/chat/ui/widget/message_card.dart';
 import 'package:askimam/chat/ui/widget/message_composer.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+const _interMessageSpace = 10.0;
+
+const _horizontalPadding = 10.0;
 
 class ChatPage extends StatelessWidget {
   final int id;
@@ -119,8 +124,9 @@ class ChatPage extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () async =>
           context.read<ChatBloc>().add(ChatEvent.refresh(id)),
-      child: ListView.builder(
+      child: ListView.separated(
         itemCount: items.length,
+        separatorBuilder: (_, __) => const SizedBox(height: _interMessageSpace),
         itemBuilder: (_, i) {
           final item = items[i];
 
@@ -141,11 +147,14 @@ class ChatPage extends StatelessWidget {
             ),
             onDismissed: (_) =>
                 context.read<ChatBloc>().add(ChatEvent.deleteMessage(item.id)),
-            child: ListTile(title: Text(item.text)),
+            child: MessageCard(item, authState),
           );
         },
         key: const PageStorageKey('chat'),
-        padding: const EdgeInsets.symmetric(vertical: basePadding),
+        padding: const EdgeInsets.symmetric(
+          horizontal: _horizontalPadding,
+          vertical: basePadding,
+        ),
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
