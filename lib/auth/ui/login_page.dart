@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                       BlocConsumer<AuthBloc, AuthState>(
                         listener: (context, state) {
                           state.maybeWhen(
-                            authenticated: (_) => Modular.to.navigate('/'),
+                            authenticated: (_) => Modular.to.pop(),
                             error: (rejection) {
                               return ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(rejection.message)),

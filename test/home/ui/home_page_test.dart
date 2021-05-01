@@ -38,8 +38,8 @@ void main() {
     unansweredChatsBloc = MockUnansweredChatsBloc();
     favoriteBloc = MockFavoriteBloc();
     authBloc = MockAuthBloc();
-    navigator = MockIModularNavigator();
 
+    navigator = MockIModularNavigator();
     Modular.navigatorDelegate = navigator;
 
     when(publicChatsBloc.stream).thenAnswer((_) => const Stream.empty());

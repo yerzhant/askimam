@@ -78,7 +78,7 @@ void main() {
     await _fixture(tester, bloc);
     await tester.pump();
 
-    verify(navigator.navigate('/')).called(1);
+    verify(navigator.pop()).called(1);
   });
 }
 
