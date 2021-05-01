@@ -80,8 +80,6 @@ class _HomePageState extends State<HomePage> {
                 ],
                 orElse: () => [
                   const PublicChatsWidget(),
-                  // const MyChatsWidget(),
-                  // const FavoritesWidget(),
                 ],
               ),
             ),
@@ -92,8 +90,8 @@ class _HomePageState extends State<HomePage> {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () => state.maybeWhen(
-                authenticated: (_) => Modular.to.navigate('/new-question'),
-                orElse: () => Modular.to.navigate('/auth/login'),
+                authenticated: (_) => Modular.to.pushNamed('/new-question'),
+                orElse: () => Modular.to.pushNamed('/auth/login'),
               ),
               mini: true,
             ),
@@ -128,7 +126,7 @@ class _HomePageState extends State<HomePage> {
           duration: const Duration(milliseconds: 300),
         );
       },
-      orElse: () => Modular.to.navigate('/auth/login'),
+      orElse: () => Modular.to.pushNamed('/auth/login'),
     );
   }
 

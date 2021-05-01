@@ -158,6 +158,8 @@ void main() {
   });
 
   testWidgets('should create a new question', (tester) async {
+    when(navigator.pushNamed('/new-question')).thenAnswer((_) async => null);
+
     await _fixture(
       tester,
       publicChatsBloc,
@@ -168,13 +170,15 @@ void main() {
     );
     await tester.tap(find.byType(FloatingActionButton));
 
-    verify(navigator.navigate('/new-question')).called(1);
+    verify(navigator.pushNamed('/new-question')).called(1);
   });
 
   testWidgets(
     'should go to login page on tapping on new question button and nav items',
     (tester) async {
       when(authBloc.state).thenReturn(const AuthState.unauthenticated());
+      when(navigator.pushNamed('/auth/login')).thenAnswer((_) async => null);
+
       await _fixture(
         tester,
         publicChatsBloc,
@@ -187,7 +191,7 @@ void main() {
       await tester.tap(find.text('Мои'));
       await tester.tap(find.text('Избранные'));
 
-      verify(navigator.navigate('/auth/login')).called(3);
+      verify(navigator.pushNamed('/auth/login')).called(3);
     },
   );
 }
