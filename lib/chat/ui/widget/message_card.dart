@@ -86,6 +86,7 @@ class MessageCard extends StatelessWidget {
           width: double.infinity,
           child: SelectableLinkify(
             text: message.text,
+            linkStyle: const TextStyle(color: primaryDarkColor),
             onOpen: (link) async {
               if (await canLaunch(link.url)) {
                 await launch(link.url);
