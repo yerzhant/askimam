@@ -62,7 +62,7 @@ void main() {
     );
 
     blocTest(
-      'should not get it as was unable to set a Viewed flag',
+      'should not get it as it was not able to set a Viewed flag',
       build: () {
         when(repo.get(1)).thenAnswer(
           (_) async => right(
