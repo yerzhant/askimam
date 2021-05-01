@@ -1,6 +1,7 @@
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/auth/domain/model/authentication_request.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/chat/domain/model/message.dart';
 import 'package:askimam/chat/infra/dto/add_text_message.dart';
 import 'package:askimam/chat/infra/dto/create_chat.dart';
 import 'package:askimam/chat/infra/dto/update_chat.dart';
@@ -33,7 +34,15 @@ void main() {
     test('should return an item', () async {
       final result = await apiClient.get<Chat>('one');
 
-      expect(result, right(Chat(1, ChatType.Public, 1, 'subject')));
+      expect(
+          result,
+          right(Chat(1, ChatType.Public, 1, 'subject', messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('2021-05-01'), null),
+            Message(2, MessageType.Audio, 'audio', 'author',
+                DateTime.parse('2021-05-01'), null,
+                audio: 'audio.mp3', duration: '01:23'),
+          ])));
     });
 
     test('should return a rejection', () async {

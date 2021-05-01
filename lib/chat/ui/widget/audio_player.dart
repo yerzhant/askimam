@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:askimam/common/extention/date_extentions.dart';
 import 'package:askimam/common/ui/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:intl/intl.dart';
 
 class AudioPlayer extends StatefulWidget {
   final String url;
@@ -29,9 +29,10 @@ class _AudioPlayer extends State<AudioPlayer> {
   var _currentTime = '';
 
   @override
-  void initState() {
-    super.initState();
-    _player.setSubscriptionDuration(const Duration(microseconds: 100));
+  void dispose() {
+    _subscription?.cancel();
+    _player.closeAudioSession();
+    super.dispose();
   }
 
   @override
@@ -53,9 +54,6 @@ class _AudioPlayer extends State<AudioPlayer> {
                 _player.pausePlayer();
               }
             } else {
-              if (_nowPlaying != null && _nowPlaying != this) {
-                _nowPlaying?.stop();
-              }
               _play();
             }
           },
@@ -88,30 +86,37 @@ class _AudioPlayer extends State<AudioPlayer> {
   }
 
   Future<void> _play() async {
-    await _player.startPlayer(fromURI: widget.url);
+    await _subscription?.cancel();
+    await _nowPlaying?._stop();
+
+    if (!_player.isOpen()) {
+      await _player.openAudioSession();
+      await _player.setSubscriptionDuration(const Duration(milliseconds: 1000));
+    }
+
+    await _player.startPlayer(
+      fromURI: 'https://azan.kz/upload/Audio/${widget.url}',
+      whenFinished: () async => _stop(),
+    );
+
+    _nowPlaying = this;
+    _isPlaying = true;
+
     _subscription = _player.onProgress?.listen((e) {
       _position = e.position;
+      _duration = e.duration;
+
       setState(() {
-        _duration = e.duration;
-        if (_duration == _position) {
-          _nowPlaying = null;
-          _isPlaying = false;
-          _isPaused = false;
-          _position = const Duration();
-        } else {
-          _nowPlaying = this;
-          _isPlaying = true;
-        }
-        final date =
-            DateTime.fromMillisecondsSinceEpoch(_position.inMilliseconds);
-        _currentTime = DateFormat('mm:ss').format(date);
+        _currentTime = _position.format();
       });
     });
   }
 
-  Future<void> stop() async {
+  Future<void> _stop() async {
     await _player.stopPlayer();
     await _subscription?.cancel();
+    await _player.closeAudioSession();
+
     setState(() {
       _nowPlaying = null;
       _isPlaying = false;

@@ -1,5 +1,6 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/chat/domain/model/message.dart';
+import 'package:askimam/chat/ui/widget/audio_player.dart';
 import 'package:askimam/common/extention/date_extentions.dart';
 import 'package:askimam/common/ui/theme.dart';
 import 'package:auto_direction/auto_direction.dart';
@@ -40,48 +41,57 @@ class MessageCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (isImam) ...[
-                Text(
-                  message.author!,
-                  style: const TextStyle(
-                    color: primaryDarkColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-              ],
-              AutoDirection(
-                text: message.text,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: SelectableLinkify(
-                    text: message.text,
-                    onOpen: (link) async {
-                      if (await canLaunch(link.url)) {
-                        await launch(link.url);
-                      }
-                    },
-                  ),
-                ),
-              ),
+              if (isImam) ..._imamsName,
+              if (message.type == MessageType.Text)
+                _text
+              else
+                AudioPlayer(message.audio!, message.duration!),
               const SizedBox(height: 15),
-              Row(
-                children: [
-                  Text(
-                    message.createdAt.format(),
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  if (message.updatedAt != null)
-                    Text(
-                      '| ${message.updatedAt!.format()}',
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                ],
-              ),
+              _dates(context),
             ],
           ),
         ),
       ),
     );
   }
+
+  Row _dates(BuildContext context) => Row(
+        children: [
+          Text(
+            message.createdAt.format(),
+            style: Theme.of(context).textTheme.caption,
+          ),
+          if (message.updatedAt != null)
+            Text(
+              '| ${message.updatedAt!.format()}',
+              style: Theme.of(context).textTheme.caption,
+            ),
+        ],
+      );
+
+  List<Widget> get _imamsName => [
+        Text(
+          message.author!,
+          style: const TextStyle(
+            color: primaryDarkColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10),
+      ];
+
+  AutoDirection get _text => AutoDirection(
+        text: message.text,
+        child: SizedBox(
+          width: double.infinity,
+          child: SelectableLinkify(
+            text: message.text,
+            onOpen: (link) async {
+              if (await canLaunch(link.url)) {
+                await launch(link.url);
+              }
+            },
+          ),
+        ),
+      );
 }

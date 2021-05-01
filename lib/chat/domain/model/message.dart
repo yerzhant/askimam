@@ -11,8 +11,10 @@ class Message with _$Message {
     String text,
     String? author,
     DateTime createdAt,
-    DateTime? updatedAt,
-  ) = _Message;
+    DateTime? updatedAt, {
+    String? audio,
+    String? duration,
+  }) = _Message;
 
   factory Message.fromJson(Map<String, dynamic> json) =>
       _$MessageFromJson(json);

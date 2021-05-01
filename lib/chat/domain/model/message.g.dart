@@ -16,6 +16,8 @@ _$_Message _$_$_MessageFromJson(Map<String, dynamic> json) {
     json['updatedAt'] == null
         ? null
         : DateTime.parse(json['updatedAt'] as String),
+    audio: json['audio'] as String?,
+    duration: json['duration'] as String?,
   );
 }
 
@@ -27,6 +29,8 @@ Map<String, dynamic> _$_$_MessageToJson(_$_Message instance) =>
       'author': instance.author,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
+      'audio': instance.audio,
+      'duration': instance.duration,
     };
 
 K _$enumDecode<K, V>(

@@ -21,7 +21,8 @@ class _$MessageTearOff {
   const _$MessageTearOff();
 
   _Message call(int id, MessageType type, String text, String? author,
-      DateTime createdAt, DateTime? updatedAt) {
+      DateTime createdAt, DateTime? updatedAt,
+      {String? audio, String? duration}) {
     return _Message(
       id,
       type,
@@ -29,6 +30,8 @@ class _$MessageTearOff {
       author,
       createdAt,
       updatedAt,
+      audio: audio,
+      duration: duration,
     );
   }
 
@@ -48,6 +51,8 @@ mixin _$Message {
   String? get author => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
+  String? get audio => throw _privateConstructorUsedError;
+  String? get duration => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -64,7 +69,9 @@ abstract class $MessageCopyWith<$Res> {
       String text,
       String? author,
       DateTime createdAt,
-      DateTime? updatedAt});
+      DateTime? updatedAt,
+      String? audio,
+      String? duration});
 }
 
 /// @nodoc
@@ -83,6 +90,8 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
     Object? author = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? audio = freezed,
+    Object? duration = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -109,6 +118,14 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      audio: audio == freezed
+          ? _value.audio
+          : audio // ignore: cast_nullable_to_non_nullable
+              as String?,
+      duration: duration == freezed
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -124,7 +141,9 @@ abstract class _$MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
       String text,
       String? author,
       DateTime createdAt,
-      DateTime? updatedAt});
+      DateTime? updatedAt,
+      String? audio,
+      String? duration});
 }
 
 /// @nodoc
@@ -144,6 +163,8 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
     Object? author = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? audio = freezed,
+    Object? duration = freezed,
   }) {
     return _then(_Message(
       id == freezed
@@ -170,6 +191,14 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      audio: audio == freezed
+          ? _value.audio
+          : audio // ignore: cast_nullable_to_non_nullable
+              as String?,
+      duration: duration == freezed
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -179,7 +208,8 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
 /// @nodoc
 class _$_Message implements _Message {
   _$_Message(this.id, this.type, this.text, this.author, this.createdAt,
-      this.updatedAt);
+      this.updatedAt,
+      {this.audio, this.duration});
 
   factory _$_Message.fromJson(Map<String, dynamic> json) =>
       _$_$_MessageFromJson(json);
@@ -196,10 +226,14 @@ class _$_Message implements _Message {
   final DateTime createdAt;
   @override
   final DateTime? updatedAt;
+  @override
+  final String? audio;
+  @override
+  final String? duration;
 
   @override
   String toString() {
-    return 'Message(id: $id, type: $type, text: $text, author: $author, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Message(id: $id, type: $type, text: $text, author: $author, createdAt: $createdAt, updatedAt: $updatedAt, audio: $audio, duration: $duration)';
   }
 
   @override
@@ -219,7 +253,12 @@ class _$_Message implements _Message {
                     .equals(other.createdAt, createdAt)) &&
             (identical(other.updatedAt, updatedAt) ||
                 const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)));
+                    .equals(other.updatedAt, updatedAt)) &&
+            (identical(other.audio, audio) ||
+                const DeepCollectionEquality().equals(other.audio, audio)) &&
+            (identical(other.duration, duration) ||
+                const DeepCollectionEquality()
+                    .equals(other.duration, duration)));
   }
 
   @override
@@ -230,7 +269,9 @@ class _$_Message implements _Message {
       const DeepCollectionEquality().hash(text) ^
       const DeepCollectionEquality().hash(author) ^
       const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(updatedAt);
+      const DeepCollectionEquality().hash(updatedAt) ^
+      const DeepCollectionEquality().hash(audio) ^
+      const DeepCollectionEquality().hash(duration);
 
   @JsonKey(ignore: true)
   @override
@@ -245,7 +286,8 @@ class _$_Message implements _Message {
 
 abstract class _Message implements Message {
   factory _Message(int id, MessageType type, String text, String? author,
-      DateTime createdAt, DateTime? updatedAt) = _$_Message;
+      DateTime createdAt, DateTime? updatedAt,
+      {String? audio, String? duration}) = _$_Message;
 
   factory _Message.fromJson(Map<String, dynamic> json) = _$_Message.fromJson;
 
@@ -261,6 +303,10 @@ abstract class _Message implements Message {
   DateTime get createdAt => throw _privateConstructorUsedError;
   @override
   DateTime? get updatedAt => throw _privateConstructorUsedError;
+  @override
+  String? get audio => throw _privateConstructorUsedError;
+  @override
+  String? get duration => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$MessageCopyWith<_Message> get copyWith =>
