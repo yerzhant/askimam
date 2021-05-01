@@ -11,7 +11,7 @@ class ChatModule extends Module {
         Bind.singleton((i) => FcmService()),
         Bind.singleton((i) => HttpChatRepository(i(), i())),
         Bind.singleton((i) => HttpMessageRepository(i(), i())),
-        Bind.singleton((i) => ChatBloc(i(), i())),
+        Bind.singleton((i) => ChatBloc(i(), i(), i())),
       ];
 
   @override

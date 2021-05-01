@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:askimam/auth/bloc/auth_bloc.dart';
+import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/repo/chat_repository.dart';
 import 'package:askimam/chat/domain/repo/message_repository.dart';
@@ -14,8 +16,13 @@ part 'chat_state.dart';
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChatRepository _repo;
   final MessageRepository _messageRepo;
+  final AuthBloc _authBloc;
 
-  ChatBloc(this._repo, this._messageRepo) : super(const _InProgress());
+  ChatBloc(
+    this._repo,
+    this._messageRepo,
+    this._authBloc,
+  ) : super(const _InProgress());
 
   @override
   Stream<ChatState> mapEventToState(ChatEvent event) => event.when(
@@ -37,11 +44,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         yield ChatState.error(l);
       },
       (r) async* {
-        final setViewedFlagResult = await _repo.setViewedFlag(id);
+        yield* _authBloc.state.maybeWhen(
+          authenticated: (auth) async* {
+            if (auth.userId == r.askedBy || auth.userType == UserType.Imam) {
+              final setViewedFlagResult = await _repo.setViewedFlag(id);
 
-        yield setViewedFlagResult.fold(
-          () => ChatState(r),
-          (a) => ChatState.error(a),
+              yield setViewedFlagResult.fold(
+                () => ChatState(r),
+                (a) => ChatState.error(a),
+              );
+            } else {
+              yield ChatState(r);
+            }
+          },
+          orElse: () async* {
+            yield ChatState(r);
+          },
         );
       },
     );

@@ -2,13 +2,16 @@
 // in askimam/test/chat/bloc/chat_bloc_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i4;
+import 'dart:async' as _i3;
 
-import 'package:askimam/chat/domain/model/chat.dart' as _i6;
-import 'package:askimam/chat/domain/repo/chat_repository.dart' as _i3;
-import 'package:askimam/chat/domain/repo/message_repository.dart' as _i7;
-import 'package:askimam/common/domain/model/rejection.dart' as _i5;
-import 'package:dartz/dartz.dart' as _i2;
+import 'package:askimam/auth/bloc/auth_bloc.dart' as _i2;
+import 'package:askimam/chat/domain/model/chat.dart' as _i9;
+import 'package:askimam/chat/domain/repo/chat_repository.dart' as _i7;
+import 'package:askimam/chat/domain/repo/message_repository.dart' as _i10;
+import 'package:askimam/common/domain/model/rejection.dart' as _i8;
+import 'package:bloc/src/bloc.dart' as _i6;
+import 'package:bloc/src/transition.dart' as _i5;
+import 'package:dartz/dartz.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: comment_references
@@ -18,105 +21,198 @@ import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
 
-class _FakeEither<L, R> extends _i1.Fake implements _i2.Either<L, R> {}
+class _FakeAuthState extends _i1.Fake implements _i2.AuthState {}
 
-class _FakeOption<A> extends _i1.Fake implements _i2.Option<A> {}
+class _FakeStreamSubscription<T> extends _i1.Fake
+    implements _i3.StreamSubscription<T> {}
+
+class _FakeEither<L, R> extends _i1.Fake implements _i4.Either<L, R> {}
+
+class _FakeOption<A> extends _i1.Fake implements _i4.Option<A> {}
+
+/// A class which mocks [AuthBloc].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthBloc extends _i1.Mock implements _i2.AuthBloc {
+  MockAuthBloc() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.AuthState get state => (super.noSuchMethod(Invocation.getter(#state),
+      returnValue: _FakeAuthState()) as _i2.AuthState);
+  @override
+  _i3.Stream<_i2.AuthState> get stream => (super.noSuchMethod(
+      Invocation.getter(#stream),
+      returnValue: Stream<_i2.AuthState>.empty()) as _i3.Stream<_i2.AuthState>);
+  @override
+  _i3.Stream<_i2.AuthState> mapEventToState(_i2.AuthEvent? event) =>
+      (super.noSuchMethod(Invocation.method(#mapEventToState, [event]),
+              returnValue: Stream<_i2.AuthState>.empty())
+          as _i3.Stream<_i2.AuthState>);
+  @override
+  void add(_i2.AuthEvent? event) =>
+      super.noSuchMethod(Invocation.method(#add, [event]),
+          returnValueForMissingStub: null);
+  @override
+  void onEvent(_i2.AuthEvent? event) =>
+      super.noSuchMethod(Invocation.method(#onEvent, [event]),
+          returnValueForMissingStub: null);
+  @override
+  _i3.Stream<_i5.Transition<_i2.AuthEvent, _i2.AuthState>> transformEvents(
+          _i3.Stream<_i2.AuthEvent>? events,
+          _i6.TransitionFunction<_i2.AuthEvent, _i2.AuthState>? transitionFn) =>
+      (super.noSuchMethod(
+              Invocation.method(#transformEvents, [events, transitionFn]),
+              returnValue:
+                  Stream<_i5.Transition<_i2.AuthEvent, _i2.AuthState>>.empty())
+          as _i3.Stream<_i5.Transition<_i2.AuthEvent, _i2.AuthState>>);
+  @override
+  void emit(_i2.AuthState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+  @override
+  void onTransition(_i5.Transition<_i2.AuthEvent, _i2.AuthState>? transition) =>
+      super.noSuchMethod(Invocation.method(#onTransition, [transition]),
+          returnValueForMissingStub: null);
+  @override
+  _i3.Stream<_i5.Transition<_i2.AuthEvent, _i2.AuthState>> transformTransitions(
+          _i3.Stream<_i5.Transition<_i2.AuthEvent, _i2.AuthState>>?
+              transitions) =>
+      (super.noSuchMethod(
+              Invocation.method(#transformTransitions, [transitions]),
+              returnValue:
+                  Stream<_i5.Transition<_i2.AuthEvent, _i2.AuthState>>.empty())
+          as _i3.Stream<_i5.Transition<_i2.AuthEvent, _i2.AuthState>>);
+  @override
+  _i3.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future<void>.value(null),
+      returnValueForMissingStub: Future.value()) as _i3.Future<void>);
+  @override
+  _i3.StreamSubscription<_i2.AuthState> listen(
+          void Function(_i2.AuthState)? onData,
+          {Function? onError,
+          void Function()? onDone,
+          bool? cancelOnError}) =>
+      (super.noSuchMethod(
+              Invocation.method(#listen, [
+                onData
+              ], {
+                #onError: onError,
+                #onDone: onDone,
+                #cancelOnError: cancelOnError
+              }),
+              returnValue: _FakeStreamSubscription<_i2.AuthState>())
+          as _i3.StreamSubscription<_i2.AuthState>);
+  @override
+  void onChange(_i5.Change<_i2.AuthState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+}
 
 /// A class which mocks [ChatRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockChatRepository extends _i1.Mock implements _i3.ChatRepository {
+class MockChatRepository extends _i1.Mock implements _i7.ChatRepository {
   MockChatRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, _i6.Chat>> get(int? id) =>
+  _i3.Future<_i4.Either<_i8.Rejection, _i9.Chat>> get(int? id) =>
       (super.noSuchMethod(Invocation.method(#get, [id]),
-              returnValue: Future<_i2.Either<_i5.Rejection, _i6.Chat>>.value(
-                  _FakeEither<_i5.Rejection, _i6.Chat>()))
-          as _i4.Future<_i2.Either<_i5.Rejection, _i6.Chat>>);
+              returnValue: Future<_i4.Either<_i8.Rejection, _i9.Chat>>.value(
+                  _FakeEither<_i8.Rejection, _i9.Chat>()))
+          as _i3.Future<_i4.Either<_i8.Rejection, _i9.Chat>>);
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>> getMy(
+  _i3.Future<_i4.Either<_i8.Rejection, List<_i9.Chat>>> getMy(
           int? offset, int? pageSize) =>
       (super.noSuchMethod(Invocation.method(#getMy, [offset, pageSize]),
-          returnValue: Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>>.value(
-              _FakeEither<_i5.Rejection, List<_i6.Chat>>())) as _i4
-          .Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>>);
+          returnValue: Future<_i4.Either<_i8.Rejection, List<_i9.Chat>>>.value(
+              _FakeEither<_i8.Rejection, List<_i9.Chat>>())) as _i3
+          .Future<_i4.Either<_i8.Rejection, List<_i9.Chat>>>);
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>> getPublic(
+  _i3.Future<_i4.Either<_i8.Rejection, List<_i9.Chat>>> getPublic(
           int? offset, int? pageSize) =>
       (super.noSuchMethod(Invocation.method(#getPublic, [offset, pageSize]),
-          returnValue: Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>>.value(
-              _FakeEither<_i5.Rejection, List<_i6.Chat>>())) as _i4
-          .Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>>);
+          returnValue: Future<_i4.Either<_i8.Rejection, List<_i9.Chat>>>.value(
+              _FakeEither<_i8.Rejection, List<_i9.Chat>>())) as _i3
+          .Future<_i4.Either<_i8.Rejection, List<_i9.Chat>>>);
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>> getUnanswered(
+  _i3.Future<_i4.Either<_i8.Rejection, List<_i9.Chat>>> getUnanswered(
           int? offset, int? pageSize) =>
       (super.noSuchMethod(Invocation.method(#getUnanswered, [offset, pageSize]),
-          returnValue: Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>>.value(
-              _FakeEither<_i5.Rejection, List<_i6.Chat>>())) as _i4
-          .Future<_i2.Either<_i5.Rejection, List<_i6.Chat>>>);
+          returnValue: Future<_i4.Either<_i8.Rejection, List<_i9.Chat>>>.value(
+              _FakeEither<_i8.Rejection, List<_i9.Chat>>())) as _i3
+          .Future<_i4.Either<_i8.Rejection, List<_i9.Chat>>>);
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> add(
-          _i6.ChatType? type, String? subject, String? text) =>
+  _i3.Future<_i4.Option<_i8.Rejection>> add(
+          _i9.ChatType? type, String? subject, String? text) =>
       (super.noSuchMethod(Invocation.method(#add, [type, subject, text]),
-              returnValue: Future<_i2.Option<_i5.Rejection>>.value(
-                  _FakeOption<_i5.Rejection>()))
-          as _i4.Future<_i2.Option<_i5.Rejection>>);
+              returnValue: Future<_i4.Option<_i8.Rejection>>.value(
+                  _FakeOption<_i8.Rejection>()))
+          as _i3.Future<_i4.Option<_i8.Rejection>>);
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> updateSubject(
+  _i3.Future<_i4.Option<_i8.Rejection>> updateSubject(
           int? id, String? subject) =>
       (super.noSuchMethod(Invocation.method(#updateSubject, [id, subject]),
-              returnValue: Future<_i2.Option<_i5.Rejection>>.value(
-                  _FakeOption<_i5.Rejection>()))
-          as _i4.Future<_i2.Option<_i5.Rejection>>);
+              returnValue: Future<_i4.Option<_i8.Rejection>>.value(
+                  _FakeOption<_i8.Rejection>()))
+          as _i3.Future<_i4.Option<_i8.Rejection>>);
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> delete(_i6.Chat? chat) =>
+  _i3.Future<_i4.Option<_i8.Rejection>> delete(_i9.Chat? chat) =>
       (super.noSuchMethod(Invocation.method(#delete, [chat]),
-              returnValue: Future<_i2.Option<_i5.Rejection>>.value(
-                  _FakeOption<_i5.Rejection>()))
-          as _i4.Future<_i2.Option<_i5.Rejection>>);
+              returnValue: Future<_i4.Option<_i8.Rejection>>.value(
+                  _FakeOption<_i8.Rejection>()))
+          as _i3.Future<_i4.Option<_i8.Rejection>>);
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> setViewedFlag(int? id) =>
+  _i3.Future<_i4.Option<_i8.Rejection>> setViewedFlag(int? id) =>
       (super.noSuchMethod(Invocation.method(#setViewedFlag, [id]),
-              returnValue: Future<_i2.Option<_i5.Rejection>>.value(
-                  _FakeOption<_i5.Rejection>()))
-          as _i4.Future<_i2.Option<_i5.Rejection>>);
+              returnValue: Future<_i4.Option<_i8.Rejection>>.value(
+                  _FakeOption<_i8.Rejection>()))
+          as _i3.Future<_i4.Option<_i8.Rejection>>);
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> returnToUnanswered(int? id) =>
+  _i3.Future<_i4.Option<_i8.Rejection>> returnToUnanswered(int? id) =>
       (super.noSuchMethod(Invocation.method(#returnToUnanswered, [id]),
-              returnValue: Future<_i2.Option<_i5.Rejection>>.value(
-                  _FakeOption<_i5.Rejection>()))
-          as _i4.Future<_i2.Option<_i5.Rejection>>);
+              returnValue: Future<_i4.Option<_i8.Rejection>>.value(
+                  _FakeOption<_i8.Rejection>()))
+          as _i3.Future<_i4.Option<_i8.Rejection>>);
 }
 
 /// A class which mocks [MessageRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMessageRepository extends _i1.Mock implements _i7.MessageRepository {
+class MockMessageRepository extends _i1.Mock implements _i10.MessageRepository {
   MockMessageRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> addText(int? chatId, String? text) =>
+  _i3.Future<_i4.Option<_i8.Rejection>> addText(int? chatId, String? text) =>
       (super.noSuchMethod(Invocation.method(#addText, [chatId, text]),
-              returnValue: Future<_i2.Option<_i5.Rejection>>.value(
-                  _FakeOption<_i5.Rejection>()))
-          as _i4.Future<_i2.Option<_i5.Rejection>>);
+              returnValue: Future<_i4.Option<_i8.Rejection>>.value(
+                  _FakeOption<_i8.Rejection>()))
+          as _i3.Future<_i4.Option<_i8.Rejection>>);
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> delete(int? chatId, int? messageId) =>
+  _i3.Future<_i4.Option<_i8.Rejection>> delete(int? chatId, int? messageId) =>
       (super.noSuchMethod(Invocation.method(#delete, [chatId, messageId]),
-              returnValue: Future<_i2.Option<_i5.Rejection>>.value(
-                  _FakeOption<_i5.Rejection>()))
-          as _i4.Future<_i2.Option<_i5.Rejection>>);
+              returnValue: Future<_i4.Option<_i8.Rejection>>.value(
+                  _FakeOption<_i8.Rejection>()))
+          as _i3.Future<_i4.Option<_i8.Rejection>>);
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> updateText(
+  _i3.Future<_i4.Option<_i8.Rejection>> updateText(
           int? chatId, int? messageId, String? text) =>
       (super.noSuchMethod(
               Invocation.method(#updateText, [chatId, messageId, text]),
-              returnValue: Future<_i2.Option<_i5.Rejection>>.value(
-                  _FakeOption<_i5.Rejection>()))
-          as _i4.Future<_i2.Option<_i5.Rejection>>);
+              returnValue: Future<_i4.Option<_i8.Rejection>>.value(
+                  _FakeOption<_i8.Rejection>()))
+          as _i3.Future<_i4.Option<_i8.Rejection>>);
 }

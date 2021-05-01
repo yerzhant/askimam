@@ -1,3 +1,5 @@
+import 'package:askimam/auth/bloc/auth_bloc.dart';
+import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/bloc/chat_bloc.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/repo/chat_repository.dart';
@@ -12,14 +14,22 @@ import 'package:mockito/mockito.dart';
 
 import 'chat_bloc_test.mocks.dart';
 
-@GenerateMocks([ChatRepository, MessageRepository])
+@GenerateMocks([
+  AuthBloc,
+  ChatRepository,
+  MessageRepository,
+])
 void main() {
   late ChatBloc bloc;
+  final authBloc = MockAuthBloc();
   final repo = MockChatRepository();
   final messageRepo = MockMessageRepository();
 
   setUp(() {
-    bloc = ChatBloc(repo, messageRepo);
+    when(authBloc.state).thenReturn(AuthState.authenticated(
+      Authentication('jwt', 1, UserType.Inquirer),
+    ));
+    bloc = ChatBloc(repo, messageRepo, authBloc);
   });
 
   test('Initial state', () {
@@ -41,6 +51,112 @@ void main() {
           ),
         );
         when(repo.setViewedFlag(1)).thenAnswer((_) async => none());
+
+        return bloc;
+      },
+      act: (_) => bloc.add(const ChatEvent.refresh(1)),
+      expect: () => [
+        const ChatState.inProgress(),
+        ChatState(
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+            Message(2, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+        ),
+      ],
+      verify: (_) {
+        verify(repo.setViewedFlag(1)).called(1);
+      },
+    );
+
+    blocTest(
+      'should get it without updating a viewed flag - unauth',
+      build: () {
+        when(authBloc.state).thenReturn(const AuthState.unauthenticated());
+        when(repo.get(1)).thenAnswer(
+          (_) async => right(
+            Chat(1, ChatType.Public, 1, 'subject', messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+              Message(2, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
+          ),
+        );
+
+        return bloc;
+      },
+      act: (_) => bloc.add(const ChatEvent.refresh(1)),
+      expect: () => [
+        const ChatState.inProgress(),
+        ChatState(
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+            Message(2, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+        ),
+      ],
+      verify: (_) {
+        verifyNever(repo.setViewedFlag(1));
+      },
+    );
+
+    blocTest(
+      'should get it without updating a viewed flag - not an author',
+      build: () {
+        when(authBloc.state).thenReturn(AuthState.authenticated(
+          Authentication('jwt', 10, UserType.Inquirer),
+        ));
+        when(repo.get(1)).thenAnswer(
+          (_) async => right(
+            Chat(1, ChatType.Public, 1, 'subject', messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+              Message(2, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
+          ),
+        );
+
+        return bloc;
+      },
+      act: (_) => bloc.add(const ChatEvent.refresh(1)),
+      expect: () => [
+        const ChatState.inProgress(),
+        ChatState(
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+            Message(2, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+        ),
+      ],
+      verify: (_) {
+        verifyNever(repo.setViewedFlag(1));
+      },
+    );
+
+    blocTest(
+      'should get it and update a viewed flag - as it is an imam',
+      build: () {
+        when(authBloc.state).thenReturn(AuthState.authenticated(
+          Authentication('jwt', 10, UserType.Imam),
+        ));
+        when(repo.get(1)).thenAnswer(
+          (_) async => right(
+            Chat(1, ChatType.Public, 1, 'subject', messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+              Message(2, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
+          ),
+        );
 
         return bloc;
       },
