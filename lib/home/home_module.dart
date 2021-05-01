@@ -14,11 +14,11 @@ class HomeModule extends Module {
   @override
   List<Bind<Object>> get binds => [
         Bind.singleton((i) => FcmService()),
-        Bind.singleton((i) => HttpChatRepository(i(), i())),
         Bind.singleton((i) => HttpFavoriteRepository(i())),
+        Bind.singleton((i) => HttpChatRepository(i(), i())),
         Bind.singleton((i) => FavoriteBloc(i())),
-        Bind.singleton((i) => UnansweredChatsBloc(i(), pageSize)),
         Bind.singleton((i) => MyChatsBloc(i(), i(), pageSize)),
+        Bind.singleton((i) => UnansweredChatsBloc(i(), pageSize)),
         Bind.singleton((i) => PublicChatsBloc(i(), i(), pageSize)),
       ];
 
@@ -27,11 +27,11 @@ class HomeModule extends Module {
         ChildRoute(
           '/',
           child: (_, __) => HomePage(
-            unansweredChatsBloc: Modular.get(),
-            myChatsBloc: Modular.get(),
-            publicChatsBloc: Modular.get(),
-            favoriteBloc: Modular.get(),
             authBloc: Modular.get(),
+            myChatsBloc: Modular.get(),
+            favoriteBloc: Modular.get(),
+            publicChatsBloc: Modular.get(),
+            unansweredChatsBloc: Modular.get(),
           ),
         ),
         ChildRoute('/new-question',

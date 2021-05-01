@@ -17,41 +17,41 @@ import 'package:mockito/mockito.dart';
 import 'home_page_test.mocks.dart';
 
 @GenerateMocks([
-  PublicChatsBloc,
-  MyChatsBloc,
-  UnansweredChatsBloc,
-  FavoriteBloc,
   AuthBloc,
+  MyChatsBloc,
+  FavoriteBloc,
+  PublicChatsBloc,
   IModularNavigator,
+  UnansweredChatsBloc,
 ])
 void main() {
-  late PublicChatsBloc publicChatsBloc;
-  late MyChatsBloc myChatsBloc;
-  late UnansweredChatsBloc unansweredChatsBloc;
-  late FavoriteBloc favoriteBloc;
   late AuthBloc authBloc;
+  late MyChatsBloc myChatsBloc;
+  late FavoriteBloc favoriteBloc;
   late IModularNavigator navigator;
+  late PublicChatsBloc publicChatsBloc;
+  late UnansweredChatsBloc unansweredChatsBloc;
 
   setUp(() {
-    publicChatsBloc = MockPublicChatsBloc();
-    myChatsBloc = MockMyChatsBloc();
-    unansweredChatsBloc = MockUnansweredChatsBloc();
-    favoriteBloc = MockFavoriteBloc();
     authBloc = MockAuthBloc();
+    myChatsBloc = MockMyChatsBloc();
+    favoriteBloc = MockFavoriteBloc();
+    publicChatsBloc = MockPublicChatsBloc();
+    unansweredChatsBloc = MockUnansweredChatsBloc();
 
     navigator = MockIModularNavigator();
     Modular.navigatorDelegate = navigator;
 
-    when(publicChatsBloc.stream).thenAnswer((_) => const Stream.empty());
-    when(myChatsBloc.stream).thenAnswer((_) => const Stream.empty());
-    when(unansweredChatsBloc.stream).thenAnswer((_) => const Stream.empty());
-    when(favoriteBloc.stream).thenAnswer((_) => const Stream.empty());
     when(authBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(myChatsBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(favoriteBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(publicChatsBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(unansweredChatsBloc.stream).thenAnswer((_) => const Stream.empty());
 
-    when(publicChatsBloc.state).thenReturn(const PublicChatsState([]));
     when(myChatsBloc.state).thenReturn(const MyChatsState([]));
-    when(unansweredChatsBloc.state).thenReturn(const UnansweredChatsState([]));
     when(favoriteBloc.state).thenReturn(const FavoriteState([]));
+    when(publicChatsBloc.state).thenReturn(const PublicChatsState([]));
+    when(unansweredChatsBloc.state).thenReturn(const UnansweredChatsState([]));
     when(authBloc.state).thenReturn(AuthState.authenticated(Authentication(
       '123',
       1,
@@ -62,11 +62,11 @@ void main() {
   testWidgets('should contain contents for an inquirer', (tester) async {
     await _fixture(
       tester,
-      publicChatsBloc,
-      myChatsBloc,
-      unansweredChatsBloc,
-      favoriteBloc,
       authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
     );
 
     expect(find.text('Новые'), findsNothing);
@@ -82,13 +82,14 @@ void main() {
       1,
       UserType.Imam,
     )));
+
     await _fixture(
       tester,
-      publicChatsBloc,
-      myChatsBloc,
-      unansweredChatsBloc,
-      favoriteBloc,
       authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
     );
 
     expect(find.text('Новые'), findsOneWidget);
@@ -99,11 +100,11 @@ void main() {
 
     await _fixture(
       tester,
-      publicChatsBloc,
-      myChatsBloc,
-      unansweredChatsBloc,
-      favoriteBloc,
       authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
     );
 
     expect(find.byType(PublicChatsWidget), findsOneWidget);
@@ -113,11 +114,11 @@ void main() {
   testWidgets('should load my chats on launch', (tester) async {
     await _fixture(
       tester,
-      publicChatsBloc,
-      myChatsBloc,
-      unansweredChatsBloc,
-      favoriteBloc,
       authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
     );
 
     expect(find.byType(MyChatsWidget), findsOneWidget);
@@ -133,11 +134,11 @@ void main() {
 
     await _fixture(
       tester,
-      publicChatsBloc,
-      myChatsBloc,
-      unansweredChatsBloc,
-      favoriteBloc,
       authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
     );
 
     expect(find.byType(UnansweredChatsWidget), findsOneWidget);
@@ -151,13 +152,14 @@ void main() {
       1,
       UserType.Imam,
     )));
+
     await _fixture(
       tester,
-      publicChatsBloc,
-      myChatsBloc,
-      unansweredChatsBloc,
-      favoriteBloc,
       authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
     );
     await tester.tap(find.text('Новые'));
     await tester.pumpAndSettle();
@@ -169,11 +171,11 @@ void main() {
   testWidgets('should show my chats', (tester) async {
     await _fixture(
       tester,
-      publicChatsBloc,
-      myChatsBloc,
-      unansweredChatsBloc,
-      favoriteBloc,
       authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
     );
     await tester.tap(find.text('Мои'));
     await tester.pumpAndSettle();
@@ -184,11 +186,11 @@ void main() {
   testWidgets('should show public chats', (tester) async {
     await _fixture(
       tester,
-      publicChatsBloc,
-      myChatsBloc,
-      unansweredChatsBloc,
-      favoriteBloc,
       authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
     );
     await tester.tap(find.text('Публичные'));
     await tester.pumpAndSettle();
@@ -199,11 +201,11 @@ void main() {
   testWidgets('should show favorites', (tester) async {
     await _fixture(
       tester,
-      publicChatsBloc,
-      myChatsBloc,
-      unansweredChatsBloc,
-      favoriteBloc,
       authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
     );
     await tester.tap(find.text('Избранные'));
     await tester.pumpAndSettle();
@@ -216,11 +218,11 @@ void main() {
 
     await _fixture(
       tester,
-      publicChatsBloc,
-      myChatsBloc,
-      unansweredChatsBloc,
-      favoriteBloc,
       authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
     );
     await tester.tap(find.byType(FloatingActionButton));
 
@@ -235,11 +237,11 @@ void main() {
 
       await _fixture(
         tester,
-        publicChatsBloc,
-        myChatsBloc,
-        unansweredChatsBloc,
-        favoriteBloc,
         authBloc,
+        myChatsBloc,
+        favoriteBloc,
+        publicChatsBloc,
+        unansweredChatsBloc,
       );
       await tester.tap(find.byType(FloatingActionButton));
       await tester.tap(find.text('Мои'));
@@ -248,23 +250,59 @@ void main() {
       verify(navigator.pushNamed('/auth/login')).called(3);
     },
   );
+
+  testWidgets('should load my chats on successful logging in', (tester) async {
+    when(authBloc.stream).thenAnswer((_) => Stream.value(
+          AuthState.authenticated(Authentication('123', 1, UserType.Inquirer)),
+        ));
+    await _fixture(
+      tester,
+      authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
+    );
+
+    verify(myChatsBloc.add(const MyChatsEvent.reload())).called(2);
+  });
+
+  testWidgets('should load new chats on successful logging in', (tester) async {
+    when(authBloc.state).thenReturn(
+      AuthState.authenticated(Authentication('123', 1, UserType.Imam)),
+    );
+    when(authBloc.stream).thenAnswer((_) => Stream.value(
+          AuthState.authenticated(Authentication('123', 1, UserType.Imam)),
+        ));
+    await _fixture(
+      tester,
+      authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
+    );
+
+    verify(unansweredChatsBloc.add(const UnansweredChatsEvent.reload()))
+        .called(2);
+  });
 }
 
 Future _fixture(
   WidgetTester tester,
-  PublicChatsBloc publicChatsBloc,
-  MyChatsBloc myChatsBloc,
-  UnansweredChatsBloc unansweredChatsBloc,
-  FavoriteBloc favoriteBloc,
   AuthBloc authBloc,
+  MyChatsBloc myChatsBloc,
+  FavoriteBloc favoriteBloc,
+  PublicChatsBloc publicChatsBloc,
+  UnansweredChatsBloc unansweredChatsBloc,
 ) async {
   final app = MaterialApp(
     home: HomePage(
-      publicChatsBloc: publicChatsBloc,
-      myChatsBloc: myChatsBloc,
-      unansweredChatsBloc: unansweredChatsBloc,
-      favoriteBloc: favoriteBloc,
       authBloc: authBloc,
+      myChatsBloc: myChatsBloc,
+      favoriteBloc: favoriteBloc,
+      publicChatsBloc: publicChatsBloc,
+      unansweredChatsBloc: unansweredChatsBloc,
     ),
   );
   await tester.pumpWidget(app);

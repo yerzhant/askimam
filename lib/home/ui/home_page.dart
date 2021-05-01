@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
@@ -14,20 +16,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
-  final PublicChatsBloc publicChatsBloc;
-  final MyChatsBloc myChatsBloc;
-  final UnansweredChatsBloc unansweredChatsBloc;
-  final FavoriteBloc favoriteBloc;
   final AuthBloc authBloc;
+  final MyChatsBloc myChatsBloc;
+  final FavoriteBloc favoriteBloc;
+  final PublicChatsBloc publicChatsBloc;
+  final UnansweredChatsBloc unansweredChatsBloc;
 
   HomePage({
     Key? key,
-    required this.publicChatsBloc,
-    required this.myChatsBloc,
-    required this.unansweredChatsBloc,
-    required this.favoriteBloc,
     required this.authBloc,
+    required this.myChatsBloc,
+    required this.favoriteBloc,
+    required this.publicChatsBloc,
+    required this.unansweredChatsBloc,
   }) : super(key: key) {
+    _initialReloading();
+  }
+
+  void _initialReloading() {
     authBloc.state.maybeWhen(
       authenticated: (auth) {
         if (auth.userType == UserType.Imam) {
@@ -57,13 +63,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: widget.publicChatsBloc),
-        BlocProvider.value(value: widget.myChatsBloc),
-        BlocProvider.value(value: widget.unansweredChatsBloc),
-        BlocProvider.value(value: widget.favoriteBloc),
         BlocProvider.value(value: widget.authBloc),
+        BlocProvider.value(value: widget.myChatsBloc),
+        BlocProvider.value(value: widget.favoriteBloc),
+        BlocProvider.value(value: widget.publicChatsBloc),
+        BlocProvider.value(value: widget.unansweredChatsBloc),
       ],
-      child: BlocBuilder<AuthBloc, AuthState>(
+      child: BlocConsumer<AuthBloc, AuthState>(
+        listener: (_, __) => widget._initialReloading(),
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
