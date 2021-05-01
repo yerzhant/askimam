@@ -44,14 +44,14 @@ class HomePopupMenu extends StatelessWidget {
 
   PopupMenuItem<HomePopupMenuAction> _shareApp() {
     return const PopupMenuItem(
-      value: HomePopupMenuAction.logout,
+      value: HomePopupMenuAction.shareApp,
       child: Text('Поделится'),
     );
   }
 
   PopupMenuItem<HomePopupMenuAction> _logout() {
     return const PopupMenuItem(
-      value: HomePopupMenuAction.shareApp,
+      value: HomePopupMenuAction.logout,
       child: Text('Выйти'),
     );
   }
