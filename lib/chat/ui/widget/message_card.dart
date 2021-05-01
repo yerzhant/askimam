@@ -52,13 +52,16 @@ class MessageCard extends StatelessWidget {
               ],
               AutoDirection(
                 text: message.text,
-                child: SelectableLinkify(
-                  text: message.text,
-                  onOpen: (link) async {
-                    if (await canLaunch(link.url)) {
-                      await launch(link.url);
-                    }
-                  },
+                child: SizedBox(
+                  width: double.infinity,
+                  child: SelectableLinkify(
+                    text: message.text,
+                    onOpen: (link) async {
+                      if (await canLaunch(link.url)) {
+                        await launch(link.url);
+                      }
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 15),

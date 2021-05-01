@@ -3,6 +3,7 @@ import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
+import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -74,7 +75,10 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
                 .read<UnansweredChatsBloc>()
                 .add(UnansweredChatsEvent.delete(item)),
             child: ListTile(
-              title: Text(item.subject),
+              title: AutoDirection(
+                text: item.subject,
+                child: Text(item.subject),
+              ),
               leading: Icon(
                 item.type == ChatType.Public ? Icons.public : Icons.lock,
               ),

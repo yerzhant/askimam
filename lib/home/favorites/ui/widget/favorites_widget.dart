@@ -3,6 +3,7 @@ import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
+import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -43,7 +44,10 @@ class FavoritesWidget extends StatelessWidget {
                 .add(FavoriteEvent.delete(item.chatId)),
             background: Container(color: Colors.red),
             child: ListTile(
-              title: Text(item.subject),
+              title: AutoDirection(
+                text: item.subject,
+                child: Text(item.subject),
+              ),
               onTap: () => Modular.to.pushNamed('/chat/${item.chatId}'),
             ),
           );
