@@ -28,7 +28,16 @@ class HomePage extends StatefulWidget {
     required this.favoriteBloc,
     required this.authBloc,
   }) : super(key: key) {
-    publicChatsBloc.add(const PublicChatsEvent.show());
+    authBloc.state.maybeWhen(
+      authenticated: (auth) {
+        if (auth.userType == UserType.Imam) {
+          unansweredChatsBloc.add(const UnansweredChatsEvent.reload());
+        } else {
+          myChatsBloc.add(const MyChatsEvent.reload());
+        }
+      },
+      orElse: () => publicChatsBloc.add(const PublicChatsEvent.reload()),
+    );
   }
 
   @override

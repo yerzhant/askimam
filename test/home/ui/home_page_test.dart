@@ -3,6 +3,9 @@ import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:askimam/home/chats/bloc/public_chats_bloc.dart';
 import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
+import 'package:askimam/home/chats/ui/widget/my_chats_widget.dart';
+import 'package:askimam/home/chats/ui/widget/public_chats_widget.dart';
+import 'package:askimam/home/chats/ui/widget/unanswered_chats_widget.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/ui/home_page.dart';
 import 'package:flutter/material.dart';
@@ -91,6 +94,57 @@ void main() {
     expect(find.text('Новые'), findsOneWidget);
   });
 
+  testWidgets('should load public chats on launch', (tester) async {
+    when(authBloc.state).thenReturn(const AuthState.unauthenticated());
+
+    await _fixture(
+      tester,
+      publicChatsBloc,
+      myChatsBloc,
+      unansweredChatsBloc,
+      favoriteBloc,
+      authBloc,
+    );
+
+    expect(find.byType(PublicChatsWidget), findsOneWidget);
+    verify(publicChatsBloc.add(const PublicChatsEvent.reload())).called(1);
+  });
+
+  testWidgets('should load my chats on launch', (tester) async {
+    await _fixture(
+      tester,
+      publicChatsBloc,
+      myChatsBloc,
+      unansweredChatsBloc,
+      favoriteBloc,
+      authBloc,
+    );
+
+    expect(find.byType(MyChatsWidget), findsOneWidget);
+    verify(myChatsBloc.add(const MyChatsEvent.reload())).called(1);
+  });
+
+  testWidgets('should load new chats on launch', (tester) async {
+    when(authBloc.state).thenReturn(AuthState.authenticated(Authentication(
+      '123',
+      1,
+      UserType.Imam,
+    )));
+
+    await _fixture(
+      tester,
+      publicChatsBloc,
+      myChatsBloc,
+      unansweredChatsBloc,
+      favoriteBloc,
+      authBloc,
+    );
+
+    expect(find.byType(UnansweredChatsWidget), findsOneWidget);
+    verify(unansweredChatsBloc.add(const UnansweredChatsEvent.reload()))
+        .called(1);
+  });
+
   testWidgets('should show new chats', (tester) async {
     when(authBloc.state).thenReturn(AuthState.authenticated(Authentication(
       '123',
@@ -139,7 +193,7 @@ void main() {
     await tester.tap(find.text('Публичные'));
     await tester.pumpAndSettle();
 
-    verify(publicChatsBloc.add(const PublicChatsEvent.show())).called(2);
+    verify(publicChatsBloc.add(const PublicChatsEvent.show())).called(1);
   });
 
   testWidgets('should show favorites', (tester) async {
