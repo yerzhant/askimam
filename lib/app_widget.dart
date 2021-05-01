@@ -26,6 +26,9 @@ class AppWidget extends StatelessWidget {
           onError: Colors.amber,
           brightness: Brightness.light,
         ),
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
+        ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           selectedItemColor: primaryDarkColor,
           unselectedItemColor: primaryColor,

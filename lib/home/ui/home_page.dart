@@ -75,7 +75,6 @@ class _HomePageState extends State<HomePage> {
           return Scaffold(
             appBar: AppBar(
               title: const Text('Вопрос имаму'),
-              centerTitle: true,
               actions: [HomePopupMenu()],
             ),
             body: PageView(
