@@ -24,4 +24,5 @@ const _messages = {
   r'^SocketException: .*': 'Ошибка соединения.',
   'Unauthorized.': 'Доступ запрещён.',
   'Who are you?': 'Вы не авторизованы.',
+  r"You're not allowed.*": 'Операция запрещена.',
 };

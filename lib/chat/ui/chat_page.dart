@@ -47,7 +47,7 @@ class _ChatPageState extends State<ChatPage> {
             (chat, rejection, isInProgress, isSuccess) {
               if (rejection != null) {
                 ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(rejection.reason)));
+                    .showSnackBar(SnackBar(content: Text(rejection.message)));
               } else if (isSuccess) {
                 SchedulerBinding.instance?.addPostFrameCallback((_) {
                   _scrollController.animateTo(
