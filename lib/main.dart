@@ -7,15 +7,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 Future<void> main() async {
-  // await Firebase.initializeApp();
-  // await _requestMessagingPermissions();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+  await FirebaseMessaging.instance.requestPermission();
+
   runApp(ModularApp(module: AppModule(apiUrl), child: AppWidget()));
-}
-
-Future<void> _requestMessagingPermissions() async {
-  final messaging = FirebaseMessaging.instance;
-
-  final settings = await messaging.requestPermission();
-
-  print('User granted permission: ${settings.authorizationStatus}');
 }
