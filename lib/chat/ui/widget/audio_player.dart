@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:askimam/common/connection.dart';
 import 'package:askimam/common/extention/date_extentions.dart';
 import 'package:askimam/common/ui/theme.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +96,7 @@ class _AudioPlayer extends State<AudioPlayer> {
     }
 
     await _player.startPlayer(
-      fromURI: 'https://azan.kz/upload/Audio/${widget.url}',
+      fromURI: '$audioUrl/${widget.url}',
       whenFinished: () async => _stop(),
     );
 
