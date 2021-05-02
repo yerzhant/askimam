@@ -115,8 +115,6 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                       _text.text.trim(),
                     ));
                     Modular.to.pop();
-                    // Modular.to.navigate('/my');
-                    // Modular.to.popAndPushNamed('/my');
                   }
                 }),
               ],

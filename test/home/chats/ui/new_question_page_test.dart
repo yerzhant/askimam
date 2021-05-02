@@ -35,8 +35,6 @@ void main() {
   });
 
   testWidgets('should send a new question', (tester) async {
-    // when(navigator.popAndPushNamed('/my')).thenAnswer((_) async => null);
-
     await _fixture(tester, bloc);
     await tester.tap(find.text('Публичный'));
     await tester.enterText(find.byType(TextField).first, ' subject ');
@@ -46,8 +44,6 @@ void main() {
     verify(bloc.add(const MyChatsEvent.add(ChatType.Public, 'subject', 'text')))
         .called(1);
     verify(navigator.pop()).called(1);
-    verify(navigator.navigate('/my')).called(1);
-    // verify(navigator.popAndPushNamed('/my')).called(1);
   });
 
   testWidgets('should send a new question without a subject', (tester) async {
