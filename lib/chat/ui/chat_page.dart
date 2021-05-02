@@ -6,7 +6,6 @@ import 'package:askimam/chat/domain/model/message.dart';
 import 'package:askimam/chat/ui/widget/message_card.dart';
 import 'package:askimam/chat/ui/widget/message_composer.dart';
 import 'package:askimam/common/ui/theme.dart';
-import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +13,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 const _interMessageSpace = 10.0;
-
-const _horizontalPadding = 10.0;
 
 class ChatPage extends StatefulWidget {
   final int id;
@@ -82,6 +79,7 @@ class _ChatPageState extends State<ChatPage> {
                         if (authentication.userType == UserType.Imam) {
                           return IconButton(
                             icon: const Icon(Icons.assignment_return),
+                            tooltip: 'Вернуть в новые',
                             onPressed: () => context
                                 .read<ChatBloc>()
                                 .add(const ChatEvent.returnToUnaswered()),
@@ -182,10 +180,7 @@ class _ChatPageState extends State<ChatPage> {
           );
         },
         key: const PageStorageKey('chat'),
-        padding: const EdgeInsets.symmetric(
-          horizontal: _horizontalPadding,
-          vertical: basePadding,
-        ),
+        padding: const EdgeInsets.all(_interMessageSpace),
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),

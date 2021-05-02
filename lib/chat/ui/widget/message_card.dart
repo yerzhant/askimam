@@ -1,4 +1,5 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
+import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/domain/model/message.dart';
 import 'package:askimam/chat/ui/widget/audio_player.dart';
 import 'package:askimam/common/extention/date_extentions.dart';
@@ -26,10 +27,21 @@ class MessageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: isItMine && !isImam ? primaryLightColor : null,
-      margin: isImam
-          ? const EdgeInsets.only(right: _margin)
-          : const EdgeInsets.only(left: _margin),
+      color: authState.maybeWhen(
+        authenticated: (auth) {
+          if (auth.userType == UserType.Imam && isImam) {
+            return primaryLightColor;
+          }
+          if (isItMine && !isImam) return primaryLightColor;
+        },
+        orElse: () => null,
+      ),
+      margin: authState.maybeWhen(
+        authenticated: (auth) => _margins(
+          auth.userType == UserType.Imam && !isImam,
+        ),
+        orElse: () => _margins(isImam),
+      ),
       child: Theme(
         data: Theme.of(context).copyWith(
           textTheme: Theme.of(context).textTheme.copyWith(
@@ -60,6 +72,10 @@ class MessageCard extends StatelessWidget {
       ),
     );
   }
+
+  EdgeInsets _margins(bool isRight) => isRight
+      ? const EdgeInsets.only(right: _margin)
+      : const EdgeInsets.only(left: _margin);
 
   Row _dates(BuildContext context) => Row(
         children: [
