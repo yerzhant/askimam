@@ -11,6 +11,7 @@ import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 const _interMessageSpace = 10.0;
 
@@ -80,9 +81,13 @@ class _ChatPageState extends State<ChatPage> {
                           return IconButton(
                             icon: const Icon(Icons.assignment_return),
                             tooltip: 'Вернуть в новые',
-                            onPressed: () => context
-                                .read<ChatBloc>()
-                                .add(const ChatEvent.returnToUnaswered()),
+                            onPressed: () {
+                              context
+                                  .read<ChatBloc>()
+                                  .add(const ChatEvent.returnToUnaswered());
+
+                              Modular.to.pop();
+                            },
                           );
                         } else {
                           return Container();
