@@ -330,8 +330,13 @@ void main() {
         MyChatsState([
           Chat(2, ChatType.Public, 1, 'subject'),
           Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
-        ])
+        ]),
       ],
+      verify: (_) => mocktail
+          .verify(
+            () => favoriteBloc.add(const FavoriteEvent.refresh()),
+          )
+          .called(1),
     );
 
     blocTest(

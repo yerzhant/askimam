@@ -117,7 +117,10 @@ class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState>
         final result = await _repo.delete(chat);
 
         yield result.fold(
-          () => MyChatsState(chats.where((c) => c.id != chat.id).toList()),
+          () {
+            _favoriteBloc.add(const FavoriteEvent.refresh());
+            return MyChatsState(chats.where((c) => c.id != chat.id).toList());
+          },
           (a) => MyChatsState.error(a),
         );
       },
