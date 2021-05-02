@@ -9,7 +9,7 @@ class FcmService implements NotificationService {
     try {
       final token = await FirebaseMessaging.instance.getToken();
 
-      if (token == null) return left(Rejection('No FCM token is available.'));
+      if (token == null) return left(Rejection('FCM token is unavailable.'));
 
       return right(token);
     } on Exception catch (e) {
