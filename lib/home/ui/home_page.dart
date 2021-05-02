@@ -178,14 +178,14 @@ class _HomePageState extends State<HomePage> {
 
   BottomNavigationBarItem _favoritesItem() {
     return const BottomNavigationBarItem(
-      icon: Icon(Icons.public),
+      icon: Icon(Icons.bookmark),
       label: 'Избранные',
     );
   }
 
   BottomNavigationBarItem _myItem() {
     return const BottomNavigationBarItem(
-      icon: Icon(Icons.public),
+      icon: Icon(Icons.question_answer),
       label: 'Мои',
     );
   }
