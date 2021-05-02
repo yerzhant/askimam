@@ -98,7 +98,10 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             bottomNavigationBar: BottomNavigationBar(
-              currentIndex: _getIndex(),
+              currentIndex: state.maybeWhen(
+                authenticated: (_) => _getIndex(),
+                orElse: () => 0,
+              ),
               onTap: (index) => _onBottomNavTap(state, index),
               items: _items(state),
             ),
@@ -145,13 +148,17 @@ class _HomePageState extends State<HomePage> {
             break;
         }
 
-        _pageController.animateToPage(
-          index,
-          curve: Curves.ease,
-          duration: const Duration(milliseconds: 300),
-        );
+        _goToPage(index);
       },
       orElse: () => Modular.to.pushNamed('/auth/login'),
+    );
+  }
+
+  void _goToPage(int index) {
+    _pageController.animateToPage(
+      index,
+      curve: Curves.ease,
+      duration: const Duration(milliseconds: 300),
     );
   }
 
