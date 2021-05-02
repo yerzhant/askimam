@@ -77,6 +77,10 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _login,
                         decoration: const InputDecoration(
                           labelText: 'Логин',
+                          prefixIcon: Icon(
+                            Icons.email,
+                            color: primaryDarkColor,
+                          ),
                         ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
@@ -90,6 +94,10 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _password,
                         decoration: const InputDecoration(
                           labelText: 'Пароль',
+                          prefixIcon: Icon(
+                            Icons.vpn_key,
+                            color: primaryDarkColor,
+                          ),
                         ),
                         obscureText: true,
                         validator: (value) {

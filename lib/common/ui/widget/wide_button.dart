@@ -1,3 +1,4 @@
+import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/widget/circular_progress.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class WideButton extends StatelessWidget {
         onPressed: _onPressed,
         icon: isInProgress
             ? const CircularProgress(size: CircularProgressSize.small)
-            : Icon(_icon),
+            : Icon(_icon, color: primaryDarkColor),
         label: Text(_title),
       ),
     );

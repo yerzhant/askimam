@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
@@ -109,6 +107,7 @@ class _HomePageState extends State<HomePage> {
                 orElse: () => Modular.to.pushNamed('/auth/login'),
               ),
               mini: true,
+              child: const Icon(Icons.add_rounded),
             ),
           );
         },

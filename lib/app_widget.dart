@@ -21,13 +21,16 @@ class AppWidget extends StatelessWidget {
           error: Colors.green,
           onPrimary: primaryTextColor,
           onSecondary: secondaryTextColor,
-          onSurface: Colors.red,
+          onSurface: primaryColor,
           onBackground: Colors.black,
           onError: Colors.amber,
           brightness: Brightness.light,
         ),
         appBarTheme: const AppBarTheme(
           centerTitle: true,
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          border: OutlineInputBorder(),
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           selectedItemColor: primaryDarkColor,
