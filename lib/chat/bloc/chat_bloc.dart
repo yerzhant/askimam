@@ -119,7 +119,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Stream<ChatState> _deleteMessage(int id) async* {
     yield* state.maybeWhen(
       (chat, rejection, isInProgress, isSuccess) async* {
-        yield ChatState(chat, isInProgress: true);
+        yield ChatState(
+            chat.copyWith(
+                messages: chat.messages
+                    ?.where((element) => element.id != id)
+                    .toList()),
+            isInProgress: true);
 
         final result = await _messageRepo.delete(chat.id, id);
 

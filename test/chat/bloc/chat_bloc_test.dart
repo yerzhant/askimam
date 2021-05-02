@@ -554,8 +554,6 @@ void main() {
       expect: () => [
         ChatState(
           Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
             Message(2, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),
@@ -586,10 +584,7 @@ void main() {
       act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', messages: []),
           isInProgress: true,
         ),
         ChatState(
