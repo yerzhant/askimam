@@ -36,9 +36,10 @@ class HomePage extends StatefulWidget {
       authenticated: (auth) {
         if (auth.userType == UserType.Imam) {
           unansweredChatsBloc.add(const UnansweredChatsEvent.reload());
-        } else {
-          myChatsBloc.add(const MyChatsEvent.reload());
         }
+        myChatsBloc.add(const MyChatsEvent.reload());
+        publicChatsBloc.add(const PublicChatsEvent.reload());
+        favoriteBloc.add(const FavoriteEvent.refresh());
       },
       orElse: () => publicChatsBloc.add(const PublicChatsEvent.reload()),
     );
@@ -108,6 +109,16 @@ class _HomePageState extends State<HomePage> {
               ),
               mini: true,
               child: const Icon(Icons.add_rounded),
+            ),
+            floatingActionButtonLocation: state.maybeWhen(
+              authenticated: (auth) {
+                if (auth.userType == UserType.Imam) {
+                  return FloatingActionButtonLocation.centerDocked;
+                } else {
+                  return FloatingActionButtonLocation.endFloat;
+                }
+              },
+              orElse: () => FloatingActionButtonLocation.endFloat,
             ),
           );
         },
