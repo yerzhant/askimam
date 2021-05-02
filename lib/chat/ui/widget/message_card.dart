@@ -13,14 +13,20 @@ const _margin = 50.0;
 class MessageCard extends StatelessWidget {
   final Message message;
   final AuthState authState;
+  final bool isItMine;
 
-  const MessageCard(this.message, this.authState);
+  const MessageCard(
+    this.message,
+    this.authState, {
+    this.isItMine = false,
+  });
 
   bool get isImam => message.author != null;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: isItMine && !isImam ? primaryLightColor : null,
       margin: isImam
           ? const EdgeInsets.only(right: _margin)
           : const EdgeInsets.only(left: _margin),

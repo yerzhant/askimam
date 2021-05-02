@@ -147,7 +147,14 @@ class ChatPage extends StatelessWidget {
             ),
             onDismissed: (_) =>
                 context.read<ChatBloc>().add(ChatEvent.deleteMessage(item.id)),
-            child: MessageCard(item, authState),
+            child: MessageCard(
+              item,
+              authState,
+              isItMine: authState.maybeWhen(
+                authenticated: (auth) => auth.userId == chat.askedBy,
+                orElse: () => false,
+              ),
+            ),
           );
         },
         key: const PageStorageKey('chat'),
