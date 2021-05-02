@@ -38,7 +38,7 @@ class MessageCard extends StatelessWidget {
       ),
       margin: authState.maybeWhen(
         authenticated: (auth) => _margins(
-          auth.userType == UserType.Imam && !isImam,
+          auth.userType == UserType.Imam && !isImam || isImam,
         ),
         orElse: () => _margins(isImam),
       ),
