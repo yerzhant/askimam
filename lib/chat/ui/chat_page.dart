@@ -9,13 +9,14 @@ import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 const _interMessageSpace = 10.0;
 
 const _horizontalPadding = 10.0;
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   final int id;
   final ChatBloc bloc;
   final AuthBloc authBloc;
@@ -25,26 +26,45 @@ class ChatPage extends StatelessWidget {
   }
 
   @override
+  _ChatPageState createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: bloc,
+      value: widget.bloc,
       child: BlocConsumer<ChatBloc, ChatState>(
-        listenWhen: (_, current) => current.maybeWhen(
-          (chat, rejection, isInProgress, isSuccess) => rejection != null,
-          orElse: () => false,
-        ),
         listener: (context, state) {
           state.maybeWhen(
             (chat, rejection, isInProgress, isSuccess) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(rejection!.reason)));
+              if (rejection != null) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(rejection.reason)));
+              } else if (isSuccess) {
+                SchedulerBinding.instance?.addPostFrameCallback((_) {
+                  _scrollController.animateTo(
+                    _scrollController.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOut,
+                  );
+                });
+              }
             },
             orElse: () {},
           );
         },
         builder: (context, state) {
           return BlocBuilder<AuthBloc, AuthState>(
-            bloc: authBloc,
+            bloc: widget.authBloc,
             builder: (context, authState) {
               return Scaffold(
                 appBar: AppBar(
@@ -103,8 +123,9 @@ class ChatPage extends StatelessWidget {
                   inProgress: () => InProgressWidget(child: Container()),
                   error: (rejection) => RejectionWidget(
                     rejection: rejection,
-                    onRefresh: () =>
-                        context.read<ChatBloc>().add(ChatEvent.refresh(id)),
+                    onRefresh: () => context
+                        .read<ChatBloc>()
+                        .add(ChatEvent.refresh(widget.id)),
                   ),
                 ),
               );
@@ -123,8 +144,9 @@ class ChatPage extends StatelessWidget {
   ) {
     return RefreshIndicator(
       onRefresh: () async =>
-          context.read<ChatBloc>().add(ChatEvent.refresh(id)),
+          context.read<ChatBloc>().add(ChatEvent.refresh(widget.id)),
       child: ListView.separated(
+        controller: _scrollController,
         itemCount: items.length,
         separatorBuilder: (_, __) => const SizedBox(height: _interMessageSpace),
         itemBuilder: (_, i) {

@@ -78,7 +78,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
             yield updateResult.fold(
               (l) => ChatState(chat, rejection: l),
-              (r) => ChatState(r),
+              (r) => ChatState(r, isSuccess: true),
             );
           },
           (a) async* {

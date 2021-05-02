@@ -445,6 +445,7 @@ void main() {
             Message(2, MessageType.Text, 'text', 'author',
                 DateTime.parse('20210418'), null),
           ]),
+          isSuccess: true,
         ),
       ],
     );
