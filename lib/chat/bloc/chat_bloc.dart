@@ -50,15 +50,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               final setViewedFlagResult = await _repo.setViewedFlag(id);
 
               yield setViewedFlagResult.fold(
-                () => ChatState(r),
+                () => ChatState(r, isSuccess: true),
                 (a) => ChatState.error(a),
               );
             } else {
-              yield ChatState(r);
+              yield ChatState(r, isSuccess: true);
             }
           },
           orElse: () async* {
-            yield ChatState(r);
+            yield ChatState(r, isSuccess: true);
           },
         );
       },
