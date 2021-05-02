@@ -79,7 +79,7 @@ class _ChatPageState extends State<ChatPage> {
                       authenticated: (authentication) {
                         if (authentication.userType == UserType.Imam) {
                           return IconButton(
-                            icon: const Icon(Icons.assignment_return),
+                            icon: const Icon(Icons.rotate_left),
                             tooltip: 'Вернуть в новые',
                             onPressed: () {
                               context
