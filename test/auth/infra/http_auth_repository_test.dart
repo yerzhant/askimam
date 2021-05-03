@@ -1,5 +1,6 @@
 import 'package:askimam/auth/domain/model/authentication.dart';
-import 'package:askimam/auth/domain/model/authentication_request.dart';
+import 'package:askimam/auth/domain/model/login_request.dart';
+import 'package:askimam/auth/domain/model/logout_request.dart';
 import 'package:askimam/auth/infra/http_auth_repository.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
@@ -20,57 +21,53 @@ void main() {
   group('Login:', () {
     test('should be ok', () async {
       when(
-        api.postAndGetResponse<Authentication, AuthenticationRequest>(
-          'authenticate',
-          AuthenticationRequest('login', 'password'),
+        api.postAndGetResponse<Authentication, LoginRequest>(
+          'auth/login',
+          LoginRequest('login', 'password', 'fcm'),
         ),
       ).thenAnswer(
         (_) async => right(Authentication('jwt', 1, UserType.Inquirer)),
       );
-      when(settings
-              .saveAuthentication(Authentication('jwt', 1, UserType.Inquirer)))
-          .thenAnswer((p) async => right(p.positionalArguments[0]));
+      when(settings.saveAuthentication(
+        Authentication('jwt', 1, UserType.Inquirer),
+      )).thenAnswer((p) async => right(p.positionalArguments[0]));
 
-      final result =
-          await repo.login(AuthenticationRequest('login', 'password'));
+      final result = await repo.login(LoginRequest('login', 'password', 'fcm'));
 
       expect(result, right(Authentication('jwt', 1, UserType.Inquirer)));
 
-      verify(
-        settings
-            .saveAuthentication(Authentication('jwt', 1, UserType.Inquirer)),
-      ).called(1);
+      verify(settings.saveAuthentication(
+        Authentication('jwt', 1, UserType.Inquirer),
+      )).called(1);
     });
 
     test('should not be ok', () async {
       when(
-        api.postAndGetResponse<Authentication, AuthenticationRequest>(
-          'authenticate',
-          AuthenticationRequest('login', 'password'),
+        api.postAndGetResponse<Authentication, LoginRequest>(
+          'auth/login',
+          LoginRequest('login', 'password', 'fcm'),
         ),
       ).thenAnswer(
         (_) async => right(Authentication('jwt', 1, UserType.Inquirer)),
       );
-      when(settings
-              .saveAuthentication(Authentication('jwt', 1, UserType.Inquirer)))
-          .thenAnswer((p) async => left(Rejection('reason')));
+      when(settings.saveAuthentication(
+        Authentication('jwt', 1, UserType.Inquirer),
+      )).thenAnswer((p) async => left(Rejection('reason')));
 
-      final result =
-          await repo.login(AuthenticationRequest('login', 'password'));
+      final result = await repo.login(LoginRequest('login', 'password', 'fcm'));
 
       expect(result, left(Rejection('reason')));
     });
 
     test('should be nok', () async {
       when(
-        api.postAndGetResponse<Authentication, AuthenticationRequest>(
-          'authenticate',
-          AuthenticationRequest('login', 'password'),
+        api.postAndGetResponse<Authentication, LoginRequest>(
+          'auth/login',
+          LoginRequest('login', 'password', 'fcm'),
         ),
       ).thenAnswer((_) async => left(Rejection('reason')));
 
-      final result =
-          await repo.login(AuthenticationRequest('login', 'password'));
+      final result = await repo.login(LoginRequest('login', 'password', 'fcm'));
 
       expect(result, left(Rejection('reason')));
     });
@@ -78,22 +75,35 @@ void main() {
 
   group('Logout:', () {
     test('should be ok', () async {
+      when(api.post('auth/logout', LogoutRequest('fcmToken')))
+          .thenAnswer((_) async => none());
       when(settings.clearAuthentication()).thenAnswer((_) async => none());
 
-      final result = await repo.logout();
+      final result = await repo.logout(LogoutRequest('fcmToken'));
 
       expect(result, none());
 
       verify(settings.clearAuthentication()).called(1);
     });
 
-    test('should not be ok', () async {
-      when(settings.clearAuthentication())
+    test('should fail server request', () async {
+      when(api.post('auth/logout', LogoutRequest('fcmToken')))
           .thenAnswer((_) async => some(Rejection('reason')));
 
-      final result = await repo.logout();
+      final result = await repo.logout(LogoutRequest('fcmToken'));
 
       expect(result, some(Rejection('reason')));
+    });
+
+    test('should not be ok', () async {
+      when(api.post('auth/logout', LogoutRequest('fcmToken')))
+          .thenAnswer((_) async => none());
+      when(settings.clearAuthentication())
+          .thenAnswer((_) async => some(Rejection('reason2')));
+
+      final result = await repo.logout(LogoutRequest('fcmToken'));
+
+      expect(result, some(Rejection('reason2')));
     });
   });
 

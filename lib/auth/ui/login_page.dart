@@ -1,5 +1,4 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
-import 'package:askimam/auth/domain/model/authentication_request.dart';
 import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/wide_button.dart';
@@ -126,10 +125,8 @@ class _LoginPageState extends State<LoginPage> {
                             () {
                               if (_form.currentState!.validate()) {
                                 widget.bloc.add(AuthEvent.login(
-                                  AuthenticationRequest(
-                                    _login.text,
-                                    _password.text,
-                                  ),
+                                  _login.text,
+                                  _password.text,
                                 ));
                               }
                             },

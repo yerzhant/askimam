@@ -1,12 +1,13 @@
 import 'package:askimam/auth/domain/model/authentication.dart';
-import 'package:askimam/auth/domain/model/authentication_request.dart';
+import 'package:askimam/auth/domain/model/login_request.dart';
+import 'package:askimam/auth/domain/model/logout_request.dart';
 import 'package:askimam/auth/domain/repo/auth_repository.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/service/settings.dart';
 import 'package:dartz/dartz.dart';
 
-const _url = 'authenticate';
+const _url = 'auth';
 
 class HttpAuthRepository implements AuthRepository {
   final ApiClient _api;
@@ -19,11 +20,9 @@ class HttpAuthRepository implements AuthRepository {
       _settings.loadAuthentication();
 
   @override
-  Future<Either<Rejection, Authentication>> login(
-      AuthenticationRequest request) async {
-    final result =
-        await _api.postAndGetResponse<Authentication, AuthenticationRequest>(
-            _url, request);
+  Future<Either<Rejection, Authentication>> login(LoginRequest request) async {
+    final result = await _api.postAndGetResponse<Authentication, LoginRequest>(
+        '$_url/login', request);
 
     return result.fold(
       (l) => left(l),
@@ -32,5 +31,12 @@ class HttpAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<Option<Rejection>> logout() => _settings.clearAuthentication();
+  Future<Option<Rejection>> logout(LogoutRequest request) async {
+    final result = await _api.post('$_url/logout', request);
+
+    return result.fold(
+      () => _settings.clearAuthentication(),
+      (a) => some(a),
+    );
+  }
 }

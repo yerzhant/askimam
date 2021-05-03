@@ -43,7 +43,7 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/suffix/ok') {
         if (listEquals(
           req.bodyBytes,
-          AuthenticationRequest('login', 'password').toJsonUtf8(),
+          LoginRequest('login', 'password', 'fcm').toJsonUtf8(),
         )) {
           final json =
               ApiResponse.data(Authentication('123', 1, UserType.Inquirer))

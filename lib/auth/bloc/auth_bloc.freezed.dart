@@ -24,9 +24,10 @@ class _$AuthEventTearOff {
     return const _Logout();
   }
 
-  _Login login(AuthenticationRequest request) {
+  _Login login(String login, String password) {
     return _Login(
-      request,
+      login,
+      password,
     );
   }
 }
@@ -40,14 +41,14 @@ mixin _$AuthEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() load,
     required TResult Function() logout,
-    required TResult Function(AuthenticationRequest request) login,
+    required TResult Function(String login, String password) login,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? load,
     TResult Function()? logout,
-    TResult Function(AuthenticationRequest request)? login,
+    TResult Function(String login, String password)? login,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -121,7 +122,7 @@ class _$_Load implements _Load {
   TResult when<TResult extends Object?>({
     required TResult Function() load,
     required TResult Function() logout,
-    required TResult Function(AuthenticationRequest request) login,
+    required TResult Function(String login, String password) login,
   }) {
     return load();
   }
@@ -131,7 +132,7 @@ class _$_Load implements _Load {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? load,
     TResult Function()? logout,
-    TResult Function(AuthenticationRequest request)? login,
+    TResult Function(String login, String password)? login,
     required TResult orElse(),
   }) {
     if (load != null) {
@@ -207,7 +208,7 @@ class _$_Logout implements _Logout {
   TResult when<TResult extends Object?>({
     required TResult Function() load,
     required TResult Function() logout,
-    required TResult Function(AuthenticationRequest request) login,
+    required TResult Function(String login, String password) login,
   }) {
     return logout();
   }
@@ -217,7 +218,7 @@ class _$_Logout implements _Logout {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? load,
     TResult Function()? logout,
-    TResult Function(AuthenticationRequest request)? login,
+    TResult Function(String login, String password)? login,
     required TResult orElse(),
   }) {
     if (logout != null) {
@@ -259,9 +260,7 @@ abstract class _Logout implements AuthEvent {
 abstract class _$LoginCopyWith<$Res> {
   factory _$LoginCopyWith(_Login value, $Res Function(_Login) then) =
       __$LoginCopyWithImpl<$Res>;
-  $Res call({AuthenticationRequest request});
-
-  $AuthenticationRequestCopyWith<$Res> get request;
+  $Res call({String login, String password});
 }
 
 /// @nodoc
@@ -275,47 +274,52 @@ class __$LoginCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? request = freezed,
+    Object? login = freezed,
+    Object? password = freezed,
   }) {
     return _then(_Login(
-      request == freezed
-          ? _value.request
-          : request // ignore: cast_nullable_to_non_nullable
-              as AuthenticationRequest,
+      login == freezed
+          ? _value.login
+          : login // ignore: cast_nullable_to_non_nullable
+              as String,
+      password == freezed
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
-  }
-
-  @override
-  $AuthenticationRequestCopyWith<$Res> get request {
-    return $AuthenticationRequestCopyWith<$Res>(_value.request, (value) {
-      return _then(_value.copyWith(request: value));
-    });
   }
 }
 
 /// @nodoc
 class _$_Login implements _Login {
-  const _$_Login(this.request);
+  const _$_Login(this.login, this.password);
 
   @override
-  final AuthenticationRequest request;
+  final String login;
+  @override
+  final String password;
 
   @override
   String toString() {
-    return 'AuthEvent.login(request: $request)';
+    return 'AuthEvent.login(login: $login, password: $password)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Login &&
-            (identical(other.request, request) ||
-                const DeepCollectionEquality().equals(other.request, request)));
+            (identical(other.login, login) ||
+                const DeepCollectionEquality().equals(other.login, login)) &&
+            (identical(other.password, password) ||
+                const DeepCollectionEquality()
+                    .equals(other.password, password)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(request);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(login) ^
+      const DeepCollectionEquality().hash(password);
 
   @JsonKey(ignore: true)
   @override
@@ -327,9 +331,9 @@ class _$_Login implements _Login {
   TResult when<TResult extends Object?>({
     required TResult Function() load,
     required TResult Function() logout,
-    required TResult Function(AuthenticationRequest request) login,
+    required TResult Function(String login, String password) login,
   }) {
-    return login(request);
+    return login(this.login, password);
   }
 
   @override
@@ -337,11 +341,11 @@ class _$_Login implements _Login {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? load,
     TResult Function()? logout,
-    TResult Function(AuthenticationRequest request)? login,
+    TResult Function(String login, String password)? login,
     required TResult orElse(),
   }) {
     if (login != null) {
-      return login(request);
+      return login(this.login, password);
     }
     return orElse();
   }
@@ -372,9 +376,10 @@ class _$_Login implements _Login {
 }
 
 abstract class _Login implements AuthEvent {
-  const factory _Login(AuthenticationRequest request) = _$_Login;
+  const factory _Login(String login, String password) = _$_Login;
 
-  AuthenticationRequest get request => throw _privateConstructorUsedError;
+  String get login => throw _privateConstructorUsedError;
+  String get password => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$LoginCopyWith<_Login> get copyWith => throw _privateConstructorUsedError;
 }

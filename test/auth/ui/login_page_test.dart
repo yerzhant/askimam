@@ -1,6 +1,5 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
-import 'package:askimam/auth/domain/model/authentication_request.dart';
 import 'package:askimam/auth/ui/login_page.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +51,7 @@ void main() {
     await tester.pump();
 
     verify(
-      bloc.add(AuthEvent.login(AuthenticationRequest('login', 'password'))),
+      bloc.add(const AuthEvent.login('login', 'password')),
     ).called(1);
   });
 
