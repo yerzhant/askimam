@@ -80,6 +80,7 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
                     icon: Icon(
                       item.isFavorite ? Icons.bookmark : Icons.bookmark_border,
                       color: primaryColor,
+                      size: iconSize,
                     ),
                     onPressed: () => context.read<FavoriteBloc>().add(
                           item.isFavorite

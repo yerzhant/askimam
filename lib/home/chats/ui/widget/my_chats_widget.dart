@@ -82,11 +82,13 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
                 color: item.type == ChatType.Public
                     ? primaryColor
                     : secondaryColor,
+                size: iconSize,
               ),
               trailing: IconButton(
                 icon: Icon(
                   item.isFavorite ? Icons.bookmark : Icons.bookmark_border,
                   color: primaryColor,
+                  size: iconSize,
                 ),
                 onPressed: () => context.read<FavoriteBloc>().add(
                       item.isFavorite
