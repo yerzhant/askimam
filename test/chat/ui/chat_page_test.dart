@@ -7,18 +7,22 @@ import 'package:askimam/chat/ui/chat_page.dart';
 import 'package:askimam/chat/ui/widget/message_composer.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'chat_page_test.mocks.dart';
 
-@GenerateMocks([ChatBloc, AuthBloc])
+@GenerateMocks([ChatBloc, AuthBloc, IModularNavigator])
 void main() {
   late ChatBloc bloc;
   late AuthBloc authBloc;
+  final navigator = MockIModularNavigator();
 
   setUp(() {
+    Modular.navigatorDelegate = navigator;
+
     bloc = MockChatBloc();
     when(bloc.state)
         .thenReturn(ChatState(Chat(1, ChatType.Public, 1, 'Subject', messages: [
@@ -43,7 +47,7 @@ void main() {
     expect(find.text('text 2'), findsOneWidget);
     expect(find.byType(TextField), findsOneWidget);
     expect(find.byIcon(Icons.send), findsOneWidget);
-    expect(find.byIcon(Icons.assignment_return), findsNothing);
+    expect(find.byIcon(Icons.rotate_left), findsNothing);
 
     verify(bloc.add(const ChatEvent.refresh(1))).called(1);
   });
@@ -57,7 +61,7 @@ void main() {
     expect(find.text('text 2'), findsOneWidget);
     expect(find.byType(TextField), findsNothing);
     expect(find.byIcon(Icons.send), findsNothing);
-    expect(find.byIcon(Icons.assignment_return), findsNothing);
+    expect(find.byIcon(Icons.rotate_left), findsNothing);
   });
 
   testWidgets('should have public elements only - auth', (tester) async {
@@ -70,7 +74,7 @@ void main() {
     expect(find.text('text 2'), findsOneWidget);
     expect(find.byType(TextField), findsNothing);
     expect(find.byIcon(Icons.send), findsNothing);
-    expect(find.byIcon(Icons.assignment_return), findsNothing);
+    expect(find.byIcon(Icons.rotate_left), findsNothing);
   });
 
   testWidgets('should have additinal elements for imams', (tester) async {
@@ -79,16 +83,17 @@ void main() {
     await _fixture(tester, bloc, authBloc);
 
     expect(find.byType(MessageComposer), findsOneWidget);
-    expect(find.byIcon(Icons.assignment_return), findsOneWidget);
+    expect(find.byIcon(Icons.rotate_left), findsOneWidget);
   });
 
   testWidgets('should return a chat to unanswered ones', (tester) async {
     when(authBloc.state).thenReturn(
         AuthState.authenticated(Authentication('jwt', 2, UserType.Imam)));
     await _fixture(tester, bloc, authBloc);
-    await tester.tap(find.byIcon(Icons.assignment_return));
+    await tester.tap(find.byIcon(Icons.rotate_left));
 
     verify(bloc.add(const ChatEvent.returnToUnaswered())).called(1);
+    verify(navigator.pop()).called(1);
   });
 
   testWidgets('should refresh on pulling down', (tester) async {
