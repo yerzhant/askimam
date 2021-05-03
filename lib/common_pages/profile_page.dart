@@ -4,8 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+const _emailPattern =
+    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+
 const _informativeMesssage =
-    'Если Вы желаете, чтобы Ваши вопросы/переписка были перенесены на сервер azan.kz, то введите, пожалйуста, Ваш логин, который Вы используете для входа на сайт https://azan.kz.';
+    'В связи с переносом данных на сервер сайта Azan.kz просьба ввести Ваш логин – адрес электронной почты, который Вы используете для входа на сайт https://azan.kz.';
 
 class ProfilePage extends StatefulWidget {
   final User _user;
@@ -45,8 +48,8 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: 10),
             TextFormField(
               decoration: InputDecoration(
-                labelText: 'Логин',
-                hintText: 'Логин для входа на сайт azan.kz',
+                labelText: 'Логин (email)',
+                hintText: 'Логин (email) для входа на сайт azan.kz',
               ),
               keyboardType: TextInputType.emailAddress,
               controller: _login,
@@ -57,6 +60,15 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Builder(
                 builder: (context) => ElevatedButton.icon(
                   onPressed: () async {
+                    if (!RegExp(_emailPattern).hasMatch(_login.text)) {
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                            'Логин должен быть адресом электронной почты.'),
+                        behavior: SnackBarBehavior.floating,
+                      ));
+                      return;
+                    }
+
                     setState(() {
                       _isSaving = true;
                     });
