@@ -1,4 +1,4 @@
-package com.example.askimam2
+package kz.azan.askimam
 
 import io.flutter.embedding.android.FlutterActivity
 
