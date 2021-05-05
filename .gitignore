@@ -47,4 +47,3 @@ app.*.map.json
 
 # Private
 /android/app/google-services.json
-.vscode/launch.json
