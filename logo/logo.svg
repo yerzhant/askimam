@@ -49,7 +49,8 @@
      inkscape:window-x="1920"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0" />
   <title
      id="title2">logo</title>
   <g
@@ -59,12 +60,15 @@
      style="display:inline;mix-blend-mode:normal"
      transform="translate(7.3648052,13.268609)">
     <rect
-       style="fill:#a5e2a2;fill-opacity:1;stroke-width:0.877837"
+       style="fill:#75b073;fill-opacity:1;stroke-width:0.877837"
        id="rect81"
        width="106.66239"
        height="106.66239"
        x="-7.3648052"
-       y="-13.268609" />
+       y="-13.268609"
+       inkscape:export-filename="/home/yerzhan/snap/inkscape/8746/rect81.png"
+       inkscape:export-xdpi="921.63696"
+       inkscape:export-ydpi="921.63696" />
   </g>
   <g
      inkscape:groupmode="layer"
