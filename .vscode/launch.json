@@ -18,6 +18,16 @@
                 "--dart-define=api-url=https://api.askimam.minbar.kz/v1",
                 "--dart-define=audio-url=https://minbar.kz/askimam/audio",
             ],
+        },
+        {
+            "name": "Azan",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define=api-url=https://api.askimam.azan.kz/v1",
+                "--dart-define=audio-url=https://azan.kz/askimam/audio",
+            ],
         }
     ]
 }
