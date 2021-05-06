@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 
 class AudioPlayer extends StatefulWidget {
-  final String url;
+  final String fileName;
   final String duration;
 
-  const AudioPlayer(this.url, this.duration, {Key? key}) : super(key: key);
+  const AudioPlayer(this.fileName, this.duration, {Key? key}) : super(key: key);
 
   @override
   _AudioPlayer createState() => _AudioPlayer();
@@ -96,7 +96,7 @@ class _AudioPlayer extends State<AudioPlayer> {
     }
 
     await _player.startPlayer(
-      fromURI: '$audioUrl/${widget.url}',
+      fromURI: '$audioUrl/${widget.fileName}',
       whenFinished: () async => _stop(),
     );
 

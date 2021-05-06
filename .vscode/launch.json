@@ -14,7 +14,10 @@
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
-            "args": ["--dart-define=server-url=https://api.askimam.minbar.kz"],
+            "args": [
+                "--dart-define=api-url=https://api.askimam.minbar.kz/v1",
+                "--dart-define=audio-url=https://minbar.kz/askimam/audio",
+            ],
         }
     ]
 }
