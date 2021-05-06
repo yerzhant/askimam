@@ -92,7 +92,7 @@ class _AudioPlayer extends State<AudioPlayer> {
 
     if (!_player.isOpen()) {
       await _player.openAudioSession();
-      await _player.setSubscriptionDuration(const Duration(milliseconds: 1000));
+      await _player.setSubscriptionDuration(const Duration(milliseconds: 20));
     }
 
     await _player.startPlayer(
