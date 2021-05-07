@@ -1,11 +1,11 @@
 {
-    "name": "askimam2",
-    "short_name": "askimam2",
+    "name": "Вопрос имаму",
+    "short_name": "Вопрос имаму",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#a5e2a2",
+    "theme_color": "#a5e2a2",
+    "description": "Вопрос имаму Azan.kz",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
