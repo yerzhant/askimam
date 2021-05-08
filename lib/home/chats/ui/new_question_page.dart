@@ -77,7 +77,7 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                     textCapitalization: TextCapitalization.sentences,
                     decoration: const InputDecoration(
                       labelText: 'Тема',
-                      hintText: 'Не обязательное поле',
+                      hintText: 'Необязательное поле',
                     ),
                     onChanged: (_) {
                       setState(() {});
