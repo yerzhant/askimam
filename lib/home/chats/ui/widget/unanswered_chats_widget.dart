@@ -85,7 +85,7 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
                 item.type == ChatType.Public ? Icons.public : Icons.lock,
                 color: item.type == ChatType.Public
                     ? primaryColor
-                    : secondaryColor,
+                    : secondaryDarkColor,
                 size: iconSize,
               ),
               onTap: () => Modular.to.pushNamed('/chat/${item.id}'),

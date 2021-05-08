@@ -23,8 +23,13 @@ class WideButton extends StatelessWidget {
       child: ElevatedButton.icon(
         onPressed: _onPressed,
         icon: isInProgress
-            ? const CircularProgress(size: CircularProgressSize.small)
-            : Icon(_icon, color: primaryDarkColor),
+            ? Theme(
+                data: Theme.of(context).copyWith(
+                  accentColor: primaryLightColor,
+                ),
+                child: const CircularProgress(size: CircularProgressSize.small),
+              )
+            : Icon(_icon, color: primaryLightColor),
         label: Text(_title),
       ),
     );

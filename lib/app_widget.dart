@@ -9,8 +9,7 @@ class AppWidget extends StatelessWidget {
       title: 'Вопрос имаму',
       initialRoute: '/',
       theme: ThemeData(
-        primaryColor: primaryColor,
-        accentColor: primaryDarkColor,
+        accentColor: primaryColor,
         colorScheme: const ColorScheme(
           primary: primaryColor,
           primaryVariant: primaryDarkColor,
@@ -28,6 +27,7 @@ class AppWidget extends StatelessWidget {
         ),
         appBarTheme: const AppBarTheme(
           centerTitle: true,
+          color: primaryColor,
         ),
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),

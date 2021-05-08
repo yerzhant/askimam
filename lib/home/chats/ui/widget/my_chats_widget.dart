@@ -81,7 +81,7 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
                 item.type == ChatType.Public ? Icons.public : Icons.lock,
                 color: item.type == ChatType.Public
                     ? primaryColor
-                    : secondaryColor,
+                    : secondaryDarkColor,
                 size: iconSize,
               ),
               trailing: IconButton(
