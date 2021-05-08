@@ -22,6 +22,7 @@ extension RejectionExt on Exception {
 
 const _messages = {
   r'^SocketException: .*': 'Ошибка соединения.',
+  'XMLHttpRequest error.': 'Ошибка соединения.',
   'Unauthorized.': 'Доступ запрещён.',
   'Who are you?': 'Вы не авторизованы.',
   r"You're not allowed.*": 'Операция запрещена.',
