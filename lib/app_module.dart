@@ -6,10 +6,8 @@ import 'package:askimam/common/infra/fcm_service.dart';
 import 'package:askimam/common/infra/http_api_client.dart';
 import 'package:askimam/common/infra/local_storage.dart';
 import 'package:askimam/home/home_module.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:http/browser_client.dart';
-import 'package:http/io_client.dart';
+import 'package:http/http.dart';
 
 class AppModule extends Module {
   final String _url;
@@ -18,7 +16,7 @@ class AppModule extends Module {
 
   @override
   List<Bind<Object>> get binds => [
-        Bind.singleton((i) => kIsWeb ? BrowserClient() : IOClient()),
+        Bind.singleton((i) => Client()),
         Bind.singleton((i) => FcmService()),
         Bind.singleton((i) => LocalStorage()),
         Bind.singleton((i) => HttpApiClient(i(), _url)),
