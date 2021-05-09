@@ -21,9 +21,10 @@ extension RejectionExt on Exception {
 }
 
 const _messages = {
+  'FCM token is unavailable.': 'FCM токен недоступен.',
+  r"You're not allowed.*": 'Операция запрещена.',
   r'^SocketException: .*': 'Ошибка соединения.',
   'XMLHttpRequest error.': 'Ошибка соединения.',
-  'Unauthorized.': 'Доступ запрещён.',
   'Who are you?': 'Вы не авторизованы.',
-  r"You're not allowed.*": 'Операция запрещена.',
+  'Unauthorized.': 'Доступ запрещён.',
 };
