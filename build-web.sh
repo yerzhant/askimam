@@ -1,4 +1,4 @@
-version=1.0.0
+version=1.1.0
 
 flutter build web --dart-define=api-url=https://api.askimam.azan.kz/v1 --dart-define=audio-url=https://azan.kz/askimam/audio
 docker build -f nginx/Dockerfile -t $AskimamRegistry/askimam:$version .
