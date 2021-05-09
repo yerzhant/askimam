@@ -1,6 +1,6 @@
 const apiUrl = String.fromEnvironment(
   'api-url',
-  defaultValue: 'http://api.askimam.azan-dev:8080/v1',
+  defaultValue: 'http://192.168.0.102:8080/v1',
 );
 
 const audioUrl = String.fromEnvironment(

@@ -6,6 +6,8 @@ import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/repo/chat_repository.dart';
 import 'package:askimam/chat/domain/repo/message_repository.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
+import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
+import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -17,11 +19,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChatRepository _repo;
   final MessageRepository _messageRepo;
   final AuthBloc _authBloc;
+  final MyChatsBloc _myChatsBloc;
+  final UnansweredChatsBloc _unansweredChatsBloc;
 
   ChatBloc(
     this._repo,
     this._messageRepo,
     this._authBloc,
+    this._myChatsBloc,
+    this._unansweredChatsBloc,
   ) : super(const _InProgress());
 
   @override
@@ -50,7 +56,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               final setViewedFlagResult = await _repo.setViewedFlag(id);
 
               yield setViewedFlagResult.fold(
-                () => ChatState(r, isSuccess: true),
+                () {
+                  _myChatsBloc.add(const MyChatsEvent.reload());
+
+                  if (auth.userType == UserType.Imam) {
+                    _unansweredChatsBloc.add(
+                      const UnansweredChatsEvent.reload(),
+                    );
+                  }
+
+                  return ChatState(r, isSuccess: true);
+                },
                 (a) => ChatState.error(a),
               );
             } else {

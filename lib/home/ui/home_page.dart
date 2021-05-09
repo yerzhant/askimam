@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                 authenticated: (auth) => [
                   if (auth.userType == UserType.Imam)
                     const UnansweredChatsWidget(),
-                  const MyChatsWidget(),
+                  MyChatsWidget(widget.authBloc),
                   const PublicChatsWidget(),
                   const FavoritesWidget(),
                 ],

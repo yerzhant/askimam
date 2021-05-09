@@ -81,12 +81,23 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
                 text: item.subject,
                 child: Text(item.subject),
               ),
-              leading: Icon(
-                item.type == ChatType.Public ? Icons.public : Icons.lock,
-                color: item.type == ChatType.Public
-                    ? primaryColor
-                    : secondaryDarkColor,
-                size: iconSize,
+              leading: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5, top: 4),
+                    child: Icon(
+                      item.type == ChatType.Public
+                          ? Icons.public_rounded
+                          : Icons.lock_rounded,
+                      color: item.type == ChatType.Public
+                          ? primaryColor
+                          : secondaryDarkColor,
+                      size: iconSize,
+                    ),
+                  ),
+                  _getViewedIcon(item),
+                ],
               ),
               onTap: () => Modular.to.pushNamed('/chat/${item.id}'),
             ),
@@ -99,5 +110,17 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
         ),
       ),
     );
+  }
+
+  Widget _getViewedIcon(Chat item) {
+    if (item.isViewedByImam) {
+      return Icon(
+        Icons.check_rounded,
+        size: 11,
+        color: item.type == ChatType.Public ? primaryColor : secondaryDarkColor,
+      );
+    }
+
+    return const SizedBox();
   }
 }

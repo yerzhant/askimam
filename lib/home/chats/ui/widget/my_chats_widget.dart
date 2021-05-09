@@ -1,3 +1,5 @@
+import 'package:askimam/auth/bloc/auth_bloc.dart';
+import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
@@ -11,7 +13,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class MyChatsWidget extends StatefulWidget {
-  const MyChatsWidget();
+  final AuthBloc authBloc;
+
+  const MyChatsWidget(this.authBloc);
 
   @override
   _MyChatsWidgetState createState() => _MyChatsWidgetState();
@@ -77,13 +81,25 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
                 text: item.subject,
                 child: Text(item.subject),
               ),
-              leading: Icon(
-                item.type == ChatType.Public ? Icons.public : Icons.lock,
-                color: item.type == ChatType.Public
-                    ? primaryColor
-                    : secondaryDarkColor,
-                size: iconSize,
+              leading: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5, top: 4),
+                    child: Icon(
+                      item.type == ChatType.Public
+                          ? Icons.public_rounded
+                          : Icons.lock_rounded,
+                      color: item.type == ChatType.Public
+                          ? primaryColor
+                          : secondaryDarkColor,
+                      size: iconSize,
+                    ),
+                  ),
+                  _getTrailingStatusIcon(item, widget.authBloc),
+                ],
               ),
+              subtitle: _getSubtitle(item, widget.authBloc),
               trailing: IconButton(
                 icon: Icon(
                   item.isFavorite ? Icons.bookmark : Icons.bookmark_border,
@@ -106,6 +122,39 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
           parent: AlwaysScrollableScrollPhysics(),
         ),
       ),
+    );
+  }
+
+  Text? _getSubtitle(Chat item, AuthBloc authBloc) {
+    return authBloc.state.maybeWhen(
+      authenticated: (auth) {
+        if (auth.userType == UserType.Inquirer && !item.isViewedByInquirer ||
+            auth.userType == UserType.Imam && !item.isViewedByImam) {
+          return const Text('Есть новое сообщение',
+              style: TextStyle(color: secondaryDarkColor));
+        }
+      },
+      orElse: () => null,
+    );
+  }
+
+  Widget _getTrailingStatusIcon(Chat item, AuthBloc authBloc) {
+    return authBloc.state.maybeWhen(
+      authenticated: (auth) {
+        if (auth.userType == UserType.Inquirer && item.isViewedByImam ||
+            auth.userType == UserType.Imam && item.isViewedByInquirer) {
+          return Icon(
+            Icons.check_rounded,
+            size: 11,
+            color: item.type == ChatType.Public
+                ? primaryColor
+                : secondaryDarkColor,
+          );
+        }
+
+        return const SizedBox();
+      },
+      orElse: () => const SizedBox(),
     );
   }
 }

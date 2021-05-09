@@ -4,13 +4,14 @@
 
 import 'dart:async' as _i3;
 
-import 'package:askimam/home/chats/bloc/my_chats_bloc.dart' as _i2;
-import 'package:askimam/home/favorites/bloc/favorite_bloc.dart' as _i4;
-import 'package:bloc/src/bloc.dart' as _i6;
-import 'package:bloc/src/transition.dart' as _i5;
-import 'package:flutter/src/widgets/navigator.dart' as _i8;
+import 'package:askimam/auth/bloc/auth_bloc.dart' as _i2;
+import 'package:askimam/home/chats/bloc/my_chats_bloc.dart' as _i4;
+import 'package:askimam/home/favorites/bloc/favorite_bloc.dart' as _i5;
+import 'package:bloc/src/bloc.dart' as _i7;
+import 'package:bloc/src/transition.dart' as _i6;
+import 'package:flutter/src/widgets/navigator.dart' as _i9;
 import 'package:flutter_modular/src/core/interfaces/modular_navigator_interface.dart'
-    as _i7;
+    as _i8;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: comment_references
@@ -20,82 +21,76 @@ import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
 
-class _FakeMyChatsState extends _i1.Fake implements _i2.MyChatsState {}
+class _FakeAuthState extends _i1.Fake implements _i2.AuthState {}
 
 class _FakeStreamSubscription<T> extends _i1.Fake
     implements _i3.StreamSubscription<T> {}
 
-class _FakeFavoriteState extends _i1.Fake implements _i4.FavoriteState {}
+class _FakeMyChatsState extends _i1.Fake implements _i4.MyChatsState {}
 
-/// A class which mocks [MyChatsBloc].
+class _FakeFavoriteState extends _i1.Fake implements _i5.FavoriteState {}
+
+/// A class which mocks [AuthBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMyChatsBloc extends _i1.Mock implements _i2.MyChatsBloc {
-  MockMyChatsBloc() {
+class MockAuthBloc extends _i1.Mock implements _i2.AuthBloc {
+  MockAuthBloc() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.MyChatsState get state => (super.noSuchMethod(Invocation.getter(#state),
-      returnValue: _FakeMyChatsState()) as _i2.MyChatsState);
+  _i2.AuthState get state => (super.noSuchMethod(Invocation.getter(#state),
+      returnValue: _FakeAuthState()) as _i2.AuthState);
   @override
-  _i3.Stream<_i2.MyChatsState> get stream =>
-      (super.noSuchMethod(Invocation.getter(#stream),
-              returnValue: Stream<_i2.MyChatsState>.empty())
-          as _i3.Stream<_i2.MyChatsState>);
+  _i3.Stream<_i2.AuthState> get stream => (super.noSuchMethod(
+      Invocation.getter(#stream),
+      returnValue: Stream<_i2.AuthState>.empty()) as _i3.Stream<_i2.AuthState>);
   @override
-  _i3.Stream<_i2.MyChatsState> mapEventToState(_i2.MyChatsEvent? event) =>
+  _i3.Stream<_i2.AuthState> mapEventToState(_i2.AuthEvent? event) =>
       (super.noSuchMethod(Invocation.method(#mapEventToState, [event]),
-              returnValue: Stream<_i2.MyChatsState>.empty())
-          as _i3.Stream<_i2.MyChatsState>);
+              returnValue: Stream<_i2.AuthState>.empty())
+          as _i3.Stream<_i2.AuthState>);
+  @override
+  void add(_i2.AuthEvent? event) =>
+      super.noSuchMethod(Invocation.method(#add, [event]),
+          returnValueForMissingStub: null);
+  @override
+  void onEvent(_i2.AuthEvent? event) =>
+      super.noSuchMethod(Invocation.method(#onEvent, [event]),
+          returnValueForMissingStub: null);
+  @override
+  _i3.Stream<_i6.Transition<_i2.AuthEvent, _i2.AuthState>> transformEvents(
+          _i3.Stream<_i2.AuthEvent>? events,
+          _i7.TransitionFunction<_i2.AuthEvent, _i2.AuthState>? transitionFn) =>
+      (super.noSuchMethod(
+              Invocation.method(#transformEvents, [events, transitionFn]),
+              returnValue:
+                  Stream<_i6.Transition<_i2.AuthEvent, _i2.AuthState>>.empty())
+          as _i3.Stream<_i6.Transition<_i2.AuthEvent, _i2.AuthState>>);
+  @override
+  void emit(_i2.AuthState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+  @override
+  void onTransition(_i6.Transition<_i2.AuthEvent, _i2.AuthState>? transition) =>
+      super.noSuchMethod(Invocation.method(#onTransition, [transition]),
+          returnValueForMissingStub: null);
+  @override
+  _i3.Stream<_i6.Transition<_i2.AuthEvent, _i2.AuthState>> transformTransitions(
+          _i3.Stream<_i6.Transition<_i2.AuthEvent, _i2.AuthState>>?
+              transitions) =>
+      (super.noSuchMethod(
+              Invocation.method(#transformTransitions, [transitions]),
+              returnValue:
+                  Stream<_i6.Transition<_i2.AuthEvent, _i2.AuthState>>.empty())
+          as _i3.Stream<_i6.Transition<_i2.AuthEvent, _i2.AuthState>>);
   @override
   _i3.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
       returnValue: Future<void>.value(null),
       returnValueForMissingStub: Future.value()) as _i3.Future<void>);
   @override
-  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
-      returnValueForMissingStub: null);
-  @override
-  void add(_i2.MyChatsEvent? event) =>
-      super.noSuchMethod(Invocation.method(#add, [event]),
-          returnValueForMissingStub: null);
-  @override
-  void onEvent(_i2.MyChatsEvent? event) =>
-      super.noSuchMethod(Invocation.method(#onEvent, [event]),
-          returnValueForMissingStub: null);
-  @override
-  _i3.Stream<_i5.Transition<_i2.MyChatsEvent, _i2.MyChatsState>> transformEvents(
-          _i3.Stream<_i2.MyChatsEvent>? events,
-          _i6.TransitionFunction<_i2.MyChatsEvent, _i2.MyChatsState>?
-              transitionFn) =>
-      (super.noSuchMethod(
-              Invocation.method(#transformEvents, [events, transitionFn]),
-              returnValue: Stream<
-                  _i5.Transition<_i2.MyChatsEvent, _i2.MyChatsState>>.empty())
-          as _i3.Stream<_i5.Transition<_i2.MyChatsEvent, _i2.MyChatsState>>);
-  @override
-  void emit(_i2.MyChatsState? state) =>
-      super.noSuchMethod(Invocation.method(#emit, [state]),
-          returnValueForMissingStub: null);
-  @override
-  void onTransition(
-          _i5.Transition<_i2.MyChatsEvent, _i2.MyChatsState>? transition) =>
-      super.noSuchMethod(Invocation.method(#onTransition, [transition]),
-          returnValueForMissingStub: null);
-  @override
-  _i3.Stream<_i5.Transition<_i2.MyChatsEvent, _i2.MyChatsState>>
-      transformTransitions(
-              _i3.Stream<_i5.Transition<_i2.MyChatsEvent, _i2.MyChatsState>>?
-                  transitions) =>
-          (super.noSuchMethod(
-                  Invocation.method(#transformTransitions, [transitions]),
-                  returnValue: Stream<
-                      _i5.Transition<_i2.MyChatsEvent, _i2.MyChatsState>>.empty())
-              as _i3
-                  .Stream<_i5.Transition<_i2.MyChatsEvent, _i2.MyChatsState>>);
-  @override
-  _i3.StreamSubscription<_i2.MyChatsState> listen(
-          void Function(_i2.MyChatsState)? onData,
+  _i3.StreamSubscription<_i2.AuthState> listen(
+          void Function(_i2.AuthState)? onData,
           {Function? onError,
           void Function()? onDone,
           bool? cancelOnError}) =>
@@ -107,10 +102,106 @@ class MockMyChatsBloc extends _i1.Mock implements _i2.MyChatsBloc {
                 #onDone: onDone,
                 #cancelOnError: cancelOnError
               }),
-              returnValue: _FakeStreamSubscription<_i2.MyChatsState>())
-          as _i3.StreamSubscription<_i2.MyChatsState>);
+              returnValue: _FakeStreamSubscription<_i2.AuthState>())
+          as _i3.StreamSubscription<_i2.AuthState>);
   @override
-  void onChange(_i5.Change<_i2.MyChatsState>? change) =>
+  void onChange(_i6.Change<_i2.AuthState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+}
+
+/// A class which mocks [MyChatsBloc].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMyChatsBloc extends _i1.Mock implements _i4.MyChatsBloc {
+  MockMyChatsBloc() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.MyChatsState get state => (super.noSuchMethod(Invocation.getter(#state),
+      returnValue: _FakeMyChatsState()) as _i4.MyChatsState);
+  @override
+  _i3.Stream<_i4.MyChatsState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+              returnValue: Stream<_i4.MyChatsState>.empty())
+          as _i3.Stream<_i4.MyChatsState>);
+  @override
+  _i3.Stream<_i4.MyChatsState> mapEventToState(_i4.MyChatsEvent? event) =>
+      (super.noSuchMethod(Invocation.method(#mapEventToState, [event]),
+              returnValue: Stream<_i4.MyChatsState>.empty())
+          as _i3.Stream<_i4.MyChatsState>);
+  @override
+  _i3.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future<void>.value(null),
+      returnValueForMissingStub: Future.value()) as _i3.Future<void>);
+  @override
+  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
+      returnValueForMissingStub: null);
+  @override
+  void add(_i4.MyChatsEvent? event) =>
+      super.noSuchMethod(Invocation.method(#add, [event]),
+          returnValueForMissingStub: null);
+  @override
+  void onEvent(_i4.MyChatsEvent? event) =>
+      super.noSuchMethod(Invocation.method(#onEvent, [event]),
+          returnValueForMissingStub: null);
+  @override
+  _i3.Stream<_i6.Transition<_i4.MyChatsEvent, _i4.MyChatsState>> transformEvents(
+          _i3.Stream<_i4.MyChatsEvent>? events,
+          _i7.TransitionFunction<_i4.MyChatsEvent, _i4.MyChatsState>?
+              transitionFn) =>
+      (super.noSuchMethod(
+              Invocation.method(#transformEvents, [events, transitionFn]),
+              returnValue: Stream<
+                  _i6.Transition<_i4.MyChatsEvent, _i4.MyChatsState>>.empty())
+          as _i3.Stream<_i6.Transition<_i4.MyChatsEvent, _i4.MyChatsState>>);
+  @override
+  void emit(_i4.MyChatsState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+  @override
+  void onTransition(
+          _i6.Transition<_i4.MyChatsEvent, _i4.MyChatsState>? transition) =>
+      super.noSuchMethod(Invocation.method(#onTransition, [transition]),
+          returnValueForMissingStub: null);
+  @override
+  _i3.Stream<_i6.Transition<_i4.MyChatsEvent, _i4.MyChatsState>>
+      transformTransitions(
+              _i3.Stream<_i6.Transition<_i4.MyChatsEvent, _i4.MyChatsState>>?
+                  transitions) =>
+          (super.noSuchMethod(
+                  Invocation.method(#transformTransitions, [transitions]),
+                  returnValue: Stream<
+                      _i6.Transition<_i4.MyChatsEvent, _i4.MyChatsState>>.empty())
+              as _i3
+                  .Stream<_i6.Transition<_i4.MyChatsEvent, _i4.MyChatsState>>);
+  @override
+  _i3.StreamSubscription<_i4.MyChatsState> listen(
+          void Function(_i4.MyChatsState)? onData,
+          {Function? onError,
+          void Function()? onDone,
+          bool? cancelOnError}) =>
+      (super.noSuchMethod(
+              Invocation.method(#listen, [
+                onData
+              ], {
+                #onError: onError,
+                #onDone: onDone,
+                #cancelOnError: cancelOnError
+              }),
+              returnValue: _FakeStreamSubscription<_i4.MyChatsState>())
+          as _i3.StreamSubscription<_i4.MyChatsState>);
+  @override
+  void onChange(_i6.Change<_i4.MyChatsState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -126,69 +217,69 @@ class MockMyChatsBloc extends _i1.Mock implements _i2.MyChatsBloc {
 /// A class which mocks [FavoriteBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFavoriteBloc extends _i1.Mock implements _i4.FavoriteBloc {
+class MockFavoriteBloc extends _i1.Mock implements _i5.FavoriteBloc {
   MockFavoriteBloc() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.FavoriteState get state => (super.noSuchMethod(Invocation.getter(#state),
-      returnValue: _FakeFavoriteState()) as _i4.FavoriteState);
+  _i5.FavoriteState get state => (super.noSuchMethod(Invocation.getter(#state),
+      returnValue: _FakeFavoriteState()) as _i5.FavoriteState);
   @override
-  _i3.Stream<_i4.FavoriteState> get stream =>
+  _i3.Stream<_i5.FavoriteState> get stream =>
       (super.noSuchMethod(Invocation.getter(#stream),
-              returnValue: Stream<_i4.FavoriteState>.empty())
-          as _i3.Stream<_i4.FavoriteState>);
+              returnValue: Stream<_i5.FavoriteState>.empty())
+          as _i3.Stream<_i5.FavoriteState>);
   @override
-  _i3.Stream<_i4.FavoriteState> mapEventToState(_i4.FavoriteEvent? event) =>
+  _i3.Stream<_i5.FavoriteState> mapEventToState(_i5.FavoriteEvent? event) =>
       (super.noSuchMethod(Invocation.method(#mapEventToState, [event]),
-              returnValue: Stream<_i4.FavoriteState>.empty())
-          as _i3.Stream<_i4.FavoriteState>);
+              returnValue: Stream<_i5.FavoriteState>.empty())
+          as _i3.Stream<_i5.FavoriteState>);
   @override
-  void add(_i4.FavoriteEvent? event) =>
+  void add(_i5.FavoriteEvent? event) =>
       super.noSuchMethod(Invocation.method(#add, [event]),
           returnValueForMissingStub: null);
   @override
-  void onEvent(_i4.FavoriteEvent? event) =>
+  void onEvent(_i5.FavoriteEvent? event) =>
       super.noSuchMethod(Invocation.method(#onEvent, [event]),
           returnValueForMissingStub: null);
   @override
-  _i3.Stream<_i5.Transition<_i4.FavoriteEvent, _i4.FavoriteState>> transformEvents(
-          _i3.Stream<_i4.FavoriteEvent>? events,
-          _i6.TransitionFunction<_i4.FavoriteEvent, _i4.FavoriteState>?
+  _i3.Stream<_i6.Transition<_i5.FavoriteEvent, _i5.FavoriteState>> transformEvents(
+          _i3.Stream<_i5.FavoriteEvent>? events,
+          _i7.TransitionFunction<_i5.FavoriteEvent, _i5.FavoriteState>?
               transitionFn) =>
       (super.noSuchMethod(
               Invocation.method(#transformEvents, [events, transitionFn]),
               returnValue: Stream<
-                  _i5.Transition<_i4.FavoriteEvent, _i4.FavoriteState>>.empty())
-          as _i3.Stream<_i5.Transition<_i4.FavoriteEvent, _i4.FavoriteState>>);
+                  _i6.Transition<_i5.FavoriteEvent, _i5.FavoriteState>>.empty())
+          as _i3.Stream<_i6.Transition<_i5.FavoriteEvent, _i5.FavoriteState>>);
   @override
-  void emit(_i4.FavoriteState? state) =>
+  void emit(_i5.FavoriteState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
   void onTransition(
-          _i5.Transition<_i4.FavoriteEvent, _i4.FavoriteState>? transition) =>
+          _i6.Transition<_i5.FavoriteEvent, _i5.FavoriteState>? transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i3.Stream<_i5.Transition<_i4.FavoriteEvent, _i4.FavoriteState>>
+  _i3.Stream<_i6.Transition<_i5.FavoriteEvent, _i5.FavoriteState>>
       transformTransitions(
-              _i3.Stream<_i5.Transition<_i4.FavoriteEvent, _i4.FavoriteState>>?
+              _i3.Stream<_i6.Transition<_i5.FavoriteEvent, _i5.FavoriteState>>?
                   transitions) =>
           (super.noSuchMethod(
                   Invocation.method(#transformTransitions, [transitions]),
                   returnValue: Stream<
-                      _i5.Transition<_i4.FavoriteEvent, _i4.FavoriteState>>.empty())
+                      _i6.Transition<_i5.FavoriteEvent, _i5.FavoriteState>>.empty())
               as _i3
-                  .Stream<_i5.Transition<_i4.FavoriteEvent, _i4.FavoriteState>>);
+                  .Stream<_i6.Transition<_i5.FavoriteEvent, _i5.FavoriteState>>);
   @override
   _i3.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
       returnValue: Future<void>.value(null),
       returnValueForMissingStub: Future.value()) as _i3.Future<void>);
   @override
-  _i3.StreamSubscription<_i4.FavoriteState> listen(
-          void Function(_i4.FavoriteState)? onData,
+  _i3.StreamSubscription<_i5.FavoriteState> listen(
+          void Function(_i5.FavoriteState)? onData,
           {Function? onError,
           void Function()? onDone,
           bool? cancelOnError}) =>
@@ -200,10 +291,10 @@ class MockFavoriteBloc extends _i1.Mock implements _i4.FavoriteBloc {
                 #onDone: onDone,
                 #cancelOnError: cancelOnError
               }),
-              returnValue: _FakeStreamSubscription<_i4.FavoriteState>())
-          as _i3.StreamSubscription<_i4.FavoriteState>);
+              returnValue: _FakeStreamSubscription<_i5.FavoriteState>())
+          as _i3.StreamSubscription<_i5.FavoriteState>);
   @override
-  void onChange(_i5.Change<_i4.FavoriteState>? change) =>
+  void onChange(_i6.Change<_i5.FavoriteState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -219,7 +310,7 @@ class MockFavoriteBloc extends _i1.Mock implements _i4.FavoriteBloc {
 /// A class which mocks [IModularNavigator].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
+class MockIModularNavigator extends _i1.Mock implements _i8.IModularNavigator {
   MockIModularNavigator() {
     _i1.throwOnMissingStub(this);
   }
@@ -244,7 +335,7 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  _i3.Future<T?> push<T extends Object?>(_i8.Route<T>? route) =>
+  _i3.Future<T?> push<T extends Object?>(_i9.Route<T>? route) =>
       (super.noSuchMethod(Invocation.method(#push, [route]),
           returnValue: Future<T?>.value(null)) as _i3.Future<T?>);
   @override
@@ -266,7 +357,7 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
           returnValue: Future<T?>.value(null)) as _i3.Future<T?>);
   @override
   _i3.Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
-          String? newRouteName, bool Function(_i8.Route<dynamic>)? predicate,
+          String? newRouteName, bool Function(_i9.Route<dynamic>)? predicate,
           {Object? arguments, bool? forRoot = false}) =>
       (super.noSuchMethod(
           Invocation.method(#pushNamedAndRemoveUntil, [newRouteName, predicate],
@@ -295,7 +386,7 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
       (super.noSuchMethod(Invocation.method(#maybePop, [result]),
           returnValue: Future<bool>.value(false)) as _i3.Future<bool>);
   @override
-  void popUntil(bool Function(_i8.Route<dynamic>)? predicate) =>
+  void popUntil(bool Function(_i9.Route<dynamic>)? predicate) =>
       super.noSuchMethod(Invocation.method(#popUntil, [predicate]),
           returnValueForMissingStub: null);
   @override

@@ -9,7 +9,7 @@ class ChatModule extends Module {
   List<Bind<Object>> get binds => [
         Bind.singleton((i) => HttpChatRepository(i(), i())),
         Bind.singleton((i) => HttpMessageRepository(i(), i())),
-        Bind.singleton((i) => ChatBloc(i(), i(), i())),
+        Bind.singleton((i) => ChatBloc(i(), i(), i(), i(), i())),
       ];
 
   @override

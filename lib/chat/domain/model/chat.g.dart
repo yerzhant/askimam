@@ -13,6 +13,8 @@ _$_Chat _$_$_ChatFromJson(Map<String, dynamic> json) {
     json['askedBy'] as int,
     json['subject'] as String,
     isFavorite: json['isFavorite'] as bool? ?? false,
+    isViewedByImam: json['isViewedByImam'] as bool? ?? false,
+    isViewedByInquirer: json['isViewedByInquirer'] as bool? ?? false,
     messages: (json['messages'] as List<dynamic>?)
         ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
         .toList(),
@@ -25,6 +27,8 @@ Map<String, dynamic> _$_$_ChatToJson(_$_Chat instance) => <String, dynamic>{
       'askedBy': instance.askedBy,
       'subject': instance.subject,
       'isFavorite': instance.isFavorite,
+      'isViewedByImam': instance.isViewedByImam,
+      'isViewedByInquirer': instance.isViewedByInquirer,
       'messages': instance.messages,
     };
 

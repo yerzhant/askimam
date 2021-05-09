@@ -38,15 +38,16 @@ void main() {
 
     expect(find.text('Chat 1'), findsOneWidget);
     expect(find.text('Chat 2'), findsOneWidget);
-    expect(find.byIcon(Icons.public), findsOneWidget);
-    expect(find.byIcon(Icons.lock), findsOneWidget);
+    expect(find.byIcon(Icons.check_rounded), findsOneWidget);
+    expect(find.byIcon(Icons.public_rounded), findsOneWidget);
+    expect(find.byIcon(Icons.lock_rounded), findsOneWidget);
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
-  testWidgets('should load a next page', (tester) async {
+  testWidgets('should load the next page', (tester) async {
     await _fixture(bloc, tester, app, count: 12);
     expect(find.text('Chat 12'), findsNothing);
-    await tester.drag(find.text('Chat 5'), const Offset(0.0, -300.0));
+    await tester.drag(find.text('Chat 5'), const Offset(0.0, -500.0));
     await tester.pumpAndSettle();
 
     expect(find.text('Chat 12'), findsOneWidget);
@@ -60,7 +61,9 @@ void main() {
 
     verify(
       bloc.add(
-        UnansweredChatsEvent.delete(Chat(2, ChatType.Private, 1, 'Chat 2')),
+        UnansweredChatsEvent.delete(
+          Chat(2, ChatType.Private, 1, 'Chat 2', isViewedByImam: true),
+        ),
       ),
     ).called(1);
   });
@@ -125,6 +128,8 @@ Future _fixture(
           i == 1 ? ChatType.Public : ChatType.Private,
           1,
           'Chat $i',
+          isViewedByImam: i % 2 == 0,
+          isViewedByInquirer: i % 2 == 1,
         ),
     ]),
   );

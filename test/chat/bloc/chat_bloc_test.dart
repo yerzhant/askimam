@@ -6,6 +6,8 @@ import 'package:askimam/chat/domain/repo/chat_repository.dart';
 import 'package:askimam/chat/domain/model/message.dart';
 import 'package:askimam/chat/domain/repo/message_repository.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
+import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
+import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,20 +18,31 @@ import 'chat_bloc_test.mocks.dart';
 
 @GenerateMocks([
   AuthBloc,
+  MyChatsBloc,
   ChatRepository,
   MessageRepository,
+  UnansweredChatsBloc,
 ])
 void main() {
   late ChatBloc bloc;
   final authBloc = MockAuthBloc();
   final repo = MockChatRepository();
+  final myChatsBloc = MockMyChatsBloc();
   final messageRepo = MockMessageRepository();
+  final unansweredChatsBloc = MockUnansweredChatsBloc();
 
   setUp(() {
     when(authBloc.state).thenReturn(AuthState.authenticated(
       Authentication('jwt', 1, UserType.Inquirer),
     ));
-    bloc = ChatBloc(repo, messageRepo, authBloc);
+
+    bloc = ChatBloc(
+      repo,
+      messageRepo,
+      authBloc,
+      myChatsBloc,
+      unansweredChatsBloc,
+    );
   });
 
   test('Initial state', () {
@@ -40,6 +53,9 @@ void main() {
     blocTest(
       'should get it',
       build: () {
+        reset(myChatsBloc);
+        reset(unansweredChatsBloc);
+
         when(repo.get(1)).thenAnswer(
           (_) async => right(
             Chat(1, ChatType.Public, 1, 'subject', messages: [
@@ -69,6 +85,9 @@ void main() {
       ],
       verify: (_) {
         verify(repo.setViewedFlag(1)).called(1);
+        verify(myChatsBloc.add(const MyChatsEvent.reload())).called(1);
+        verifyNever(
+            unansweredChatsBloc.add(const UnansweredChatsEvent.reload()));
       },
     );
 
@@ -147,6 +166,9 @@ void main() {
     blocTest(
       'should get it and update a viewed flag - as it is an imam',
       build: () {
+        reset(myChatsBloc);
+        reset(unansweredChatsBloc);
+
         when(authBloc.state).thenReturn(AuthState.authenticated(
           Authentication('jwt', 10, UserType.Imam),
         ));
@@ -178,6 +200,9 @@ void main() {
       ],
       verify: (_) {
         verify(repo.setViewedFlag(1)).called(1);
+        verify(myChatsBloc.add(const MyChatsEvent.reload())).called(1);
+        verify(unansweredChatsBloc.add(const UnansweredChatsEvent.reload()))
+            .called(1);
       },
     );
 

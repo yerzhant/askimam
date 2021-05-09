@@ -13,6 +13,8 @@ class Chat with _$Chat, Model {
     int askedBy,
     String subject, {
     @Default(false) bool isFavorite,
+    @Default(false) bool isViewedByImam,
+    @Default(false) bool isViewedByInquirer,
     List<Message>? messages,
   }) = _Chat;
 
