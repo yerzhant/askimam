@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum HomePopupMenuAction { login, logout, azanKz, shareApp }
+enum HomePopupMenuAction { login, logout, azanKz, shareApp, imamRatings }
 
 class HomePopupMenu extends StatelessWidget {
   @override
@@ -13,11 +13,13 @@ class HomePopupMenu extends StatelessWidget {
       return PopupMenuButton(
         itemBuilder: (_) => state.maybeWhen(
           authenticated: (_) => [
+            _imamRatings(),
             _azanKz(),
             // _shareApp(),
             _logout(),
           ],
           orElse: () => [
+            _imamRatings(),
             _azanKz(),
             _login(),
             // _shareApp(),
@@ -31,6 +33,10 @@ class HomePopupMenu extends StatelessWidget {
 
             case HomePopupMenuAction.login:
               Modular.to.pushNamed('/auth/login');
+              break;
+
+            case HomePopupMenuAction.imamRatings:
+              Modular.to.pushNamed('/imam-ratings');
               break;
 
             case HomePopupMenuAction.logout:
@@ -67,6 +73,13 @@ class HomePopupMenu extends StatelessWidget {
     return const PopupMenuItem(
       value: HomePopupMenuAction.logout,
       child: Text('Выйти'),
+    );
+  }
+
+  PopupMenuItem<HomePopupMenuAction> _imamRatings() {
+    return const PopupMenuItem(
+      value: HomePopupMenuAction.imamRatings,
+      child: Text('Рейтинг устазов'),
     );
   }
 }
