@@ -32,10 +32,10 @@ class HttpAuthRepository implements AuthRepository {
 
   @override
   Future<Option<Rejection>> logout(LogoutRequest request) async {
-    final result = await _api.post('$_url/logout', request);
+    final result = await _settings.clearAuthentication();
 
     return result.fold(
-      () => _settings.clearAuthentication(),
+      () => _api.post('$_url/logout', request),
       (a) => some(a),
     );
   }

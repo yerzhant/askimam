@@ -75,9 +75,9 @@ void main() {
 
   group('Logout:', () {
     test('should be ok', () async {
+      when(settings.clearAuthentication()).thenAnswer((_) async => none());
       when(api.post('auth/logout', LogoutRequest('fcmToken')))
           .thenAnswer((_) async => none());
-      when(settings.clearAuthentication()).thenAnswer((_) async => none());
 
       final result = await repo.logout(LogoutRequest('fcmToken'));
 
@@ -87,17 +87,17 @@ void main() {
     });
 
     test('should fail server request', () async {
+      when(settings.clearAuthentication()).thenAnswer((_) async => none());
       when(api.post('auth/logout', LogoutRequest('fcmToken')))
           .thenAnswer((_) async => some(Rejection('reason')));
 
       final result = await repo.logout(LogoutRequest('fcmToken'));
 
       expect(result, some(Rejection('reason')));
+      verify(settings.clearAuthentication()).called(1);
     });
 
     test('should not be ok', () async {
-      when(api.post('auth/logout', LogoutRequest('fcmToken')))
-          .thenAnswer((_) async => none());
       when(settings.clearAuthentication())
           .thenAnswer((_) async => some(Rejection('reason2')));
 

@@ -81,13 +81,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         yield AuthState.error(l);
       },
       (r) async* {
+        _apiClient.resetJwt();
+
         final result = await _repo.logout(LogoutRequest(r));
 
         yield result.fold(
-          () {
-            _apiClient.resetJwt();
-            return const AuthState.unauthenticated();
-          },
+          () => const AuthState.unauthenticated(),
           (l) => AuthState.error(l),
         );
       },
