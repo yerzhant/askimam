@@ -120,8 +120,8 @@ class __$ImamRatingCopyWithImpl<$Res> extends _$ImamRatingCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_ImamRating implements _ImamRating {
-  _$_ImamRating(this.name, this.rating);
+class _$_ImamRating extends _ImamRating {
+  _$_ImamRating(this.name, this.rating) : super._();
 
   factory _$_ImamRating.fromJson(Map<String, dynamic> json) =>
       _$_$_ImamRatingFromJson(json);
@@ -163,8 +163,9 @@ class _$_ImamRating implements _ImamRating {
   }
 }
 
-abstract class _ImamRating implements ImamRating {
+abstract class _ImamRating extends ImamRating {
   factory _ImamRating(String name, int rating) = _$_ImamRating;
+  _ImamRating._() : super._();
 
   factory _ImamRating.fromJson(Map<String, dynamic> json) =
       _$_ImamRating.fromJson;
