@@ -1,3 +1,4 @@
+import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/ui/widget/circular_progress.dart';
 import 'package:askimam/imam_ratings/bloc/imam_ratings_bloc.dart';
 import 'package:askimam/imam_ratings/domain/model/imam_rating.dart';
@@ -46,5 +47,23 @@ void main() {
     expect(find.text('Imam 2'), findsOneWidget);
     expect(find.text('123'), findsOneWidget);
     expect(find.text('12'), findsOneWidget);
+  });
+
+  testWidgets('should show error', (tester) async {
+    when(bloc.state).thenReturn(ImamRatingsState.error(Rejection('reason')));
+
+    await tester.pumpWidget(app);
+
+    expect(find.text('reason'), findsOneWidget);
+  });
+
+  testWidgets('should reload the page', (tester) async {
+    when(bloc.state).thenReturn(ImamRatingsState.error(Rejection('reason')));
+
+    await tester.pumpWidget(app);
+    reset(bloc);
+    await tester.tap(find.text('ПОВТОРИТЬ'));
+
+    verify(bloc.add(const ImamRatingsEvent.reload())).called(1);
   });
 }

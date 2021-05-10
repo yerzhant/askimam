@@ -26,7 +26,7 @@ class ImamRatingsPage extends StatelessWidget {
             inProgress: () => InProgressWidget(child: Container()),
             error: (rejection) => RejectionWidget(
               rejection: rejection,
-              onRefresh: () {},
+              onRefresh: () => bloc.add(const ImamRatingsEvent.reload()),
             ),
           );
         },
