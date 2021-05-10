@@ -5,6 +5,7 @@ import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
+import 'package:askimam/imam_ratings/domain/model/imam_rating.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart';
 
@@ -44,7 +45,6 @@ class ApiResponse with _$ApiResponse {
   }
 
   List<M> list<M extends Model>() {
-    // ignore: cast_nullable_to_non_nullable
     final list = data as List<dynamic>;
     return list.map((e) => _fromJsonfactories[M]!(e) as M).toList();
   }
@@ -52,12 +52,12 @@ class ApiResponse with _$ApiResponse {
   Rejection asRejection() => Rejection(error ?? 'Unknown error.');
 }
 
-// ignore: constant_identifier_names
 enum ApiResponseStatus { Ok, Error }
 
 final _fromJsonfactories = <Type, Function>{
-  Favorite: (json) => Favorite.fromJson(json),
   Chat: (json) => Chat.fromJson(json),
+  Favorite: (json) => Favorite.fromJson(json),
+  ImamRating: (json) => ImamRating.fromJson(json),
   Authentication: (json) => Authentication.fromJson(json),
 };
 
