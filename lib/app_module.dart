@@ -6,6 +6,7 @@ import 'package:askimam/common/infra/fcm_service.dart';
 import 'package:askimam/common/infra/http_api_client.dart';
 import 'package:askimam/common/infra/local_storage.dart';
 import 'package:askimam/home/home_module.dart';
+import 'package:askimam/imam_ratings/imam_ratings_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart';
 
@@ -29,5 +30,6 @@ class AppModule extends Module {
         ModuleRoute('/', module: HomeModule()),
         ModuleRoute('/chat', module: ChatModule()),
         ModuleRoute('/auth', module: AuthModule()),
+        ModuleRoute('/imam-ratings', module: ImamRatingsModule()),
       ];
 }
