@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:askimam/common/domain/model/rejection.dart';
-import 'package:askimam/imam_ratings/domain/model/imam_rating.dart';
+import 'package:askimam/imam_ratings/domain/model/imam_ratings_with_description.dart';
 import 'package:askimam/imam_ratings/domain/repo/imam_ratings_repo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'imam_ratings_bloc.freezed.dart';
 part 'imam_ratings_event.dart';
 part 'imam_ratings_state.dart';
-part 'imam_ratings_bloc.freezed.dart';
 
 class ImamRatingsBloc extends Bloc<ImamRatingsEvent, ImamRatingsState> {
   final ImamRatingsRepo _repo;

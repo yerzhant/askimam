@@ -5,7 +5,7 @@ import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
-import 'package:askimam/imam_ratings/domain/model/imam_rating.dart';
+import 'package:askimam/imam_ratings/domain/model/imam_ratings_with_description.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart';
 
@@ -57,8 +57,9 @@ enum ApiResponseStatus { Ok, Error }
 final _fromJsonfactories = <Type, Function>{
   Chat: (json) => Chat.fromJson(json),
   Favorite: (json) => Favorite.fromJson(json),
-  ImamRating: (json) => ImamRating.fromJson(json),
   Authentication: (json) => Authentication.fromJson(json),
+  ImamRatingsWithDescription: (json) =>
+      ImamRatingsWithDescription.fromJson(json),
 };
 
 extension StringExt on Response {

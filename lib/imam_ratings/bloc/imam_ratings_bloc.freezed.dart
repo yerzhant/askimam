@@ -149,7 +149,7 @@ abstract class _Reload implements ImamRatingsEvent {
 class _$ImamRatingsStateTearOff {
   const _$ImamRatingsStateTearOff();
 
-  _State call(List<ImamRating> ratings) {
+  _State call(ImamRatingsWithDescription ratings) {
     return _State(
       ratings,
     );
@@ -173,14 +173,14 @@ const $ImamRatingsState = _$ImamRatingsStateTearOff();
 mixin _$ImamRatingsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<ImamRating> ratings) $default, {
+    TResult Function(ImamRatingsWithDescription ratings) $default, {
     required TResult Function() inProgress,
     required TResult Function(Rejection rejection) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<ImamRating> ratings)? $default, {
+    TResult Function(ImamRatingsWithDescription ratings)? $default, {
     TResult Function()? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),
@@ -224,7 +224,9 @@ class _$ImamRatingsStateCopyWithImpl<$Res>
 abstract class _$StateCopyWith<$Res> {
   factory _$StateCopyWith(_State value, $Res Function(_State) then) =
       __$StateCopyWithImpl<$Res>;
-  $Res call({List<ImamRating> ratings});
+  $Res call({ImamRatingsWithDescription ratings});
+
+  $ImamRatingsWithDescriptionCopyWith<$Res> get ratings;
 }
 
 /// @nodoc
@@ -244,8 +246,15 @@ class __$StateCopyWithImpl<$Res> extends _$ImamRatingsStateCopyWithImpl<$Res>
       ratings == freezed
           ? _value.ratings
           : ratings // ignore: cast_nullable_to_non_nullable
-              as List<ImamRating>,
+              as ImamRatingsWithDescription,
     ));
+  }
+
+  @override
+  $ImamRatingsWithDescriptionCopyWith<$Res> get ratings {
+    return $ImamRatingsWithDescriptionCopyWith<$Res>(_value.ratings, (value) {
+      return _then(_value.copyWith(ratings: value));
+    });
   }
 }
 
@@ -254,7 +263,7 @@ class _$_State implements _State {
   const _$_State(this.ratings);
 
   @override
-  final List<ImamRating> ratings;
+  final ImamRatingsWithDescription ratings;
 
   @override
   String toString() {
@@ -281,7 +290,7 @@ class _$_State implements _State {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<ImamRating> ratings) $default, {
+    TResult Function(ImamRatingsWithDescription ratings) $default, {
     required TResult Function() inProgress,
     required TResult Function(Rejection rejection) error,
   }) {
@@ -291,7 +300,7 @@ class _$_State implements _State {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<ImamRating> ratings)? $default, {
+    TResult Function(ImamRatingsWithDescription ratings)? $default, {
     TResult Function()? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),
@@ -328,9 +337,9 @@ class _$_State implements _State {
 }
 
 abstract class _State implements ImamRatingsState {
-  const factory _State(List<ImamRating> ratings) = _$_State;
+  const factory _State(ImamRatingsWithDescription ratings) = _$_State;
 
-  List<ImamRating> get ratings => throw _privateConstructorUsedError;
+  ImamRatingsWithDescription get ratings => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$StateCopyWith<_State> get copyWith => throw _privateConstructorUsedError;
 }
@@ -374,7 +383,7 @@ class _$_InProgress implements _InProgress {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<ImamRating> ratings) $default, {
+    TResult Function(ImamRatingsWithDescription ratings) $default, {
     required TResult Function() inProgress,
     required TResult Function(Rejection rejection) error,
   }) {
@@ -384,7 +393,7 @@ class _$_InProgress implements _InProgress {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<ImamRating> ratings)? $default, {
+    TResult Function(ImamRatingsWithDescription ratings)? $default, {
     TResult Function()? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),
@@ -495,7 +504,7 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<ImamRating> ratings) $default, {
+    TResult Function(ImamRatingsWithDescription ratings) $default, {
     required TResult Function() inProgress,
     required TResult Function(Rejection rejection) error,
   }) {
@@ -505,7 +514,7 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<ImamRating> ratings)? $default, {
+    TResult Function(ImamRatingsWithDescription ratings)? $default, {
     TResult Function()? inProgress,
     TResult Function(Rejection rejection)? error,
     required TResult orElse(),

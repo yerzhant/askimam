@@ -2,6 +2,7 @@ import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/ui/widget/circular_progress.dart';
 import 'package:askimam/imam_ratings/bloc/imam_ratings_bloc.dart';
 import 'package:askimam/imam_ratings/domain/model/imam_rating.dart';
+import 'package:askimam/imam_ratings/domain/model/imam_ratings_with_description.dart';
 import 'package:askimam/imam_ratings/ui/imam_ratings_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,10 +36,14 @@ void main() {
   });
 
   testWidgets('should show ratings', (tester) async {
-    when(bloc.state).thenReturn(ImamRatingsState([
-      ImamRating('Imam 1', 123),
-      ImamRating('Imam 2', 12),
-    ]));
+    when(bloc.state).thenReturn(
+      ImamRatingsState(
+        ImamRatingsWithDescription('description', [
+          ImamRating('Imam 1', 123),
+          ImamRating('Imam 2', 12),
+        ]),
+      ),
+    );
 
     await tester.pumpWidget(app);
 
@@ -47,6 +52,7 @@ void main() {
     expect(find.text('Imam 2'), findsOneWidget);
     expect(find.text('123'), findsOneWidget);
     expect(find.text('12'), findsOneWidget);
+    expect(find.text('description'), findsOneWidget);
   });
 
   testWidgets('should show error', (tester) async {

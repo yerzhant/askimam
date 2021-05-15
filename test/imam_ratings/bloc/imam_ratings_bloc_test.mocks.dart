@@ -5,7 +5,8 @@
 import 'dart:async' as _i4;
 
 import 'package:askimam/common/domain/model/rejection.dart' as _i5;
-import 'package:askimam/imam_ratings/domain/model/imam_rating.dart' as _i6;
+import 'package:askimam/imam_ratings/domain/model/imam_ratings_with_description.dart'
+    as _i6;
 import 'package:askimam/imam_ratings/domain/repo/imam_ratings_repo.dart' as _i3;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -28,10 +29,11 @@ class MockImamRatingsRepo extends _i1.Mock implements _i3.ImamRatingsRepo {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, List<_i6.ImamRating>>> getRatings() =>
-      (super.noSuchMethod(Invocation.method(#getRatings, []),
-              returnValue:
-                  Future<_i2.Either<_i5.Rejection, List<_i6.ImamRating>>>.value(
-                      _FakeEither<_i5.Rejection, List<_i6.ImamRating>>()))
-          as _i4.Future<_i2.Either<_i5.Rejection, List<_i6.ImamRating>>>);
+  _i4.Future<_i2.Either<_i5.Rejection, _i6.ImamRatingsWithDescription>>
+      getRatings() => (super.noSuchMethod(Invocation.method(#getRatings, []),
+              returnValue: Future<
+                      _i2.Either<_i5.Rejection,
+                          _i6.ImamRatingsWithDescription>>.value(
+                  _FakeEither<_i5.Rejection, _i6.ImamRatingsWithDescription>()))
+          as _i4.Future<_i2.Either<_i5.Rejection, _i6.ImamRatingsWithDescription>>);
 }

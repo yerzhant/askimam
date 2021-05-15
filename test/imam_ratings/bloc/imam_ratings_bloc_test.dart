@@ -1,6 +1,7 @@
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/imam_ratings/bloc/imam_ratings_bloc.dart';
 import 'package:askimam/imam_ratings/domain/model/imam_rating.dart';
+import 'package:askimam/imam_ratings/domain/model/imam_ratings_with_description.dart';
 import 'package:askimam/imam_ratings/domain/repo/imam_ratings_repo.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
@@ -27,20 +28,24 @@ void main() {
   blocTest(
     'should get ratings',
     build: () {
-      when(repo.getRatings()).thenAnswer((_) async => right([
-            ImamRating('Imam 1', 123),
-            ImamRating('Imam 2', 12),
-          ]));
+      when(repo.getRatings()).thenAnswer(
+        (_) async => right(ImamRatingsWithDescription('description', [
+          ImamRating('Imam 1', 123),
+          ImamRating('Imam 2', 12),
+        ])),
+      );
 
       return bloc;
     },
     act: (_) => bloc.add(const ImamRatingsEvent.reload()),
     expect: () => [
       const ImamRatingsState.inProgress(),
-      ImamRatingsState([
-        ImamRating('Imam 1', 123),
-        ImamRating('Imam 2', 12),
-      ]),
+      ImamRatingsState(
+        ImamRatingsWithDescription('description', [
+          ImamRating('Imam 1', 123),
+          ImamRating('Imam 2', 12),
+        ]),
+      ),
     ],
   );
 

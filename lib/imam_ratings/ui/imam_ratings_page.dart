@@ -22,7 +22,20 @@ class ImamRatingsPage extends StatelessWidget {
         bloc: bloc,
         builder: (context, state) {
           return state.when(
-            (ratings) => _list(ratings),
+            (ratings) => Column(
+              children: [
+                Expanded(child: _list(ratings.ratings)),
+                Padding(
+                  padding: const EdgeInsets.all(basePadding),
+                  child: Text(
+                    ratings.description,
+                    style: Theme.of(context).textTheme.caption?.copyWith(
+                          height: 1.5,
+                        ),
+                  ),
+                ),
+              ],
+            ),
             inProgress: () => InProgressWidget(child: Container()),
             error: (rejection) => RejectionWidget(
               rejection: rejection,
