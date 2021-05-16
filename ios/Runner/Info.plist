@@ -64,5 +64,7 @@
       <array>
               <string>audio</string>
       </array>
+	  <key>NSMicrophoneUsageDescription</key>
+      <string>The mic is used to send audio messages in chats.</string>
 </dict>
 </plist>
