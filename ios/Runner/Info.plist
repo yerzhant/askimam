@@ -22,8 +22,25 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Not used.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Not used.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Not used.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Not used.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Not used.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>The mic is used to send audio messages in chats.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Not used.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Not used.</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>audio</string>
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
@@ -46,25 +63,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSAppleMusicUsageDescription</key>
-      <string>Not used.</string>
-      <key>NSCalendarsUsageDescription</key>
-      <string>Not used.</string>
-      <key>NSCameraUsageDescription</key>
-      <string>Not used.</string>
-      <key>NSContactsUsageDescription</key>
-      <string>Not used.</string>
-      <key>NSLocationWhenInUseUsageDescription</key>
-      <string>Not used.</string>
-      <key>NSMotionUsageDescription</key>
-      <string>Not used.</string>
-      <key>NSSpeechRecognitionUsageDescription</key>
-      <string>Not used.</string>
-      <key>UIBackgroundModes</key>
-      <array>
-              <string>audio</string>
-      </array>
-	  <key>NSMicrophoneUsageDescription</key>
-      <string>The mic is used to send audio messages in chats.</string>
 </dict>
 </plist>
