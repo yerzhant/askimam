@@ -7,7 +7,10 @@ class FcmService implements NotificationService {
   @override
   Future<Either<Rejection, String>> getFcmToken() async {
     try {
-      final token = await FirebaseMessaging.instance.getToken();
+      final token = await FirebaseMessaging.instance.getToken(
+        vapidKey:
+            'BIXzssvzuFUsSssjJT2LJFxGD_z_M0ESO3I7lenS5LEWp2x0P1aBPCAqyXro12Kxk-n7qZuiV5nhOCO2m1QMT3A',
+      );
 
       if (token == null) return left(Rejection('FCM token is unavailable.'));
 
