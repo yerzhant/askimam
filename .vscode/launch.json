@@ -13,11 +13,23 @@
             ],
         },
         {
+            "name": "Azan dev",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "--web-port=41111",
+                "--dart-define=api-url=http://api.askimam.azan-dev/v1",
+                "--dart-define=audio-url=http://azan-dev/askimam/audio",
+            ],
+        },
+        {
             "name": "Minbar",
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
             "args": [
+                "--web-port=41111",
                 "--dart-define=api-url=https://api.askimam.minbar.kz/v1",
                 "--dart-define=audio-url=https://minbar.kz/askimam/audio",
             ],
@@ -28,6 +40,7 @@
             "request": "launch",
             "program": "lib/main.dart",
             "args": [
+                "--web-port=41111",
                 "--dart-define=api-url=https://api.askimam.azan.kz/v1",
                 "--dart-define=audio-url=https://azan.kz/askimam/audio",
             ],
