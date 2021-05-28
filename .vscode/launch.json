@@ -8,6 +8,9 @@
             "name": "Dev",
             "request": "launch",
             "type": "dart",
+            "args": [
+                "--web-port=41111",
+            ],
         },
         {
             "name": "Minbar",
