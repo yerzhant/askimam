@@ -132,8 +132,8 @@ class _MessageComposerState extends State<MessageComposer> {
       return;
     }
 
-    final fileName = '${const Uuid().v4()}.mp3';
-    await _recorder.startRecorder(toFile: fileName);
+    final fileName = '${const Uuid().v4()}.mp4';
+    await _recorder.startRecorder(toFile: fileName, codec: Codec.aacMP4);
 
     _recorderSubscription = _recorder.onProgress?.listen((event) {
       setState(() {
