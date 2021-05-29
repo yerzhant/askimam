@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/bloc/chat_bloc.dart';
+import 'package:askimam/common/extention/date_extentions.dart';
 import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:flutter/material.dart';
@@ -168,9 +169,4 @@ class _MessageComposerState extends State<MessageComposer> {
     final duration = _recorderTime.format();
     context.read<ChatBloc>().add(ChatEvent.addAudio(file, duration));
   }
-}
-
-extension _Duration on Duration {
-  String format() =>
-      '$inMinutes:${(inSeconds % 60).toString().padLeft(2, "0")}';
 }
