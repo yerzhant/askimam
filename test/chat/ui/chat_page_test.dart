@@ -98,7 +98,7 @@ void main() {
     await tester.pump();
 
     expect(find.byType(LinearProgressIndicator), findsOneWidget);
-    expect(find.text('0:00'), findsOneWidget);
+    expect(find.text('00:00'), findsOneWidget);
     expect(find.byIcon(Icons.cancel), findsOneWidget);
   });
 
