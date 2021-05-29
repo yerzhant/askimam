@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:askimam/chat/domain/repo/message_repository.dart';
+import 'package:askimam/chat/infra/dto/add_audio_message.dart';
 import 'package:askimam/chat/infra/dto/add_text_message.dart';
 import 'package:askimam/chat/infra/dto/update_text_message.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
@@ -25,6 +28,39 @@ class HttpMessageRepository implements MessageRepository {
 
         return result.fold(
           () => none(),
+          (a) => some(a),
+        );
+      },
+    );
+  }
+
+  @override
+  Future<Option<Rejection>> addAudio(
+      int chatId, File audio, String duration) async {
+    final tokenResult = await _notificationService.getFcmToken();
+
+    return tokenResult.fold(
+      (l) => some(l),
+      (fcmToken) async {
+        final uploadResult = await _api.uploadFile('$_url/upload-audio', audio);
+
+        return uploadResult.fold(
+          () async {
+            final result = await _api.post(
+              '$_url/audio',
+              AddAudioMessage(
+                chatId,
+                audio.path.split('/').last,
+                duration,
+                fcmToken,
+              ),
+            );
+
+            return result.fold(
+              () => none(),
+              (a) => some(a),
+            );
+          },
           (a) => some(a),
         );
       },

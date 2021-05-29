@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
@@ -34,6 +35,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Stream<ChatState> mapEventToState(ChatEvent event) => event.when(
         refresh: _refresh,
         addText: _addText,
+        addAudio: _addAudio,
         deleteMessage: _deleteMessage,
         updateSubject: _updateSubject,
         updateTextMessage: _updateTextMessage,
@@ -87,6 +89,34 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         yield ChatState(chat, isInProgress: true);
 
         final result = await _messageRepo.addText(chat.id, text);
+
+        yield* result.fold(
+          () async* {
+            final updateResult = await _repo.get(chat.id);
+
+            yield updateResult.fold(
+              (l) => ChatState(chat, rejection: l),
+              (r) => ChatState(r, isSuccess: true),
+            );
+          },
+          (a) async* {
+            yield ChatState(chat, rejection: a);
+          },
+        );
+      },
+      orElse: () async* {
+        yield state;
+      },
+    );
+  }
+
+  Stream<ChatState> _addAudio(File file, String duration) async* {
+    yield* state.maybeWhen(
+      (chat, rejection, isInProgress, isSuccess) async* {
+        yield ChatState(chat, isInProgress: true);
+
+        final result = await _messageRepo.addAudio(chat.id, file, duration);
+        if (file.path != 'audio.mp3') file.deleteSync();
 
         yield* result.fold(
           () async* {

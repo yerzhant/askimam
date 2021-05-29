@@ -46,7 +46,8 @@ void main() {
     expect(find.text('text 1'), findsOneWidget);
     expect(find.text('text 2'), findsOneWidget);
     expect(find.byType(TextField), findsOneWidget);
-    expect(find.byIcon(Icons.send), findsOneWidget);
+    expect(find.byIcon(Icons.mic), findsNothing);
+    expect(find.byIcon(Icons.send), findsNWidgets(2));
     expect(find.byIcon(Icons.rotate_left), findsNothing);
 
     verify(bloc.add(const ChatEvent.refresh(1))).called(1);
@@ -60,6 +61,7 @@ void main() {
     expect(find.text('text 1'), findsOneWidget);
     expect(find.text('text 2'), findsOneWidget);
     expect(find.byType(TextField), findsNothing);
+    expect(find.byIcon(Icons.mic), findsNothing);
     expect(find.byIcon(Icons.send), findsNothing);
     expect(find.byIcon(Icons.rotate_left), findsNothing);
   });
@@ -73,6 +75,7 @@ void main() {
     expect(find.text('text 1'), findsOneWidget);
     expect(find.text('text 2'), findsOneWidget);
     expect(find.byType(TextField), findsNothing);
+    expect(find.byIcon(Icons.mic), findsNothing);
     expect(find.byIcon(Icons.send), findsNothing);
     expect(find.byIcon(Icons.rotate_left), findsNothing);
   });
@@ -84,6 +87,31 @@ void main() {
 
     expect(find.byType(MessageComposer), findsOneWidget);
     expect(find.byIcon(Icons.rotate_left), findsOneWidget);
+    expect(find.byIcon(Icons.mic), findsOneWidget);
+  });
+
+  testWidgets('should start recording audio', (tester) async {
+    when(authBloc.state).thenReturn(
+        AuthState.authenticated(Authentication('jwt', 2, UserType.Imam)));
+    await _fixture(tester, bloc, authBloc);
+    await tester.tap(find.byIcon(Icons.mic));
+    await tester.pump();
+
+    expect(find.byType(LinearProgressIndicator), findsOneWidget);
+    expect(find.text('0:00'), findsOneWidget);
+    expect(find.byIcon(Icons.cancel), findsOneWidget);
+  });
+
+  testWidgets('should send audio', (tester) async {
+    when(authBloc.state).thenReturn(
+        AuthState.authenticated(Authentication('jwt', 2, UserType.Imam)));
+    await _fixture(tester, bloc, authBloc);
+    await tester.tap(find.byIcon(Icons.mic));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.send).last, warnIfMissed: false);
+    await tester.pumpAndSettle();
+
+    // verify(bloc.add(ChatEvent.addAudio(any, any))).called(1);
   });
 
   testWidgets('should return a chat to unanswered ones', (tester) async {
@@ -135,7 +163,7 @@ void main() {
   testWidgets('should create a message', (tester) async {
     await _fixture(tester, bloc, authBloc);
     await tester.enterText(find.byType(TextField), 'text 3');
-    await tester.tap(find.byIcon(Icons.send));
+    await tester.tap(find.byIcon(Icons.send).first);
     await tester.pumpAndSettle();
 
     verify(bloc.add(const ChatEvent.addText('text 3'))).called(1);
@@ -144,7 +172,7 @@ void main() {
   testWidgets('should trim a message', (tester) async {
     await _fixture(tester, bloc, authBloc);
     await tester.enterText(find.byType(TextField), ' text 3 ');
-    await tester.tap(find.byIcon(Icons.send));
+    await tester.tap(find.byIcon(Icons.send).first);
     await tester.pumpAndSettle();
 
     verify(bloc.add(const ChatEvent.addText('text 3'))).called(1);
@@ -153,7 +181,7 @@ void main() {
   testWidgets('should not send an empty message', (tester) async {
     await _fixture(tester, bloc, authBloc);
     await tester.enterText(find.byType(TextField), ' ');
-    await tester.tap(find.byIcon(Icons.send));
+    await tester.tap(find.byIcon(Icons.send).first);
     await tester.pumpAndSettle();
 
     verifyNever(bloc.add(const ChatEvent.addText('')));

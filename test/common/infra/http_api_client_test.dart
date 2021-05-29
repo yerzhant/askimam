@@ -178,6 +178,7 @@ void main() {
       expect(result, some(Rejection('Exception: Unhandled POST: /suffix/4')));
     });
   });
+
   group('Post and get response:', () {
     test('should return response', () async {
       final result =

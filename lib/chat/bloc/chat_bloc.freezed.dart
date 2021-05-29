@@ -38,6 +38,13 @@ class _$ChatEventTearOff {
     );
   }
 
+  _AddAudio addAudio(File file, String duration) {
+    return _AddAudio(
+      file,
+      duration,
+    );
+  }
+
   _DeleteMessage deleteMessage(int id) {
     return _DeleteMessage(
       id,
@@ -63,6 +70,7 @@ mixin _$ChatEvent {
     required TResult Function() returnToUnaswered,
     required TResult Function(String subject) updateSubject,
     required TResult Function(String text) addText,
+    required TResult Function(File file, String duration) addAudio,
     required TResult Function(int id) deleteMessage,
     required TResult Function(int id, String text) updateTextMessage,
   }) =>
@@ -73,6 +81,7 @@ mixin _$ChatEvent {
     TResult Function()? returnToUnaswered,
     TResult Function(String subject)? updateSubject,
     TResult Function(String text)? addText,
+    TResult Function(File file, String duration)? addAudio,
     TResult Function(int id)? deleteMessage,
     TResult Function(int id, String text)? updateTextMessage,
     required TResult orElse(),
@@ -84,6 +93,7 @@ mixin _$ChatEvent {
     required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
     required TResult Function(_UpdateSubject value) updateSubject,
     required TResult Function(_AddText value) addText,
+    required TResult Function(_AddAudio value) addAudio,
     required TResult Function(_DeleteMessage value) deleteMessage,
     required TResult Function(_UpdateTextMessage value) updateTextMessage,
   }) =>
@@ -94,6 +104,7 @@ mixin _$ChatEvent {
     TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
     TResult Function(_UpdateSubject value)? updateSubject,
     TResult Function(_AddText value)? addText,
+    TResult Function(_AddAudio value)? addAudio,
     TResult Function(_DeleteMessage value)? deleteMessage,
     TResult Function(_UpdateTextMessage value)? updateTextMessage,
     required TResult orElse(),
@@ -181,6 +192,7 @@ class _$_Refresh implements _Refresh {
     required TResult Function() returnToUnaswered,
     required TResult Function(String subject) updateSubject,
     required TResult Function(String text) addText,
+    required TResult Function(File file, String duration) addAudio,
     required TResult Function(int id) deleteMessage,
     required TResult Function(int id, String text) updateTextMessage,
   }) {
@@ -194,6 +206,7 @@ class _$_Refresh implements _Refresh {
     TResult Function()? returnToUnaswered,
     TResult Function(String subject)? updateSubject,
     TResult Function(String text)? addText,
+    TResult Function(File file, String duration)? addAudio,
     TResult Function(int id)? deleteMessage,
     TResult Function(int id, String text)? updateTextMessage,
     required TResult orElse(),
@@ -211,6 +224,7 @@ class _$_Refresh implements _Refresh {
     required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
     required TResult Function(_UpdateSubject value) updateSubject,
     required TResult Function(_AddText value) addText,
+    required TResult Function(_AddAudio value) addAudio,
     required TResult Function(_DeleteMessage value) deleteMessage,
     required TResult Function(_UpdateTextMessage value) updateTextMessage,
   }) {
@@ -224,6 +238,7 @@ class _$_Refresh implements _Refresh {
     TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
     TResult Function(_UpdateSubject value)? updateSubject,
     TResult Function(_AddText value)? addText,
+    TResult Function(_AddAudio value)? addAudio,
     TResult Function(_DeleteMessage value)? deleteMessage,
     TResult Function(_UpdateTextMessage value)? updateTextMessage,
     required TResult orElse(),
@@ -287,6 +302,7 @@ class _$_ReturnToUnaswered implements _ReturnToUnaswered {
     required TResult Function() returnToUnaswered,
     required TResult Function(String subject) updateSubject,
     required TResult Function(String text) addText,
+    required TResult Function(File file, String duration) addAudio,
     required TResult Function(int id) deleteMessage,
     required TResult Function(int id, String text) updateTextMessage,
   }) {
@@ -300,6 +316,7 @@ class _$_ReturnToUnaswered implements _ReturnToUnaswered {
     TResult Function()? returnToUnaswered,
     TResult Function(String subject)? updateSubject,
     TResult Function(String text)? addText,
+    TResult Function(File file, String duration)? addAudio,
     TResult Function(int id)? deleteMessage,
     TResult Function(int id, String text)? updateTextMessage,
     required TResult orElse(),
@@ -317,6 +334,7 @@ class _$_ReturnToUnaswered implements _ReturnToUnaswered {
     required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
     required TResult Function(_UpdateSubject value) updateSubject,
     required TResult Function(_AddText value) addText,
+    required TResult Function(_AddAudio value) addAudio,
     required TResult Function(_DeleteMessage value) deleteMessage,
     required TResult Function(_UpdateTextMessage value) updateTextMessage,
   }) {
@@ -330,6 +348,7 @@ class _$_ReturnToUnaswered implements _ReturnToUnaswered {
     TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
     TResult Function(_UpdateSubject value)? updateSubject,
     TResult Function(_AddText value)? addText,
+    TResult Function(_AddAudio value)? addAudio,
     TResult Function(_DeleteMessage value)? deleteMessage,
     TResult Function(_UpdateTextMessage value)? updateTextMessage,
     required TResult orElse(),
@@ -412,6 +431,7 @@ class _$_UpdateSubject implements _UpdateSubject {
     required TResult Function() returnToUnaswered,
     required TResult Function(String subject) updateSubject,
     required TResult Function(String text) addText,
+    required TResult Function(File file, String duration) addAudio,
     required TResult Function(int id) deleteMessage,
     required TResult Function(int id, String text) updateTextMessage,
   }) {
@@ -425,6 +445,7 @@ class _$_UpdateSubject implements _UpdateSubject {
     TResult Function()? returnToUnaswered,
     TResult Function(String subject)? updateSubject,
     TResult Function(String text)? addText,
+    TResult Function(File file, String duration)? addAudio,
     TResult Function(int id)? deleteMessage,
     TResult Function(int id, String text)? updateTextMessage,
     required TResult orElse(),
@@ -442,6 +463,7 @@ class _$_UpdateSubject implements _UpdateSubject {
     required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
     required TResult Function(_UpdateSubject value) updateSubject,
     required TResult Function(_AddText value) addText,
+    required TResult Function(_AddAudio value) addAudio,
     required TResult Function(_DeleteMessage value) deleteMessage,
     required TResult Function(_UpdateTextMessage value) updateTextMessage,
   }) {
@@ -455,6 +477,7 @@ class _$_UpdateSubject implements _UpdateSubject {
     TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
     TResult Function(_UpdateSubject value)? updateSubject,
     TResult Function(_AddText value)? addText,
+    TResult Function(_AddAudio value)? addAudio,
     TResult Function(_DeleteMessage value)? deleteMessage,
     TResult Function(_UpdateTextMessage value)? updateTextMessage,
     required TResult orElse(),
@@ -540,6 +563,7 @@ class _$_AddText implements _AddText {
     required TResult Function() returnToUnaswered,
     required TResult Function(String subject) updateSubject,
     required TResult Function(String text) addText,
+    required TResult Function(File file, String duration) addAudio,
     required TResult Function(int id) deleteMessage,
     required TResult Function(int id, String text) updateTextMessage,
   }) {
@@ -553,6 +577,7 @@ class _$_AddText implements _AddText {
     TResult Function()? returnToUnaswered,
     TResult Function(String subject)? updateSubject,
     TResult Function(String text)? addText,
+    TResult Function(File file, String duration)? addAudio,
     TResult Function(int id)? deleteMessage,
     TResult Function(int id, String text)? updateTextMessage,
     required TResult orElse(),
@@ -570,6 +595,7 @@ class _$_AddText implements _AddText {
     required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
     required TResult Function(_UpdateSubject value) updateSubject,
     required TResult Function(_AddText value) addText,
+    required TResult Function(_AddAudio value) addAudio,
     required TResult Function(_DeleteMessage value) deleteMessage,
     required TResult Function(_UpdateTextMessage value) updateTextMessage,
   }) {
@@ -583,6 +609,7 @@ class _$_AddText implements _AddText {
     TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
     TResult Function(_UpdateSubject value)? updateSubject,
     TResult Function(_AddText value)? addText,
+    TResult Function(_AddAudio value)? addAudio,
     TResult Function(_DeleteMessage value)? deleteMessage,
     TResult Function(_UpdateTextMessage value)? updateTextMessage,
     required TResult orElse(),
@@ -600,6 +627,151 @@ abstract class _AddText implements ChatEvent {
   String get text => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$AddTextCopyWith<_AddText> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$AddAudioCopyWith<$Res> {
+  factory _$AddAudioCopyWith(_AddAudio value, $Res Function(_AddAudio) then) =
+      __$AddAudioCopyWithImpl<$Res>;
+  $Res call({File file, String duration});
+}
+
+/// @nodoc
+class __$AddAudioCopyWithImpl<$Res> extends _$ChatEventCopyWithImpl<$Res>
+    implements _$AddAudioCopyWith<$Res> {
+  __$AddAudioCopyWithImpl(_AddAudio _value, $Res Function(_AddAudio) _then)
+      : super(_value, (v) => _then(v as _AddAudio));
+
+  @override
+  _AddAudio get _value => super._value as _AddAudio;
+
+  @override
+  $Res call({
+    Object? file = freezed,
+    Object? duration = freezed,
+  }) {
+    return _then(_AddAudio(
+      file == freezed
+          ? _value.file
+          : file // ignore: cast_nullable_to_non_nullable
+              as File,
+      duration == freezed
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+class _$_AddAudio implements _AddAudio {
+  const _$_AddAudio(this.file, this.duration);
+
+  @override
+  final File file;
+  @override
+  final String duration;
+
+  @override
+  String toString() {
+    return 'ChatEvent.addAudio(file: $file, duration: $duration)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _AddAudio &&
+            (identical(other.file, file) ||
+                const DeepCollectionEquality().equals(other.file, file)) &&
+            (identical(other.duration, duration) ||
+                const DeepCollectionEquality()
+                    .equals(other.duration, duration)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(file) ^
+      const DeepCollectionEquality().hash(duration);
+
+  @JsonKey(ignore: true)
+  @override
+  _$AddAudioCopyWith<_AddAudio> get copyWith =>
+      __$AddAudioCopyWithImpl<_AddAudio>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int id) refresh,
+    required TResult Function() returnToUnaswered,
+    required TResult Function(String subject) updateSubject,
+    required TResult Function(String text) addText,
+    required TResult Function(File file, String duration) addAudio,
+    required TResult Function(int id) deleteMessage,
+    required TResult Function(int id, String text) updateTextMessage,
+  }) {
+    return addAudio(file, duration);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int id)? refresh,
+    TResult Function()? returnToUnaswered,
+    TResult Function(String subject)? updateSubject,
+    TResult Function(String text)? addText,
+    TResult Function(File file, String duration)? addAudio,
+    TResult Function(int id)? deleteMessage,
+    TResult Function(int id, String text)? updateTextMessage,
+    required TResult orElse(),
+  }) {
+    if (addAudio != null) {
+      return addAudio(file, duration);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Refresh value) refresh,
+    required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
+    required TResult Function(_UpdateSubject value) updateSubject,
+    required TResult Function(_AddText value) addText,
+    required TResult Function(_AddAudio value) addAudio,
+    required TResult Function(_DeleteMessage value) deleteMessage,
+    required TResult Function(_UpdateTextMessage value) updateTextMessage,
+  }) {
+    return addAudio(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Refresh value)? refresh,
+    TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
+    TResult Function(_UpdateSubject value)? updateSubject,
+    TResult Function(_AddText value)? addText,
+    TResult Function(_AddAudio value)? addAudio,
+    TResult Function(_DeleteMessage value)? deleteMessage,
+    TResult Function(_UpdateTextMessage value)? updateTextMessage,
+    required TResult orElse(),
+  }) {
+    if (addAudio != null) {
+      return addAudio(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _AddAudio implements ChatEvent {
+  const factory _AddAudio(File file, String duration) = _$_AddAudio;
+
+  File get file => throw _privateConstructorUsedError;
+  String get duration => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$AddAudioCopyWith<_AddAudio> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -670,6 +842,7 @@ class _$_DeleteMessage implements _DeleteMessage {
     required TResult Function() returnToUnaswered,
     required TResult Function(String subject) updateSubject,
     required TResult Function(String text) addText,
+    required TResult Function(File file, String duration) addAudio,
     required TResult Function(int id) deleteMessage,
     required TResult Function(int id, String text) updateTextMessage,
   }) {
@@ -683,6 +856,7 @@ class _$_DeleteMessage implements _DeleteMessage {
     TResult Function()? returnToUnaswered,
     TResult Function(String subject)? updateSubject,
     TResult Function(String text)? addText,
+    TResult Function(File file, String duration)? addAudio,
     TResult Function(int id)? deleteMessage,
     TResult Function(int id, String text)? updateTextMessage,
     required TResult orElse(),
@@ -700,6 +874,7 @@ class _$_DeleteMessage implements _DeleteMessage {
     required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
     required TResult Function(_UpdateSubject value) updateSubject,
     required TResult Function(_AddText value) addText,
+    required TResult Function(_AddAudio value) addAudio,
     required TResult Function(_DeleteMessage value) deleteMessage,
     required TResult Function(_UpdateTextMessage value) updateTextMessage,
   }) {
@@ -713,6 +888,7 @@ class _$_DeleteMessage implements _DeleteMessage {
     TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
     TResult Function(_UpdateSubject value)? updateSubject,
     TResult Function(_AddText value)? addText,
+    TResult Function(_AddAudio value)? addAudio,
     TResult Function(_DeleteMessage value)? deleteMessage,
     TResult Function(_UpdateTextMessage value)? updateTextMessage,
     required TResult orElse(),
@@ -812,6 +988,7 @@ class _$_UpdateTextMessage implements _UpdateTextMessage {
     required TResult Function() returnToUnaswered,
     required TResult Function(String subject) updateSubject,
     required TResult Function(String text) addText,
+    required TResult Function(File file, String duration) addAudio,
     required TResult Function(int id) deleteMessage,
     required TResult Function(int id, String text) updateTextMessage,
   }) {
@@ -825,6 +1002,7 @@ class _$_UpdateTextMessage implements _UpdateTextMessage {
     TResult Function()? returnToUnaswered,
     TResult Function(String subject)? updateSubject,
     TResult Function(String text)? addText,
+    TResult Function(File file, String duration)? addAudio,
     TResult Function(int id)? deleteMessage,
     TResult Function(int id, String text)? updateTextMessage,
     required TResult orElse(),
@@ -842,6 +1020,7 @@ class _$_UpdateTextMessage implements _UpdateTextMessage {
     required TResult Function(_ReturnToUnaswered value) returnToUnaswered,
     required TResult Function(_UpdateSubject value) updateSubject,
     required TResult Function(_AddText value) addText,
+    required TResult Function(_AddAudio value) addAudio,
     required TResult Function(_DeleteMessage value) deleteMessage,
     required TResult Function(_UpdateTextMessage value) updateTextMessage,
   }) {
@@ -855,6 +1034,7 @@ class _$_UpdateTextMessage implements _UpdateTextMessage {
     TResult Function(_ReturnToUnaswered value)? returnToUnaswered,
     TResult Function(_UpdateSubject value)? updateSubject,
     TResult Function(_AddText value)? addText,
+    TResult Function(_AddAudio value)? addAudio,
     TResult Function(_DeleteMessage value)? deleteMessage,
     TResult Function(_UpdateTextMessage value)? updateTextMessage,
     required TResult orElse(),

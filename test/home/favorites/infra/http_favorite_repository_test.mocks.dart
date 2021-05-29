@@ -3,6 +3,7 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i4;
+import 'dart:io' as _i7;
 
 import 'package:askimam/common/domain/model/model.dart' as _i6;
 import 'package:askimam/common/domain/model/rejection.dart' as _i5;
@@ -78,6 +79,13 @@ class MockApiClient extends _i1.Mock implements _i3.ApiClient {
                   returnValue: Future<_i2.Either<_i5.Rejection, R>>.value(
                       _FakeEither<_i5.Rejection, R>()))
               as _i4.Future<_i2.Either<_i5.Rejection, R>>);
+  @override
+  _i4.Future<_i2.Option<_i5.Rejection>> uploadFile(
+          String? suffix, _i7.File? file) =>
+      (super.noSuchMethod(Invocation.method(#uploadFile, [suffix, file]),
+              returnValue: Future<_i2.Option<_i5.Rejection>>.value(
+                  _FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
   @override
   void setJwt(String? jwt) =>
       super.noSuchMethod(Invocation.method(#setJwt, [jwt]),

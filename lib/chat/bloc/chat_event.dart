@@ -6,6 +6,7 @@ class ChatEvent with _$ChatEvent {
   const factory ChatEvent.returnToUnaswered() = _ReturnToUnaswered;
   const factory ChatEvent.updateSubject(String subject) = _UpdateSubject;
   const factory ChatEvent.addText(String text) = _AddText;
+  const factory ChatEvent.addAudio(File file, String duration) = _AddAudio;
   const factory ChatEvent.deleteMessage(int id) = _DeleteMessage;
   const factory ChatEvent.updateTextMessage(int id, String text) =
       _UpdateTextMessage;

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/bloc/chat_bloc.dart';
@@ -560,6 +562,142 @@ void main() {
       build: () => bloc,
       seed: () => ChatState.error(Rejection('reason')),
       act: (_) => bloc.add(const ChatEvent.addText('text')),
+      expect: () => [],
+    );
+  });
+
+  group('Add audio:', () {
+    final file = File('audio.mp3');
+
+    blocTest(
+      'should add it',
+      build: () {
+        when(messageRepo.addAudio(1, file, '1:23'))
+            .thenAnswer((_) async => none());
+        when(repo.get(1)).thenAnswer(
+          (_) async => right(
+            Chat(1, ChatType.Public, 1, 'subject', messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+              Message(2, MessageType.Audio, 'audio', 'imam',
+                  DateTime.parse('20210418'), null,
+                  audio: 'audio.mp3', duration: '1:23'),
+            ]),
+          ),
+        );
+
+        return bloc;
+      },
+      seed: () => ChatState(
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
+          Message(1, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+        ]),
+      ),
+      act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
+      expect: () => [
+        ChatState(
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          isInProgress: true,
+        ),
+        ChatState(
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+            Message(2, MessageType.Audio, 'audio', 'imam',
+                DateTime.parse('20210418'), null,
+                audio: 'audio.mp3', duration: '1:23'),
+          ]),
+          isSuccess: true,
+        ),
+      ],
+    );
+
+    blocTest(
+      'should not add it',
+      build: () {
+        when(messageRepo.addAudio(1, file, '1:23'))
+            .thenAnswer((_) async => none());
+        when(repo.get(1)).thenAnswer(
+          (_) async => left(Rejection('reason')),
+        );
+
+        return bloc;
+      },
+      seed: () => ChatState(
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
+          Message(1, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+        ]),
+      ),
+      act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
+      expect: () => [
+        ChatState(
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          isInProgress: true,
+        ),
+        ChatState(
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          rejection: Rejection('reason'),
+        ),
+      ],
+    );
+
+    blocTest(
+      'should not add it as well',
+      build: () {
+        when(messageRepo.addAudio(1, file, '1:23'))
+            .thenAnswer((_) async => some(Rejection('reason')));
+
+        return bloc;
+      },
+      seed: () => ChatState(
+        Chat(1, ChatType.Public, 1, 'subject', messages: [
+          Message(1, MessageType.Text, 'text', 'author',
+              DateTime.parse('20210418'), null),
+        ]),
+      ),
+      act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
+      expect: () => [
+        ChatState(
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          isInProgress: true,
+        ),
+        ChatState(
+          Chat(1, ChatType.Public, 1, 'subject', messages: [
+            Message(1, MessageType.Text, 'text', 'author',
+                DateTime.parse('20210418'), null),
+          ]),
+          rejection: Rejection('reason'),
+        ),
+      ],
+    );
+
+    blocTest(
+      'should not even try to',
+      build: () => bloc,
+      seed: () => const ChatState.inProgress(),
+      act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
+      expect: () => [],
+    );
+
+    blocTest(
+      'should not even try to either',
+      build: () => bloc,
+      seed: () => ChatState.error(Rejection('reason')),
+      act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
       expect: () => [],
     );
   });

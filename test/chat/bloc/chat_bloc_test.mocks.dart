@@ -3,6 +3,7 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i3;
+import 'dart:io' as _i13;
 
 import 'package:askimam/auth/bloc/auth_bloc.dart' as _i2;
 import 'package:askimam/chat/domain/model/chat.dart' as _i11;
@@ -304,6 +305,14 @@ class MockMessageRepository extends _i1.Mock implements _i12.MessageRepository {
   @override
   _i3.Future<_i5.Option<_i10.Rejection>> addText(int? chatId, String? text) =>
       (super.noSuchMethod(Invocation.method(#addText, [chatId, text]),
+              returnValue: Future<_i5.Option<_i10.Rejection>>.value(
+                  _FakeOption<_i10.Rejection>()))
+          as _i3.Future<_i5.Option<_i10.Rejection>>);
+  @override
+  _i3.Future<_i5.Option<_i10.Rejection>> addAudio(
+          int? chatId, _i13.File? audio, String? duration) =>
+      (super.noSuchMethod(
+              Invocation.method(#addAudio, [chatId, audio, duration]),
               returnValue: Future<_i5.Option<_i10.Rejection>>.value(
                   _FakeOption<_i10.Rejection>()))
           as _i3.Future<_i5.Option<_i10.Rejection>>);

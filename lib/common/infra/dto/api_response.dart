@@ -62,9 +62,16 @@ final _fromJsonfactories = <Type, Function>{
       ImamRatingsWithDescription.fromJson(json),
 };
 
-extension StringExt on Response {
+extension ResponseExt on Response {
   ApiResponse decodeApiResponse() =>
       ApiResponse.fromJson(jsonDecode(utf8.decode(bodyBytes)));
+
+  Rejection asRejection() => Rejection('Response: $statusCode, $reasonPhrase');
+}
+
+extension StreamedResponseExt on StreamedResponse {
+  Future<ApiResponse> decodeApiResponse() async =>
+      ApiResponse.fromJson(jsonDecode(utf8.decode(await stream.toBytes())));
 
   Rejection asRejection() => Rejection('Response: $statusCode, $reasonPhrase');
 }

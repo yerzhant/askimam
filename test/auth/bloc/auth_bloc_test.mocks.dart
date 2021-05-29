@@ -3,6 +3,7 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i4;
+import 'dart:io' as _i11;
 
 import 'package:askimam/auth/domain/model/authentication.dart' as _i7;
 import 'package:askimam/auth/domain/model/login_request.dart' as _i8;
@@ -12,7 +13,7 @@ import 'package:askimam/common/domain/model/model.dart' as _i10;
 import 'package:askimam/common/domain/model/rejection.dart' as _i5;
 import 'package:askimam/common/domain/service/api_client.dart' as _i9;
 import 'package:askimam/common/domain/service/notification_service.dart'
-    as _i11;
+    as _i12;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -116,6 +117,13 @@ class MockApiClient extends _i1.Mock implements _i9.ApiClient {
                       _FakeEither<_i5.Rejection, R>()))
               as _i4.Future<_i2.Either<_i5.Rejection, R>>);
   @override
+  _i4.Future<_i2.Option<_i5.Rejection>> uploadFile(
+          String? suffix, _i11.File? file) =>
+      (super.noSuchMethod(Invocation.method(#uploadFile, [suffix, file]),
+              returnValue: Future<_i2.Option<_i5.Rejection>>.value(
+                  _FakeOption<_i5.Rejection>()))
+          as _i4.Future<_i2.Option<_i5.Rejection>>);
+  @override
   void setJwt(String? jwt) =>
       super.noSuchMethod(Invocation.method(#setJwt, [jwt]),
           returnValueForMissingStub: null);
@@ -128,7 +136,7 @@ class MockApiClient extends _i1.Mock implements _i9.ApiClient {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNotificationService extends _i1.Mock
-    implements _i11.NotificationService {
+    implements _i12.NotificationService {
   MockNotificationService() {
     _i1.throwOnMissingStub(this);
   }

@@ -115,7 +115,7 @@ class _ChatPageState extends State<ChatPage> {
                         authenticated: (auth) {
                           if (auth.userId == chat.askedBy ||
                               auth.userType == UserType.Imam) {
-                            return const MessageComposer();
+                            return MessageComposer(auth);
                           } else {
                             return Container();
                           }

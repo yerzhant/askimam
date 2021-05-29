@@ -24,8 +24,10 @@ dependencies:
   http: ^0.13.2
   intl: ^0.17.0
   json_annotation: ^4.0.1
+  permission_handler: ^8.0.0+2
   shared_preferences: ^2.0.5
   url_launcher: ^6.0.3
+  uuid: ^3.0.4
 
 dev_dependencies:
   flutter_test:
@@ -49,4 +51,4 @@ flutter_icons:
   android: true
   ios: true
   remove_alpha_ios: true
-  image_path: "logo/logo.png"
+  image_path: 'logo/logo.png'

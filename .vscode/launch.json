@@ -5,6 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch current file",
+            "type": "dart",
+            "request": "launch",
+        },
+        {
             "name": "Dev",
             "request": "launch",
             "type": "dart",

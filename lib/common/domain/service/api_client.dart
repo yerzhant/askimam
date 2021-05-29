@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:dartz/dartz.dart';
@@ -16,6 +18,8 @@ abstract class ApiClient {
   Future<Either<Rejection, R>>
       postAndGetResponse<R extends Model, M extends Model>(
           String suffix, M model);
+
+  Future<Option<Rejection>> uploadFile(String suffix, File file);
 
   void setJwt(String jwt);
   void resetJwt();

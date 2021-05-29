@@ -150,6 +150,37 @@ class HttpApiClient implements ApiClient {
     }
   }
 
+  @override
+  Future<Option<Rejection>> uploadFile(String suffix, File file) async {
+    try {
+      final request = MultipartRequest('POST', _constructUrl(suffix))
+        ..headers[HttpHeaders.authorizationHeader] = 'Bearer $_jwt'
+        ..files.add(MultipartFile.fromBytes(
+          'file',
+          file.readAsBytesSync(),
+          filename: file.path.split('/').last,
+        ));
+
+      final streamedResponse = await request.send();
+
+      if (streamedResponse.statusCode == 200) {
+        final response = await streamedResponse.decodeApiResponse();
+
+        if (response.status == ApiResponseStatus.Ok) {
+          return none();
+        } else {
+          return some(response.asRejection());
+        }
+      } else if (streamedResponse.statusCode == 401) {
+        return some(Rejection('Unauthorized.'));
+      } else {
+        return some(streamedResponse.asRejection());
+      }
+    } on Exception catch (e) {
+      return some(e.asRejection());
+    }
+  }
+
   T _processHttpResponse<T>(
     Response httpResponse,
     T Function(ApiResponse response) ok,
