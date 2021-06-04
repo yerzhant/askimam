@@ -100,15 +100,14 @@ class _HomePageState extends State<HomePage> {
                 ],
                 orElse: () => [
                   const PublicChatsWidget(),
+                  Container(),
+                  Container(),
                   const SearchChatsWidget(),
                 ],
               ),
             ),
             bottomNavigationBar: BottomNavigationBar(
-              currentIndex: state.maybeWhen(
-                authenticated: (_) => _getIndex(),
-                orElse: () => 0,
-              ),
+              currentIndex: _getIndex(),
               onTap: (index) => _onBottomNavTap(state, index),
               items: _items(state),
             ),
@@ -125,10 +124,10 @@ class _HomePageState extends State<HomePage> {
                 if (auth.userType == UserType.Imam) {
                   return FloatingActionButtonLocation.endFloat;
                 } else {
-                  return FloatingActionButtonLocation.endFloat;
+                  return FloatingActionButtonLocation.centerDocked;
                 }
               },
-              orElse: () => FloatingActionButtonLocation.endFloat,
+              orElse: () => FloatingActionButtonLocation.centerDocked,
             ),
           );
         },
@@ -159,7 +158,13 @@ class _HomePageState extends State<HomePage> {
 
         _goToPage(index);
       },
-      orElse: () => Modular.to.pushNamed('/auth/login'),
+      orElse: () {
+        if (index == 0 || index == 3) {
+          _goToPage(index);
+        } else {
+          Modular.to.pushNamed('/auth/login');
+        }
+      },
     );
   }
 
