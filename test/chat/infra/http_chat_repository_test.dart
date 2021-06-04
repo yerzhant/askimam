@@ -89,6 +89,27 @@ void main() {
     });
   });
 
+  group('Find:', () {
+    test('should find it', () async {
+      when(api.getList<Chat>('chats/find/phrase')).thenAnswer(
+          (_) async => right([Chat(1, ChatType.Public, 1, 'subject')]));
+
+      final resutl = await repo.find('phrase');
+
+      expect(resutl.getOrElse(() => Todo),
+          [Chat(1, ChatType.Public, 1, 'subject')]);
+    });
+
+    test('should not get it', () async {
+      when(api.getList<Chat>('chats/find/phrase'))
+          .thenAnswer((_) async => left(Rejection('reason')));
+
+      final resutl = await repo.find('phrase');
+
+      expect(resutl, left(Rejection('reason')));
+    });
+  });
+
   group('Read a chat:', () {
     test('should get it', () async {
       when(api.get<Chat>('chats/messages/1')).thenAnswer((_) async => right(

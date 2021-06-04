@@ -237,6 +237,14 @@ class MockChatRepository extends _i1.Mock implements _i9.ChatRepository {
                   _FakeEither<_i10.Rejection, _i11.Chat>()))
           as _i3.Future<_i5.Either<_i10.Rejection, _i11.Chat>>);
   @override
+  _i3.Future<_i5.Either<_i10.Rejection, List<_i11.Chat>>> find(
+          String? phrase) =>
+      (super.noSuchMethod(Invocation.method(#find, [phrase]),
+              returnValue:
+                  Future<_i5.Either<_i10.Rejection, List<_i11.Chat>>>.value(
+                      _FakeEither<_i10.Rejection, List<_i11.Chat>>()))
+          as _i3.Future<_i5.Either<_i10.Rejection, List<_i11.Chat>>>);
+  @override
   _i3.Future<_i5.Either<_i10.Rejection, List<_i11.Chat>>> getMy(
           int? offset, int? pageSize) =>
       (super.noSuchMethod(Invocation.method(#getMy, [offset, pageSize]),

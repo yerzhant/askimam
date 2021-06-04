@@ -86,6 +86,10 @@ class HttpChatRepository implements ChatRepository {
   }
 
   @override
+  Future<Either<Rejection, List<Chat>>> find(String phrase) =>
+      _api.getList<Chat>('$_url/find/$phrase');
+
+  @override
   Future<Option<Rejection>> returnToUnanswered(int id) async {
     final result = await _api.patch('$_url/$id/return-to-unanswered');
 
