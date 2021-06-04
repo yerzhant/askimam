@@ -4,10 +4,10 @@ PODS:
   - Firebase/Messaging (8.0.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 8.0.0)
-  - firebase_core (1.2.0):
+  - firebase_core (1.2.1):
     - Firebase/CoreOnly (= 8.0.0)
     - Flutter
-  - firebase_messaging (9.1.4):
+  - firebase_messaging (10.0.1):
     - Firebase/Messaging (= 8.0.0)
     - firebase_core
     - Flutter
@@ -20,6 +20,14 @@ PODS:
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
     - nanopb (~> 2.30908.0)
+  - FirebaseFirestore (8.0.0):
+    - FirebaseFirestore/AutodetectLeveldb (= 8.0.0)
+  - FirebaseFirestore/AutodetectLeveldb (8.0.0):
+    - FirebaseFirestore/Base
+    - FirebaseFirestore/WithLeveldb
+  - FirebaseFirestore/Base (8.0.0)
+  - FirebaseFirestore/WithLeveldb (8.0.0):
+    - FirebaseFirestore/Base
   - FirebaseInstallations (8.0.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
@@ -76,6 +84,7 @@ PODS:
 DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
+  - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `8.0.0`)
   - Flutter (from `Flutter`)
   - flutter_sound_lite (from `.symlinks/plugins/flutter_sound_lite/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
@@ -101,6 +110,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_messaging:
     :path: ".symlinks/plugins/firebase_messaging/ios"
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 8.0.0
   Flutter:
     :path: Flutter
   flutter_sound_lite:
@@ -114,12 +126,18 @@ EXTERNAL SOURCES:
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
 
+CHECKOUT OPTIONS:
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 8.0.0
+
 SPEC CHECKSUMS:
   Firebase: 73c3e3b216ec1ecbc54d2ffdd4670c65c749edb1
-  firebase_core: e4d3efb030a2b2021819f8faa538bb23deb46695
-  firebase_messaging: 1a6f4b2ec7d451bc6aa86390d97ce93ca6060caa
+  firebase_core: a9b69f8583dc992f1b15f376b4918537c1804bb4
+  firebase_messaging: f45b468c889bdc3191bc47368329ae22cda536da
   FirebaseCore: 3f09591d51292843e2a46f18358d60bf4e996255
   FirebaseCoreDiagnostics: a31d987ba0fe16d59886a5dbadc2f1de871f88c8
+  FirebaseFirestore: 0d1548ab6085002d87c173ce3f881129f39b3565
   FirebaseInstallations: c4aab1005d6547b00a7529777fe52f5d4d45165b
   FirebaseMessaging: 1a33b4af3c8042ed6ddacb6c031894af2064bfab
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
@@ -134,6 +152,6 @@ SPEC CHECKSUMS:
   tau_core: 8e07b9ce46e5e1b1956fb4d5e9ac713206e5c315
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
-PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea
+PODFILE CHECKSUM: 263641a93fbc38da6965bb8ef21692cdd2867a29
 
 COCOAPODS: 1.10.1
