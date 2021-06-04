@@ -7,6 +7,7 @@ import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
 import 'package:askimam/home/chats/ui/new_question_page.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/infra/http_favorite_repository.dart';
+import 'package:askimam/home/search/bloc/search_chats_bloc.dart';
 import 'package:askimam/home/ui/home_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -17,6 +18,7 @@ class HomeModule extends Module {
         Bind.singleton((i) => HttpFavoriteRepository(i())),
         Bind.singleton((i) => HttpChatRepository(i(), i())),
         Bind.singleton((i) => FavoriteBloc(i())),
+        Bind.singleton((i) => SearchChatsBloc(i())),
         Bind.singleton((i) => MyChatsBloc(i(), i(), pageSize)),
         Bind.singleton((i) => UnansweredChatsBloc(i(), pageSize)),
         Bind.singleton((i) => PublicChatsBloc(i(), i(), pageSize)),
@@ -30,6 +32,7 @@ class HomeModule extends Module {
             authBloc: Modular.get(),
             myChatsBloc: Modular.get(),
             favoriteBloc: Modular.get(),
+            searchChatsBloc: Modular.get(),
             publicChatsBloc: Modular.get(),
             unansweredChatsBloc: Modular.get(),
           ),

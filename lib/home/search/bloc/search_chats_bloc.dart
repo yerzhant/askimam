@@ -13,7 +13,7 @@ part 'search_chats_state.dart';
 class SearchChatsBloc extends Bloc<SearchChatsEvent, SearchChatsState> {
   final ChatRepository _repo;
 
-  SearchChatsBloc(this._repo) : super(const _InProgress());
+  SearchChatsBloc(this._repo) : super(const _State([]));
 
   @override
   Stream<SearchChatsState> mapEventToState(SearchChatsEvent event) =>

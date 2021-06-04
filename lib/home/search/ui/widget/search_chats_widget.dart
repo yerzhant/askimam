@@ -1,4 +1,5 @@
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
@@ -29,6 +30,7 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
     return Column(
       children: [
         _searchBar(_controller),
+        const Divider(height: 1),
         Expanded(
           child: BlocBuilder<SearchChatsBloc, SearchChatsState>(
             builder: (context, state) {
@@ -55,20 +57,32 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
         Expanded(
           child: TextField(
             controller: controller,
+            textInputAction: TextInputAction.search,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left: basePadding),
+            ),
+            onSubmitted: (_) {
+              _search(controller);
+            },
           ),
         ),
         IconButton(
           onPressed: () {
-            if (controller.text.isNotEmpty) {
-              context
-                  .read<SearchChatsBloc>()
-                  .add(SearchChatsEvent.find(controller.text));
-            }
+            _search(controller);
           },
-          icon: const Icon(Icons.search),
+          icon: const Icon(Icons.search, color: primaryColor),
         ),
       ],
     );
+  }
+
+  void _search(TextEditingController controller) {
+    if (controller.text.isNotEmpty) {
+      context
+          .read<SearchChatsBloc>()
+          .add(SearchChatsEvent.find(controller.text));
+    }
   }
 
   Widget _list(List<Chat> items, BuildContext context) {
@@ -83,7 +97,6 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
         );
       },
       key: const PageStorageKey('found-chats'),
-      padding: const EdgeInsets.symmetric(vertical: basePadding),
       physics: const BouncingScrollPhysics(
         parent: AlwaysScrollableScrollPhysics(),
       ),

@@ -7,6 +7,7 @@ import 'package:askimam/home/chats/ui/widget/my_chats_widget.dart';
 import 'package:askimam/home/chats/ui/widget/public_chats_widget.dart';
 import 'package:askimam/home/chats/ui/widget/unanswered_chats_widget.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
+import 'package:askimam/home/search/bloc/search_chats_bloc.dart';
 import 'package:askimam/home/ui/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../search/ui/widget/search_chats_widget_test.mocks.dart';
 import 'home_page_test.mocks.dart';
 
 @GenerateMocks([
@@ -29,6 +31,7 @@ void main() {
   late MyChatsBloc myChatsBloc;
   late FavoriteBloc favoriteBloc;
   late IModularNavigator navigator;
+  late SearchChatsBloc searchChatsBloc;
   late PublicChatsBloc publicChatsBloc;
   late UnansweredChatsBloc unansweredChatsBloc;
 
@@ -36,6 +39,7 @@ void main() {
     authBloc = MockAuthBloc();
     myChatsBloc = MockMyChatsBloc();
     favoriteBloc = MockFavoriteBloc();
+    searchChatsBloc = MockSearchChatsBloc();
     publicChatsBloc = MockPublicChatsBloc();
     unansweredChatsBloc = MockUnansweredChatsBloc();
 
@@ -45,11 +49,13 @@ void main() {
     when(authBloc.stream).thenAnswer((_) => const Stream.empty());
     when(myChatsBloc.stream).thenAnswer((_) => const Stream.empty());
     when(favoriteBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(searchChatsBloc.stream).thenAnswer((_) => const Stream.empty());
     when(publicChatsBloc.stream).thenAnswer((_) => const Stream.empty());
     when(unansweredChatsBloc.stream).thenAnswer((_) => const Stream.empty());
 
     when(myChatsBloc.state).thenReturn(const MyChatsState([]));
     when(favoriteBloc.state).thenReturn(const FavoriteState([]));
+    when(searchChatsBloc.state).thenReturn(const SearchChatsState([]));
     when(publicChatsBloc.state).thenReturn(const PublicChatsState([]));
     when(unansweredChatsBloc.state).thenReturn(const UnansweredChatsState([]));
     when(authBloc.state).thenReturn(AuthState.authenticated(Authentication(
@@ -65,6 +71,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -73,6 +80,7 @@ void main() {
     expect(find.text('Публичные'), findsOneWidget);
     expect(find.text('Мои'), findsOneWidget);
     expect(find.text('Избранные'), findsOneWidget);
+    expect(find.text('Поиск'), findsOneWidget);
     expect(find.byType(FloatingActionButton), findsOneWidget);
   });
 
@@ -88,6 +96,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -103,6 +112,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -117,6 +127,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -137,6 +148,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -158,6 +170,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -174,6 +187,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -189,6 +203,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -204,6 +219,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -211,6 +227,20 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(favoriteBloc.add(const FavoriteEvent.show())).called(1);
+  });
+
+  testWidgets('should show search chats', (tester) async {
+    await _fixture(
+      tester,
+      authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      searchChatsBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
+    );
+
+    await tester.tap(find.text('Поиск'));
   });
 
   testWidgets('should create a new question', (tester) async {
@@ -221,6 +251,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -240,6 +271,7 @@ void main() {
         authBloc,
         myChatsBloc,
         favoriteBloc,
+        searchChatsBloc,
         publicChatsBloc,
         unansweredChatsBloc,
       );
@@ -260,6 +292,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -279,6 +312,7 @@ void main() {
       authBloc,
       myChatsBloc,
       favoriteBloc,
+      searchChatsBloc,
       publicChatsBloc,
       unansweredChatsBloc,
     );
@@ -293,6 +327,7 @@ Future _fixture(
   AuthBloc authBloc,
   MyChatsBloc myChatsBloc,
   FavoriteBloc favoriteBloc,
+  SearchChatsBloc searchChatsBloc,
   PublicChatsBloc publicChatsBloc,
   UnansweredChatsBloc unansweredChatsBloc,
 ) async {
@@ -301,6 +336,7 @@ Future _fixture(
       authBloc: authBloc,
       myChatsBloc: myChatsBloc,
       favoriteBloc: favoriteBloc,
+      searchChatsBloc: searchChatsBloc,
       publicChatsBloc: publicChatsBloc,
       unansweredChatsBloc: unansweredChatsBloc,
     ),

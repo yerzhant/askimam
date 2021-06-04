@@ -8,6 +8,8 @@ import 'package:askimam/home/chats/ui/widget/public_chats_widget.dart';
 import 'package:askimam/home/chats/ui/widget/unanswered_chats_widget.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/ui/widget/favorites_widget.dart';
+import 'package:askimam/home/search/bloc/search_chats_bloc.dart';
+import 'package:askimam/home/search/ui/widget/search_chats_widget.dart';
 import 'package:askimam/home/ui/widget/home_popup_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +19,7 @@ class HomePage extends StatefulWidget {
   final AuthBloc authBloc;
   final MyChatsBloc myChatsBloc;
   final FavoriteBloc favoriteBloc;
+  final SearchChatsBloc searchChatsBloc;
   final PublicChatsBloc publicChatsBloc;
   final UnansweredChatsBloc unansweredChatsBloc;
 
@@ -25,6 +28,7 @@ class HomePage extends StatefulWidget {
     required this.authBloc,
     required this.myChatsBloc,
     required this.favoriteBloc,
+    required this.searchChatsBloc,
     required this.publicChatsBloc,
     required this.unansweredChatsBloc,
   }) : super(key: key) {
@@ -65,6 +69,7 @@ class _HomePageState extends State<HomePage> {
         BlocProvider.value(value: widget.authBloc),
         BlocProvider.value(value: widget.myChatsBloc),
         BlocProvider.value(value: widget.favoriteBloc),
+        BlocProvider.value(value: widget.searchChatsBloc),
         BlocProvider.value(value: widget.publicChatsBloc),
         BlocProvider.value(value: widget.unansweredChatsBloc),
       ],
@@ -91,9 +96,11 @@ class _HomePageState extends State<HomePage> {
                   MyChatsWidget(widget.authBloc),
                   const PublicChatsWidget(),
                   const FavoritesWidget(),
+                  const SearchChatsWidget(),
                 ],
                 orElse: () => [
                   const PublicChatsWidget(),
+                  const SearchChatsWidget(),
                 ],
               ),
             ),
@@ -116,7 +123,7 @@ class _HomePageState extends State<HomePage> {
             floatingActionButtonLocation: state.maybeWhen(
               authenticated: (auth) {
                 if (auth.userType == UserType.Imam) {
-                  return FloatingActionButtonLocation.centerDocked;
+                  return FloatingActionButtonLocation.endFloat;
                 } else {
                   return FloatingActionButtonLocation.endFloat;
                 }
@@ -146,6 +153,8 @@ class _HomePageState extends State<HomePage> {
           case HomePageView.Favorites:
             widget.favoriteBloc.add(const FavoriteEvent.show());
             break;
+          case HomePageView.Search:
+            break;
         }
 
         _goToPage(index);
@@ -168,13 +177,22 @@ class _HomePageState extends State<HomePage> {
           _myItem(),
           _publicItem(),
           _favoritesItem(),
+          _searchItem(),
         ],
         orElse: () => [
           _publicItem(),
           _myItem(),
           _favoritesItem(),
+          _searchItem(),
         ],
       );
+
+  BottomNavigationBarItem _searchItem() {
+    return const BottomNavigationBarItem(
+      icon: Icon(Icons.search),
+      label: 'Поиск',
+    );
+  }
 
   BottomNavigationBarItem _favoritesItem() {
     return const BottomNavigationBarItem(
@@ -208,4 +226,4 @@ class _HomePageState extends State<HomePage> {
       _pageController.hasClients ? _pageController.page?.round() ?? 0 : 0;
 }
 
-enum HomePageView { New, My, Public, Favorites }
+enum HomePageView { New, My, Public, Favorites, Search }

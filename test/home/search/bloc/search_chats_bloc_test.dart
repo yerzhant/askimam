@@ -17,7 +17,7 @@ void main() {
   });
 
   test('Initial state', () {
-    expect(bloc.state, const SearchChatsState.inProgress());
+    expect(bloc.state, const SearchChatsState([]));
   });
 
   blocTest(
