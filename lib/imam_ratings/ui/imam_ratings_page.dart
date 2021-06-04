@@ -64,7 +64,6 @@ class ImamRatingsPage extends StatelessWidget {
       physics: const BouncingScrollPhysics(
         parent: AlwaysScrollableScrollPhysics(),
       ),
-      padding: const EdgeInsets.symmetric(vertical: basePadding),
     );
   }
 }

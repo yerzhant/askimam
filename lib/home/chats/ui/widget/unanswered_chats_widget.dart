@@ -104,7 +104,6 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
           );
         },
         key: const PageStorageKey('unanswered-chats'),
-        padding: const EdgeInsets.symmetric(vertical: basePadding),
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
