@@ -119,16 +119,6 @@ class _HomePageState extends State<HomePage> {
               mini: true,
               child: const Icon(Icons.add_rounded),
             ),
-            floatingActionButtonLocation: state.maybeWhen(
-              authenticated: (auth) {
-                if (auth.userType == UserType.Imam) {
-                  return FloatingActionButtonLocation.endFloat;
-                } else {
-                  return FloatingActionButtonLocation.centerDocked;
-                }
-              },
-              orElse: () => FloatingActionButtonLocation.centerDocked,
-            ),
           );
         },
       ),
