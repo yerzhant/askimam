@@ -3,7 +3,7 @@ description: AskImam 2.0.
 
 publish_to: 'none'
 
-version: 2.6.0+47
+version: 2.7.0+48
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
