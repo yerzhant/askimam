@@ -52,8 +52,8 @@ class _ChatPageState extends State<ChatPage> {
                 SchedulerBinding.instance?.addPostFrameCallback((_) {
                   _scrollController.animateTo(
                     _scrollController.position.maxScrollExtent,
-                    duration: const Duration(milliseconds: 1000),
-                    curve: Curves.easeOutBack,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.easeOutExpo,
                   );
                 });
               }
