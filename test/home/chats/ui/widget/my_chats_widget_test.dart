@@ -126,7 +126,7 @@ void main() {
 
     verify(bloc.add(
       MyChatsEvent.delete(
-        Chat(2, ChatType.Private, 1, 'Chat 2',
+        Chat(2, ChatType.Private, 1, 'Chat 2', DateTime.parse('2021-05-01'),
             isFavorite: true, isViewedByImam: true),
       ),
     )).called(1);
@@ -134,8 +134,8 @@ void main() {
 
   testWidgets('should show a list and a progress circle', (tester) async {
     when(bloc.state).thenReturn(MyChatsState.inProgress([
-      Chat(1, ChatType.Public, 1, 'Chat 1'),
-      Chat(2, ChatType.Private, 1, 'Chat 2'),
+      Chat(1, ChatType.Public, 1, 'Chat 1', DateTime.parse('2021-05-01')),
+      Chat(2, ChatType.Private, 1, 'Chat 2', DateTime.parse('2021-05-01')),
     ]));
 
     await tester.pumpWidget(app);
@@ -169,7 +169,14 @@ void main() {
     verify(
       favoriteBloc.add(
         FavoriteEvent.add(
-          Chat(1, ChatType.Public, 1, 'Chat 1', isViewedByInquirer: true),
+          Chat(
+            1,
+            ChatType.Public,
+            1,
+            'Chat 1',
+            DateTime.parse('2021-05-01'),
+            isViewedByInquirer: true,
+          ),
         ),
       ),
     ).called(1);
@@ -209,6 +216,7 @@ Future _fixture(
         i == 1 ? ChatType.Public : ChatType.Private,
         1,
         'Chat $i',
+        DateTime.parse('2021-05-01'),
         isFavorite: i == 2,
         isViewedByImam: i % 2 == 0,
         isViewedByInquirer: i % 2 == 1,

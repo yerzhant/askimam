@@ -24,13 +24,14 @@ void main() {
     Modular.navigatorDelegate = navigator;
 
     bloc = MockChatBloc();
-    when(bloc.state)
-        .thenReturn(ChatState(Chat(1, ChatType.Public, 1, 'Subject', messages: [
-      Message(1, MessageType.Text, 'text 1', 'author',
-          DateTime.parse('20210424'), null),
-      Message(2, MessageType.Text, 'text 2', 'author',
-          DateTime.parse('20210424'), null),
-    ])));
+    when(bloc.state).thenReturn(ChatState(Chat(
+        1, ChatType.Public, 1, 'Subject', DateTime.parse('2021-05-01'),
+        messages: [
+          Message(1, MessageType.Text, 'text 1', 'author',
+              DateTime.parse('20210424'), null),
+          Message(2, MessageType.Text, 'text 2', 'author',
+              DateTime.parse('20210424'), null),
+        ])));
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
     authBloc = MockAuthBloc();
@@ -189,10 +190,11 @@ void main() {
 
   testWidgets('should be in progress with messages', (tester) async {
     when(bloc.state).thenReturn(ChatState(
-        Chat(1, ChatType.Public, 1, 'Subject', messages: [
-          Message(1, MessageType.Text, 'text 1', 'author',
-              DateTime.parse('20210424'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'Subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text 1', 'author',
+                  DateTime.parse('20210424'), null),
+            ]),
         isInProgress: true));
 
     await _fixture(tester, bloc, authBloc);
@@ -202,7 +204,7 @@ void main() {
 
   testWidgets('should show an intermediate rejection', (tester) async {
     when(bloc.stream).thenAnswer((_) => Stream.value(ChatState(
-        Chat(1, ChatType.Public, 1, 'subject'),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')),
         rejection: Rejection('reason'))));
 
     await _fixture(tester, bloc, authBloc);

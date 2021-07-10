@@ -42,9 +42,28 @@ void main() {
       build: () {
         when(repo.getPublic(0, 20)).thenAnswer(
           (_) async => right([
-            Chat(1, ChatType.Public, 1, 'subject'),
-            Chat(2, ChatType.Public, 1, 'subject'),
-            Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+            Chat(
+              1,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+            ),
+            Chat(
+              2,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+            ),
+            Chat(
+              3,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+              isFavorite: true,
+            ),
           ]),
         );
         return bloc;
@@ -53,9 +72,28 @@ void main() {
       expect: () => [
         const PublicChatsState.inProgress([]),
         PublicChatsState([
-          Chat(1, ChatType.Public, 1, 'subject'),
-          Chat(2, ChatType.Public, 1, 'subject'),
-          Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+          Chat(
+            1,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            2,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            3,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+            isFavorite: true,
+          ),
         ])
       ],
     );
@@ -79,9 +117,28 @@ void main() {
       build: () {
         when(repo.getPublic(0, 20)).thenAnswer(
           (_) async => right([
-            Chat(1, ChatType.Public, 1, 'subject'),
-            Chat(2, ChatType.Public, 1, 'subject'),
-            Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+            Chat(
+              1,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+            ),
+            Chat(
+              2,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+            ),
+            Chat(
+              3,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+              isFavorite: true,
+            ),
           ]),
         );
         return bloc;
@@ -91,9 +148,28 @@ void main() {
       expect: () => [
         const PublicChatsState.inProgress([]),
         PublicChatsState([
-          Chat(1, ChatType.Public, 1, 'subject'),
-          Chat(2, ChatType.Public, 1, 'subject'),
-          Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+          Chat(
+            1,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            2,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            3,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+            isFavorite: true,
+          ),
         ]),
       ],
     );
@@ -103,27 +179,98 @@ void main() {
       build: () {
         when(repo.getPublic(0, 20)).thenAnswer(
           (_) async => right([
-            Chat(1, ChatType.Public, 1, 'subject'),
-            Chat(2, ChatType.Public, 1, 'subject'),
-            Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
-            Chat(4, ChatType.Public, 1, 'subject', isFavorite: true),
+            Chat(
+              1,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+            ),
+            Chat(
+              2,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+            ),
+            Chat(
+              3,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+              isFavorite: true,
+            ),
+            Chat(
+              4,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+              isFavorite: true,
+            ),
           ]),
         );
         return bloc;
       },
       seed: () => PublicChatsState([
-        Chat(1, ChatType.Public, 1, 'subject'),
-        Chat(2, ChatType.Public, 1, 'subject'),
-        Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+        Chat(
+          1,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          2,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          3,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+          isFavorite: true,
+        ),
       ]),
       act: (_) => bloc.add(const PublicChatsEvent.reload()),
       expect: () => [
         const PublicChatsState.inProgress([]),
         PublicChatsState([
-          Chat(1, ChatType.Public, 1, 'subject'),
-          Chat(2, ChatType.Public, 1, 'subject'),
-          Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
-          Chat(4, ChatType.Public, 1, 'subject', isFavorite: true),
+          Chat(
+            1,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            2,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            3,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+            isFavorite: true,
+          ),
+          Chat(
+            4,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+            isFavorite: true,
+          ),
         ]),
       ],
     );
@@ -136,34 +283,116 @@ void main() {
         when(repo.getPublic(20, 20)).thenAnswer(
           (_) async => right([
             ...List.generate(
-                20, (i) => Chat(i + 21, ChatType.Public, 1, 'subject')),
+                20,
+                (i) => Chat(
+                      i + 21,
+                      ChatType.Public,
+                      1,
+                      'subject',
+                      DateTime.parse('2021-05-01'),
+                    )),
           ]),
         );
         return bloc;
       },
       seed: () => PublicChatsState([
-        ...List.generate(18, (i) => Chat(i + 1, ChatType.Public, 1, 'subject')),
-        Chat(19, ChatType.Public, 1, 'subject'),
-        Chat(20, ChatType.Public, 1, 'subject', isFavorite: true),
+        ...List.generate(
+            18,
+            (i) => Chat(
+                  i + 1,
+                  ChatType.Public,
+                  1,
+                  'subject',
+                  DateTime.parse('2021-05-01'),
+                )),
+        Chat(
+          19,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          20,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+          isFavorite: true,
+        ),
       ]),
       act: (_) => bloc.add(const PublicChatsEvent.loadNextPage()),
       expect: () => [
         PublicChatsState.inProgress([
           ...List.generate(
-              18, (i) => Chat(i + 1, ChatType.Public, 1, 'subject')),
-          Chat(19, ChatType.Public, 1, 'subject'),
-          Chat(20, ChatType.Public, 1, 'subject', isFavorite: true),
+              18,
+              (i) => Chat(
+                    i + 1,
+                    ChatType.Public,
+                    1,
+                    'subject',
+                    DateTime.parse('2021-05-01'),
+                  )),
+          Chat(
+            19,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            20,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+            isFavorite: true,
+          ),
           // late testing!
           ...List.generate(
-              20, (i) => Chat(i + 21, ChatType.Public, 1, 'subject')),
+              20,
+              (i) => Chat(
+                    i + 21,
+                    ChatType.Public,
+                    1,
+                    'subject',
+                    DateTime.parse('2021-05-01'),
+                  )),
         ]),
         PublicChatsState([
           ...List.generate(
-              18, (i) => Chat(i + 1, ChatType.Public, 1, 'subject')),
-          Chat(19, ChatType.Public, 1, 'subject'),
-          Chat(20, ChatType.Public, 1, 'subject', isFavorite: true),
+              18,
+              (i) => Chat(
+                    i + 1,
+                    ChatType.Public,
+                    1,
+                    'subject',
+                    DateTime.parse('2021-05-01'),
+                  )),
+          Chat(
+            19,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            20,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+            isFavorite: true,
+          ),
           ...List.generate(
-              20, (i) => Chat(i + 21, ChatType.Public, 1, 'subject')),
+              20,
+              (i) => Chat(
+                    i + 21,
+                    ChatType.Public,
+                    1,
+                    'subject',
+                    DateTime.parse('2021-05-01'),
+                  )),
         ]),
       ],
     );
@@ -172,9 +401,30 @@ void main() {
       'should ignore double next page loading',
       build: () => bloc,
       seed: () => PublicChatsState.inProgress([
-        ...List.generate(18, (i) => Chat(i + 1, ChatType.Public, 1, 'subject')),
-        Chat(19, ChatType.Public, 1, 'subject'),
-        Chat(20, ChatType.Public, 1, 'subject', isFavorite: true),
+        ...List.generate(
+            18,
+            (i) => Chat(
+                  i + 1,
+                  ChatType.Public,
+                  1,
+                  'subject',
+                  DateTime.parse('2021-05-01'),
+                )),
+        Chat(
+          19,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          20,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+          isFavorite: true,
+        ),
       ]),
       act: (_) => bloc.add(const PublicChatsEvent.loadNextPage()),
       expect: () => [],
@@ -196,17 +446,58 @@ void main() {
         return bloc;
       },
       seed: () => PublicChatsState([
-        ...List.generate(18, (i) => Chat(i + 1, ChatType.Public, 1, 'subject')),
-        Chat(19, ChatType.Public, 1, 'subject'),
-        Chat(20, ChatType.Public, 1, 'subject', isFavorite: true),
+        ...List.generate(
+            18,
+            (i) => Chat(
+                  i + 1,
+                  ChatType.Public,
+                  1,
+                  'subject',
+                  DateTime.parse('2021-05-01'),
+                )),
+        Chat(
+          19,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          20,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+          isFavorite: true,
+        ),
       ]),
       act: (_) => bloc.add(const PublicChatsEvent.loadNextPage()),
       expect: () => [
         PublicChatsState.inProgress([
           ...List.generate(
-              18, (i) => Chat(i + 1, ChatType.Public, 1, 'subject')),
-          Chat(19, ChatType.Public, 1, 'subject'),
-          Chat(20, ChatType.Public, 1, 'subject', isFavorite: true),
+              18,
+              (i) => Chat(
+                    i + 1,
+                    ChatType.Public,
+                    1,
+                    'subject',
+                    DateTime.parse('2021-05-01'),
+                  )),
+          Chat(
+            19,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            20,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+            isFavorite: true,
+          ),
         ]),
         PublicChatsState.error(Rejection('reason')),
       ],
@@ -219,9 +510,28 @@ void main() {
       build: () {
         when(repo.getPublic(0, 20)).thenAnswer(
           (_) async => right([
-            Chat(1, ChatType.Public, 1, 'subject'),
-            Chat(2, ChatType.Public, 1, 'subject'),
-            Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+            Chat(
+              1,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+            ),
+            Chat(
+              2,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+            ),
+            Chat(
+              3,
+              ChatType.Public,
+              1,
+              'subject',
+              DateTime.parse('2021-05-01'),
+              isFavorite: true,
+            ),
           ]),
         );
         return bloc;
@@ -230,9 +540,28 @@ void main() {
       expect: () => [
         const PublicChatsState.inProgress([]),
         PublicChatsState([
-          Chat(1, ChatType.Public, 1, 'subject'),
-          Chat(2, ChatType.Public, 1, 'subject'),
-          Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+          Chat(
+            1,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            2,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            3,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+            isFavorite: true,
+          ),
         ])
       ],
     );
@@ -241,9 +570,28 @@ void main() {
       'should not load a page',
       build: () => bloc,
       seed: () => PublicChatsState([
-        Chat(1, ChatType.Public, 1, 'subject'),
-        Chat(2, ChatType.Public, 1, 'subject'),
-        Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+        Chat(
+          1,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          2,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          3,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+          isFavorite: true,
+        ),
       ]),
       act: (_) => bloc.add(const PublicChatsEvent.show()),
       expect: () => [],
@@ -264,15 +612,54 @@ void main() {
         return PublicChatsBloc(repo, favoriteBloc, 20);
       },
       seed: () => PublicChatsState([
-        Chat(1, ChatType.Public, 1, 'subject'),
-        Chat(2, ChatType.Public, 1, 'subject'),
-        Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+        Chat(
+          1,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          2,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          3,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+          isFavorite: true,
+        ),
       ]),
       expect: () => [
         PublicChatsState([
-          Chat(1, ChatType.Public, 1, 'subject', isFavorite: true),
-          Chat(2, ChatType.Public, 1, 'subject'),
-          Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+          Chat(
+            1,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+            isFavorite: true,
+          ),
+          Chat(
+            2,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            3,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+            isFavorite: true,
+          ),
         ])
       ],
     );
@@ -289,15 +676,54 @@ void main() {
         return PublicChatsBloc(repo, favoriteBloc, 20);
       },
       seed: () => PublicChatsState([
-        Chat(1, ChatType.Public, 1, 'subject', isFavorite: true),
-        Chat(2, ChatType.Public, 1, 'subject'),
-        Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+        Chat(
+          1,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+          isFavorite: true,
+        ),
+        Chat(
+          2,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          3,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+          isFavorite: true,
+        ),
       ]),
       expect: () => [
         PublicChatsState([
-          Chat(1, ChatType.Public, 1, 'subject'),
-          Chat(2, ChatType.Public, 1, 'subject'),
-          Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+          Chat(
+            1,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            2,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+          ),
+          Chat(
+            3,
+            ChatType.Public,
+            1,
+            'subject',
+            DateTime.parse('2021-05-01'),
+            isFavorite: true,
+          ),
         ])
       ],
     );
@@ -317,9 +743,29 @@ void main() {
         return PublicChatsBloc(repo, favoriteBloc, 20);
       },
       seed: () => PublicChatsState([
-        Chat(1, ChatType.Public, 1, 'subject', isFavorite: true),
-        Chat(2, ChatType.Public, 1, 'subject'),
-        Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+        Chat(
+          1,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+          isFavorite: true,
+        ),
+        Chat(
+          2,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          3,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+          isFavorite: true,
+        ),
       ]),
       expect: () => [],
     );
@@ -337,9 +783,28 @@ void main() {
         return PublicChatsBloc(repo, favoriteBloc, 20);
       },
       seed: () => PublicChatsState.inProgress([
-        Chat(1, ChatType.Public, 1, 'subject'),
-        Chat(2, ChatType.Public, 1, 'subject'),
-        Chat(3, ChatType.Public, 1, 'subject', isFavorite: true),
+        Chat(
+          1,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          2,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+        ),
+        Chat(
+          3,
+          ChatType.Public,
+          1,
+          'subject',
+          DateTime.parse('2021-05-01'),
+          isFavorite: true,
+        ),
       ]),
       expect: () => [],
     );

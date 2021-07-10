@@ -60,12 +60,13 @@ void main() {
 
         when(repo.get(1)).thenAnswer(
           (_) async => right(
-            Chat(1, ChatType.Public, 1, 'subject', messages: [
-              Message(1, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-              Message(2, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-            ]),
+            Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+                messages: [
+                  Message(1, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                  Message(2, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                ]),
           ),
         );
         when(repo.setViewedFlag(1)).thenAnswer((_) async => none());
@@ -76,12 +77,13 @@ void main() {
       expect: () => [
         const ChatState.inProgress(),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isSuccess: true,
         ),
       ],
@@ -99,12 +101,13 @@ void main() {
         when(authBloc.state).thenReturn(const AuthState.unauthenticated());
         when(repo.get(1)).thenAnswer(
           (_) async => right(
-            Chat(1, ChatType.Public, 1, 'subject', messages: [
-              Message(1, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-              Message(2, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-            ]),
+            Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+                messages: [
+                  Message(1, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                  Message(2, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                ]),
           ),
         );
 
@@ -114,12 +117,13 @@ void main() {
       expect: () => [
         const ChatState.inProgress(),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isSuccess: true,
         ),
       ],
@@ -136,12 +140,13 @@ void main() {
         ));
         when(repo.get(1)).thenAnswer(
           (_) async => right(
-            Chat(1, ChatType.Public, 1, 'subject', messages: [
-              Message(1, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-              Message(2, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-            ]),
+            Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+                messages: [
+                  Message(1, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                  Message(2, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                ]),
           ),
         );
 
@@ -151,12 +156,13 @@ void main() {
       expect: () => [
         const ChatState.inProgress(),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isSuccess: true,
         ),
       ],
@@ -176,12 +182,13 @@ void main() {
         ));
         when(repo.get(1)).thenAnswer(
           (_) async => right(
-            Chat(1, ChatType.Public, 1, 'subject', messages: [
-              Message(1, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-              Message(2, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-            ]),
+            Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+                messages: [
+                  Message(1, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                  Message(2, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                ]),
           ),
         );
 
@@ -191,12 +198,13 @@ void main() {
       expect: () => [
         const ChatState.inProgress(),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isSuccess: true,
         ),
       ],
@@ -213,12 +221,13 @@ void main() {
       build: () {
         when(repo.get(1)).thenAnswer(
           (_) async => right(
-            Chat(1, ChatType.Public, 1, 'subject', messages: [
-              Message(1, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-              Message(2, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-            ]),
+            Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+                messages: [
+                  Message(1, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                  Message(2, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                ]),
           ),
         );
         when(repo.setViewedFlag(1))
@@ -258,31 +267,34 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-          Message(2, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+              Message(2, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isSuccess: true,
         ),
       ],
@@ -296,31 +308,34 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-          Message(2, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+              Message(2, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           rejection: Rejection('reason'),
         ),
       ],
@@ -351,31 +366,34 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-          Message(2, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+              Message(2, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isSuccess: true,
         ),
       ],
@@ -389,31 +407,34 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-          Message(2, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+              Message(2, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           rejection: Rejection('reason'),
         ),
       ],
@@ -443,39 +464,43 @@ void main() {
         when(messageRepo.addText(1, 'text')).thenAnswer((_) async => none());
         when(repo.get(1)).thenAnswer(
           (_) async => right(
-            Chat(1, ChatType.Public, 1, 'subject', messages: [
-              Message(1, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-              Message(2, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-            ]),
+            Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+                messages: [
+                  Message(1, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                  Message(2, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                ]),
           ),
         );
 
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(const ChatEvent.addText('text')),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isSuccess: true,
         ),
       ],
@@ -492,25 +517,28 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(const ChatEvent.addText('text')),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           rejection: Rejection('reason'),
         ),
       ],
@@ -525,25 +553,28 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(const ChatEvent.addText('text')),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           rejection: Rejection('reason'),
         ),
       ],
@@ -576,41 +607,45 @@ void main() {
             .thenAnswer((_) async => none());
         when(repo.get(1)).thenAnswer(
           (_) async => right(
-            Chat(1, ChatType.Public, 1, 'subject', messages: [
-              Message(1, MessageType.Text, 'text', 'author',
-                  DateTime.parse('20210418'), null),
-              Message(2, MessageType.Audio, 'audio', 'imam',
-                  DateTime.parse('20210418'), null,
-                  audio: 'audio.mp3', duration: '1:23'),
-            ]),
+            Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+                messages: [
+                  Message(1, MessageType.Text, 'text', 'author',
+                      DateTime.parse('20210418'), null),
+                  Message(2, MessageType.Audio, 'audio', 'imam',
+                      DateTime.parse('20210418'), null,
+                      audio: 'audio.mp3', duration: '1:23'),
+                ]),
           ),
         );
 
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Audio, 'audio', 'imam',
-                DateTime.parse('20210418'), null,
-                audio: 'audio.mp3', duration: '1:23'),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Audio, 'audio', 'imam',
+                    DateTime.parse('20210418'), null,
+                    audio: 'audio.mp3', duration: '1:23'),
+              ]),
           isSuccess: true,
         ),
       ],
@@ -628,25 +663,28 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           rejection: Rejection('reason'),
         ),
       ],
@@ -661,25 +699,28 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           rejection: Rejection('reason'),
         ),
       ],
@@ -710,27 +751,30 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-          Message(2, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+              Message(2, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
         ),
       ],
     );
@@ -743,22 +787,25 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: []),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: []),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           rejection: Rejection('reason'),
         ),
       ],
@@ -790,31 +837,34 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-          Message(2, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+              Message(2, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text 2', 'author',
-                DateTime.parse('20210418'), null),
-            Message(2, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text 2', 'author',
+                    DateTime.parse('20210418'), null),
+                Message(2, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
         ),
       ],
     );
@@ -827,25 +877,28 @@ void main() {
         return bloc;
       },
       seed: () => ChatState(
-        Chat(1, ChatType.Public, 1, 'subject', messages: [
-          Message(1, MessageType.Text, 'text', 'author',
-              DateTime.parse('20210418'), null),
-        ]),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+            messages: [
+              Message(1, MessageType.Text, 'text', 'author',
+                  DateTime.parse('20210418'), null),
+            ]),
       ),
       act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
       expect: () => [
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           isInProgress: true,
         ),
         ChatState(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('20210418'), null),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('20210418'), null),
+              ]),
           rejection: Rejection('reason'),
         ),
       ],

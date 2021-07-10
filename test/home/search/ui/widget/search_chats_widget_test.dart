@@ -92,8 +92,10 @@ void main() {
 Future _fixture(SearchChatsBloc bloc, WidgetTester tester, Widget app) async {
   when(bloc.state).thenReturn(
     SearchChatsState([
-      Chat(1, ChatType.Public, 1, 'Chat 1', isFavorite: false),
-      Chat(2, ChatType.Public, 1, 'Chat 2', isFavorite: false),
+      Chat(1, ChatType.Public, 1, 'Chat 1', DateTime.parse('2021-05-01'),
+          isFavorite: false),
+      Chat(2, ChatType.Public, 1, 'Chat 2', DateTime.parse('2021-05-01'),
+          isFavorite: false),
     ]),
   );
 

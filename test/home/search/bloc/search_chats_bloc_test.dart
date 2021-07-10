@@ -25,8 +25,8 @@ void main() {
     build: () {
       when(repo.find('phrase')).thenAnswer(
         (_) async => right([
-          Chat(1, ChatType.Public, 1, 'subject'),
-          Chat(2, ChatType.Public, 1, 'subject'),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')),
+          Chat(2, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')),
         ]),
       );
       return bloc;
@@ -35,8 +35,8 @@ void main() {
     expect: () => [
       const SearchChatsState.inProgress(),
       SearchChatsState([
-        Chat(1, ChatType.Public, 1, 'subject'),
-        Chat(2, ChatType.Public, 1, 'subject'),
+        Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')),
+        Chat(2, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')),
       ]),
     ],
   );

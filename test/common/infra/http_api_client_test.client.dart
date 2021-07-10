@@ -11,13 +11,14 @@ final httpClient = MockClient((req) async {
         return Response.bytes(json, 200);
       } else if (req.url.path == '/one' && _isAuthorized(req)) {
         final json = ApiResponse.data(
-          Chat(1, ChatType.Public, 1, 'subject', messages: [
-            Message(1, MessageType.Text, 'text', 'author',
-                DateTime.parse('2021-05-01'), null),
-            Message(2, MessageType.Audio, 'audio', 'author',
-                DateTime.parse('2021-05-01'), null,
-                audio: 'audio.mp3', duration: '01:23'),
-          ]),
+          Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
+              messages: [
+                Message(1, MessageType.Text, 'text', 'author',
+                    DateTime.parse('2021-05-01'), null),
+                Message(2, MessageType.Audio, 'audio', 'author',
+                    DateTime.parse('2021-05-01'), null,
+                    audio: 'audio.mp3', duration: '01:23'),
+              ]),
         ).toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/auth' && !_isAuthorized(req)) {

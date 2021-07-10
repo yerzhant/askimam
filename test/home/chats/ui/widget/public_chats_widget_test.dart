@@ -75,7 +75,7 @@ void main() {
   testWidgets('should load a next page', (tester) async {
     await _fixture(bloc, tester, app, count: 12);
     expect(find.text('Chat 12'), findsNothing);
-    await tester.drag(find.text('Chat 1'), const Offset(0.0, -300.0));
+    await tester.drag(find.text('Chat 1'), const Offset(0.0, -500.0));
     await tester.pumpAndSettle();
 
     expect(find.text('Chat 12'), findsOneWidget);
@@ -85,8 +85,8 @@ void main() {
   testWidgets('should show a list and a progress circle', (tester) async {
     when(bloc.state).thenReturn(
       PublicChatsState.inProgress([
-        Chat(1, ChatType.Public, 1, 'Chat 1'),
-        Chat(2, ChatType.Public, 1, 'Chat 2'),
+        Chat(1, ChatType.Public, 1, 'Chat 1', DateTime.parse('2021-05-01')),
+        Chat(2, ChatType.Public, 1, 'Chat 2', DateTime.parse('2021-05-01')),
       ]),
     );
 
@@ -119,7 +119,9 @@ void main() {
     await tester.tap(find.byIcon(Icons.bookmark_border));
 
     verify(favoriteBloc.add(
-      FavoriteEvent.add(Chat(1, ChatType.Public, 1, 'Chat 1')),
+      FavoriteEvent.add(
+        Chat(1, ChatType.Public, 1, 'Chat 1', DateTime.parse('2021-05-01')),
+      ),
     )).called(1);
   });
 
@@ -153,7 +155,14 @@ Future _fixture(
   when(bloc.state).thenReturn(
     PublicChatsState([
       for (var i = 1; i <= count; i++)
-        Chat(i, ChatType.Public, 1, 'Chat $i', isFavorite: i == 2),
+        Chat(
+          i,
+          ChatType.Public,
+          1,
+          'Chat $i',
+          DateTime.parse('2021-05-01'),
+          isFavorite: i == 2,
+        ),
     ]),
   );
 
