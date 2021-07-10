@@ -86,14 +86,14 @@ class HomePopupMenu extends StatelessWidget {
 
   PopupMenuItem<_HomePopupMenuAction> _iosVersion() {
     return const PopupMenuItem(
-      value: _HomePopupMenuAction.webVersion,
+      value: _HomePopupMenuAction.iosVersion,
       child: Text('iOS версия'),
     );
   }
 
   PopupMenuItem<_HomePopupMenuAction> _androidVersion() {
     return const PopupMenuItem(
-      value: _HomePopupMenuAction.webVersion,
+      value: _HomePopupMenuAction.androidVersion,
       child: Text('Android версия'),
     );
   }
