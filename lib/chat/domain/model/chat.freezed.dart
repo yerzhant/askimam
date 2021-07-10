@@ -20,7 +20,8 @@ Chat _$ChatFromJson(Map<String, dynamic> json) {
 class _$ChatTearOff {
   const _$ChatTearOff();
 
-  _Chat call(int id, ChatType type, int askedBy, String subject,
+  _Chat call(
+      int id, ChatType type, int askedBy, String subject, DateTime updatedAt,
       {bool isFavorite = false,
       bool isViewedByImam = false,
       bool isViewedByInquirer = false,
@@ -30,6 +31,7 @@ class _$ChatTearOff {
       type,
       askedBy,
       subject,
+      updatedAt,
       isFavorite: isFavorite,
       isViewedByImam: isViewedByImam,
       isViewedByInquirer: isViewedByInquirer,
@@ -51,6 +53,7 @@ mixin _$Chat {
   ChatType get type => throw _privateConstructorUsedError;
   int get askedBy => throw _privateConstructorUsedError;
   String get subject => throw _privateConstructorUsedError;
+  DateTime get updatedAt => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
   bool get isViewedByImam => throw _privateConstructorUsedError;
   bool get isViewedByInquirer => throw _privateConstructorUsedError;
@@ -70,6 +73,7 @@ abstract class $ChatCopyWith<$Res> {
       ChatType type,
       int askedBy,
       String subject,
+      DateTime updatedAt,
       bool isFavorite,
       bool isViewedByImam,
       bool isViewedByInquirer,
@@ -90,6 +94,7 @@ class _$ChatCopyWithImpl<$Res> implements $ChatCopyWith<$Res> {
     Object? type = freezed,
     Object? askedBy = freezed,
     Object? subject = freezed,
+    Object? updatedAt = freezed,
     Object? isFavorite = freezed,
     Object? isViewedByImam = freezed,
     Object? isViewedByInquirer = freezed,
@@ -112,6 +117,10 @@ class _$ChatCopyWithImpl<$Res> implements $ChatCopyWith<$Res> {
           ? _value.subject
           : subject // ignore: cast_nullable_to_non_nullable
               as String,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       isFavorite: isFavorite == freezed
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -142,6 +151,7 @@ abstract class _$ChatCopyWith<$Res> implements $ChatCopyWith<$Res> {
       ChatType type,
       int askedBy,
       String subject,
+      DateTime updatedAt,
       bool isFavorite,
       bool isViewedByImam,
       bool isViewedByInquirer,
@@ -163,6 +173,7 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
     Object? type = freezed,
     Object? askedBy = freezed,
     Object? subject = freezed,
+    Object? updatedAt = freezed,
     Object? isFavorite = freezed,
     Object? isViewedByImam = freezed,
     Object? isViewedByInquirer = freezed,
@@ -185,6 +196,10 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
           ? _value.subject
           : subject // ignore: cast_nullable_to_non_nullable
               as String,
+      updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       isFavorite: isFavorite == freezed
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -209,7 +224,7 @@ class __$ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_Chat extends _Chat {
-  _$_Chat(this.id, this.type, this.askedBy, this.subject,
+  _$_Chat(this.id, this.type, this.askedBy, this.subject, this.updatedAt,
       {this.isFavorite = false,
       this.isViewedByImam = false,
       this.isViewedByInquirer = false,
@@ -227,6 +242,8 @@ class _$_Chat extends _Chat {
   final int askedBy;
   @override
   final String subject;
+  @override
+  final DateTime updatedAt;
   @JsonKey(defaultValue: false)
   @override
   final bool isFavorite;
@@ -241,7 +258,7 @@ class _$_Chat extends _Chat {
 
   @override
   String toString() {
-    return 'Chat(id: $id, type: $type, askedBy: $askedBy, subject: $subject, isFavorite: $isFavorite, isViewedByImam: $isViewedByImam, isViewedByInquirer: $isViewedByInquirer, messages: $messages)';
+    return 'Chat(id: $id, type: $type, askedBy: $askedBy, subject: $subject, updatedAt: $updatedAt, isFavorite: $isFavorite, isViewedByImam: $isViewedByImam, isViewedByInquirer: $isViewedByInquirer, messages: $messages)';
   }
 
   @override
@@ -258,6 +275,9 @@ class _$_Chat extends _Chat {
             (identical(other.subject, subject) ||
                 const DeepCollectionEquality()
                     .equals(other.subject, subject)) &&
+            (identical(other.updatedAt, updatedAt) ||
+                const DeepCollectionEquality()
+                    .equals(other.updatedAt, updatedAt)) &&
             (identical(other.isFavorite, isFavorite) ||
                 const DeepCollectionEquality()
                     .equals(other.isFavorite, isFavorite)) &&
@@ -279,6 +299,7 @@ class _$_Chat extends _Chat {
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(askedBy) ^
       const DeepCollectionEquality().hash(subject) ^
+      const DeepCollectionEquality().hash(updatedAt) ^
       const DeepCollectionEquality().hash(isFavorite) ^
       const DeepCollectionEquality().hash(isViewedByImam) ^
       const DeepCollectionEquality().hash(isViewedByInquirer) ^
@@ -296,7 +317,8 @@ class _$_Chat extends _Chat {
 }
 
 abstract class _Chat extends Chat {
-  factory _Chat(int id, ChatType type, int askedBy, String subject,
+  factory _Chat(
+      int id, ChatType type, int askedBy, String subject, DateTime updatedAt,
       {bool isFavorite,
       bool isViewedByImam,
       bool isViewedByInquirer,
@@ -313,6 +335,8 @@ abstract class _Chat extends Chat {
   int get askedBy => throw _privateConstructorUsedError;
   @override
   String get subject => throw _privateConstructorUsedError;
+  @override
+  DateTime get updatedAt => throw _privateConstructorUsedError;
   @override
   bool get isFavorite => throw _privateConstructorUsedError;
   @override

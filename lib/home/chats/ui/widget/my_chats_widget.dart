@@ -1,6 +1,7 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/common/extention/date_extentions.dart';
 import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
@@ -65,9 +66,10 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
     return RefreshIndicator(
       onRefresh: () async =>
           context.read<MyChatsBloc>().add(const MyChatsEvent.reload()),
-      child: ListView.builder(
+      child: ListView.separated(
         controller: _scrollController,
         itemCount: items.length,
+        separatorBuilder: (_, __) => const Divider(),
         itemBuilder: (_, i) {
           final item = items[i];
 
@@ -79,8 +81,14 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
             child: ListTile(
               title: AutoDirection(
                 text: item.subject,
-                child: Text(item.subject),
+                child: Text(
+                  item.subject,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+              minVerticalPadding: listTileMinVertPadding,
+              subtitle: _getSubtitle(item, widget.authBloc),
               leading: Stack(
                 alignment: Alignment.topRight,
                 children: [
@@ -99,7 +107,6 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
                   _getTrailingStatusIcon(item, widget.authBloc),
                 ],
               ),
-              subtitle: _getSubtitle(item, widget.authBloc),
               trailing: IconButton(
                 icon: Icon(
                   item.isFavorite ? Icons.bookmark : Icons.bookmark_border,
@@ -124,7 +131,7 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
     );
   }
 
-  Text? _getSubtitle(Chat item, AuthBloc authBloc) {
+  Widget _getSubtitle(Chat item, AuthBloc authBloc) {
     return authBloc.state.maybeWhen(
       authenticated: (auth) {
         if (auth.userType == UserType.Inquirer && !item.isViewedByInquirer ||
@@ -132,8 +139,15 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
           return const Text('Есть новое сообщение',
               style: TextStyle(color: secondaryDarkColor));
         }
+        return Padding(
+          padding: const EdgeInsets.only(top: dateTopPadding),
+          child: Text(
+            item.updatedAt.format(),
+            style: Theme.of(context).textTheme.caption,
+          ),
+        );
       },
-      orElse: () => null,
+      orElse: () => const SizedBox.shrink(),
     );
   }
 

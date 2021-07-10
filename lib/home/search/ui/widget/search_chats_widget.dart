@@ -1,4 +1,5 @@
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/common/extention/date_extentions.dart';
 import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
@@ -86,16 +87,32 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
   }
 
   Widget _list(List<Chat> items, BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: items.length,
       itemBuilder: (_, i) {
         final item = items[i];
 
         return ListTile(
-          title: AutoDirection(text: item.subject, child: Text(item.subject)),
+          title: AutoDirection(
+            text: item.subject,
+            child: Text(
+              item.subject,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
           onTap: () => Modular.to.pushNamed('/chat/${item.id}'),
+          minVerticalPadding: listTileMinVertPadding,
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: dateTopPadding),
+            child: Text(
+              item.updatedAt.format(),
+              style: Theme.of(context).textTheme.caption,
+            ),
+          ),
         );
       },
+      separatorBuilder: (_, __) => const Divider(),
       key: const PageStorageKey('found-chats'),
       physics: const BouncingScrollPhysics(
         parent: AlwaysScrollableScrollPhysics(),

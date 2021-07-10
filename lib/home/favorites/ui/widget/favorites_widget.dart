@@ -1,4 +1,5 @@
 import 'package:askimam/common/ui/theme.dart';
+import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
 import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
@@ -32,7 +33,7 @@ class FavoritesWidget extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () async =>
           context.read<FavoriteBloc>().add(const FavoriteEvent.refresh()),
-      child: ListView.builder(
+      child: ListView.separated(
         itemCount: items.length,
         itemBuilder: (_, i) {
           final item = items[i];
@@ -46,12 +47,18 @@ class FavoritesWidget extends StatelessWidget {
             child: ListTile(
               title: AutoDirection(
                 text: item.subject,
-                child: Text(item.subject),
+                child: Text(
+                  item.subject,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+              minVerticalPadding: listTileMinVertPadding,
               onTap: () => Modular.to.pushNamed('/chat/${item.chatId}'),
             ),
           );
         },
+        separatorBuilder: (_, __) => const Divider(),
         key: const PageStorageKey('favorites'),
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),

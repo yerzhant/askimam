@@ -1,5 +1,6 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/common/extention/date_extentions.dart';
 import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/in_progress_widget.dart';
@@ -65,14 +66,29 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
     return RefreshIndicator(
       onRefresh: () async =>
           context.read<PublicChatsBloc>().add(const PublicChatsEvent.reload()),
-      child: ListView.builder(
+      child: ListView.separated(
         controller: _scrollController,
         itemCount: items.length,
         itemBuilder: (_, i) {
           final item = items[i];
 
           return ListTile(
-            title: AutoDirection(text: item.subject, child: Text(item.subject)),
+            title: AutoDirection(
+              text: item.subject,
+              child: Text(
+                item.subject,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            minVerticalPadding: listTileMinVertPadding,
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: dateTopPadding),
+              child: Text(
+                item.updatedAt.format(),
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ),
             trailing: BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 return state.maybeWhen(
@@ -95,6 +111,7 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
             onTap: () => Modular.to.pushNamed('/chat/${item.id}'),
           );
         },
+        separatorBuilder: (_, __) => const Divider(),
         key: const PageStorageKey('public-chats'),
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),

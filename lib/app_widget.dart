@@ -32,6 +32,11 @@ class AppWidget extends StatelessWidget {
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),
         ),
+        dividerTheme: const DividerThemeData(
+          space: 0,
+          indent: 16,
+          endIndent: 16,
+        ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           selectedItemColor: primaryDarkColor,
           unselectedItemColor: primaryColor,

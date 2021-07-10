@@ -1,4 +1,5 @@
 import 'package:askimam/chat/domain/model/chat.dart';
+import 'package:askimam/common/extention/date_extentions.dart';
 import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
@@ -64,7 +65,7 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
       onRefresh: () async => context
           .read<UnansweredChatsBloc>()
           .add(const UnansweredChatsEvent.reload()),
-      child: ListView.builder(
+      child: ListView.separated(
         controller: _scrollController,
         itemCount: items.length,
         itemBuilder: (_, i) {
@@ -79,7 +80,19 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
             child: ListTile(
               title: AutoDirection(
                 text: item.subject,
-                child: Text(item.subject),
+                child: Text(
+                  item.subject,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              minVerticalPadding: listTileMinVertPadding,
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: dateTopPadding),
+                child: Text(
+                  item.updatedAt.format(),
+                  style: Theme.of(context).textTheme.caption,
+                ),
               ),
               leading: Stack(
                 alignment: Alignment.topRight,
@@ -103,6 +116,7 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
             ),
           );
         },
+        separatorBuilder: (_, __) => const Divider(),
         key: const PageStorageKey('unanswered-chats'),
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),

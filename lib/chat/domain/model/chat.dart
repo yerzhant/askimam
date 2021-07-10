@@ -11,7 +11,8 @@ class Chat with _$Chat, Model {
     int id,
     ChatType type,
     int askedBy,
-    String subject, {
+    String subject,
+    DateTime updatedAt, {
     @Default(false) bool isFavorite,
     @Default(false) bool isViewedByImam,
     @Default(false) bool isViewedByInquirer,
