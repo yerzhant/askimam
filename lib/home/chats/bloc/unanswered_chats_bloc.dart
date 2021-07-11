@@ -53,7 +53,8 @@ class UnansweredChatsBloc
     Stream<UnansweredChatsState> load(List<Chat> chats) async* {
       yield UnansweredChatsState.inProgress(chats);
 
-      final result = await _repo.getUnanswered(chats.length, _pageSize);
+      final page = chats.length ~/ _pageSize;
+      final result = await _repo.getUnanswered(page, _pageSize);
 
       yield result.fold(
         (l) => UnansweredChatsState.error(l),

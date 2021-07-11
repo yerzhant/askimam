@@ -66,7 +66,8 @@ class PublicChatsBloc extends Bloc<PublicChatsEvent, PublicChatsState>
     Stream<PublicChatsState> load(List<Chat> chats) async* {
       yield PublicChatsState.inProgress(chats);
 
-      final result = await _repo.getPublic(chats.length, _pageSize);
+      final page = chats.length ~/ _pageSize;
+      final result = await _repo.getPublic(page, _pageSize);
 
       yield result.fold(
         (l) => PublicChatsState.error(l),
