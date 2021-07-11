@@ -25,6 +25,8 @@ const _messages = {
   r"You're not allowed.*": 'Операция запрещена.',
   r'^SocketException: .*': 'Ошибка соединения.',
   'XMLHttpRequest error.': 'Ошибка соединения.',
+  'Deletion of a last message is disallowed':
+      'Удаление последнего сообщения запрещено.',
   'Who are you?': 'Вы не авторизованы.',
   'Unauthorized.': 'Доступ запрещён.',
 };
