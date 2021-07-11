@@ -24,39 +24,20 @@ class HttpChatRepository implements ChatRepository {
 
     return tokenResult.fold(
       (l) => some(l),
-      (r) async {
-        final result = await _api.post(
-          _url,
-          CreateChat(type, subject, text, r),
-        );
-
-        return result.fold(
-          () => none(),
-          (a) => some(a),
-        );
-      },
+      (r) => _api.post(
+        _url,
+        CreateChat(type, subject, text, r),
+      ),
     );
   }
 
   @override
-  Future<Option<Rejection>> delete(Chat chat) async {
-    final result = await _api.delete('$_url/${chat.id}');
-
-    return result.fold(
-      () => none(),
-      (a) => some(a),
-    );
-  }
+  Future<Option<Rejection>> delete(Chat chat) =>
+      _api.delete('$_url/${chat.id}');
 
   @override
-  Future<Either<Rejection, Chat>> get(int id) async {
-    final result = await _api.get<Chat>('$_url/messages/$id');
-
-    return result.fold(
-      (l) => left(l),
-      (r) => right(r),
-    );
-  }
+  Future<Either<Rejection, Chat>> get(int id) =>
+      _api.get<Chat>('$_url/messages/$id');
 
   @override
   Future<Either<Rejection, List<Chat>>> getMy(int offset, int pageSize) async =>
@@ -76,46 +57,22 @@ class HttpChatRepository implements ChatRepository {
     String type,
     int offset,
     int pageSize,
-  ) async {
-    final result = await _api.getList<Chat>('$_url/$type/$offset/$pageSize');
-
-    return result.fold(
-      (l) => left(l),
-      (r) => right(r),
-    );
-  }
+  ) =>
+      _api.getList<Chat>('$_url/$type/$offset/$pageSize');
 
   @override
   Future<Either<Rejection, List<Chat>>> find(String phrase) =>
       _api.getList<Chat>('$_url/find/$phrase');
 
   @override
-  Future<Option<Rejection>> returnToUnanswered(int id) async {
-    final result = await _api.patch('$_url/$id/return-to-unanswered');
-
-    return result.fold(
-      () => none(),
-      (a) => some(a),
-    );
-  }
+  Future<Option<Rejection>> returnToUnanswered(int id) =>
+      _api.patch('$_url/$id/return-to-unanswered');
 
   @override
-  Future<Option<Rejection>> setViewedFlag(int id) async {
-    final result = await _api.patch('$_url/$id/viewed-by');
-
-    return result.fold(
-      () => none(),
-      (a) => some(a),
-    );
-  }
+  Future<Option<Rejection>> setViewedFlag(int id) =>
+      _api.patch('$_url/$id/viewed-by');
 
   @override
-  Future<Option<Rejection>> updateSubject(int id, String subject) async {
-    final result = await _api.patchWithBody('$_url/$id', UpdateChat(subject));
-
-    return result.fold(
-      () => none(),
-      (a) => some(a),
-    );
-  }
+  Future<Option<Rejection>> updateSubject(int id, String subject) =>
+      _api.patchWithBody('$_url/$id', UpdateChat(subject));
 }

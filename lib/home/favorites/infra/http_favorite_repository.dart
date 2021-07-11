@@ -14,17 +14,14 @@ class HttpFavoriteRepository implements FavoriteRepository {
   const HttpFavoriteRepository(this._apiClient);
 
   @override
-  Future<Either<Rejection, List<Favorite>>> get() async {
-    return _apiClient.getList<Favorite>(_url);
-  }
+  Future<Either<Rejection, List<Favorite>>> get() =>
+      _apiClient.getList<Favorite>(_url);
 
   @override
-  Future<Option<Rejection>> add(Chat chat) async {
-    return _apiClient.post(_url, AddChatToFavorites(chat.id));
-  }
+  Future<Option<Rejection>> add(Chat chat) =>
+      _apiClient.post(_url, AddChatToFavorites(chat.id));
 
   @override
-  Future<Option<Rejection>> delete(int chatId) async {
-    return _apiClient.delete('$_url/$chatId');
-  }
+  Future<Option<Rejection>> delete(int chatId) =>
+      _apiClient.delete('$_url/$chatId');
 }

@@ -23,14 +23,7 @@ class HttpMessageRepository implements MessageRepository {
 
     return tokenResult.fold(
       (l) => some(l),
-      (r) async {
-        final result = await _api.post(_url, AddTextMessage(chatId, text, r));
-
-        return result.fold(
-          () => none(),
-          (a) => some(a),
-        );
-      },
+      (r) => _api.post(_url, AddTextMessage(chatId, text, r)),
     );
   }
 
@@ -45,22 +38,15 @@ class HttpMessageRepository implements MessageRepository {
         final uploadResult = await _api.uploadFile('$_url/upload-audio', audio);
 
         return uploadResult.fold(
-          () async {
-            final result = await _api.post(
-              '$_url/audio',
-              AddAudioMessage(
-                chatId,
-                audio.path.split('/').last,
-                duration,
-                fcmToken,
-              ),
-            );
-
-            return result.fold(
-              () => none(),
-              (a) => some(a),
-            );
-          },
+          () => _api.post(
+            '$_url/audio',
+            AddAudioMessage(
+              chatId,
+              audio.path.split('/').last,
+              duration,
+              fcmToken,
+            ),
+          ),
           (a) => some(a),
         );
       },
@@ -68,14 +54,8 @@ class HttpMessageRepository implements MessageRepository {
   }
 
   @override
-  Future<Option<Rejection>> delete(int chatId, int messageId) async {
-    final result = await _api.delete('$_url/$chatId/$messageId');
-
-    return result.fold(
-      () => none(),
-      (a) => some(a),
-    );
-  }
+  Future<Option<Rejection>> delete(int chatId, int messageId) =>
+      _api.delete('$_url/$chatId/$messageId');
 
   @override
   Future<Option<Rejection>> updateText(
@@ -84,15 +64,8 @@ class HttpMessageRepository implements MessageRepository {
 
     return tokenResult.fold(
       (l) => some(l),
-      (r) async {
-        final result = await _api.patchWithBody(
-            '$_url/$chatId/$messageId', UpdateTextMessage(text, r));
-
-        return result.fold(
-          () => none(),
-          (a) => some(a),
-        );
-      },
+      (r) => _api.patchWithBody(
+          '$_url/$chatId/$messageId', UpdateTextMessage(text, r)),
     );
   }
 }
