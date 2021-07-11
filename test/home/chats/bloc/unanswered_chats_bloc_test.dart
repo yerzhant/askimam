@@ -267,7 +267,7 @@ void main() {
     blocTest(
       'should load next page',
       build: () {
-        when(repo.getUnanswered(20, 20)).thenAnswer(
+        when(repo.getUnanswered(1, 20)).thenAnswer(
           (_) async => right([
             ...List.generate(
                 20,
@@ -393,7 +393,7 @@ void main() {
     blocTest(
       'should be rejected on loading next page',
       build: () {
-        when(repo.getUnanswered(20, 20))
+        when(repo.getUnanswered(1, 20))
             .thenAnswer((_) async => left(Rejection('reason')));
         return bloc;
       },
