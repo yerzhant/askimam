@@ -1,21 +1,21 @@
 import 'package:askimam/common/domain/model/model.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'authentication.freezed.dart';
-part 'authentication.g.dart';
+class Authentication with Model {
+  final String jwt;
+  final int userId;
+  final UserType userType;
 
-@freezed
-class Authentication with _$Authentication, Model {
-  factory Authentication(
-    String jwt,
-    int userId,
-    UserType userType,
-  ) = _Authentication;
-
-  const Authentication._();
+  const Authentication(this.jwt, this.userId, this.userType);
 
   factory Authentication.fromJson(Map<String, dynamic> json) =>
-      _$AuthenticationFromJson(json);
+      Authentication(json['jwt'], json['userId'], json['userType']);
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'jwt': jwt,
+        'userId': userId,
+        'userType': userType,
+      };
 }
 
 enum UserType { Imam, Inquirer }

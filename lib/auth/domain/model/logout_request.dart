@@ -1,17 +1,12 @@
 import 'package:askimam/common/domain/model/model.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'logout_request.freezed.dart';
-part 'logout_request.g.dart';
+class LogoutRequest with Model {
+  final String fcmToken;
 
-@freezed
-class LogoutRequest with _$LogoutRequest, Model {
-  factory LogoutRequest(
-    String fcmToken,
-  ) = _LogoutRequest;
+  const LogoutRequest(this.fcmToken);
 
-  const LogoutRequest._();
-
-  factory LogoutRequest.fromJson(Map<String, dynamic> json) =>
-      _$LogoutRequestFromJson(json);
+  @override
+  Map<String, dynamic> toJson() => {
+        'fcmToken': fcmToken,
+      };
 }
