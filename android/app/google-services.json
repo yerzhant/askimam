@@ -1,0 +1,79 @@
+{
+  "project_info": {
+    "project_number": "674391970261",
+    "firebase_url": "https://azan-kz-ask-imam.firebaseio.com",
+    "project_id": "azan-kz-ask-imam",
+    "storage_bucket": "azan-kz-ask-imam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674391970261:android:5c391d0c9195f401",
+        "android_client_info": {
+          "package_name": "kz.azan.askimam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674391970261-8qtlqq6427tk17opi802vkrh7l9407bd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kz.azan.askimam",
+            "certificate_hash": "b3b37893995f3cd31cf55398c607d8734c30a9c7"
+          }
+        },
+        {
+          "client_id": "674391970261-90vlonv5a6vt7l1td8f2qdfuvulup7gi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kz.azan.askimam",
+            "certificate_hash": "8ba093341da45171a0ab49a5e83b7ace6b818826"
+          }
+        },
+        {
+          "client_id": "674391970261-h6v6idi1o1e1314o34l9mgvhva2cssk3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kz.azan.askimam",
+            "certificate_hash": "01b196eb2cde18d36320cd7be70575e9462aede9"
+          }
+        },
+        {
+          "client_id": "674391970261-usa3vbup0ude6mc5ttpndecni0kk8ikq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kz.azan.askimam",
+            "certificate_hash": "25fc998ad3bd95ec41fde8b4597fa521b27353dd"
+          }
+        },
+        {
+          "client_id": "674391970261-v3fnn2mbr5chti6vpuoso6eto1bdca7l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQYEp98wrGOI5hOUai0Ih0vnw8KMVc0-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674391970261-v3fnn2mbr5chti6vpuoso6eto1bdca7l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "674391970261-70f0gj903p4kf27chhhimps1qpgvqmsh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kz.azan.askimam"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

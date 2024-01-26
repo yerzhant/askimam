@@ -41,7 +41,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-# Private
-/android/app/google-services.json
-/ios/GoogleService-Info.plist

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>674391970261-70f0gj903p4kf27chhhimps1qpgvqmsh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.674391970261-70f0gj903p4kf27chhhimps1qpgvqmsh</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>674391970261-8qtlqq6427tk17opi802vkrh7l9407bd.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDzXgEdj8_6F1Qy2akTEODR5r68Zf39dYc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>674391970261</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>kz.azan.askimam</string>
+	<key>PROJECT_ID</key>
+	<string>azan-kz-ask-imam</string>
+	<key>STORAGE_BUCKET</key>
+	<string>azan-kz-ask-imam.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:674391970261:ios:b1a6b82afca1556fb36d5c</string>
+	<key>DATABASE_URL</key>
+	<string>https://azan-kz-ask-imam.firebaseio.com</string>
+</dict>
+</plist>
