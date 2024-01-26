@@ -1,4 +1,4 @@
-package kz.azan.askimam
+package kz.azan.askimam.askimam
 
 import io.flutter.embedding.android.FlutterActivity
 
