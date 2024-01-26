@@ -1,23 +1,34 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+class Message {
+  final int id;
+  final MessageType type;
+  final String text;
+  final String? author;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final String? audio;
+  final String? duration;
 
-part 'message.freezed.dart';
-part 'message.g.dart';
+  const Message(
+    this.id,
+    this.type,
+    this.text,
+    this.author,
+    this.createdAt,
+    this.updatedAt, {
+    this.audio,
+    this.duration,
+  });
 
-@freezed
-class Message with _$Message {
-  factory Message(
-    int id,
-    MessageType type,
-    String text,
-    String? author,
-    DateTime createdAt,
-    DateTime? updatedAt, {
-    String? audio,
-    String? duration,
-  }) = _Message;
-
-  factory Message.fromJson(Map<String, dynamic> json) =>
-      _$MessageFromJson(json);
+  factory Message.fromJson(Map<String, dynamic> json) => Message(
+        json['id'],
+        json['type'],
+        json['text'],
+        json['author'],
+        json['createdAt'],
+        json['updatedAt'],
+        audio: json['audio'],
+        duration: json['duration'],
+      );
 }
 
 // ignore: constant_identifier_names
