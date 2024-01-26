@@ -1,19 +1,18 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+class Rejection {
+  final String reason;
 
-part 'rejection.freezed.dart';
+  Rejection(this.reason) {
+    if (reason.trim().isEmpty) {
+      throw ArgumentError("Empty or blank string");
+    }
+  }
 
-@freezed
-class Rejection with _$Rejection {
-  @Assert('reason.trim().isNotEmpty', 'reason may not be empty')
-  factory Rejection(String reason) = _Rejection;
-
-  Rejection._();
-
-  String get message =>
-      _messages.entries
-          .firstWhereOrNull((entry) => RegExp(entry.key).hasMatch(reason))
-          ?.value ??
-      reason;
+  String get message => _messages.entries
+      .firstWhere(
+        (entry) => RegExp(entry.key).hasMatch(reason),
+        orElse: () => MapEntry('', reason),
+      )
+      .value;
 }
 
 extension RejectionExt on Exception {
