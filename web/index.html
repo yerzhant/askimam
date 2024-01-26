@@ -1,48 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base href="/">
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
 
+  <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Вопрос имаму">
+  <meta name="apple-mobile-web-app-title" content="askimam">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>Вопрос имаму</title>
+  <title>askimam</title>
   <link rel="manifest" href="manifest.json">
-  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@8.0.27/js/flutter_sound/flutter_sound.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@8.0.27/js/flutter_sound/flutter_sound_player.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@8.0.27/js/flutter_sound/flutter_sound_recorder.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"></script></head>
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    const serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+</head>
 <body>
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('flutter-first-frame', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js');
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
       });
-    }
+    });
   </script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-messaging.js"></script>
-  <script>
-    var firebaseConfig = {
-      apiKey: "AIzaSyC4mhP3ox81dtyY_BFM0NtrVbZgt3rlync",
-      authDomain: "azan-kz-ask-imam.firebaseapp.com",
-      databaseURL: "https://azan-kz-ask-imam.firebaseio.com",
-      projectId: "azan-kz-ask-imam",
-      storageBucket: "azan-kz-ask-imam.appspot.com",
-      messagingSenderId: "674391970261",
-      appId: "1:674391970261:web:4bd8aa4ddc974eeab36d5c"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-  </script>
-  <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
