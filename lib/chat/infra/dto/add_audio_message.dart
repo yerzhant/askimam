@@ -1,20 +1,18 @@
 import 'package:askimam/common/domain/model/model.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'add_audio_message.freezed.dart';
-part 'add_audio_message.g.dart';
+class AddAudioMessage with Model {
+  final int chatId;
+  final String audio;
+  final String duration;
+  final String fcmToken;
 
-@freezed
-class AddAudioMessage with _$AddAudioMessage, Model {
-  factory AddAudioMessage(
-    int chatId,
-    String audio,
-    String duration,
-    String fcmToken,
-  ) = _AddAudioMessage;
+  const AddAudioMessage(this.chatId, this.audio, this.duration, this.fcmToken);
 
-  const AddAudioMessage._();
-
-  factory AddAudioMessage.fromJson(Map<String, dynamic> json) =>
-      _$AddAudioMessageFromJson(json);
+  @override
+  Map<String, dynamic> toJson() => {
+        'chatId': chatId,
+        'audio': audio,
+        'duration': duration,
+        'fcmToken': fcmToken,
+      };
 }

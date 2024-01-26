@@ -1,15 +1,12 @@
 import 'package:askimam/common/domain/model/model.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'update_chat.freezed.dart';
-part 'update_chat.g.dart';
+class UpdateChat with Model {
+  final String subject;
 
-@freezed
-class UpdateChat with _$UpdateChat, Model {
-  factory UpdateChat(String subject) = _UpdateChat;
+  const UpdateChat(this.subject);
 
-  const UpdateChat._();
-
-  factory UpdateChat.fromJson(Map<String, dynamic> json) =>
-      _$UpdateChatFromJson(json);
+  @override
+  Map<String, dynamic> toJson() => {
+        'subject': subject,
+      };
 }

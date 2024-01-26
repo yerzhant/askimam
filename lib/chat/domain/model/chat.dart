@@ -1,6 +1,7 @@
 import 'package:askimam/chat/domain/model/message.dart';
+import 'package:askimam/common/domain/model/model.dart';
 
-class Chat {
+class Chat with Model {
   final int id;
   final ChatType type;
   final int askedBy;
@@ -34,6 +35,19 @@ class Chat {
         isViewedByInquirer: json['isViewedByInquirer'],
         messages: json['messages'],
       );
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'type': type,
+        'askedBy': askedBy,
+        'subject': subject,
+        'updatedAt': updatedAt,
+        'isFavorite': isFavorite,
+        'isViewedByImam': isViewedByImam,
+        'isViewedByInquirer': isViewedByInquirer,
+        'messages': messages,
+      };
 }
 
 // ignore: constant_identifier_names
