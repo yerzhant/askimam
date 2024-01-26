@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/auth/domain/model/login_request.dart';
 import 'package:askimam/auth/domain/model/logout_request.dart';
@@ -8,9 +6,8 @@ import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/service/notification_service.dart';
 import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
-part 'auth_bloc.freezed.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -23,73 +20,66 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this._repo,
     this._apiClient,
     this._notificationService,
-  ) : super(const _Unauthenticated()) {
-    add(const AuthEvent.load());
-  }
+  ) : super(const AuthStateUnauthenticated()) {
+    add(const AuthEventLoad());
 
-  @override
-  Stream<AuthState> mapEventToState(AuthEvent event) => event.when(
-        load: _load,
-        login: _login,
-        logout: _logout,
+    on<AuthEventLoad>((event, emit) async {
+      emit(const AuthStateInProgress());
+
+      final result = await _repo.load();
+
+      emit(result.fold(
+        (l) => AuthStateError(l),
+        (r) {
+          _apiClient.setJwt(r.jwt);
+          return AuthStateAuthenticated(r);
+        },
+      ));
+    });
+
+    on<AuthEventLogin>((event, emit) async {
+      emit(const AuthStateInProgress());
+
+      final result = await _notificationService.getFcmToken();
+
+      result.fold(
+        (l) => emit(AuthStateError(l)),
+        (r) async {
+          final result = await _repo.login(LoginRequest(
+            event.login,
+            event.password,
+            r,
+          ));
+
+          result.fold(
+            (l) => emit(AuthStateError(l)),
+            (r) {
+              _apiClient.setJwt(r.jwt);
+              emit(AuthStateAuthenticated(r));
+            },
+          );
+        },
       );
+    });
 
-  Stream<AuthState> _load() async* {
-    yield const AuthState.inProgress();
+    on<AuthEventLogout>((event, emit) async {
+      emit(const AuthStateInProgress());
 
-    final result = await _repo.load();
+      final result = await _notificationService.getFcmToken();
 
-    yield result.fold(
-      (l) => AuthState.error(l),
-      (r) {
-        _apiClient.setJwt(r.jwt);
-        return AuthState.authenticated(r);
-      },
-    );
-  }
+      result.fold(
+        (l) => emit(AuthStateError(l)),
+        (r) async {
+          _apiClient.resetJwt();
 
-  Stream<AuthState> _login(String login, String password) async* {
-    yield const AuthState.inProgress();
+          final result = await _repo.logout(LogoutRequest(r));
 
-    final result = await _notificationService.getFcmToken();
-
-    yield* result.fold(
-      (l) async* {
-        yield AuthState.error(l);
-      },
-      (r) async* {
-        final result = await _repo.login(LoginRequest(login, password, r));
-
-        yield result.fold(
-          (l) => AuthState.error(l),
-          (r) {
-            _apiClient.setJwt(r.jwt);
-            return AuthState.authenticated(r);
-          },
-        );
-      },
-    );
-  }
-
-  Stream<AuthState> _logout() async* {
-    yield const AuthState.inProgress();
-
-    final result = await _notificationService.getFcmToken();
-
-    yield* result.fold(
-      (l) async* {
-        yield AuthState.error(l);
-      },
-      (r) async* {
-        _apiClient.resetJwt();
-
-        final result = await _repo.logout(LogoutRequest(r));
-
-        yield result.fold(
-          () => const AuthState.unauthenticated(),
-          (l) => AuthState.error(l),
-        );
-      },
-    );
+          emit(result.fold(
+            () => const AuthStateUnauthenticated(),
+            (l) => AuthStateError(l),
+          ));
+        },
+      );
+    });
   }
 }

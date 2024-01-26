@@ -1,8 +1,26 @@
 part of 'auth_bloc.dart';
 
-@freezed
-class AuthEvent with _$AuthEvent {
-  const factory AuthEvent.load() = _Load;
-  const factory AuthEvent.logout() = _Logout;
-  const factory AuthEvent.login(String login, String password) = _Login;
+sealed class AuthEvent extends Equatable {
+  const AuthEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+final class AuthEventLoad extends AuthEvent {
+  const AuthEventLoad();
+}
+
+final class AuthEventLogout extends AuthEvent {
+  const AuthEventLogout();
+}
+
+final class AuthEventLogin extends AuthEvent {
+  final String login;
+  final String password;
+
+  const AuthEventLogin(this.login, this.password);
+
+  @override
+  List<Object?> get props => [login, password];
 }

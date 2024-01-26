@@ -1,6 +1,7 @@
 import 'package:askimam/common/domain/model/model.dart';
+import 'package:equatable/equatable.dart';
 
-class Authentication with Model {
+class Authentication extends Equatable with Model {
   final String jwt;
   final int userId;
   final UserType userType;
@@ -16,6 +17,9 @@ class Authentication with Model {
         'userId': userId,
         'userType': userType,
       };
+
+  @override
+  List<Object?> get props => [jwt, userId, userType];
 }
 
 enum UserType { Imam, Inquirer }
