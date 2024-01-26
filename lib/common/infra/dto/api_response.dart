@@ -6,21 +6,14 @@ import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:askimam/imam_ratings/domain/model/imam_ratings_with_description.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart';
 
-part 'api_response.freezed.dart';
-part 'api_response.g.dart';
+class ApiResponse {
+  final ApiResponseStatus status;
+  final Object? data;
+  final String? error;
 
-@freezed
-class ApiResponse with _$ApiResponse {
-  const factory ApiResponse(
-    ApiResponseStatus status, {
-    Object? data,
-    String? error,
-  }) = _ApiResponse;
-
-  const ApiResponse._();
+  const ApiResponse(this.status, {this.data, this.error});
 
   factory ApiResponse.ok() => const ApiResponse(ApiResponseStatus.Ok);
 
@@ -35,10 +28,7 @@ class ApiResponse with _$ApiResponse {
       );
 
   factory ApiResponse.fromJson(Map<String, dynamic> json) =>
-      _$ApiResponseFromJson(json);
-
-  String toJsonString() => jsonEncode(toJson());
-  List<int> toJsonUtf8() => utf8.encode(jsonEncode(toJson()));
+      ApiResponse(json['status'], data: json['data'], error: json['error']);
 
   M value<M extends Model>() {
     return _fromJsonfactories[M]!(data);
