@@ -36,6 +36,18 @@ class Chat with Model {
         messages: json['messages'],
       );
 
+  Chat copyWith({List<Message>? messages}) => Chat(
+        id,
+        type,
+        askedBy,
+        subject,
+        updatedAt,
+        isFavorite: isFavorite,
+        isViewedByImam: isViewedByImam,
+        isViewedByInquirer: isViewedByInquirer,
+        messages: messages,
+      );
+
   @override
   Map<String, dynamic> toJson() => {
         'id': id,

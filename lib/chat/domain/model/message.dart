@@ -29,6 +29,17 @@ class Message {
         audio: json['audio'],
         duration: json['duration'],
       );
+
+  Message copyWith({String? text}) => Message(
+        id,
+        type,
+        text ?? this.text,
+        author,
+        createdAt,
+        updatedAt,
+        audio: audio,
+        duration: duration,
+      );
 }
 
 // ignore: constant_identifier_names

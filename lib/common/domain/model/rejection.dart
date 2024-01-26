@@ -1,4 +1,6 @@
-class Rejection {
+import 'package:equatable/equatable.dart';
+
+class Rejection extends Equatable {
   final String reason;
 
   Rejection(this.reason) {
@@ -13,6 +15,9 @@ class Rejection {
         orElse: () => MapEntry('', reason),
       )
       .value;
+
+  @override
+  List<Object?> get props => [reason];
 }
 
 extension RejectionExt on Exception {
