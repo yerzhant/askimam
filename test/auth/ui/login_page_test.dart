@@ -18,7 +18,7 @@ void main() {
   setUp(() {
     bloc = MockAuthBloc();
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
-    when(bloc.state).thenReturn(const AuthState.unauthenticated());
+    when(bloc.state).thenReturn(const AuthStateUnauthenticated());
 
     navigator = MockIModularNavigator();
     Modular.navigatorDelegate = navigator;
@@ -51,12 +51,12 @@ void main() {
     await tester.pump();
 
     verify(
-      bloc.add(const AuthEvent.login('login', 'password')),
+      bloc.add(const AuthEventLogin('login', 'password')),
     ).called(1);
   });
 
   testWidgets('should by in progress', (tester) async {
-    when(bloc.state).thenReturn(const AuthState.inProgress());
+    when(bloc.state).thenReturn(const AuthStateInProgress());
     await _fixture(tester, bloc);
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -64,7 +64,7 @@ void main() {
 
   testWidgets('should show an error', (tester) async {
     when(bloc.stream)
-        .thenAnswer((_) => Stream.value(AuthState.error(Rejection('reason'))));
+        .thenAnswer((_) => Stream.value(AuthStateError(Rejection('reason'))));
     await _fixture(tester, bloc);
     await tester.pump();
 
@@ -73,7 +73,8 @@ void main() {
 
   testWidgets('should go to home page', (tester) async {
     when(bloc.stream).thenAnswer((_) => Stream.value(
-        AuthState.authenticated(Authentication('123', 1, UserType.Inquirer))));
+        const AuthStateAuthenticated(
+            Authentication('123', 1, UserType.Inquirer))));
     await _fixture(tester, bloc);
     await tester.pump();
 
