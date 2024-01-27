@@ -42,7 +42,7 @@ void main() {
   });
 
   testWidgets('should show a progress circle', (tester) async {
-    when(bloc.state).thenReturn(const SearchChatsState.inProgress());
+    when(bloc.state).thenReturn(const SearchChatsStateInProgress());
 
     await tester.pumpWidget(app);
 
@@ -55,7 +55,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.search));
     await tester.pump();
 
-    verify(bloc.add(const SearchChatsEvent.find('text'))).called(1);
+    verify(bloc.add(const SearchChatsEventFind('text'))).called(1);
   });
 
   testWidgets('should not search an empty phrase', (tester) async {
@@ -63,7 +63,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.search));
     await tester.pump();
 
-    verifyNever(bloc.add(const SearchChatsEvent.find('')));
+    verifyNever(bloc.add(const SearchChatsEventFind('')));
   });
 
   testWidgets('should route to a chat', (tester) async {
@@ -85,13 +85,13 @@ void main() {
     await tester.enterText(find.byType(TextField), 'text');
     await tester.tap(find.text('ПОВТОРИТЬ'));
 
-    verify(bloc.add(const SearchChatsEvent.find('text'))).called(1);
+    verify(bloc.add(const SearchChatsEventFind('text'))).called(1);
   });
 }
 
 Future _fixture(SearchChatsBloc bloc, WidgetTester tester, Widget app) async {
   when(bloc.state).thenReturn(
-    SearchChatsState([
+    SearchChatsStateSuccess([
       Chat(1, ChatType.Public, 1, 'Chat 1', DateTime.parse('2021-05-01'),
           isFavorite: false),
       Chat(2, ChatType.Public, 1, 'Chat 2', DateTime.parse('2021-05-01'),
@@ -107,7 +107,7 @@ Future _errorFixture(
   WidgetTester tester,
   Widget app,
 ) async {
-  when(bloc.state).thenReturn(SearchChatsState.error(Rejection('reason')));
+  when(bloc.state).thenReturn(SearchChatsStateError(Rejection('reason')));
 
   await tester.pumpWidget(app);
 }
