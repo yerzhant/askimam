@@ -797,7 +797,7 @@ void main() {
       expect: () => [
         ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
-              messages: []),
+              messages: const []),
           isInProgress: true,
         ),
         ChatStateSuccess(

@@ -23,21 +23,22 @@ void main() {
       when(
         api.postAndGetResponse<Authentication, LoginRequest>(
           'auth/login',
-          LoginRequest('login', 'password', 'fcm'),
+          const LoginRequest('login', 'password', 'fcm'),
         ),
       ).thenAnswer(
-        (_) async => right(Authentication('jwt', 1, UserType.Inquirer)),
+        (_) async => right(const Authentication('jwt', 1, UserType.Inquirer)),
       );
       when(settings.saveAuthentication(
-        Authentication('jwt', 1, UserType.Inquirer),
+        const Authentication('jwt', 1, UserType.Inquirer),
       )).thenAnswer((p) async => right(p.positionalArguments[0]));
 
-      final result = await repo.login(LoginRequest('login', 'password', 'fcm'));
+      final result =
+          await repo.login(const LoginRequest('login', 'password', 'fcm'));
 
-      expect(result, right(Authentication('jwt', 1, UserType.Inquirer)));
+      expect(result, right(const Authentication('jwt', 1, UserType.Inquirer)));
 
       verify(settings.saveAuthentication(
-        Authentication('jwt', 1, UserType.Inquirer),
+        const Authentication('jwt', 1, UserType.Inquirer),
       )).called(1);
     });
 
@@ -45,16 +46,17 @@ void main() {
       when(
         api.postAndGetResponse<Authentication, LoginRequest>(
           'auth/login',
-          LoginRequest('login', 'password', 'fcm'),
+          const LoginRequest('login', 'password', 'fcm'),
         ),
       ).thenAnswer(
-        (_) async => right(Authentication('jwt', 1, UserType.Inquirer)),
+        (_) async => right(const Authentication('jwt', 1, UserType.Inquirer)),
       );
       when(settings.saveAuthentication(
-        Authentication('jwt', 1, UserType.Inquirer),
+        const Authentication('jwt', 1, UserType.Inquirer),
       )).thenAnswer((p) async => left(Rejection('reason')));
 
-      final result = await repo.login(LoginRequest('login', 'password', 'fcm'));
+      final result =
+          await repo.login(const LoginRequest('login', 'password', 'fcm'));
 
       expect(result, left(Rejection('reason')));
     });
@@ -63,11 +65,12 @@ void main() {
       when(
         api.postAndGetResponse<Authentication, LoginRequest>(
           'auth/login',
-          LoginRequest('login', 'password', 'fcm'),
+          const LoginRequest('login', 'password', 'fcm'),
         ),
       ).thenAnswer((_) async => left(Rejection('reason')));
 
-      final result = await repo.login(LoginRequest('login', 'password', 'fcm'));
+      final result =
+          await repo.login(const LoginRequest('login', 'password', 'fcm'));
 
       expect(result, left(Rejection('reason')));
     });
@@ -76,10 +79,10 @@ void main() {
   group('Logout:', () {
     test('should be ok', () async {
       when(settings.clearAuthentication()).thenAnswer((_) async => none());
-      when(api.post('auth/logout', LogoutRequest('fcmToken')))
+      when(api.post('auth/logout', const LogoutRequest('fcmToken')))
           .thenAnswer((_) async => none());
 
-      final result = await repo.logout(LogoutRequest('fcmToken'));
+      final result = await repo.logout(const LogoutRequest('fcmToken'));
 
       expect(result, none());
 
@@ -88,10 +91,10 @@ void main() {
 
     test('should fail server request', () async {
       when(settings.clearAuthentication()).thenAnswer((_) async => none());
-      when(api.post('auth/logout', LogoutRequest('fcmToken')))
+      when(api.post('auth/logout', const LogoutRequest('fcmToken')))
           .thenAnswer((_) async => some(Rejection('reason')));
 
-      final result = await repo.logout(LogoutRequest('fcmToken'));
+      final result = await repo.logout(const LogoutRequest('fcmToken'));
 
       expect(result, some(Rejection('reason')));
       verify(settings.clearAuthentication()).called(1);
@@ -101,7 +104,7 @@ void main() {
       when(settings.clearAuthentication())
           .thenAnswer((_) async => some(Rejection('reason2')));
 
-      final result = await repo.logout(LogoutRequest('fcmToken'));
+      final result = await repo.logout(const LogoutRequest('fcmToken'));
 
       expect(result, some(Rejection('reason2')));
     });
@@ -110,11 +113,11 @@ void main() {
   group('Load:', () {
     test('should be ok', () async {
       when(settings.loadAuthentication()).thenAnswer(
-          (_) async => right(Authentication('jwt', 1, UserType.Imam)));
+          (_) async => right(const Authentication('jwt', 1, UserType.Imam)));
 
       final result = await repo.load();
 
-      expect(result, right(Authentication('jwt', 1, UserType.Imam)));
+      expect(result, right(const Authentication('jwt', 1, UserType.Imam)));
     });
 
     test('should not be ok', () async {

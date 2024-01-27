@@ -158,8 +158,8 @@ void main() {
     test('should add it', () async {
       when(notificationService.getFcmToken())
           .thenAnswer((_) async => right('123'));
-      when(api.post(
-              'chats', CreateChat(ChatType.Public, 'subject', 'text', '123')))
+      when(api.post('chats',
+              const CreateChat(ChatType.Public, 'subject', 'text', '123')))
           .thenAnswer((_) async => none());
 
       final resutl = await repo.add(ChatType.Public, 'subject', 'text');
@@ -170,8 +170,8 @@ void main() {
     test('should not add it', () async {
       when(notificationService.getFcmToken())
           .thenAnswer((_) async => right('123'));
-      when(api.post(
-              'chats', CreateChat(ChatType.Public, 'subject', 'text', '123')))
+      when(api.post('chats',
+              const CreateChat(ChatType.Public, 'subject', 'text', '123')))
           .thenAnswer((_) async => some(Rejection('reason')));
 
       final resutl = await repo.add(ChatType.Public, 'subject', 'text');
@@ -191,7 +191,7 @@ void main() {
 
   group('Update a chat:', () {
     test('should update it', () async {
-      when(api.patchWithBody('chats/1', UpdateChat('subject')))
+      when(api.patchWithBody('chats/1', const UpdateChat('subject')))
           .thenAnswer((_) async => none());
 
       final resutl = await repo.updateSubject(1, 'subject');
@@ -200,7 +200,7 @@ void main() {
     });
 
     test('should not update it', () async {
-      when(api.patchWithBody('chats/1', UpdateChat('subject')))
+      when(api.patchWithBody('chats/1', const UpdateChat('subject')))
           .thenAnswer((_) async => some(Rejection('reason')));
 
       final resutl = await repo.updateSubject(1, 'subject');

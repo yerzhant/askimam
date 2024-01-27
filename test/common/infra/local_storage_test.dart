@@ -22,7 +22,7 @@ void main() {
 
       final result = await storage.loadAuthentication();
 
-      expect(result, right(Authentication('123', 1, UserType.Inquirer)));
+      expect(result, right(const Authentication('123', 1, UserType.Inquirer)));
     });
 
     test('should not load it', () async {
@@ -42,14 +42,14 @@ void main() {
         'user-type': 'UserType.Imam',
       });
 
-      final result = await storage
-          .saveAuthentication(Authentication('123', 1, UserType.Inquirer));
+      final result = await storage.saveAuthentication(
+          const Authentication('123', 1, UserType.Inquirer));
 
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getString('jwt'), '123');
       expect(prefs.getInt('user-id'), 1);
       expect(prefs.getString('user-type'), UserType.Inquirer.toString());
-      expect(result, right(Authentication('123', 1, UserType.Inquirer)));
+      expect(result, right(const Authentication('123', 1, UserType.Inquirer)));
     });
   });
 

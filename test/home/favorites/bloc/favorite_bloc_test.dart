@@ -28,7 +28,7 @@ void main() {
     blocTest<FavoriteBloc, FavoriteState>(
       'should load my favorites',
       build: () {
-        when(repo.get()).thenAnswer((_) async => right([
+        when(repo.get()).thenAnswer((_) async => right(const [
               Favorite(1, 1, 'Subject 1'),
               Favorite(2, 2, 'Subject 2'),
               Favorite(3, 3, 'Subject 3'),
@@ -97,7 +97,7 @@ void main() {
         ))).thenAnswer(
           (realInvocation) async => none(),
         );
-        when(repo.get()).thenAnswer((_) async => right([
+        when(repo.get()).thenAnswer((_) async => right(const [
               Favorite(1, 1, 'Subject 1'),
               Favorite(2, 2, 'Subject 2'),
               Favorite(3, 3, 'Subject 3'),
@@ -142,7 +142,7 @@ void main() {
         ))).thenAnswer(
           (realInvocation) async => none(),
         );
-        when(repo.get()).thenAnswer((_) async => right([
+        when(repo.get()).thenAnswer((_) async => right(const [
               Favorite(1, 1, 'Subject 1'),
               Favorite(2, 2, 'Subject 2'),
               Favorite(3, 3, 'Subject 3'),
@@ -150,7 +150,7 @@ void main() {
 
         return bloc;
       },
-      seed: () => FavoriteStateInProgress([
+      seed: () => const FavoriteStateInProgress([
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
@@ -163,7 +163,7 @@ void main() {
       ))),
       expect: () => [
         const FavoriteStateInProgress([]),
-        FavoriteStateSuccess([
+        const FavoriteStateSuccess([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
@@ -185,7 +185,7 @@ void main() {
         );
         return bloc;
       },
-      seed: () => FavoriteStateSuccess([
+      seed: () => const FavoriteStateSuccess([
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
@@ -197,7 +197,7 @@ void main() {
         DateTime.parse('2021-05-01'),
       ))),
       expect: () => [
-        FavoriteStateInProgress([
+        const FavoriteStateInProgress([
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
         ]),
@@ -259,7 +259,7 @@ void main() {
       ]),
       act: (_) => bloc.add(const FavoriteEventDelete(1)),
       expect: () => [
-        FavoriteStateInProgress([
+        const FavoriteStateInProgress([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
@@ -282,14 +282,14 @@ void main() {
         when(repo.delete(2)).thenAnswer((realInvocation) async => none());
         return bloc;
       },
-      seed: () => FavoriteStateInProgress([
+      seed: () => const FavoriteStateInProgress([
         Favorite(1, 1, 'Subject 1'),
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
       act: (_) => bloc.add(const FavoriteEventDelete(2)),
       expect: () => [
-        FavoriteStateSuccess([
+        const FavoriteStateSuccess([
           Favorite(1, 1, 'Subject 1'),
           Favorite(3, 3, 'Subject 3'),
         ]),

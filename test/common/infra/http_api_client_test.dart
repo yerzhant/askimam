@@ -82,7 +82,7 @@ void main() {
 
       expect(
         result.getOrElse(() => []),
-        [
+        const [
           Favorite(1, 1, 'Тема'),
           Favorite(2, 2, 'Тема'),
         ],
@@ -94,7 +94,7 @@ void main() {
 
       expect(
         result.getOrElse(() => []),
-        [
+        const [
           Favorite(1, 1, 'Тема'),
           Favorite(2, 2, 'Тема'),
         ],
@@ -131,28 +131,28 @@ void main() {
   group('Post:', () {
     test('should return none - chat', () async {
       final result = await apiClient.post('suffix/ok-chat',
-          CreateChat(ChatType.Public, 'Тема', 'Текст', '123'));
+          const CreateChat(ChatType.Public, 'Тема', 'Текст', '123'));
 
       expect(result, none());
     });
 
     test('should return none - message', () async {
       final result = await apiClient.post(
-          'suffix/ok-message', AddTextMessage(1, 'Текст', '123'));
+          'suffix/ok-message', const AddTextMessage(1, 'Текст', '123'));
 
       expect(result, none());
     });
 
     test('should return none - favorite', () async {
-      final result =
-          await apiClient.post('suffix/ok-favorite', AddChatToFavorites(1));
+      final result = await apiClient.post(
+          'suffix/ok-favorite', const AddChatToFavorites(1));
 
       expect(result, none());
     });
 
     test('should return some rejection reason', () async {
-      final result = await apiClient.post(
-          'suffix/nok', CreateChat(ChatType.Public, 'Тема', 'Текст', '123'));
+      final result = await apiClient.post('suffix/nok',
+          const CreateChat(ChatType.Public, 'Тема', 'Текст', '123'));
 
       expect(result, some(Rejection('Что-то пошло не так')));
     });
@@ -161,21 +161,21 @@ void main() {
       apiClient.resetJwt();
 
       final result = await apiClient.post(
-          'suffix/ok-message', AddTextMessage(1, 'Текст', '123'));
+          'suffix/ok-message', const AddTextMessage(1, 'Текст', '123'));
 
       expect(result, some(Rejection('Unauthorized.')));
     });
 
     test('should return some nok', () async {
-      final result =
-          await apiClient.post('suffix/500', AddTextMessage(1, 'Текст', '123'));
+      final result = await apiClient.post(
+          'suffix/500', const AddTextMessage(1, 'Текст', '123'));
 
       expect(result, some(Rejection('Response: 500, boom!')));
     });
 
     test('should return some exception', () async {
-      final result =
-          await apiClient.post('suffix/4', AddTextMessage(1, 'Текст', '123'));
+      final result = await apiClient.post(
+          'suffix/4', const AddTextMessage(1, 'Текст', '123'));
 
       expect(result, some(Rejection('Exception: Unhandled POST: /suffix/4')));
     });
@@ -185,15 +185,15 @@ void main() {
     test('should return response', () async {
       final result =
           await apiClient.postAndGetResponse<Authentication, LoginRequest>(
-              'suffix/ok', LoginRequest('login', 'password', 'fcm'));
+              'suffix/ok', const LoginRequest('login', 'password', 'fcm'));
 
-      expect(result, right(Authentication('123', 1, UserType.Inquirer)));
+      expect(result, right(const Authentication('123', 1, UserType.Inquirer)));
     });
 
     test('should return some rejection reason', () async {
       final result =
           await apiClient.postAndGetResponse<Authentication, LoginRequest>(
-              'suffix/nok', LoginRequest('login', 'password', 'fcm'));
+              'suffix/nok', const LoginRequest('login', 'password', 'fcm'));
 
       expect(result, left(Rejection('Что-то пошло не так')));
     });
@@ -203,7 +203,7 @@ void main() {
 
       final result =
           await apiClient.postAndGetResponse<Authentication, LoginRequest>(
-              'suffix/ok', LoginRequest('login', 'password', 'fcm'));
+              'suffix/ok', const LoginRequest('login', 'password', 'fcm'));
 
       expect(result, left(Rejection('Unauthorized.')));
     });
@@ -211,7 +211,7 @@ void main() {
     test('should return some nok', () async {
       final result =
           await apiClient.postAndGetResponse<Authentication, LoginRequest>(
-              'suffix/500', LoginRequest('login', 'password', 'fcm'));
+              'suffix/500', const LoginRequest('login', 'password', 'fcm'));
 
       expect(result, left(Rejection('Response: 500, boom!')));
     });
@@ -219,7 +219,7 @@ void main() {
     test('should return some exception', () async {
       final result =
           await apiClient.postAndGetResponse<Authentication, LoginRequest>(
-              'suffix/4', LoginRequest('login', 'password', 'fcm'));
+              'suffix/4', const LoginRequest('login', 'password', 'fcm'));
 
       expect(result, left(Rejection('Exception: Unhandled POST: /suffix/4')));
     });
@@ -262,21 +262,21 @@ void main() {
   group('Patch with body:', () {
     test('should return none - chat', () async {
       final result = await apiClient.patchWithBody(
-          'suffix/ok-body-chat', UpdateChat('Тема'));
+          'suffix/ok-body-chat', const UpdateChat('Тема'));
 
       expect(result, none());
     });
 
     test('should return none - message', () async {
       final result = await apiClient.patchWithBody(
-          'suffix/ok-body-message', UpdateTextMessage('Тема', '123'));
+          'suffix/ok-body-message', const UpdateTextMessage('Тема', '123'));
 
       expect(result, none());
     });
 
     test('should return some rejection reason', () async {
       final result =
-          await apiClient.patchWithBody('suffix/nok', UpdateChat('Тема'));
+          await apiClient.patchWithBody('suffix/nok', const UpdateChat('Тема'));
 
       expect(result, some(Rejection('Что-то пошло не так')));
     });
@@ -284,22 +284,22 @@ void main() {
     test('should return an unauthorized', () async {
       apiClient.resetJwt();
 
-      final result =
-          await apiClient.patchWithBody('suffix/ok-body', UpdateChat('Тема'));
+      final result = await apiClient.patchWithBody(
+          'suffix/ok-body', const UpdateChat('Тема'));
 
       expect(result, some(Rejection('Unauthorized.')));
     });
 
     test('should return some nok', () async {
       final result =
-          await apiClient.patchWithBody('suffix/500', UpdateChat('Тема'));
+          await apiClient.patchWithBody('suffix/500', const UpdateChat('Тема'));
 
       expect(result, some(Rejection('Response: 500, boom!')));
     });
 
     test('should return some exception', () async {
       final result =
-          await apiClient.patchWithBody('suffix/4', UpdateChat('Тема'));
+          await apiClient.patchWithBody('suffix/4', const UpdateChat('Тема'));
 
       expect(result, some(Rejection('Exception: Unhandled PATCH: /suffix/4')));
     });
