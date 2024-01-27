@@ -15,6 +15,8 @@ void main() {
   late IModularNavigator navigator;
 
   setUp(() {
+    provideDummy<MyChatsState>(const MyChatsStateInProgress([]));
+
     bloc = MockMyChatsBloc();
     when(bloc.state).thenReturn(const MyChatsStateSuccess([]));
     when(bloc.stream).thenAnswer((_) => const Stream.empty());

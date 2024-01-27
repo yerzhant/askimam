@@ -38,6 +38,9 @@ void main() {
     when(authBloc.stream).thenAnswer((_) => const Stream.empty());
     when(favoriteBloc.stream).thenAnswer((_) => const Stream.empty());
 
+    provideDummy<AuthState>(const AuthStateInProgress());
+    provideDummy<PublicChatsState>(const PublicChatsStateInProgress([]));
+
     when(authBloc.state).thenReturn(const AuthStateAuthenticated(
       Authentication('123', 1, UserType.Inquirer),
     ));

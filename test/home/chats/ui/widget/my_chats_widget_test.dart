@@ -33,6 +33,9 @@ void main() {
     navigator = MockIModularNavigator();
     Modular.navigatorDelegate = navigator;
 
+    provideDummy<AuthState>(const AuthStateInProgress());
+    provideDummy<MyChatsState>(const MyChatsStateInProgress([]));
+
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
     when(authBloc.stream).thenAnswer((_) => const Stream.empty());
     when(favoriteBloc.stream).thenAnswer((_) => const Stream.empty());

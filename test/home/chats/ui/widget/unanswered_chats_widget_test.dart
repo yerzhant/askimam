@@ -30,6 +30,9 @@ void main() {
         child: const Material(child: UnansweredChatsWidget()),
       ),
     );
+
+    provideDummy<UnansweredChatsState>(
+        const UnansweredChatsStateInProgress([]));
   });
 
   testWidgets('should show a list', (tester) async {
