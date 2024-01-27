@@ -3,10 +3,9 @@ import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:askimam/common/ui/widget/wide_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class LoginPage extends StatefulWidget {
   final AuthBloc bloc;
@@ -14,7 +13,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage(this.bloc, {Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -86,6 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                           if (value == null || value.isEmpty) {
                             return 'Введите логин';
                           }
+                          return null;
                         },
                       ),
                       const SizedBox(height: interElementMargin),
@@ -103,20 +103,23 @@ class _LoginPageState extends State<LoginPage> {
                           if (value == null || value.isEmpty) {
                             return 'Введите пароль';
                           }
+                          return null;
                         },
                       ),
                       const SizedBox(height: interElementMargin * 2),
                       BlocConsumer<AuthBloc, AuthState>(
                         listener: (context, state) {
-                          state.maybeWhen(
-                            authenticated: (_) => Modular.to.pop(),
-                            error: (rejection) {
-                              return ScaffoldMessenger.of(context).showSnackBar(
+                          switch (state) {
+                            case AuthStateAuthenticated():
+                              Modular.to.pop();
+
+                            case AuthStateError(rejection: final rejection):
+                              ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(rejection.message)),
                               );
-                            },
-                            orElse: () {},
-                          );
+
+                            default:
+                          }
                         },
                         builder: (context, state) {
                           return WideButton(
@@ -124,16 +127,16 @@ class _LoginPageState extends State<LoginPage> {
                             Icons.login,
                             () {
                               if (_form.currentState!.validate()) {
-                                widget.bloc.add(AuthEvent.login(
+                                widget.bloc.add(AuthEventLogin(
                                   _login.text,
                                   _password.text,
                                 ));
                               }
                             },
-                            isInProgress: state.maybeWhen(
-                              inProgress: () => true,
-                              orElse: () => false,
-                            ),
+                            isInProgress: switch (state) {
+                              AuthStateInProgress() => true,
+                              _ => false,
+                            },
                           );
                         },
                       ),
@@ -141,7 +144,8 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextButton(
-                            onPressed: () => launch('https://azan.kz/signup'),
+                            onPressed: () =>
+                                launchUrlString('https://azan.kz/signup'),
                             child: const Text('Регистрация'),
                           ),
                           const Text(
@@ -149,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(color: primaryColor),
                           ),
                           TextButton(
-                            onPressed: () => launch(
+                            onPressed: () => launchUrlString(
                                 'https://azan.kz/site/request-password-reset'),
                             child: const Text('Забыли пароль?'),
                           ),
