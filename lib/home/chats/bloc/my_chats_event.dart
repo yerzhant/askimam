@@ -1,15 +1,49 @@
 part of 'my_chats_bloc.dart';
 
-@freezed
-class MyChatsEvent with _$MyChatsEvent {
-  const factory MyChatsEvent.show() = _Show;
-  const factory MyChatsEvent.reload() = _Reload;
-  const factory MyChatsEvent.loadNextPage() = _LoadNextPage;
-  const factory MyChatsEvent.updateFavorites(List<Favorite> favorites) =
-      _UpdateFavorites;
+sealed class MyChatsEvent extends Equatable {
+  const MyChatsEvent();
 
-  const factory MyChatsEvent.add(ChatType type, String? subject, String text) =
-      _Add;
+  @override
+  List<Object?> get props => [];
+}
 
-  const factory MyChatsEvent.delete(Chat chat) = _Delete;
+final class MyChatsEventShow extends MyChatsEvent {
+  const MyChatsEventShow();
+}
+
+final class MyChatsEventReload extends MyChatsEvent {
+  const MyChatsEventReload();
+}
+
+final class MyChatsEventLoadNextPage extends MyChatsEvent {
+  const MyChatsEventLoadNextPage();
+}
+
+final class MyChatsEventUpdateFavorites extends MyChatsEvent {
+  final List<Favorite> favorites;
+
+  const MyChatsEventUpdateFavorites(this.favorites);
+
+  @override
+  List<Object?> get props => [favorites];
+}
+
+final class MyChatsEventAdd extends MyChatsEvent {
+  final ChatType type;
+  final String? subject;
+  final String text;
+
+  const MyChatsEventAdd(this.type, this.subject, this.text);
+
+  @override
+  List<Object?> get props => [type, subject, text];
+}
+
+final class MyChatsEventDelete extends MyChatsEvent {
+  final Chat chat;
+
+  const MyChatsEventDelete(this.chat);
+
+  @override
+  List<Object?> get props => [chat];
 }

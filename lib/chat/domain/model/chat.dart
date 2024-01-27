@@ -1,7 +1,8 @@
 import 'package:askimam/chat/domain/model/message.dart';
 import 'package:askimam/common/domain/model/model.dart';
+import 'package:equatable/equatable.dart';
 
-class Chat with Model {
+class Chat extends Equatable with Model {
   final int id;
   final ChatType type;
   final int askedBy;
@@ -36,16 +37,20 @@ class Chat with Model {
         messages: json['messages'],
       );
 
-  Chat copyWith({List<Message>? messages}) => Chat(
+  Chat copyWith({
+    bool? isFavorite,
+    List<Message>? messages,
+  }) =>
+      Chat(
         id,
         type,
         askedBy,
         subject,
         updatedAt,
-        isFavorite: isFavorite,
+        isFavorite: isFavorite ?? this.isFavorite,
         isViewedByImam: isViewedByImam,
         isViewedByInquirer: isViewedByInquirer,
-        messages: messages,
+        messages: messages ?? this.messages,
       );
 
   @override
@@ -60,6 +65,19 @@ class Chat with Model {
         'isViewedByInquirer': isViewedByInquirer,
         'messages': messages,
       };
+
+  @override
+  List<Object?> get props => [
+        id,
+        type,
+        askedBy,
+        subject,
+        updatedAt,
+        isFavorite,
+        isViewedByImam,
+        isViewedByInquirer,
+        messages,
+      ];
 }
 
 // ignore: constant_identifier_names

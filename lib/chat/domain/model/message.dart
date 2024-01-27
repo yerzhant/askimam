@@ -1,4 +1,6 @@
-class Message {
+import 'package:equatable/equatable.dart';
+
+class Message extends Equatable {
   final int id;
   final MessageType type;
   final String text;
@@ -40,6 +42,18 @@ class Message {
         audio: audio,
         duration: duration,
       );
+
+  @override
+  List<Object?> get props => [
+        id,
+        type,
+        text,
+        author,
+        createdAt,
+        updatedAt,
+        audio,
+        duration,
+      ];
 }
 
 // ignore: constant_identifier_names

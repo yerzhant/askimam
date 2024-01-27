@@ -6,10 +6,9 @@ import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'my_chats_bloc.freezed.dart';
 part 'my_chats_event.dart';
 part 'my_chats_state.dart';
 
@@ -24,124 +23,86 @@ class MyChatsBloc extends Bloc<MyChatsEvent, MyChatsState>
     this._repo,
     this._favoriteBloc,
     this._pageSize,
-  ) : super(const _InProgress([])) {
+  ) : super(const MyChatsStateInProgress([])) {
     _subscription = _favoriteBloc.stream.listen((state) {
-      state.maybeWhen(
-        (favorites) => add(MyChatsEvent.updateFavorites(favorites)),
-        orElse: () {},
-      );
+      if (state case FavoriteStateSuccess(favorites: final favorites)) {
+        add(MyChatsEventUpdateFavorites(favorites));
+      }
     });
-  }
 
-  @override
-  Stream<MyChatsState> mapEventToState(MyChatsEvent event) => event.when(
-        add: _add,
-        show: _show,
-        delete: _delete,
-        reload: _reload,
-        loadNextPage: _loadNextPage,
-        updateFavorites: _updateFavorites,
-      );
+    on<MyChatsEventShow>((event, emit) {
+      if (state is! MyChatsStateSuccess) {
+        add(const MyChatsEventReload());
+      }
+    });
 
-  Stream<MyChatsState> _show() async* {
-    state.maybeWhen(
-      (chats) async* {
-        yield MyChatsState(chats);
-      },
-      orElse: () => add(const MyChatsEvent.reload()),
-    );
-  }
+    on<MyChatsEventReload>((event, emit) async {
+      emit(const MyChatsStateInProgress([]));
 
-  Stream<MyChatsState> _reload() async* {
-    yield const MyChatsState.inProgress([]);
+      final result = await _repo.getMy(0, _pageSize);
 
-    final result = await _repo.getMy(0, _pageSize);
+      emit(result.fold(
+        (l) => MyChatsStateError(l),
+        (r) => MyChatsStateSuccess(r),
+      ));
+    });
 
-    yield result.fold(
-      (l) => MyChatsState.error(l),
-      (r) => MyChatsState(r),
-    );
-  }
+    on<MyChatsEventLoadNextPage>((event, emit) async {
+      if (state case MyChatsStateSuccess(chats: final chats)) {
+        emit(MyChatsStateInProgress(chats));
 
-  Stream<MyChatsState> _loadNextPage() async* {
-    Stream<MyChatsState> load(List<Chat> chats) async* {
-      yield MyChatsState.inProgress(chats);
+        final page = chats.length ~/ _pageSize;
+        final result = await _repo.getMy(page, _pageSize);
 
-      final page = chats.length ~/ _pageSize;
-      final result = await _repo.getMy(page, _pageSize);
+        emit(result.fold(
+          (l) => MyChatsStateError(l),
+          (r) => MyChatsStateSuccess(chats..addAll(r)),
+        ));
+      }
+    });
 
-      yield result.fold(
-        (l) => MyChatsState.error(l),
-        (r) => MyChatsState(chats..addAll(r)),
-      );
-    }
+    on<MyChatsEventAdd>((event, emit) async {
+      if (state case MyChatsStateSuccess(chats: final chats)) {
+        emit(MyChatsStateInProgress(chats));
 
-    yield* state.maybeWhen(
-      (chats) => load(chats),
-      orElse: () async* {
-        yield state;
-      },
-    );
-  }
+        final result = await _repo.add(event.type, event.subject, event.text);
 
-  Stream<MyChatsState> _add(
-    ChatType type,
-    String? subject,
-    String text,
-  ) async* {
-    yield* state.maybeWhen(
-      (chats) async* {
-        yield MyChatsState.inProgress(chats);
-
-        final result = await _repo.add(type, subject, text);
-
-        yield* result.fold(
-          () async* {
-            add(const MyChatsEvent.reload());
-          },
-          (a) async* {
-            yield MyChatsState.error(a);
-          },
+        result.fold(
+          () => add(const MyChatsEventReload()),
+          (a) => emit(MyChatsStateError(a)),
         );
-      },
-      orElse: () async* {
-        yield state;
-      },
-    );
-  }
+      }
+    });
 
-  Stream<MyChatsState> _delete(Chat chat) async* {
-    yield* state.maybeWhen(
-      (chats) async* {
-        yield MyChatsState.inProgress(chats);
+    on<MyChatsEventDelete>((event, emit) async {
+      if (state case MyChatsStateSuccess(chats: final chats)) {
+        emit(MyChatsStateInProgress(chats));
 
-        final result = await _repo.delete(chat);
+        final result = await _repo.delete(event.chat);
 
-        yield result.fold(
+        emit(result.fold(
           () {
-            _favoriteBloc.add(const FavoriteEvent.refresh());
-            return MyChatsState(chats.where((c) => c.id != chat.id).toList());
+            _favoriteBloc.add(const FavoriteEventRefresh());
+            return MyChatsStateSuccess(
+              chats.where((c) => c.id != event.chat.id).toList(),
+            );
           },
-          (a) => MyChatsState.error(a),
-        );
-      },
-      orElse: () async* {
-        yield state;
-      },
-    );
-  }
+          (a) => MyChatsStateError(a),
+        ));
+      }
+    });
 
-  Stream<MyChatsState> _updateFavorites(List<Favorite> favorites) async* {
-    yield state.maybeWhen(
-      (chats) => MyChatsState(chats
-          .map(
-            (chat) => chat.copyWith(
-              isFavorite: favorites.any((f) => f.chatId == chat.id),
-            ),
-          )
-          .toList()),
-      orElse: () => state,
-    );
+    on<MyChatsEventUpdateFavorites>((event, emit) {
+      if (state case MyChatsStateSuccess(chats: final chats)) {
+        emit(MyChatsStateSuccess(chats
+            .map(
+              (c) => c.copyWith(
+                isFavorite: event.favorites.any((f) => f.chatId == c.id),
+              ),
+            )
+            .toList()));
+      }
+    });
   }
 
   @override
