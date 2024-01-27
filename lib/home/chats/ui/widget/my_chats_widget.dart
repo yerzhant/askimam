@@ -11,15 +11,16 @@ import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_modular/flutter_modular.dart'
+    hide ModularWatchExtension;
 
 class MyChatsWidget extends StatefulWidget {
   final AuthBloc authBloc;
 
-  const MyChatsWidget(this.authBloc);
+  const MyChatsWidget(this.authBloc, {super.key});
 
   @override
-  _MyChatsWidgetState createState() => _MyChatsWidgetState();
+  State createState() => _MyChatsWidgetState();
 }
 
 class _MyChatsWidgetState extends State<MyChatsWidget> {
@@ -41,7 +42,7 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
   void _loadNextPage() {
     if (_scrollController.position.maxScrollExtent ==
         _scrollController.position.pixels) {
-      context.read<MyChatsBloc>().add(const MyChatsEvent.loadNextPage());
+      context.read<MyChatsBloc>().add(const MyChatsEventLoadNextPage());
     }
   }
 
@@ -49,15 +50,16 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<MyChatsBloc, MyChatsState>(
       builder: (context, state) {
-        return state.when(
-          (items) => _list(items, context),
-          inProgress: (items) => InProgressWidget(child: _list(items, context)),
-          error: (rejection) => RejectionWidget(
-            rejection: rejection,
-            onRefresh: () =>
-                context.read<MyChatsBloc>().add(const MyChatsEvent.reload()),
-          ),
-        );
+        return switch (state) {
+          MyChatsStateSuccess(chats: final items) => _list(items, context),
+          MyChatsStateInProgress(chats: final items) =>
+            InProgressWidget(child: _list(items, context)),
+          MyChatsStateError(rejection: final rejection) => RejectionWidget(
+              rejection: rejection,
+              onRefresh: () =>
+                  context.read<MyChatsBloc>().add(const MyChatsEventReload()),
+            ),
+        };
       },
     );
   }
@@ -65,7 +67,7 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
   Widget _list(List<Chat> items, BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async =>
-          context.read<MyChatsBloc>().add(const MyChatsEvent.reload()),
+          context.read<MyChatsBloc>().add(const MyChatsEventReload()),
       child: ListView.separated(
         controller: _scrollController,
         itemCount: items.length,
@@ -76,7 +78,7 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
           return Dismissible(
             key: ValueKey(item.id),
             onDismissed: (_) =>
-                context.read<MyChatsBloc>().add(MyChatsEvent.delete(item)),
+                context.read<MyChatsBloc>().add(MyChatsEventDelete(item)),
             background: Container(color: secondaryColor),
             child: ListTile(
               title: AutoDirection(
@@ -115,8 +117,8 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
                 ),
                 onPressed: () => context.read<FavoriteBloc>().add(
                       item.isFavorite
-                          ? FavoriteEvent.delete(item.id)
-                          : FavoriteEvent.add(item),
+                          ? FavoriteEventDelete(item.id)
+                          : FavoriteEventAdd(item),
                     ),
               ),
               onTap: () => Modular.to.pushNamed('/chat/${item.id}'),
@@ -132,42 +134,42 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
   }
 
   Widget _getSubtitle(Chat item, AuthBloc authBloc) {
-    return authBloc.state.maybeWhen(
-      authenticated: (auth) {
-        if (auth.userType == UserType.Inquirer && !item.isViewedByInquirer ||
-            auth.userType == UserType.Imam && !item.isViewedByImam) {
-          return const Text('Есть новое сообщение',
-              style: TextStyle(color: secondaryDarkColor));
-        }
-        return Padding(
-          padding: const EdgeInsets.only(top: dateTopPadding),
-          child: Text(
-            item.updatedAt.format(),
-            style: Theme.of(context).textTheme.caption,
-          ),
-        );
-      },
-      orElse: () => const SizedBox.shrink(),
-    );
+    return switch (authBloc.state) {
+      AuthStateAuthenticated(authentication: final auth) => () {
+          if (auth.userType == UserType.Inquirer && !item.isViewedByInquirer ||
+              auth.userType == UserType.Imam && !item.isViewedByImam) {
+            return const Text('Есть новое сообщение',
+                style: TextStyle(color: secondaryDarkColor));
+          }
+          return Padding(
+            padding: const EdgeInsets.only(top: dateTopPadding),
+            child: Text(
+              item.updatedAt.format(),
+              style: Theme.of(context).textTheme.caption,
+            ),
+          );
+        }.call(),
+      _ => const SizedBox.shrink(),
+    };
   }
 
   Widget _getTrailingStatusIcon(Chat item, AuthBloc authBloc) {
-    return authBloc.state.maybeWhen(
-      authenticated: (auth) {
-        if (auth.userType == UserType.Inquirer && item.isViewedByImam ||
-            auth.userType == UserType.Imam && item.isViewedByInquirer) {
-          return Icon(
-            Icons.check_rounded,
-            size: 11,
-            color: item.type == ChatType.Public
-                ? primaryColor
-                : secondaryDarkColor,
-          );
-        }
+    return switch (authBloc.state) {
+      AuthStateAuthenticated(authentication: final auth) => () {
+          if (auth.userType == UserType.Inquirer && item.isViewedByImam ||
+              auth.userType == UserType.Imam && item.isViewedByInquirer) {
+            return Icon(
+              Icons.check_rounded,
+              size: 11,
+              color: item.type == ChatType.Public
+                  ? primaryColor
+                  : secondaryDarkColor,
+            );
+          }
 
-        return const SizedBox();
-      },
-      orElse: () => const SizedBox(),
-    );
+          return const SizedBox();
+        }.call(),
+      _ => const SizedBox(),
+    };
   }
 }
