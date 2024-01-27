@@ -6,12 +6,11 @@ import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'public_chats_event.dart';
 part 'public_chats_state.dart';
-part 'public_chats_bloc.freezed.dart';
 
 class PublicChatsBloc extends Bloc<PublicChatsEvent, PublicChatsState>
     implements Disposable {
@@ -24,79 +23,55 @@ class PublicChatsBloc extends Bloc<PublicChatsEvent, PublicChatsState>
     this._repo,
     this._favoriteBloc,
     this._pageSize,
-  ) : super(const _InProgress([])) {
+  ) : super(const PublicChatsStateInProgress([])) {
     _subscription = _favoriteBloc.stream.listen((state) {
-      state.maybeWhen(
-        (favorites) => add(PublicChatsEvent.updateFavorites(favorites)),
-        orElse: () {},
-      );
+      if (state case FavoriteStateSuccess(favorites: final favorites)) {
+        add(PublicChatsEventUpdateFavorites(favorites));
+      }
     });
-  }
 
-  @override
-  Stream<PublicChatsState> mapEventToState(PublicChatsEvent event) =>
-      event.when(
-        show: _show,
-        reload: _reload,
-        loadNextPage: _loadNextPage,
-        updateFavorites: _updateFavorites,
-      );
+    on<PublicChatsEventShow>((event, emit) {
+      if (state is! PublicChatsStateSuccess) {
+        add(const PublicChatsEventReload());
+      }
+    });
 
-  Stream<PublicChatsState> _show() async* {
-    state.maybeWhen(
-      (chats) async* {
-        yield PublicChatsState(chats);
-      },
-      orElse: () => add(const PublicChatsEvent.reload()),
-    );
-  }
+    on<PublicChatsEventReload>((event, emit) async {
+      emit(const PublicChatsStateInProgress([]));
 
-  Stream<PublicChatsState> _reload() async* {
-    yield const PublicChatsState.inProgress([]);
+      final result = await _repo.getPublic(0, _pageSize);
 
-    final result = await _repo.getPublic(0, _pageSize);
+      emit(result.fold(
+        (l) => PublicChatsStateError(l),
+        (r) => PublicChatsStateSuccess(r),
+      ));
+    });
 
-    yield result.fold(
-      (l) => PublicChatsState.error(l),
-      (r) => PublicChatsState(r),
-    );
-  }
+    on<PublicChatsEventLoadNextPage>((event, emit) async {
+      if (state case PublicChatsStateSuccess(chats: final chats)) {
+        emit(PublicChatsStateInProgress(chats));
 
-  Stream<PublicChatsState> _loadNextPage() async* {
-    Stream<PublicChatsState> load(List<Chat> chats) async* {
-      yield PublicChatsState.inProgress(chats);
+        final page = chats.length ~/ _pageSize;
+        final result = await _repo.getPublic(page, _pageSize);
 
-      final page = chats.length ~/ _pageSize;
-      final result = await _repo.getPublic(page, _pageSize);
+        emit(result.fold(
+          (l) => PublicChatsStateError(l),
+          (r) => PublicChatsStateSuccess(chats..addAll(r)),
+        ));
+      }
+    });
 
-      yield result.fold(
-        (l) => PublicChatsState.error(l),
-        (r) => PublicChatsState(chats..addAll(r)),
-      );
-    }
-
-    yield* state.when(
-      (chats) => load(chats),
-      inProgress: (chats) async* {
-        yield PublicChatsState.inProgress(chats);
-      },
-      error: (rejection) async* {
-        yield PublicChatsState.error(rejection);
-      },
-    );
-  }
-
-  Stream<PublicChatsState> _updateFavorites(List<Favorite> favorites) async* {
-    yield state.maybeWhen(
-      (chats) => PublicChatsState(chats
-          .map(
-            (chat) => chat.copyWith(
-              isFavorite: favorites.any((f) => f.chatId == chat.id),
-            ),
-          )
-          .toList()),
-      orElse: () => state,
-    );
+    on<PublicChatsEventUpdateFavorites>((event, emit) {
+      if (state case PublicChatsStateSuccess(chats: final chats)) {
+        emit(PublicChatsStateSuccess(chats
+            .map(
+              (c) => c.copyWith(
+                isFavorite: event.favorites.any((f) => f.chatId == c.id),
+              ),
+            )
+            .toList()));
+      }
+    });
   }
 
   @override
