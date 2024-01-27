@@ -11,7 +11,7 @@ class ImamRatingsPage extends StatelessWidget {
   final ImamRatingsBloc bloc;
 
   ImamRatingsPage({Key? key, required this.bloc}) : super(key: key) {
-    bloc.add(const ImamRatingsEvent.reload());
+    bloc.add(const ImamRatingsEventReload());
   }
 
   @override
@@ -21,27 +21,29 @@ class ImamRatingsPage extends StatelessWidget {
       body: BlocBuilder<ImamRatingsBloc, ImamRatingsState>(
         bloc: bloc,
         builder: (context, state) {
-          return state.when(
-            (ratings) => Column(
-              children: [
-                Expanded(child: _list(ratings.ratings)),
-                Padding(
-                  padding: const EdgeInsets.all(basePadding),
-                  child: Text(
-                    ratings.description,
-                    style: Theme.of(context).textTheme.caption?.copyWith(
-                          height: 1.5,
-                        ),
+          return switch (state) {
+            ImamRatingsStateSuccess(ratings: final ratings) => Column(
+                children: [
+                  Expanded(child: _list(ratings.ratings)),
+                  Padding(
+                    padding: const EdgeInsets.all(basePadding),
+                    child: Text(
+                      ratings.description,
+                      style: Theme.of(context).textTheme.caption?.copyWith(
+                            height: 1.5,
+                          ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            inProgress: () => InProgressWidget(child: Container()),
-            error: (rejection) => RejectionWidget(
-              rejection: rejection,
-              onRefresh: () => bloc.add(const ImamRatingsEvent.reload()),
-            ),
-          );
+                ],
+              ),
+            ImamRatingsStateInProgress() =>
+              InProgressWidget(child: Container()),
+            ImamRatingsStateError(rejection: final rejection) =>
+              RejectionWidget(
+                rejection: rejection,
+                onRefresh: () => bloc.add(const ImamRatingsEventReload()),
+              ),
+          };
         },
       ),
     );
