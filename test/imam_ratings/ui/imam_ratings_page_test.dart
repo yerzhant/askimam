@@ -17,6 +17,8 @@ void main() {
   late ImamRatingsBloc bloc;
 
   setUp(() {
+    provideDummy<ImamRatingsState>(const ImamRatingsStateInProgress());
+
     bloc = MockImamRatingsBloc();
     when(bloc.state).thenReturn(const ImamRatingsStateInProgress());
     when(bloc.stream).thenAnswer((_) => const Stream.empty());

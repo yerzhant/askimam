@@ -31,6 +31,8 @@ void main() {
         child: const Material(child: SearchChatsWidget()),
       ),
     );
+
+    provideDummy<SearchChatsState>(const SearchChatsStateInProgress());
   });
 
   testWidgets('should show a list', (tester) async {

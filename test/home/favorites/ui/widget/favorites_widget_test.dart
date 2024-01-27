@@ -30,6 +30,8 @@ void main() {
         child: const Material(child: FavoritesWidget()),
       ),
     );
+
+    provideDummy<FavoriteState>(const FavoriteStateInProgress([]));
   });
 
   testWidgets('should show a list', (tester) async {
