@@ -1,6 +1,12 @@
 part of 'imam_ratings_bloc.dart';
 
-@freezed
-class ImamRatingsEvent with _$ImamRatingsEvent {
-  const factory ImamRatingsEvent.reload() = _Reload;
+sealed class ImamRatingsEvent extends Equatable {
+  const ImamRatingsEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+final class ImamRatingsEventReload extends ImamRatingsEvent {
+  const ImamRatingsEventReload();
 }

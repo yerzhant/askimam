@@ -1,32 +1,25 @@
-import 'dart:async';
-
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/imam_ratings/domain/model/imam_ratings_with_description.dart';
 import 'package:askimam/imam_ratings/domain/repo/imam_ratings_repo.dart';
 import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
-part 'imam_ratings_bloc.freezed.dart';
 part 'imam_ratings_event.dart';
 part 'imam_ratings_state.dart';
 
 class ImamRatingsBloc extends Bloc<ImamRatingsEvent, ImamRatingsState> {
   final ImamRatingsRepo _repo;
 
-  ImamRatingsBloc(this._repo) : super(const _InProgress());
+  ImamRatingsBloc(this._repo) : super(const ImamRatingsStateInProgress()) {
+    on<ImamRatingsEventReload>((event, emit) async {
+      emit(const ImamRatingsStateInProgress());
 
-  @override
-  Stream<ImamRatingsState> mapEventToState(ImamRatingsEvent event) =>
-      event.map(reload: _reload);
+      final result = await _repo.getRatings();
 
-  Stream<ImamRatingsState> _reload(_Reload event) async* {
-    yield const ImamRatingsState.inProgress();
-
-    final result = await _repo.getRatings();
-
-    yield result.fold(
-      (l) => ImamRatingsState.error(l),
-      (r) => ImamRatingsState(r),
-    );
+      emit(result.fold(
+        (l) => ImamRatingsStateError(l),
+        (r) => ImamRatingsStateSuccess(r),
+      ));
+    });
   }
 }
