@@ -13,31 +13,31 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class HomeModule extends Module {
   @override
-  List<Bind<Object>> get binds => [
-        Bind.singleton((i) => FcmService()),
-        Bind.singleton((i) => HttpFavoriteRepository(i())),
-        Bind.singleton((i) => HttpChatRepository(i(), i())),
-        Bind.singleton((i) => FavoriteBloc(i())),
-        Bind.singleton((i) => SearchChatsBloc(i())),
-        Bind.singleton((i) => MyChatsBloc(i(), i(), pageSize)),
-        Bind.singleton((i) => UnansweredChatsBloc(i(), pageSize)),
-        Bind.singleton((i) => PublicChatsBloc(i(), i(), pageSize)),
-      ];
+  void binds(Injector i) {
+    i.addSingleton(() => FcmService());
+    i.addSingleton(() => HttpFavoriteRepository(i()));
+    i.addSingleton(() => HttpChatRepository(i(), i()));
+    i.addSingleton(() => FavoriteBloc(i()));
+    i.addSingleton(() => SearchChatsBloc(i()));
+    i.addSingleton(() => MyChatsBloc(i(), i(), pageSize));
+    i.addSingleton(() => UnansweredChatsBloc(i(), pageSize));
+    i.addSingleton(() => PublicChatsBloc(i(), i(), pageSize));
+  }
 
   @override
-  List<ModularRoute> get routes => [
-        ChildRoute(
-          '/',
-          child: (_, __) => HomePage(
-            authBloc: Modular.get(),
-            myChatsBloc: Modular.get(),
-            favoriteBloc: Modular.get(),
-            searchChatsBloc: Modular.get(),
-            publicChatsBloc: Modular.get(),
-            unansweredChatsBloc: Modular.get(),
-          ),
-        ),
-        ChildRoute('/new-question',
-            child: (_, __) => NewQuestionPage(Modular.get())),
-      ];
+  void routes(RouteManager r) {
+    r.child(
+      '/',
+      child: (_) => HomePage(
+        authBloc: Modular.get(),
+        myChatsBloc: Modular.get(),
+        favoriteBloc: Modular.get(),
+        searchChatsBloc: Modular.get(),
+        publicChatsBloc: Modular.get(),
+        unansweredChatsBloc: Modular.get(),
+      ),
+    );
+
+    r.child('/new-question', child: (_) => NewQuestionPage(Modular.get()));
+  }
 }

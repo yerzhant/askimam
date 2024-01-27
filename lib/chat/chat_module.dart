@@ -6,21 +6,21 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class ChatModule extends Module {
   @override
-  List<Bind<Object>> get binds => [
-        Bind.singleton((i) => HttpChatRepository(i(), i())),
-        Bind.singleton((i) => HttpMessageRepository(i(), i())),
-        Bind.singleton((i) => ChatBloc(i(), i(), i(), i(), i())),
-      ];
+  void binds(Injector i) {
+    i.addSingleton(() => HttpChatRepository(i(), i()));
+    i.addSingleton(() => HttpMessageRepository(i(), i()));
+    i.addSingleton(() => ChatBloc(i(), i(), i(), i(), i()));
+  }
 
   @override
-  List<ModularRoute> get routes => [
-        ChildRoute(
-          '/:id',
-          child: (_, args) => ChatPage(
-            int.parse(args.params['id']),
-            Modular.get(),
-            Modular.get(),
-          ),
-        ),
-      ];
+  void routes(r) {
+    r.child(
+      '/:id',
+      child: (_) => ChatPage(
+        int.parse(r.args.params['id']),
+        Modular.get(),
+        Modular.get(),
+      ),
+    );
+  }
 }

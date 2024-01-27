@@ -5,9 +5,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Вопрос имаму',
-      initialRoute: '/',
       theme: ThemeData(
         accentColor: primaryColor,
         colorScheme: const ColorScheme(
@@ -47,6 +46,7 @@ class AppWidget extends StatelessWidget {
           contentTextStyle: TextStyle(color: secondaryTextColor),
         ),
       ),
-    ).modular();
+      routerConfig: Modular.routerConfig,
+    );
   }
 }

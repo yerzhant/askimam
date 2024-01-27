@@ -5,13 +5,13 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class ImamRatingsModule extends Module {
   @override
-  List<Bind<Object>> get binds => [
-        Bind.singleton((i) => HttpImamRatingsRepo(i())),
-        Bind.singleton((i) => ImamRatingsBloc(i())),
-      ];
+  void binds(Injector i) {
+    i.addSingleton(() => HttpImamRatingsRepo(i()));
+    i.addSingleton(() => ImamRatingsBloc(i()));
+  }
 
   @override
-  List<ModularRoute> get routes => [
-        ChildRoute('/', child: (_, __) => ImamRatingsPage(bloc: Modular.get())),
-      ];
+  void routes(RouteManager r) {
+    r.child('/', child: (_) => ImamRatingsPage(bloc: Modular.get()));
+  }
 }
