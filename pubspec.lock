@@ -505,7 +505,7 @@ packages:
     source: hosted
     version: "2.1.1"
   logger:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: logger
       sha256: "7ad7215c15420a102ec687bb320a7312afd449bac63bfb1c60d9787c27b9767f"
@@ -689,7 +689,7 @@ packages:
     source: hosted
     version: "0.1.1"
   permission_handler_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: permission_handler_platform_interface
       sha256: "5c43148f2bfb6d14c5a8162c0a712afe891f2d847f35fcff29c406b37da43c3c"
@@ -713,7 +713,7 @@ packages:
     source: hosted
     version: "3.1.4"
   plugin_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: plugin_platform_interface
       sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"

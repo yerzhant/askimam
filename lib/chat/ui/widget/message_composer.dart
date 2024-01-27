@@ -14,9 +14,11 @@ import 'package:uuid/uuid.dart';
 
 class MessageComposer extends StatefulWidget {
   final Authentication auth;
+  final FlutterSoundRecorder recorder;
 
   const MessageComposer(
-    this.auth, {
+    this.auth,
+    this.recorder, {
     Key? key,
   }) : super(key: key);
 
@@ -29,7 +31,6 @@ class _MessageComposerState extends State<MessageComposer> {
 
   final _controller = TextEditingController();
 
-  final _recorder = FlutterSoundRecorder();
   StreamSubscription<RecordingDisposition>? _recorderSubscription;
   var _dbLevel = 0.0;
   var _recorderTime = Duration.zero;
@@ -38,13 +39,13 @@ class _MessageComposerState extends State<MessageComposer> {
   @override
   void initState() {
     super.initState();
-    _recorder.openAudioSession();
   }
 
   @override
   void dispose() {
+    _controller.dispose();
     _recorderSubscription?.cancel();
-    _recorder.closeAudioSession();
+    widget.recorder.closeAudioSession();
     super.dispose();
   }
 
@@ -127,6 +128,8 @@ class _MessageComposerState extends State<MessageComposer> {
 
   Future<void> _startRecording(BuildContext context) async {
     if (!await Permission.microphone.request().isGranted) {
+      if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Доступ к микрофону запрещён.')));
 
@@ -134,9 +137,10 @@ class _MessageComposerState extends State<MessageComposer> {
     }
 
     final fileName = '${const Uuid().v4()}.mp4';
-    await _recorder.startRecorder(toFile: fileName, codec: Codec.aacMP4);
+    await widget.recorder.openAudioSession();
+    await widget.recorder.startRecorder(toFile: fileName, codec: Codec.aacMP4);
 
-    _recorderSubscription = _recorder.onProgress?.listen((event) {
+    _recorderSubscription = widget.recorder.onProgress?.listen((event) {
       setState(() {
         _dbLevel = event.decibels ?? 0.0;
         _recorderTime = event.duration;
@@ -151,7 +155,7 @@ class _MessageComposerState extends State<MessageComposer> {
 
   Future<void> _stopRecording() async {
     await _recorderSubscription?.cancel();
-    _audioFilePath = await _recorder.stopRecorder();
+    _audioFilePath = await widget.recorder.stopRecorder();
 
     setState(() {
       _stackIndex = 0;
@@ -163,10 +167,11 @@ class _MessageComposerState extends State<MessageComposer> {
     await File(_audioFilePath!).delete();
   }
 
-  Future<void> _sendAudio(BuildContext context) async {
-    await _stopRecording();
-    final file = File(_audioFilePath!);
-    final duration = _recorderTime.format();
-    context.read<ChatBloc>().add(ChatEventAddAudio(file, duration));
+  void _sendAudio(BuildContext context) {
+    _stopRecording().then((_) {
+      final file = File(_audioFilePath!);
+      final duration = _recorderTime.format();
+      context.read<ChatBloc>().add(ChatEventAddAudio(file, duration));
+    });
   }
 }

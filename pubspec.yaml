@@ -25,6 +25,7 @@ dependencies:
   http: ^1.2.0
   intl: ^0.18.1
   json_annotation: ^4.8.1
+  logger: ^1.4.0
   permission_handler: ^11.2.0
   shared_preferences: ^2.2.2
   url_launcher: ^6.2.4
@@ -39,6 +40,8 @@ dev_dependencies:
   json_serializable: ^6.7.1
   mockito: ^5.4.4
   mocktail: ^1.0.3
+  permission_handler_platform_interface: ^4.1.0
+  plugin_platform_interface: ^2.1.8
 
 flutter:
   uses-material-design: true

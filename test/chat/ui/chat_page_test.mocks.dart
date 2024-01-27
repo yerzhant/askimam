@@ -3,18 +3,25 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
-import 'dart:ui' as _i10;
+import 'dart:async' as _i5;
+import 'dart:typed_data' as _i14;
+import 'dart:ui' as _i11;
 
-import 'package:askimam/auth/bloc/auth_bloc.dart' as _i6;
-import 'package:askimam/chat/bloc/chat_bloc.dart' as _i2;
-import 'package:bloc/bloc.dart' as _i5;
-import 'package:flutter/material.dart' as _i9;
+import 'package:askimam/auth/bloc/auth_bloc.dart' as _i7;
+import 'package:askimam/chat/bloc/chat_bloc.dart' as _i3;
+import 'package:bloc/bloc.dart' as _i6;
+import 'package:flutter/material.dart' as _i10;
 import 'package:flutter_modular/src/presenter/models/modular_navigator.dart'
-    as _i7;
-import 'package:flutter_modular/src/presenter/models/route.dart' as _i8;
+    as _i8;
+import 'package:flutter_modular/src/presenter/models/route.dart' as _i9;
+import 'package:flutter_sound_lite/flutter_sound.dart' as _i12;
+import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart'
+    as _i15;
+import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart'
+    as _i13;
+import 'package:logger/logger.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i3;
+import 'package:mockito/src/dummies.dart' as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -29,37 +36,49 @@ import 'package:mockito/src/dummies.dart' as _i3;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeLogger_0 extends _i1.SmartFake implements _i2.Logger {
+  _FakeLogger_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [ChatBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockChatBloc extends _i1.Mock implements _i2.ChatBloc {
-  MockChatBloc() {
-    _i1.throwOnMissingStub(this);
-  }
-
+class MockChatBloc extends _i1.Mock implements _i3.ChatBloc {
   @override
-  _i2.ChatState get state => (super.noSuchMethod(
+  _i3.ChatState get state => (super.noSuchMethod(
         Invocation.getter(#state),
-        returnValue: _i3.dummyValue<_i2.ChatState>(
+        returnValue: _i4.dummyValue<_i3.ChatState>(
           this,
           Invocation.getter(#state),
         ),
-      ) as _i2.ChatState);
+        returnValueForMissingStub: _i4.dummyValue<_i3.ChatState>(
+          this,
+          Invocation.getter(#state),
+        ),
+      ) as _i3.ChatState);
 
   @override
-  _i4.Stream<_i2.ChatState> get stream => (super.noSuchMethod(
+  _i5.Stream<_i3.ChatState> get stream => (super.noSuchMethod(
         Invocation.getter(#stream),
-        returnValue: _i4.Stream<_i2.ChatState>.empty(),
-      ) as _i4.Stream<_i2.ChatState>);
+        returnValue: _i5.Stream<_i3.ChatState>.empty(),
+        returnValueForMissingStub: _i5.Stream<_i3.ChatState>.empty(),
+      ) as _i5.Stream<_i3.ChatState>);
 
   @override
   bool get isClosed => (super.noSuchMethod(
         Invocation.getter(#isClosed),
         returnValue: false,
+        returnValueForMissingStub: false,
       ) as bool);
 
   @override
-  void add(_i2.ChatEvent? event) => super.noSuchMethod(
+  void add(_i3.ChatEvent? event) => super.noSuchMethod(
         Invocation.method(
           #add,
           [event],
@@ -68,7 +87,7 @@ class MockChatBloc extends _i1.Mock implements _i2.ChatBloc {
       );
 
   @override
-  void onEvent(_i2.ChatEvent? event) => super.noSuchMethod(
+  void onEvent(_i3.ChatEvent? event) => super.noSuchMethod(
         Invocation.method(
           #onEvent,
           [event],
@@ -77,7 +96,7 @@ class MockChatBloc extends _i1.Mock implements _i2.ChatBloc {
       );
 
   @override
-  void emit(_i2.ChatState? state) => super.noSuchMethod(
+  void emit(_i3.ChatState? state) => super.noSuchMethod(
         Invocation.method(
           #emit,
           [state],
@@ -86,9 +105,9 @@ class MockChatBloc extends _i1.Mock implements _i2.ChatBloc {
       );
 
   @override
-  void on<E extends _i2.ChatEvent>(
-    _i5.EventHandler<E, _i2.ChatState>? handler, {
-    _i5.EventTransformer<E>? transformer,
+  void on<E extends _i3.ChatEvent>(
+    _i6.EventHandler<E, _i3.ChatState>? handler, {
+    _i6.EventTransformer<E>? transformer,
   }) =>
       super.noSuchMethod(
         Invocation.method(
@@ -100,7 +119,7 @@ class MockChatBloc extends _i1.Mock implements _i2.ChatBloc {
       );
 
   @override
-  void onTransition(_i5.Transition<_i2.ChatEvent, _i2.ChatState>? transition) =>
+  void onTransition(_i6.Transition<_i3.ChatEvent, _i3.ChatState>? transition) =>
       super.noSuchMethod(
         Invocation.method(
           #onTransition,
@@ -110,17 +129,17 @@ class MockChatBloc extends _i1.Mock implements _i2.ChatBloc {
       );
 
   @override
-  _i4.Future<void> close() => (super.noSuchMethod(
+  _i5.Future<void> close() => (super.noSuchMethod(
         Invocation.method(
           #close,
           [],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 
   @override
-  void onChange(_i5.Change<_i2.ChatState>? change) => super.noSuchMethod(
+  void onChange(_i6.Change<_i3.ChatState>? change) => super.noSuchMethod(
         Invocation.method(
           #onChange,
           [change],
@@ -164,34 +183,36 @@ class MockChatBloc extends _i1.Mock implements _i2.ChatBloc {
 /// A class which mocks [AuthBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthBloc extends _i1.Mock implements _i6.AuthBloc {
-  MockAuthBloc() {
-    _i1.throwOnMissingStub(this);
-  }
-
+class MockAuthBloc extends _i1.Mock implements _i7.AuthBloc {
   @override
-  _i6.AuthState get state => (super.noSuchMethod(
+  _i7.AuthState get state => (super.noSuchMethod(
         Invocation.getter(#state),
-        returnValue: _i3.dummyValue<_i6.AuthState>(
+        returnValue: _i4.dummyValue<_i7.AuthState>(
           this,
           Invocation.getter(#state),
         ),
-      ) as _i6.AuthState);
+        returnValueForMissingStub: _i4.dummyValue<_i7.AuthState>(
+          this,
+          Invocation.getter(#state),
+        ),
+      ) as _i7.AuthState);
 
   @override
-  _i4.Stream<_i6.AuthState> get stream => (super.noSuchMethod(
+  _i5.Stream<_i7.AuthState> get stream => (super.noSuchMethod(
         Invocation.getter(#stream),
-        returnValue: _i4.Stream<_i6.AuthState>.empty(),
-      ) as _i4.Stream<_i6.AuthState>);
+        returnValue: _i5.Stream<_i7.AuthState>.empty(),
+        returnValueForMissingStub: _i5.Stream<_i7.AuthState>.empty(),
+      ) as _i5.Stream<_i7.AuthState>);
 
   @override
   bool get isClosed => (super.noSuchMethod(
         Invocation.getter(#isClosed),
         returnValue: false,
+        returnValueForMissingStub: false,
       ) as bool);
 
   @override
-  void add(_i6.AuthEvent? event) => super.noSuchMethod(
+  void add(_i7.AuthEvent? event) => super.noSuchMethod(
         Invocation.method(
           #add,
           [event],
@@ -200,7 +221,7 @@ class MockAuthBloc extends _i1.Mock implements _i6.AuthBloc {
       );
 
   @override
-  void onEvent(_i6.AuthEvent? event) => super.noSuchMethod(
+  void onEvent(_i7.AuthEvent? event) => super.noSuchMethod(
         Invocation.method(
           #onEvent,
           [event],
@@ -209,7 +230,7 @@ class MockAuthBloc extends _i1.Mock implements _i6.AuthBloc {
       );
 
   @override
-  void emit(_i6.AuthState? state) => super.noSuchMethod(
+  void emit(_i7.AuthState? state) => super.noSuchMethod(
         Invocation.method(
           #emit,
           [state],
@@ -218,9 +239,9 @@ class MockAuthBloc extends _i1.Mock implements _i6.AuthBloc {
       );
 
   @override
-  void on<E extends _i6.AuthEvent>(
-    _i5.EventHandler<E, _i6.AuthState>? handler, {
-    _i5.EventTransformer<E>? transformer,
+  void on<E extends _i7.AuthEvent>(
+    _i6.EventHandler<E, _i7.AuthState>? handler, {
+    _i6.EventTransformer<E>? transformer,
   }) =>
       super.noSuchMethod(
         Invocation.method(
@@ -232,7 +253,7 @@ class MockAuthBloc extends _i1.Mock implements _i6.AuthBloc {
       );
 
   @override
-  void onTransition(_i5.Transition<_i6.AuthEvent, _i6.AuthState>? transition) =>
+  void onTransition(_i6.Transition<_i7.AuthEvent, _i7.AuthState>? transition) =>
       super.noSuchMethod(
         Invocation.method(
           #onTransition,
@@ -242,17 +263,17 @@ class MockAuthBloc extends _i1.Mock implements _i6.AuthBloc {
       );
 
   @override
-  _i4.Future<void> close() => (super.noSuchMethod(
+  _i5.Future<void> close() => (super.noSuchMethod(
         Invocation.method(
           #close,
           [],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 
   @override
-  void onChange(_i5.Change<_i6.AuthState>? change) => super.noSuchMethod(
+  void onChange(_i6.Change<_i7.AuthState>? change) => super.noSuchMethod(
         Invocation.method(
           #onChange,
           [change],
@@ -296,38 +317,40 @@ class MockAuthBloc extends _i1.Mock implements _i6.AuthBloc {
 /// A class which mocks [IModularNavigator].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
-  MockIModularNavigator() {
-    _i1.throwOnMissingStub(this);
-  }
-
+class MockIModularNavigator extends _i1.Mock implements _i8.IModularNavigator {
   @override
   String get path => (super.noSuchMethod(
         Invocation.getter(#path),
-        returnValue: _i3.dummyValue<String>(
+        returnValue: _i4.dummyValue<String>(
+          this,
+          Invocation.getter(#path),
+        ),
+        returnValueForMissingStub: _i4.dummyValue<String>(
           this,
           Invocation.getter(#path),
         ),
       ) as String);
 
   @override
-  List<_i8.ParallelRoute<dynamic>> get navigateHistory => (super.noSuchMethod(
+  List<_i9.ParallelRoute<dynamic>> get navigateHistory => (super.noSuchMethod(
         Invocation.getter(#navigateHistory),
-        returnValue: <_i8.ParallelRoute<dynamic>>[],
-      ) as List<_i8.ParallelRoute<dynamic>>);
+        returnValue: <_i9.ParallelRoute<dynamic>>[],
+        returnValueForMissingStub: <_i9.ParallelRoute<dynamic>>[],
+      ) as List<_i9.ParallelRoute<dynamic>>);
 
   @override
-  _i4.Future<T?> push<T extends Object?>(_i9.Route<T>? route) =>
+  _i5.Future<T?> push<T extends Object?>(_i10.Route<T>? route) =>
       (super.noSuchMethod(
         Invocation.method(
           #push,
           [route],
         ),
-        returnValue: _i4.Future<T?>.value(),
-      ) as _i4.Future<T?>);
+        returnValue: _i5.Future<T?>.value(),
+        returnValueForMissingStub: _i5.Future<T?>.value(),
+      ) as _i5.Future<T?>);
 
   @override
-  _i4.Future<T?> popAndPushNamed<T extends Object?, TO extends Object?>(
+  _i5.Future<T?> popAndPushNamed<T extends Object?, TO extends Object?>(
     String? routeName, {
     TO? result,
     Object? arguments,
@@ -343,11 +366,12 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
             #forRoot: forRoot,
           },
         ),
-        returnValue: _i4.Future<T?>.value(),
-      ) as _i4.Future<T?>);
+        returnValue: _i5.Future<T?>.value(),
+        returnValueForMissingStub: _i5.Future<T?>.value(),
+      ) as _i5.Future<T?>);
 
   @override
-  _i4.Future<T?> pushNamed<T extends Object?>(
+  _i5.Future<T?> pushNamed<T extends Object?>(
     String? routeName, {
     Object? arguments,
     bool? forRoot = false,
@@ -361,13 +385,14 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
             #forRoot: forRoot,
           },
         ),
-        returnValue: _i4.Future<T?>.value(),
-      ) as _i4.Future<T?>);
+        returnValue: _i5.Future<T?>.value(),
+        returnValueForMissingStub: _i5.Future<T?>.value(),
+      ) as _i5.Future<T?>);
 
   @override
-  _i4.Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
+  _i5.Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
     String? newRouteName,
-    bool Function(_i9.Route<dynamic>)? predicate, {
+    bool Function(_i10.Route<dynamic>)? predicate, {
     Object? arguments,
     bool? forRoot = false,
   }) =>
@@ -383,11 +408,12 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
             #forRoot: forRoot,
           },
         ),
-        returnValue: _i4.Future<T?>.value(),
-      ) as _i4.Future<T?>);
+        returnValue: _i5.Future<T?>.value(),
+        returnValueForMissingStub: _i5.Future<T?>.value(),
+      ) as _i5.Future<T?>);
 
   @override
-  _i4.Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
+  _i5.Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String? routeName, {
     TO? result,
     Object? arguments,
@@ -403,8 +429,9 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
             #forRoot: forRoot,
           },
         ),
-        returnValue: _i4.Future<T?>.value(),
-      ) as _i4.Future<T?>);
+        returnValue: _i5.Future<T?>.value(),
+        returnValueForMissingStub: _i5.Future<T?>.value(),
+      ) as _i5.Future<T?>);
 
   @override
   void pop<T extends Object?>([T? result]) => super.noSuchMethod(
@@ -422,20 +449,22 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
           [],
         ),
         returnValue: false,
+        returnValueForMissingStub: false,
       ) as bool);
 
   @override
-  _i4.Future<bool> maybePop<T extends Object?>([T? result]) =>
+  _i5.Future<bool> maybePop<T extends Object?>([T? result]) =>
       (super.noSuchMethod(
         Invocation.method(
           #maybePop,
           [result],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i5.Future<bool>.value(false),
+        returnValueForMissingStub: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
 
   @override
-  void popUntil(bool Function(_i9.Route<dynamic>)? predicate) =>
+  void popUntil(bool Function(_i10.Route<dynamic>)? predicate) =>
       super.noSuchMethod(
         Invocation.method(
           #popUntil,
@@ -459,7 +488,7 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
       );
 
   @override
-  void setObservers(List<_i9.NavigatorObserver>? navigatorObservers) =>
+  void setObservers(List<_i10.NavigatorObserver>? navigatorObservers) =>
       super.noSuchMethod(
         Invocation.method(
           #setObservers,
@@ -469,7 +498,7 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
       );
 
   @override
-  void setNavigatorKey(_i9.GlobalKey<_i9.NavigatorState>? navigatorkey) =>
+  void setNavigatorKey(_i10.GlobalKey<_i10.NavigatorState>? navigatorkey) =>
       super.noSuchMethod(
         Invocation.method(
           #setNavigatorKey,
@@ -479,7 +508,7 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
       );
 
   @override
-  void addListener(_i10.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(_i11.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -488,11 +517,369 @@ class MockIModularNavigator extends _i1.Mock implements _i7.IModularNavigator {
       );
 
   @override
-  void removeListener(_i10.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(_i11.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],
         ),
         returnValueForMissingStub: null,
       );
+}
+
+/// A class which mocks [FlutterSoundRecorder].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockFlutterSoundRecorder extends _i1.Mock
+    implements _i12.FlutterSoundRecorder {
+  @override
+  _i2.Logger get logger => (super.noSuchMethod(
+        Invocation.getter(#logger),
+        returnValue: _FakeLogger_0(
+          this,
+          Invocation.getter(#logger),
+        ),
+        returnValueForMissingStub: _FakeLogger_0(
+          this,
+          Invocation.getter(#logger),
+        ),
+      ) as _i2.Logger);
+
+  @override
+  _i13.RecorderState get recorderState => (super.noSuchMethod(
+        Invocation.getter(#recorderState),
+        returnValue: _i13.RecorderState.isStopped,
+        returnValueForMissingStub: _i13.RecorderState.isStopped,
+      ) as _i13.RecorderState);
+
+  @override
+  bool get isRecording => (super.noSuchMethod(
+        Invocation.getter(#isRecording),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get isStopped => (super.noSuchMethod(
+        Invocation.getter(#isStopped),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get isPaused => (super.noSuchMethod(
+        Invocation.getter(#isPaused),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i5.Future<void> setLogLevel(_i2.Level? aLevel) => (super.noSuchMethod(
+        Invocation.method(
+          #setLogLevel,
+          [aLevel],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  void recordingData({_i14.Uint8List? data}) => super.noSuchMethod(
+        Invocation.method(
+          #recordingData,
+          [],
+          {#data: data},
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void updateRecorderProgress({
+    int? duration,
+    double? dbPeakLevel,
+  }) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #updateRecorderProgress,
+          [],
+          {
+            #duration: duration,
+            #dbPeakLevel: dbPeakLevel,
+          },
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void openRecorderCompleted(
+    int? state,
+    bool? success,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #openRecorderCompleted,
+          [
+            state,
+            success,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void closeRecorderCompleted(
+    int? state,
+    bool? success,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #closeRecorderCompleted,
+          [
+            state,
+            success,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void pauseRecorderCompleted(
+    int? state,
+    bool? success,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #pauseRecorderCompleted,
+          [
+            state,
+            success,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void resumeRecorderCompleted(
+    int? state,
+    bool? success,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #resumeRecorderCompleted,
+          [
+            state,
+            success,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void startRecorderCompleted(
+    int? state,
+    bool? success,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #startRecorderCompleted,
+          [
+            state,
+            success,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void stopRecorderCompleted(
+    int? state,
+    bool? success,
+    String? url,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #stopRecorderCompleted,
+          [
+            state,
+            success,
+            url,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void log(
+    _i2.Level? logLevel,
+    String? msg,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #log,
+          [
+            logLevel,
+            msg,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i5.Future<_i12.FlutterSoundRecorder?> openAudioSession({
+    _i15.AudioFocus? focus = _i15.AudioFocus.requestFocusTransient,
+    _i15.SessionCategory? category = _i15.SessionCategory.playAndRecord,
+    _i15.SessionMode? mode = _i15.SessionMode.modeDefault,
+    int? audioFlags = 1,
+    _i15.AudioDevice? device = _i15.AudioDevice.speaker,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #openAudioSession,
+          [],
+          {
+            #focus: focus,
+            #category: category,
+            #mode: mode,
+            #audioFlags: audioFlags,
+            #device: device,
+          },
+        ),
+        returnValue: _i5.Future<_i12.FlutterSoundRecorder?>.value(),
+        returnValueForMissingStub:
+            _i5.Future<_i12.FlutterSoundRecorder?>.value(),
+      ) as _i5.Future<_i12.FlutterSoundRecorder?>);
+
+  @override
+  _i5.Future<void> closeAudioSession() => (super.noSuchMethod(
+        Invocation.method(
+          #closeAudioSession,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<bool> isEncoderSupported(_i15.Codec? codec) => (super.noSuchMethod(
+        Invocation.method(
+          #isEncoderSupported,
+          [codec],
+        ),
+        returnValue: _i5.Future<bool>.value(false),
+        returnValueForMissingStub: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
+
+  @override
+  _i5.Future<void> setSubscriptionDuration(Duration? duration) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setSubscriptionDuration,
+          [duration],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> startRecorder({
+    _i15.Codec? codec = _i15.Codec.defaultCodec,
+    String? toFile,
+    _i5.StreamSink<_i12.Food>? toStream,
+    int? sampleRate = 16000,
+    int? numChannels = 1,
+    int? bitRate = 16000,
+    _i13.AudioSource? audioSource = _i13.AudioSource.defaultSource,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #startRecorder,
+          [],
+          {
+            #codec: codec,
+            #toFile: toFile,
+            #toStream: toStream,
+            #sampleRate: sampleRate,
+            #numChannels: numChannels,
+            #bitRate: bitRate,
+            #audioSource: audioSource,
+          },
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<String?> stopRecorder() => (super.noSuchMethod(
+        Invocation.method(
+          #stopRecorder,
+          [],
+        ),
+        returnValue: _i5.Future<String?>.value(),
+        returnValueForMissingStub: _i5.Future<String?>.value(),
+      ) as _i5.Future<String?>);
+
+  @override
+  _i5.Future<void> setAudioFocus({
+    _i15.AudioFocus? focus = _i15.AudioFocus.requestFocusTransient,
+    _i15.SessionCategory? category = _i15.SessionCategory.playAndRecord,
+    _i15.SessionMode? mode = _i15.SessionMode.modeDefault,
+    _i15.AudioDevice? device = _i15.AudioDevice.speaker,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setAudioFocus,
+          [],
+          {
+            #focus: focus,
+            #category: category,
+            #mode: mode,
+            #device: device,
+          },
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> pauseRecorder() => (super.noSuchMethod(
+        Invocation.method(
+          #pauseRecorder,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> resumeRecorder() => (super.noSuchMethod(
+        Invocation.method(
+          #resumeRecorder,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<bool?> deleteRecord({required String? fileName}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteRecord,
+          [],
+          {#fileName: fileName},
+        ),
+        returnValue: _i5.Future<bool?>.value(),
+        returnValueForMissingStub: _i5.Future<bool?>.value(),
+      ) as _i5.Future<bool?>);
+
+  @override
+  _i5.Future<String?> getRecordURL({required String? path}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getRecordURL,
+          [],
+          {#path: path},
+        ),
+        returnValue: _i5.Future<String?>.value(),
+        returnValueForMissingStub: _i5.Future<String?>.value(),
+      ) as _i5.Future<String?>);
 }

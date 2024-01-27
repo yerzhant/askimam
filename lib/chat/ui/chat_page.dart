@@ -13,6 +13,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart'
     hide ModularWatchExtension;
+import 'package:flutter_sound_lite/flutter_sound.dart';
 
 const _interMessageSpace = 10.0;
 
@@ -20,8 +21,9 @@ class ChatPage extends StatefulWidget {
   final int id;
   final ChatBloc bloc;
   final AuthBloc authBloc;
+  final FlutterSoundRecorder soundRecorder;
 
-  ChatPage(this.id, this.bloc, this.authBloc, {super.key}) {
+  ChatPage(this.id, this.bloc, this.authBloc, this.soundRecorder, {super.key}) {
     bloc.add(ChatEventRefresh(id));
   }
 
@@ -119,7 +121,7 @@ class _ChatPageState extends State<ChatPage> {
                           AuthStateAuthenticated(authentication: final auth) =>
                             auth.userId == chat.askedBy ||
                                     auth.userType == UserType.Imam
-                                ? MessageComposer(auth)
+                                ? MessageComposer(auth, widget.soundRecorder)
                                 : Container(),
                           _ => Container(),
                         },

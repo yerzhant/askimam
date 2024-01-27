@@ -16,6 +16,8 @@ void main() {
   late IModularNavigator navigator;
 
   setUp(() {
+    provideDummy<AuthState>(const AuthStateInProgress());
+
     bloc = MockAuthBloc();
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
     when(bloc.state).thenReturn(const AuthStateUnauthenticated());
