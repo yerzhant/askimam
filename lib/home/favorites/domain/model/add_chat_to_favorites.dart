@@ -1,15 +1,10 @@
 import 'package:askimam/common/domain/model/model.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'add_chat_to_favorites.freezed.dart';
-part 'add_chat_to_favorites.g.dart';
+class AddChatToFavorites with Model {
+  final int id;
 
-@freezed
-class AddChatToFavorites with _$AddChatToFavorites, Model {
-  factory AddChatToFavorites(int id) = _AddChatToFavorites;
+  const AddChatToFavorites(this.id);
 
-  factory AddChatToFavorites.fromJson(Map<String, dynamic> json) =>
-      _$AddChatToFavoritesFromJson(json);
-
-  const AddChatToFavorites._();
+  @override
+  Map<String, dynamic> toJson() => {'id': id};
 }
