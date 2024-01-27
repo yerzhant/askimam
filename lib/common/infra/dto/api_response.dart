@@ -49,6 +49,7 @@ class ApiResponse with Model {
   }
 }
 
+// ignore: constant_identifier_names
 enum ApiResponseStatus { Ok, Error }
 
 final _fromJsonfactories = <Type, Function>{

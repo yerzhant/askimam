@@ -22,4 +22,5 @@ class Authentication extends Equatable with Model {
   List<Object?> get props => [jwt, userId, userType];
 }
 
+// ignore: constant_identifier_names
 enum UserType { Imam, Inquirer }
