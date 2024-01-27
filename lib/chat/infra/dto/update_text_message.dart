@@ -1,10 +1,11 @@
 import 'package:askimam/common/domain/model/model.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'update_text_message.g.dart';
 
 @JsonSerializable()
-class UpdateTextMessage with Model {
+class UpdateTextMessage extends Equatable with Model {
   final String text;
   final String fcmToken;
 
@@ -15,4 +16,7 @@ class UpdateTextMessage with Model {
 
   @override
   Map<String, dynamic> toJson() => _$UpdateTextMessageToJson(this);
+
+  @override
+  List<Object?> get props => [text, fcmToken];
 }

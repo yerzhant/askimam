@@ -6,13 +6,14 @@ import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:askimam/imam_ratings/domain/model/imam_ratings_with_description.dart';
+import 'package:equatable/equatable.dart';
 import 'package:http/http.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'api_response.g.dart';
 
 @JsonSerializable()
-class ApiResponse with Model {
+class ApiResponse extends Equatable with Model {
   final ApiResponseStatus status;
   final Object? data;
   final String? error;
@@ -49,6 +50,9 @@ class ApiResponse with Model {
 
   @override
   Map<String, dynamic> toJson() => _$ApiResponseToJson(this);
+
+  @override
+  List<Object?> get props => [status, data, error];
 }
 
 // ignore: constant_identifier_names
