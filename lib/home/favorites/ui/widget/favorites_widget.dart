@@ -7,24 +7,27 @@ import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_modular/flutter_modular.dart'
+    hide ModularWatchExtension;
 
 class FavoritesWidget extends StatelessWidget {
-  const FavoritesWidget();
+  const FavoritesWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FavoriteBloc, FavoriteState>(
       builder: (context, state) {
-        return state.when(
-          (items) => _list(items, context),
-          inProgress: (items) => InProgressWidget(child: _list(items, context)),
-          error: (rejection) => RejectionWidget(
-            rejection: rejection,
-            onRefresh: () =>
-                context.read<FavoriteBloc>().add(const FavoriteEvent.refresh()),
-          ),
-        );
+        return switch (state) {
+          FavoriteStateSuccess(favorites: final items) => _list(items, context),
+          FavoriteStateInProgress(favorites: final items) =>
+            InProgressWidget(child: _list(items, context)),
+          FavoriteStateError(rejection: final rejection) => RejectionWidget(
+              rejection: rejection,
+              onRefresh: () => context
+                  .read<FavoriteBloc>()
+                  .add(const FavoriteEventRefresh()),
+            ),
+        };
       },
     );
   }
@@ -32,7 +35,7 @@ class FavoritesWidget extends StatelessWidget {
   Widget _list(List<Favorite> items, BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async =>
-          context.read<FavoriteBloc>().add(const FavoriteEvent.refresh()),
+          context.read<FavoriteBloc>().add(const FavoriteEventRefresh()),
       child: ListView.separated(
         itemCount: items.length,
         itemBuilder: (_, i) {
@@ -42,7 +45,7 @@ class FavoritesWidget extends StatelessWidget {
             key: ValueKey(item.id),
             onDismissed: (_) => context
                 .read<FavoriteBloc>()
-                .add(FavoriteEvent.delete(item.chatId)),
+                .add(FavoriteEventDelete(item.chatId)),
             background: Container(color: secondaryColor),
             child: ListTile(
               title: AutoDirection(
