@@ -30,9 +30,11 @@ dependencies:
   uuid: ^3.0.7
 
 dev_dependencies:
+  bloc_test: ^9.1.5
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  mockito: ^5.4.4
 
 flutter:
   uses-material-design: true
