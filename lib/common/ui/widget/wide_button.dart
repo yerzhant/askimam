@@ -25,8 +25,9 @@ class WideButton extends StatelessWidget {
         icon: isInProgress
             ? Theme(
                 data: Theme.of(context).copyWith(
-                  accentColor: primaryLightColor,
-                ),
+                    // TODO
+                    // accentColor: primaryLightColor,
+                    ),
                 child: const CircularProgress(size: CircularProgressSize.small),
               )
             : Icon(_icon, color: primaryLightColor),
