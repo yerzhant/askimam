@@ -5,8 +5,8 @@ final httpClient = MockClient((req) async {
     case 'GET':
       if (req.url.path == '/list') {
         final json = ApiResponse.data([
-          Favorite(1, 1, 'Тема'),
-          Favorite(2, 2, 'Тема'),
+          const Favorite(1, 1, 'Тема'),
+          const Favorite(2, 2, 'Тема'),
         ]).toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/one' && _isAuthorized(req)) {
@@ -25,8 +25,8 @@ final httpClient = MockClient((req) async {
         return Response('', 401);
       } else if (req.url.path == '/auth-list' && _isAuthorized(req)) {
         final json = ApiResponse.data([
-          Favorite(1, 1, 'Тема'),
-          Favorite(2, 2, 'Тема'),
+          const Favorite(1, 1, 'Тема'),
+          const Favorite(2, 2, 'Тема'),
         ]).toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/rejection') {
@@ -44,11 +44,11 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/suffix/ok') {
         if (listEquals(
           req.bodyBytes,
-          LoginRequest('login', 'password', 'fcm').toJsonUtf8(),
+          const LoginRequest('login', 'password', 'fcm').toJsonUtf8(),
         )) {
-          final json =
-              ApiResponse.data(Authentication('123', 1, UserType.Inquirer))
-                  .toJsonString();
+          final json = ApiResponse.data(
+            const Authentication('123', 1, UserType.Inquirer),
+          ).toJsonString();
           return Response(json, 200);
         } else {
           return Response('', 400);
@@ -56,7 +56,8 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/suffix/ok-chat') {
         if (listEquals(
           req.bodyBytes,
-          CreateChat(ChatType.Public, 'Тема', 'Текст', '123').toJsonUtf8(),
+          const CreateChat(ChatType.Public, 'Тема', 'Текст', '123')
+              .toJsonUtf8(),
         )) {
           final json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
@@ -66,7 +67,7 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/suffix/ok-message') {
         if (listEquals(
           req.bodyBytes,
-          AddTextMessage(1, 'Текст', '123').toJsonUtf8(),
+          const AddTextMessage(1, 'Текст', '123').toJsonUtf8(),
         )) {
           final json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
@@ -76,7 +77,7 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/suffix/ok-favorite') {
         if (listEquals(
           req.bodyBytes,
-          AddChatToFavorites(1).toJsonUtf8(),
+          const AddChatToFavorites(1).toJsonUtf8(),
         )) {
           final json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
@@ -99,7 +100,7 @@ final httpClient = MockClient((req) async {
         final json = ApiResponse.ok().toJsonString();
         return Response(json, 200);
       } else if (req.url.path == '/suffix/ok-body-chat') {
-        if (listEquals(req.bodyBytes, UpdateChat('Тема').toJsonUtf8())) {
+        if (listEquals(req.bodyBytes, const UpdateChat('Тема').toJsonUtf8())) {
           final json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
         } else {
@@ -108,7 +109,7 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/suffix/ok-body-message') {
         if (listEquals(
           req.bodyBytes,
-          UpdateTextMessage('Тема', '123').toJsonUtf8(),
+          const UpdateTextMessage('Тема', '123').toJsonUtf8(),
         )) {
           final json = ApiResponse.ok().toJsonString();
           return Response(json, 200);
