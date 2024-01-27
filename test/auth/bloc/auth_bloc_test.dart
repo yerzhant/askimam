@@ -18,16 +18,19 @@ import 'auth_bloc_test.mocks.dart';
 void main() {
   late AuthBloc bloc;
   late ApiClient apiClient;
-  final repo = MockAuthRepository();
-  final notificationService = MockNotificationService();
+  late AuthRepository repo;
+  late NotificationService notificationService;
 
   setUp(() {
+    apiClient = MockApiClient();
+    repo = MockAuthRepository();
+    notificationService = MockNotificationService();
+    bloc = AuthBloc(repo, apiClient, notificationService);
+
     when(repo.load()).thenAnswer(
         (_) async => right(const Authentication('jwt', 1, UserType.Inquirer)));
     when(notificationService.getFcmToken())
         .thenAnswer((_) async => right('fcm'));
-    apiClient = MockApiClient();
-    bloc = AuthBloc(repo, apiClient, notificationService);
   });
 
   test('Initial state', () {
@@ -45,7 +48,6 @@ void main() {
       },
       seed: () => const AuthStateUnauthenticated(),
       act: (_) => bloc.add(const AuthEventLogin('login', 'password')),
-      skip: 2,
       expect: () => [
         const AuthStateInProgress(),
         const AuthStateAuthenticated(
@@ -64,7 +66,6 @@ void main() {
       },
       seed: () => const AuthStateUnauthenticated(),
       act: (_) => bloc.add(const AuthEventLogin('login', 'password')),
-      skip: 2,
       expect: () => [
         const AuthStateInProgress(),
         AuthStateError(Rejection('reason')),
@@ -81,7 +82,6 @@ void main() {
       },
       seed: () => const AuthStateUnauthenticated(),
       act: (_) => bloc.add(const AuthEventLogin('login', 'password')),
-      skip: 2,
       expect: () => [
         const AuthStateInProgress(),
         AuthStateError(Rejection('reason')),
@@ -100,7 +100,6 @@ void main() {
       seed: () => const AuthStateAuthenticated(
           Authentication('jwt', 1, UserType.Inquirer)),
       act: (_) => bloc.add(const AuthEventLogout()),
-      skip: 2,
       expect: () => [
         const AuthStateInProgress(),
         const AuthStateUnauthenticated(),
@@ -118,7 +117,6 @@ void main() {
       seed: () => const AuthStateAuthenticated(
           Authentication('jwt', 1, UserType.Inquirer)),
       act: (_) => bloc.add(const AuthEventLogout()),
-      skip: 2,
       expect: () => [
         const AuthStateInProgress(),
         AuthStateError(Rejection('reason')),
@@ -135,7 +133,6 @@ void main() {
       seed: () => const AuthStateAuthenticated(
           Authentication('jwt', 1, UserType.Inquirer)),
       act: (_) => bloc.add(const AuthEventLogout()),
-      skip: 2,
       expect: () => [
         const AuthStateInProgress(),
         AuthStateError(Rejection('reason')),
@@ -147,6 +144,7 @@ void main() {
     blocTest(
       'should get an authentication',
       build: () => bloc,
+      act: (_) => bloc.add(const AuthEventLoad()),
       expect: () => [
         const AuthStateInProgress(),
         const AuthStateAuthenticated(
@@ -159,8 +157,9 @@ void main() {
       'should not load an authentication',
       build: () {
         when(repo.load()).thenAnswer((_) async => left(Rejection('reason')));
-        return AuthBloc(repo, apiClient, notificationService);
+        return bloc;
       },
+      act: (_) => bloc.add(const AuthEventLoad()),
       expect: () => [
         const AuthStateInProgress(),
         AuthStateError(Rejection('reason')),

@@ -21,8 +21,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this._apiClient,
     this._notificationService,
   ) : super(const AuthStateUnauthenticated()) {
-    add(const AuthEventLoad());
-
     on<AuthEventLoad>((event, emit) async {
       emit(const AuthStateInProgress());
 
@@ -42,8 +40,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final result = await _notificationService.getFcmToken();
 
-      result.fold(
-        (l) => emit(AuthStateError(l)),
+      await result.fold(
+        (l) async => emit(AuthStateError(l)),
         (r) async {
           final result = await _repo.login(LoginRequest(
             event.login,
@@ -67,8 +65,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final result = await _notificationService.getFcmToken();
 
-      result.fold(
-        (l) => emit(AuthStateError(l)),
+      await result.fold(
+        (l) async => emit(AuthStateError(l)),
         (r) async {
           _apiClient.resetJwt();
 
