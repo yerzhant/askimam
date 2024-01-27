@@ -33,8 +33,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       final result = await _repo.get(event.id);
 
-      result.fold(
-        (l) => emit(ChatStateError(l)),
+      await result.fold(
+        (l) async => emit(ChatStateError(l)),
         (r) async {
           switch (_authBloc.state) {
             case AuthStateAuthenticated(authentication: final auth):
@@ -72,7 +72,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
         final result = await _messageRepo.addText(chat.id, event.text);
 
-        result.fold(
+        await result.fold(
           () async {
             final updateResult = await _repo.get(chat.id);
 
@@ -99,7 +99,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         );
         if (event.file.path != 'audio.mp3') event.file.deleteSync();
 
-        result.fold(
+        await result.fold(
           () async {
             final updateResult = await _repo.get(chat.id);
 

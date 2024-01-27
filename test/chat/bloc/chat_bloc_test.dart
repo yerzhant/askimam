@@ -34,6 +34,7 @@ void main() {
   final unansweredChatsBloc = MockUnansweredChatsBloc();
 
   setUp(() {
+    provideDummy<AuthState>(const AuthStateInProgress());
     when(authBloc.state).thenReturn(const AuthStateAuthenticated(
       Authentication('jwt', 1, UserType.Inquirer),
     ));
