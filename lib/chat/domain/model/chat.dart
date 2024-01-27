@@ -1,7 +1,11 @@
 import 'package:askimam/chat/domain/model/message.dart';
 import 'package:askimam/common/domain/model/model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'chat.g.dart';
+
+@JsonSerializable()
 class Chat extends Equatable with Model {
   final int id;
   final ChatType type;
@@ -25,17 +29,10 @@ class Chat extends Equatable with Model {
     this.messages,
   });
 
-  factory Chat.fromJson(Map<String, dynamic> json) => Chat(
-        json['id'],
-        json['type'],
-        json['askedBy'],
-        json['subject'],
-        json['updatedAt'],
-        isFavorite: json['isFavorite'],
-        isViewedByImam: json['isViewedByImam'],
-        isViewedByInquirer: json['isViewedByInquirer'],
-        messages: json['messages'],
-      );
+  factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ChatToJson(this);
 
   Chat copyWith({
     bool? isFavorite,
@@ -52,19 +49,6 @@ class Chat extends Equatable with Model {
         isViewedByInquirer: isViewedByInquirer,
         messages: messages ?? this.messages,
       );
-
-  @override
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'type': type,
-        'askedBy': askedBy,
-        'subject': subject,
-        'updatedAt': updatedAt,
-        'isFavorite': isFavorite,
-        'isViewedByImam': isViewedByImam,
-        'isViewedByInquirer': isViewedByInquirer,
-        'messages': messages,
-      };
 
   @override
   List<Object?> get props => [

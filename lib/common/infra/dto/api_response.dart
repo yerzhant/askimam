@@ -7,7 +7,11 @@ import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:askimam/imam_ratings/domain/model/imam_ratings_with_description.dart';
 import 'package:http/http.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'api_response.g.dart';
+
+@JsonSerializable()
 class ApiResponse with Model {
   final ApiResponseStatus status;
   final Object? data;
@@ -27,9 +31,6 @@ class ApiResponse with Model {
         error: error,
       );
 
-  factory ApiResponse.fromJson(Map<String, dynamic> json) =>
-      ApiResponse(json['status'], data: json['data'], error: json['error']);
-
   M value<M extends Model>() {
     return _fromJsonfactories[M]!(data);
   }
@@ -43,10 +44,11 @@ class ApiResponse with Model {
 
   String toJsonString() => jsonEncode(toJson());
 
+  factory ApiResponse.fromJson(Map<String, dynamic> json) =>
+      _$ApiResponseFromJson(json);
+
   @override
-  Map<String, dynamic> toJson() {
-    throw UnimplementedError();
-  }
+  Map<String, dynamic> toJson() => _$ApiResponseToJson(this);
 }
 
 // ignore: constant_identifier_names

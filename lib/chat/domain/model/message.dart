@@ -1,6 +1,11 @@
+import 'package:askimam/common/domain/model/model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class Message extends Equatable {
+part 'message.g.dart';
+
+@JsonSerializable()
+class Message extends Equatable with Model {
   final int id;
   final MessageType type;
   final String text;
@@ -21,16 +26,11 @@ class Message extends Equatable {
     this.duration,
   });
 
-  factory Message.fromJson(Map<String, dynamic> json) => Message(
-        json['id'],
-        json['type'],
-        json['text'],
-        json['author'],
-        json['createdAt'],
-        json['updatedAt'],
-        audio: json['audio'],
-        duration: json['duration'],
-      );
+  factory Message.fromJson(Map<String, dynamic> json) =>
+      _$MessageFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$MessageToJson(this);
 
   Message copyWith({String? text}) => Message(
         id,
