@@ -2,54 +2,57 @@ import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_modular/flutter_modular.dart'
+    hide ModularWatchExtension;
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HomePopupMenu extends StatelessWidget {
+  const HomePopupMenu({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
       return PopupMenuButton(
         icon: const Icon(Icons.more_vert),
-        itemBuilder: (_) => state.maybeWhen(
-          authenticated: (_) => [
-            _imamRatings(),
-            _azanKz(),
-            if (!kIsWeb) _webVersion(),
-            if (kIsWeb) ...[
-              _iosVersion(),
-              _androidVersion(),
+        itemBuilder: (_) => switch (state) {
+          AuthStateAuthenticated() => [
+              _imamRatings(),
+              _azanKz(),
+              if (!kIsWeb) _webVersion(),
+              if (kIsWeb) ...[
+                _iosVersion(),
+                _androidVersion(),
+              ],
+              _logout(),
             ],
-            _logout(),
-          ],
-          orElse: () => [
-            _imamRatings(),
-            _azanKz(),
-            if (!kIsWeb) _webVersion(),
-            if (kIsWeb) ...[
-              _iosVersion(),
-              _androidVersion(),
+          _ => [
+              _imamRatings(),
+              _azanKz(),
+              if (!kIsWeb) _webVersion(),
+              if (kIsWeb) ...[
+                _iosVersion(),
+                _androidVersion(),
+              ],
+              _login(),
             ],
-            _login(),
-          ],
-        ),
+        },
         onSelected: (action) {
           switch (action) {
             case _HomePopupMenuAction.azanKz:
-              launch('https://azan.kz');
+              launchUrlString('https://azan.kz');
               break;
 
             case _HomePopupMenuAction.webVersion:
-              launch('https://askimam.azan.kz');
+              launchUrlString('https://askimam.azan.kz');
               break;
 
             case _HomePopupMenuAction.iosVersion:
-              launch(
+              launchUrlString(
                   'https://apps.apple.com/us/app/%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81-%D0%B8%D0%BC%D0%B0%D0%BC%D1%83-azan-kz/id1481811875');
               break;
 
             case _HomePopupMenuAction.androidVersion:
-              launch(
+              launchUrlString(
                   'https://play.google.com/store/apps/details?id=kz.azan.askimam');
               break;
 
@@ -62,7 +65,7 @@ class HomePopupMenu extends StatelessWidget {
               break;
 
             case _HomePopupMenuAction.logout:
-              context.read<AuthBloc>().add(const AuthEvent.logout());
+              context.read<AuthBloc>().add(const AuthEventLogout());
               break;
           }
         },

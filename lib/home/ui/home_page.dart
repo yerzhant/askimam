@@ -36,21 +36,22 @@ class HomePage extends StatefulWidget {
   }
 
   void _initialReloading() {
-    authBloc.state.maybeWhen(
-      authenticated: (auth) {
+    switch (authBloc.state) {
+      case AuthStateAuthenticated(authentication: final auth):
         if (auth.userType == UserType.Imam) {
-          unansweredChatsBloc.add(const UnansweredChatsEvent.reload());
+          unansweredChatsBloc.add(const UnansweredChatsEventReload());
         }
-        myChatsBloc.add(const MyChatsEvent.reload());
-        publicChatsBloc.add(const PublicChatsEvent.reload());
-        favoriteBloc.add(const FavoriteEvent.refresh());
-      },
-      orElse: () => publicChatsBloc.add(const PublicChatsEvent.reload()),
-    );
+        myChatsBloc.add(const MyChatsEventReload());
+        publicChatsBloc.add(const PublicChatsEventReload());
+        favoriteBloc.add(const FavoriteEventRefresh());
+
+      default:
+        publicChatsBloc.add(const PublicChatsEventReload());
+    }
   }
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           return Scaffold(
             appBar: AppBar(
               title: const Text('Вопрос имаму'),
-              actions: [HomePopupMenu()],
+              actions: const [HomePopupMenu()],
             ),
             body: PageView(
               controller: _pageController,
@@ -89,22 +90,22 @@ class _HomePageState extends State<HomePage> {
               onPageChanged: (_) {
                 setState(() {});
               },
-              children: state.maybeWhen(
-                authenticated: (auth) => [
-                  if (auth.userType == UserType.Imam)
-                    const UnansweredChatsWidget(),
-                  MyChatsWidget(widget.authBloc),
-                  const PublicChatsWidget(),
-                  const FavoritesWidget(),
-                  const SearchChatsWidget(),
-                ],
-                orElse: () => [
-                  const PublicChatsWidget(),
-                  Container(),
-                  Container(),
-                  const SearchChatsWidget(),
-                ],
-              ),
+              children: switch (state) {
+                AuthStateAuthenticated(authentication: final auth) => [
+                    if (auth.userType == UserType.Imam)
+                      const UnansweredChatsWidget(),
+                    MyChatsWidget(widget.authBloc),
+                    const PublicChatsWidget(),
+                    const FavoritesWidget(),
+                    const SearchChatsWidget(),
+                  ],
+                _ => [
+                    const PublicChatsWidget(),
+                    Container(),
+                    Container(),
+                    const SearchChatsWidget(),
+                  ],
+              },
             ),
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _getIndex(),
@@ -112,10 +113,11 @@ class _HomePageState extends State<HomePage> {
               items: _items(state),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () => state.maybeWhen(
-                authenticated: (_) => Modular.to.pushNamed('/new-question'),
-                orElse: () => Modular.to.pushNamed('/auth/login'),
-              ),
+              onPressed: () => switch (state) {
+                AuthStateAuthenticated() =>
+                  Modular.to.pushNamed('/new-question'),
+                _ => Modular.to.pushNamed('/auth/login'),
+              },
               mini: true,
               child: const Icon(Icons.add_rounded),
             ),
@@ -126,36 +128,33 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onBottomNavTap(AuthState state, int index) {
-    state.maybeWhen(
-      authenticated: (auth) {
+    switch (state) {
+      case AuthStateAuthenticated(authentication: final auth):
         final ix = auth.userType == UserType.Imam ? index : index + 1;
+
         switch (HomePageView.values[ix]) {
-          case HomePageView.New:
-            widget.unansweredChatsBloc.add(const UnansweredChatsEvent.show());
-            break;
-          case HomePageView.My:
-            widget.myChatsBloc.add(const MyChatsEvent.show());
-            break;
-          case HomePageView.Public:
-            widget.publicChatsBloc.add(const PublicChatsEvent.show());
-            break;
-          case HomePageView.Favorites:
-            widget.favoriteBloc.add(const FavoriteEvent.show());
-            break;
-          case HomePageView.Search:
+          case HomePageView.newOnes:
+            widget.unansweredChatsBloc.add(const UnansweredChatsEventShow());
+
+          case HomePageView.my:
+            widget.myChatsBloc.add(const MyChatsEventShow());
+          case HomePageView.public:
+            widget.publicChatsBloc.add(const PublicChatsEventShow());
+          case HomePageView.favorites:
+            widget.favoriteBloc.add(const FavoriteEventShow());
+          case HomePageView.search:
             break;
         }
 
         _goToPage(index);
-      },
-      orElse: () {
+
+      default:
         if (index == 0 || index == 3) {
           _goToPage(index);
         } else {
           Modular.to.pushNamed('/auth/login');
         }
-      },
-    );
+    }
   }
 
   void _goToPage(int index) {
@@ -166,21 +165,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<BottomNavigationBarItem> _items(AuthState state) => state.maybeWhen(
-        authenticated: (auth) => [
-          if (auth.userType == UserType.Imam) _newItem(),
-          _myItem(),
-          _publicItem(),
-          _favoritesItem(),
-          _searchItem(),
-        ],
-        orElse: () => [
-          _publicItem(),
-          _myItem(),
-          _favoritesItem(),
-          _searchItem(),
-        ],
-      );
+  List<BottomNavigationBarItem> _items(AuthState state) => switch (state) {
+        AuthStateAuthenticated(authentication: final auth) => [
+            if (auth.userType == UserType.Imam) _newItem(),
+            _myItem(),
+            _publicItem(),
+            _favoritesItem(),
+            _searchItem(),
+          ],
+        _ => [
+            _publicItem(),
+            _myItem(),
+            _favoritesItem(),
+            _searchItem(),
+          ],
+      };
 
   BottomNavigationBarItem _searchItem() {
     return const BottomNavigationBarItem(
@@ -221,4 +220,4 @@ class _HomePageState extends State<HomePage> {
       _pageController.hasClients ? _pageController.page?.round() ?? 0 : 0;
 }
 
-enum HomePageView { New, My, Public, Favorites, Search }
+enum HomePageView { newOnes, my, public, favorites, search }

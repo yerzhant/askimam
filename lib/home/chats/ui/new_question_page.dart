@@ -4,7 +4,6 @@ import 'package:askimam/common/ui/widget/wide_button.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class NewQuestionPage extends StatefulWidget {
@@ -13,7 +12,7 @@ class NewQuestionPage extends StatefulWidget {
   const NewQuestionPage(this._bloc, {Key? key}) : super(key: key);
 
   @override
-  _NewQuestionPageState createState() => _NewQuestionPageState();
+  State createState() => _NewQuestionPageState();
 }
 
 class _NewQuestionPageState extends State<NewQuestionPage> {
@@ -100,6 +99,7 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                       if (value == null || value.isEmpty) {
                         return 'Введите значение';
                       }
+                      return null;
                     },
                     onChanged: (_) {
                       setState(() {});
@@ -109,7 +109,7 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                 const SizedBox(height: interElementMargin),
                 WideButton('ОТПРАВИТЬ', Icons.send, () {
                   if (_formKey.currentState!.validate()) {
-                    widget._bloc.add(MyChatsEvent.add(
+                    widget._bloc.add(MyChatsEventAdd(
                       _type,
                       _getSubject,
                       _text.text.trim(),
