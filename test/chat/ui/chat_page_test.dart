@@ -24,7 +24,7 @@ void main() {
     Modular.navigatorDelegate = navigator;
 
     bloc = MockChatBloc();
-    when(bloc.state).thenReturn(ChatState(Chat(
+    when(bloc.state).thenReturn(ChatStateSuccess(Chat(
         1, ChatType.Public, 1, 'Subject', DateTime.parse('2021-05-01'),
         messages: [
           Message(1, MessageType.Text, 'text 1', 'author',
@@ -35,8 +35,8 @@ void main() {
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
     authBloc = MockAuthBloc();
-    when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', 1, UserType.Inquirer)));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('jwt', 1, UserType.Inquirer)));
     when(authBloc.stream).thenAnswer((_) => const Stream.empty());
   });
 
@@ -51,11 +51,11 @@ void main() {
     expect(find.byIcon(Icons.send), findsNWidgets(2));
     expect(find.byIcon(Icons.rotate_left), findsNothing);
 
-    verify(bloc.add(const ChatEvent.refresh(1))).called(1);
+    verify(bloc.add(const ChatEventRefresh(1))).called(1);
   });
 
   testWidgets('should have public elements only - unauth', (tester) async {
-    when(authBloc.state).thenReturn(const AuthState.unauthenticated());
+    when(authBloc.state).thenReturn(const AuthStateUnauthenticated());
     await _fixture(tester, bloc, authBloc);
 
     expect(find.text('Subject'), findsOneWidget);
@@ -68,8 +68,8 @@ void main() {
   });
 
   testWidgets('should have public elements only - auth', (tester) async {
-    when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', 10, UserType.Inquirer)));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('jwt', 10, UserType.Inquirer)));
     await _fixture(tester, bloc, authBloc);
 
     expect(find.text('Subject'), findsOneWidget);
@@ -83,7 +83,7 @@ void main() {
 
   testWidgets('should have additinal elements for imams', (tester) async {
     when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', 2, UserType.Imam)));
+        const AuthStateAuthenticated(Authentication('jwt', 2, UserType.Imam)));
     await _fixture(tester, bloc, authBloc);
 
     expect(find.byType(MessageComposer), findsOneWidget);
@@ -93,7 +93,7 @@ void main() {
 
   testWidgets('should start recording audio', (tester) async {
     when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', 2, UserType.Imam)));
+        const AuthStateAuthenticated(Authentication('jwt', 2, UserType.Imam)));
     await _fixture(tester, bloc, authBloc);
     await tester.tap(find.byIcon(Icons.mic));
     await tester.pump();
@@ -105,7 +105,7 @@ void main() {
 
   testWidgets('should send audio', (tester) async {
     when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', 2, UserType.Imam)));
+        const AuthStateAuthenticated(Authentication('jwt', 2, UserType.Imam)));
     await _fixture(tester, bloc, authBloc);
     await tester.tap(find.byIcon(Icons.mic));
     await tester.pumpAndSettle();
@@ -117,11 +117,11 @@ void main() {
 
   testWidgets('should return a chat to unanswered ones', (tester) async {
     when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', 2, UserType.Imam)));
+        const AuthStateAuthenticated(Authentication('jwt', 2, UserType.Imam)));
     await _fixture(tester, bloc, authBloc);
     await tester.tap(find.byIcon(Icons.rotate_left));
 
-    verify(bloc.add(const ChatEvent.returnToUnaswered())).called(1);
+    verify(bloc.add(const ChatEventReturnToUnaswered())).called(1);
     verify(navigator.pop()).called(1);
   });
 
@@ -130,7 +130,7 @@ void main() {
     await tester.fling(find.text('text 1'), const Offset(0.0, 300.0), 1000.0);
     await tester.pumpAndSettle();
 
-    verify(bloc.add(const ChatEvent.refresh(1))).called(2);
+    verify(bloc.add(const ChatEventRefresh(1))).called(2);
   });
 
   testWidgets('should delete a chat', (tester) async {
@@ -138,27 +138,27 @@ void main() {
     await tester.drag(find.text('text 2'), const Offset(500, 0));
     await tester.pumpAndSettle();
 
-    verify(bloc.add(const ChatEvent.deleteMessage(2))).called(1);
+    verify(bloc.add(const ChatEventDeleteMessage(2))).called(1);
   });
 
   testWidgets('should not allow to delete a chat', (tester) async {
-    when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', 2, UserType.Inquirer)));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('jwt', 2, UserType.Inquirer)));
     await _fixture(tester, bloc, authBloc);
     await tester.drag(find.text('text 2'), const Offset(500, 0));
     await tester.pumpAndSettle();
 
-    verifyNever(bloc.add(const ChatEvent.deleteMessage(2)));
+    verifyNever(bloc.add(const ChatEventDeleteMessage(2)));
   });
 
   testWidgets('should allow to delete a chat to an imam', (tester) async {
     when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', 20, UserType.Imam)));
+        const AuthStateAuthenticated(Authentication('jwt', 20, UserType.Imam)));
     await _fixture(tester, bloc, authBloc);
     await tester.drag(find.text('text 2'), const Offset(500, 0));
     await tester.pumpAndSettle();
 
-    verify(bloc.add(const ChatEvent.deleteMessage(2))).called(1);
+    verify(bloc.add(const ChatEventDeleteMessage(2))).called(1);
   });
 
   testWidgets('should create a message', (tester) async {
@@ -167,7 +167,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.send).first);
     await tester.pumpAndSettle();
 
-    verify(bloc.add(const ChatEvent.addText('text 3'))).called(1);
+    verify(bloc.add(const ChatEventAddText('text 3'))).called(1);
   });
 
   testWidgets('should trim a message', (tester) async {
@@ -176,7 +176,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.send).first);
     await tester.pumpAndSettle();
 
-    verify(bloc.add(const ChatEvent.addText('text 3'))).called(1);
+    verify(bloc.add(const ChatEventAddText('text 3'))).called(1);
   });
 
   testWidgets('should not send an empty message', (tester) async {
@@ -185,11 +185,11 @@ void main() {
     await tester.tap(find.byIcon(Icons.send).first);
     await tester.pumpAndSettle();
 
-    verifyNever(bloc.add(const ChatEvent.addText('')));
+    verifyNever(bloc.add(const ChatEventAddText('')));
   });
 
   testWidgets('should be in progress with messages', (tester) async {
-    when(bloc.state).thenReturn(ChatState(
+    when(bloc.state).thenReturn(ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'Subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text 1', 'author',
@@ -203,7 +203,7 @@ void main() {
   });
 
   testWidgets('should show an intermediate rejection', (tester) async {
-    when(bloc.stream).thenAnswer((_) => Stream.value(ChatState(
+    when(bloc.stream).thenAnswer((_) => Stream.value(ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')),
         rejection: Rejection('reason'))));
 
@@ -214,7 +214,7 @@ void main() {
   });
 
   testWidgets('should be in progress', (tester) async {
-    when(bloc.state).thenReturn(const ChatState.inProgress());
+    when(bloc.state).thenReturn(const ChatStateInProgress());
 
     await _fixture(tester, bloc, authBloc);
 
@@ -222,7 +222,7 @@ void main() {
   });
 
   testWidgets('should show an error', (tester) async {
-    when(bloc.state).thenReturn(ChatState.error(Rejection('reason')));
+    when(bloc.state).thenReturn(ChatStateError(Rejection('reason')));
 
     await _fixture(tester, bloc, authBloc);
 
@@ -230,12 +230,12 @@ void main() {
   });
 
   testWidgets('should refresh while showing an error', (tester) async {
-    when(bloc.state).thenReturn(ChatState.error(Rejection('reason')));
+    when(bloc.state).thenReturn(ChatStateError(Rejection('reason')));
 
     await _fixture(tester, bloc, authBloc);
     await tester.tap(find.text('ПОВТОРИТЬ'));
 
-    verify(bloc.add(const ChatEvent.refresh(1))).called(2);
+    verify(bloc.add(const ChatEventRefresh(1))).called(2);
   });
 }
 
