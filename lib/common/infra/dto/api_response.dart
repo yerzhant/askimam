@@ -8,7 +8,7 @@ import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:askimam/imam_ratings/domain/model/imam_ratings_with_description.dart';
 import 'package:http/http.dart';
 
-class ApiResponse {
+class ApiResponse with Model {
   final ApiResponseStatus status;
   final Object? data;
   final String? error;
@@ -40,6 +40,13 @@ class ApiResponse {
   }
 
   Rejection asRejection() => Rejection(error ?? 'Unknown error.');
+
+  String toJsonString() => jsonEncode(toJson());
+
+  @override
+  Map<String, dynamic> toJson() {
+    throw UnimplementedError();
+  }
 }
 
 enum ApiResponseStatus { Ok, Error }
