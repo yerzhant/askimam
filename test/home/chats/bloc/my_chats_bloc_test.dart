@@ -23,8 +23,8 @@ void main() {
   final repo = MockChatRepository();
 
   setUpAll(() {
-    mocktail.registerFallbackValue<FavoriteState>(const FavoriteState([]));
-    mocktail.registerFallbackValue<FavoriteEvent>(const FavoriteEvent.show());
+    mocktail.registerFallbackValue(const FavoriteStateSuccess([]));
+    mocktail.registerFallbackValue(const FavoriteEventShow());
   });
 
   setUp(() {
@@ -33,11 +33,11 @@ void main() {
   });
 
   test('Initial state', () {
-    expect(bloc.state, const MyChatsState.inProgress([]));
+    expect(bloc.state, const MyChatsStateInProgress([]));
   });
 
   group('Load first page:', () {
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should load chats',
       build: () {
         when(repo.getMy(0, 20)).thenAnswer(
@@ -68,10 +68,10 @@ void main() {
         );
         return bloc;
       },
-      act: (_) => bloc.add(const MyChatsEvent.reload()),
+      act: (_) => bloc.add(const MyChatsEventReload()),
       expect: () => [
-        const MyChatsState.inProgress([]),
-        MyChatsState([
+        const MyChatsStateInProgress([]),
+        MyChatsStateSuccess([
           Chat(
             1,
             ChatType.Public,
@@ -98,21 +98,21 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should be rejected',
       build: () {
         when(repo.getMy(0, 20))
             .thenAnswer((_) async => left(Rejection('reason')));
         return bloc;
       },
-      act: (_) => bloc.add(const MyChatsEvent.reload()),
+      act: (_) => bloc.add(const MyChatsEventReload()),
       expect: () => [
-        const MyChatsState.inProgress([]),
-        MyChatsState.error(Rejection('reason')),
+        const MyChatsStateInProgress([]),
+        MyChatsStateError(Rejection('reason')),
       ],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should load chats after an error',
       build: () {
         when(repo.getMy(0, 20)).thenAnswer(
@@ -143,11 +143,11 @@ void main() {
         );
         return bloc;
       },
-      seed: () => MyChatsState.error(Rejection('reason')),
-      act: (_) => bloc.add(const MyChatsEvent.reload()),
+      seed: () => MyChatsStateError(Rejection('reason')),
+      act: (_) => bloc.add(const MyChatsEventReload()),
       expect: () => [
-        const MyChatsState.inProgress([]),
-        MyChatsState([
+        const MyChatsStateInProgress([]),
+        MyChatsStateSuccess([
           Chat(
             1,
             ChatType.Public,
@@ -174,7 +174,7 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should reload chats',
       build: () {
         when(repo.getMy(0, 20)).thenAnswer(
@@ -213,7 +213,7 @@ void main() {
         );
         return bloc;
       },
-      seed: () => MyChatsState([
+      seed: () => MyChatsStateSuccess([
         Chat(
           1,
           ChatType.Public,
@@ -237,10 +237,10 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(const MyChatsEvent.reload()),
+      act: (_) => bloc.add(const MyChatsEventReload()),
       expect: () => [
-        const MyChatsState.inProgress([]),
-        MyChatsState([
+        const MyChatsStateInProgress([]),
+        MyChatsStateSuccess([
           Chat(
             1,
             ChatType.Public,
@@ -277,7 +277,7 @@ void main() {
   });
 
   group('Load next page:', () {
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should load next page',
       build: () {
         when(repo.getMy(1, 20)).thenAnswer(
@@ -290,7 +290,7 @@ void main() {
         );
         return bloc;
       },
-      seed: () => MyChatsState([
+      seed: () => MyChatsStateSuccess([
         ...List.generate(
             18,
             (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -311,9 +311,9 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(const MyChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(const MyChatsEventLoadNextPage()),
       expect: () => [
-        MyChatsState.inProgress([
+        MyChatsStateInProgress([
           ...List.generate(
               18,
               (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -339,7 +339,7 @@ void main() {
               (i) => Chat(i + 21, ChatType.Public, 1, 'subject',
                   DateTime.parse('2021-05-01'))),
         ]),
-        MyChatsState([
+        MyChatsStateSuccess([
           ...List.generate(
               18,
               (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -367,10 +367,10 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should ignore double next page loading',
       build: () => bloc,
-      seed: () => MyChatsState.inProgress([
+      seed: () => MyChatsStateInProgress([
         ...List.generate(
             18,
             (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -391,26 +391,26 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(const MyChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(const MyChatsEventLoadNextPage()),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should reject to load next page if already has been rejected',
       build: () => bloc,
-      seed: () => MyChatsState.error(Rejection('reason')),
-      act: (_) => bloc.add(const MyChatsEvent.loadNextPage()),
+      seed: () => MyChatsStateError(Rejection('reason')),
+      act: (_) => bloc.add(const MyChatsEventLoadNextPage()),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should be rejected on loading next page',
       build: () {
         when(repo.getMy(1, 20))
             .thenAnswer((_) async => left(Rejection('reason')));
         return bloc;
       },
-      seed: () => MyChatsState([
+      seed: () => MyChatsStateSuccess([
         ...List.generate(
             18,
             (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -431,9 +431,9 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(const MyChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(const MyChatsEventLoadNextPage()),
       expect: () => [
-        MyChatsState.inProgress([
+        MyChatsStateInProgress([
           ...List.generate(
               18,
               (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -454,13 +454,13 @@ void main() {
             isFavorite: true,
           ),
         ]),
-        MyChatsState.error(Rejection('reason')),
+        MyChatsStateError(Rejection('reason')),
       ],
     );
   });
 
   group('Show tab:', () {
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should load first page',
       build: () {
         when(repo.getMy(0, 20)).thenAnswer(
@@ -491,10 +491,10 @@ void main() {
         );
         return bloc;
       },
-      act: (_) => bloc.add(const MyChatsEvent.show()),
+      act: (_) => bloc.add(const MyChatsEventShow()),
       expect: () => [
-        const MyChatsState.inProgress([]),
-        MyChatsState([
+        const MyChatsStateInProgress([]),
+        MyChatsStateSuccess([
           Chat(
             1,
             ChatType.Public,
@@ -521,10 +521,10 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should not load a page',
       build: () => bloc,
-      seed: () => MyChatsState([
+      seed: () => MyChatsStateSuccess([
         Chat(
           1,
           ChatType.Public,
@@ -548,13 +548,13 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(const MyChatsEvent.show()),
+      act: (_) => bloc.add(const MyChatsEventShow()),
       expect: () => [],
     );
   });
 
   group('Add a chat:', () {
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should add it',
       build: () {
         when(repo.add(ChatType.Public, 'subject', 'text'))
@@ -575,7 +575,7 @@ void main() {
             ]));
         return bloc;
       },
-      seed: () => MyChatsState([
+      seed: () => MyChatsStateSuccess([
         Chat(
           3,
           ChatType.Public,
@@ -593,9 +593,9 @@ void main() {
         ),
       ]),
       act: (_) =>
-          bloc.add(const MyChatsEvent.add(ChatType.Public, 'subject', 'text')),
+          bloc.add(const MyChatsEventAdd(ChatType.Public, 'subject', 'text')),
       expect: () => [
-        MyChatsState.inProgress([
+        MyChatsStateInProgress([
           Chat(
             3,
             ChatType.Public,
@@ -612,8 +612,8 @@ void main() {
             DateTime.parse('2021-05-01'),
           ),
         ]),
-        const MyChatsState.inProgress([]),
-        MyChatsState([
+        const MyChatsStateInProgress([]),
+        MyChatsStateSuccess([
           Chat(
             4,
             ChatType.Public,
@@ -640,14 +640,14 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should not add it',
       build: () {
         when(repo.add(ChatType.Public, 'subject', 'text'))
             .thenAnswer((_) async => some(Rejection('reason')));
         return bloc;
       },
-      seed: () => MyChatsState([
+      seed: () => MyChatsStateSuccess([
         Chat(
           3,
           ChatType.Public,
@@ -665,9 +665,9 @@ void main() {
         ),
       ]),
       act: (_) =>
-          bloc.add(const MyChatsEvent.add(ChatType.Public, 'subject', 'text')),
+          bloc.add(const MyChatsEventAdd(ChatType.Public, 'subject', 'text')),
       expect: () => [
-        MyChatsState.inProgress([
+        MyChatsStateInProgress([
           Chat(
             3,
             ChatType.Public,
@@ -684,13 +684,13 @@ void main() {
             DateTime.parse('2021-05-01'),
           ),
         ]),
-        MyChatsState.error(Rejection('reason')),
+        MyChatsStateError(Rejection('reason')),
       ],
     );
   });
 
   group('Delete a chat:', () {
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should delete it',
       build: () {
         when(repo.delete(Chat(1, ChatType.Public, 1, 'subject',
@@ -698,7 +698,7 @@ void main() {
             .thenAnswer((_) async => none());
         return bloc;
       },
-      seed: () => MyChatsState([
+      seed: () => MyChatsStateSuccess([
         Chat(
           1,
           ChatType.Public,
@@ -722,7 +722,7 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(MyChatsEvent.delete(Chat(
+      act: (_) => bloc.add(MyChatsEventDelete(Chat(
         1,
         ChatType.Public,
         1,
@@ -730,7 +730,7 @@ void main() {
         DateTime.parse('2021-05-01'),
       ))),
       expect: () => [
-        MyChatsState.inProgress([
+        MyChatsStateInProgress([
           Chat(
             1,
             ChatType.Public,
@@ -754,7 +754,7 @@ void main() {
             isFavorite: true,
           ),
         ]),
-        MyChatsState([
+        MyChatsStateSuccess([
           Chat(
             2,
             ChatType.Public,
@@ -774,12 +774,12 @@ void main() {
       ],
       verify: (_) => mocktail
           .verify(
-            () => favoriteBloc.add(const FavoriteEvent.refresh()),
+            () => favoriteBloc.add(const FavoriteEventRefresh()),
           )
           .called(1),
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should not delete it',
       build: () {
         when(repo.delete(Chat(1, ChatType.Public, 1, 'subject',
@@ -787,7 +787,7 @@ void main() {
             .thenAnswer((_) async => some(Rejection('reason')));
         return bloc;
       },
-      seed: () => MyChatsState([
+      seed: () => MyChatsStateSuccess([
         Chat(
           1,
           ChatType.Public,
@@ -811,7 +811,7 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(MyChatsEvent.delete(Chat(
+      act: (_) => bloc.add(MyChatsEventDelete(Chat(
         1,
         ChatType.Public,
         1,
@@ -819,7 +819,7 @@ void main() {
         DateTime.parse('2021-05-01'),
       ))),
       expect: () => [
-        MyChatsState.inProgress([
+        MyChatsStateInProgress([
           Chat(
             1,
             ChatType.Public,
@@ -843,14 +843,14 @@ void main() {
             isFavorite: true,
           ),
         ]),
-        MyChatsState.error(Rejection('reason')),
+        MyChatsStateError(Rejection('reason')),
       ],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should happen nothing',
       build: () => bloc,
-      seed: () => MyChatsState.inProgress([
+      seed: () => MyChatsStateInProgress([
         Chat(
           1,
           ChatType.Public,
@@ -874,7 +874,7 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(MyChatsEvent.delete(Chat(
+      act: (_) => bloc.add(MyChatsEventDelete(Chat(
         1,
         ChatType.Public,
         1,
@@ -884,11 +884,11 @@ void main() {
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should happen nothing either',
       build: () => bloc,
-      seed: () => MyChatsState.error(Rejection('reason')),
-      act: (_) => bloc.add(MyChatsEvent.delete(Chat(
+      seed: () => MyChatsStateError(Rejection('reason')),
+      act: (_) => bloc.add(MyChatsEventDelete(Chat(
         1,
         ChatType.Public,
         1,
@@ -900,19 +900,19 @@ void main() {
   });
 
   group('Listen to favorites changes:', () {
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should set a flag',
       build: () {
         whenListen(
           favoriteBloc,
-          Stream.value(FavoriteState([
+          Stream.value(const FavoriteStateSuccess([
             Favorite(1, 1, 'subject'),
             Favorite(3, 3, 'subject'),
           ])),
         );
         return MyChatsBloc(repo, favoriteBloc, 20);
       },
-      seed: () => MyChatsState([
+      seed: () => MyChatsStateSuccess([
         Chat(
           1,
           ChatType.Public,
@@ -937,7 +937,7 @@ void main() {
         ),
       ]),
       expect: () => [
-        MyChatsState([
+        MyChatsStateSuccess([
           Chat(
             1,
             ChatType.Public,
@@ -965,18 +965,18 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should reset a flag',
       build: () {
         whenListen(
           favoriteBloc,
-          Stream.value(FavoriteState([
+          Stream.value(const FavoriteStateSuccess([
             Favorite(3, 3, 'subject'),
           ])),
         );
         return MyChatsBloc(repo, favoriteBloc, 20);
       },
-      seed: () => MyChatsState([
+      seed: () => MyChatsStateSuccess([
         Chat(
           1,
           ChatType.Public,
@@ -1002,7 +1002,7 @@ void main() {
         ),
       ]),
       expect: () => [
-        MyChatsState([
+        MyChatsStateSuccess([
           Chat(
             1,
             ChatType.Public,
@@ -1029,21 +1029,21 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should nothing happen',
       build: () {
         whenListen(
           favoriteBloc,
           Stream.fromIterable([
-            FavoriteState.inProgress([
+            const FavoriteStateInProgress([
               Favorite(3, 3, 'subject'),
             ]),
-            FavoriteState.error(Rejection('reason')),
+            FavoriteStateError(Rejection('reason')),
           ]),
         );
         return MyChatsBloc(repo, favoriteBloc, 20);
       },
-      seed: () => MyChatsState([
+      seed: () => MyChatsStateSuccess([
         Chat(
           1,
           ChatType.Public,
@@ -1071,19 +1071,19 @@ void main() {
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should nothing happen either',
       build: () {
         whenListen(
           favoriteBloc,
-          Stream.value(FavoriteState([
+          Stream.value(const FavoriteStateSuccess([
             Favorite(1, 1, 'subject'),
             Favorite(3, 3, 'subject'),
           ])),
         );
         return MyChatsBloc(repo, favoriteBloc, 20);
       },
-      seed: () => MyChatsState.inProgress([
+      seed: () => MyChatsStateInProgress([
         Chat(
           1,
           ChatType.Public,
@@ -1110,19 +1110,19 @@ void main() {
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<MyChatsBloc, MyChatsState>(
       'should nothing happen as well',
       build: () {
         whenListen(
           favoriteBloc,
-          Stream.value(FavoriteState([
+          Stream.value(const FavoriteStateSuccess([
             Favorite(1, 1, 'subject'),
             Favorite(3, 3, 'subject'),
           ])),
         );
         return MyChatsBloc(repo, favoriteBloc, 20);
       },
-      seed: () => MyChatsState.error(Rejection('reason')),
+      seed: () => MyChatsStateError(Rejection('reason')),
       expect: () => [],
     );
   });
