@@ -43,11 +43,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
                 setViewedFlagResult.fold(
                   () {
-                    _myChatsBloc.add(const MyChatsEvent.reload());
+                    _myChatsBloc.add(const MyChatsEventReload());
 
                     if (auth.userType == UserType.Imam) {
                       _unansweredChatsBloc.add(
-                        const UnansweredChatsEvent.reload(),
+                        const UnansweredChatsEventReload(),
                       );
                     }
 

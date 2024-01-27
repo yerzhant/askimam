@@ -21,7 +21,7 @@ class MessageComposer extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MessageComposerState createState() => _MessageComposerState();
+  State createState() => _MessageComposerState();
 }
 
 class _MessageComposerState extends State<MessageComposer> {
@@ -86,7 +86,7 @@ class _MessageComposerState extends State<MessageComposer> {
             final text = _controller.text.trim();
 
             if (text.isNotEmpty) {
-              context.read<ChatBloc>().add(ChatEvent.addText(text));
+              context.read<ChatBloc>().add(ChatEventAddText(text));
               _controller.text = '';
             }
           },
@@ -167,6 +167,6 @@ class _MessageComposerState extends State<MessageComposer> {
     await _stopRecording();
     final file = File(_audioFilePath!);
     final duration = _recorderTime.format();
-    context.read<ChatBloc>().add(ChatEvent.addAudio(file, duration));
+    context.read<ChatBloc>().add(ChatEventAddAudio(file, duration));
   }
 }

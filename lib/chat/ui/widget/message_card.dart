@@ -7,7 +7,7 @@ import 'package:askimam/common/ui/theme.dart';
 import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 const _margin = 50.0;
 
@@ -19,6 +19,7 @@ class MessageCard extends StatelessWidget {
   const MessageCard(
     this.message,
     this.authState, {
+    super.key,
     this.isItMine = false,
   });
 
@@ -27,22 +28,25 @@ class MessageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: authState.maybeWhen(
-        authenticated: (auth) {
-          if (auth.userType == UserType.Imam && isImam) {
-            return primaryLightColor;
-          }
-          if (isItMine && !isImam) return primaryLightColor;
-        },
-        orElse: () => null,
-      ),
-      margin: authState.maybeWhen(
-        authenticated: (auth) => _margins(
-          auth.userType == UserType.Imam && !isImam ||
-              auth.userType == UserType.Inquirer && isImam,
-        ),
-        orElse: () => _margins(isImam),
-      ),
+      color: switch (authState) {
+        AuthStateAuthenticated(authentication: final auth) => () {
+            if (auth.userType == UserType.Imam && isImam) {
+              return primaryLightColor;
+            }
+
+            if (isItMine && !isImam) return primaryLightColor;
+
+            return null;
+          }.call(),
+        _ => null,
+      },
+      margin: switch (authState) {
+        AuthStateAuthenticated(authentication: final auth) => _margins(
+            auth.userType == UserType.Imam && !isImam ||
+                auth.userType == UserType.Inquirer && isImam,
+          ),
+        _ => _margins(isImam),
+      },
       child: Theme(
         data: Theme.of(context).copyWith(
           textTheme: Theme.of(context).textTheme.copyWith(
@@ -111,8 +115,8 @@ class MessageCard extends StatelessWidget {
             text: message.text,
             linkStyle: const TextStyle(color: primaryDarkColor),
             onOpen: (link) async {
-              if (await canLaunch(link.url)) {
-                await launch(link.url);
+              if (await canLaunchUrlString(link.url)) {
+                await launchUrlString(link.url);
               }
             },
           ),

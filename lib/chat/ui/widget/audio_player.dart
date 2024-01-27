@@ -13,7 +13,7 @@ class AudioPlayer extends StatefulWidget {
   const AudioPlayer(this.fileName, this.duration, {Key? key}) : super(key: key);
 
   @override
-  _AudioPlayer createState() => _AudioPlayer();
+  State createState() => _AudioPlayer();
 }
 
 _AudioPlayer? _nowPlaying;
