@@ -34,7 +34,7 @@ void main() {
   final unansweredChatsBloc = MockUnansweredChatsBloc();
 
   setUp(() {
-    when(authBloc.state).thenReturn(AuthState.authenticated(
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
       Authentication('jwt', 1, UserType.Inquirer),
     ));
 
@@ -48,11 +48,11 @@ void main() {
   });
 
   test('Initial state', () {
-    expect(bloc.state, const ChatState.inProgress());
+    expect(bloc.state, const ChatStateInProgress());
   });
 
   group('Get a chat:', () {
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should get it',
       build: () {
         reset(myChatsBloc);
@@ -73,10 +73,10 @@ void main() {
 
         return bloc;
       },
-      act: (_) => bloc.add(const ChatEvent.refresh(1)),
+      act: (_) => bloc.add(const ChatEventRefresh(1)),
       expect: () => [
-        const ChatState.inProgress(),
-        ChatState(
+        const ChatStateInProgress(),
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -89,16 +89,16 @@ void main() {
       ],
       verify: (_) {
         verify(repo.setViewedFlag(1)).called(1);
-        verify(myChatsBloc.add(const MyChatsEvent.reload())).called(1);
+        verify(myChatsBloc.add(const MyChatsEventReload())).called(1);
         verifyNever(
-            unansweredChatsBloc.add(const UnansweredChatsEvent.reload()));
+            unansweredChatsBloc.add(const UnansweredChatsEventReload()));
       },
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should get it without updating a viewed flag - unauth',
       build: () {
-        when(authBloc.state).thenReturn(const AuthState.unauthenticated());
+        when(authBloc.state).thenReturn(const AuthStateUnauthenticated());
         when(repo.get(1)).thenAnswer(
           (_) async => right(
             Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
@@ -113,10 +113,10 @@ void main() {
 
         return bloc;
       },
-      act: (_) => bloc.add(const ChatEvent.refresh(1)),
+      act: (_) => bloc.add(const ChatEventRefresh(1)),
       expect: () => [
-        const ChatState.inProgress(),
-        ChatState(
+        const ChatStateInProgress(),
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -132,10 +132,10 @@ void main() {
       },
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should get it without updating a viewed flag - not an author',
       build: () {
-        when(authBloc.state).thenReturn(AuthState.authenticated(
+        when(authBloc.state).thenReturn(const AuthStateAuthenticated(
           Authentication('jwt', 10, UserType.Inquirer),
         ));
         when(repo.get(1)).thenAnswer(
@@ -152,10 +152,10 @@ void main() {
 
         return bloc;
       },
-      act: (_) => bloc.add(const ChatEvent.refresh(1)),
+      act: (_) => bloc.add(const ChatEventRefresh(1)),
       expect: () => [
-        const ChatState.inProgress(),
-        ChatState(
+        const ChatStateInProgress(),
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -171,13 +171,13 @@ void main() {
       },
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should get it and update a viewed flag - as it is an imam',
       build: () {
         reset(myChatsBloc);
         reset(unansweredChatsBloc);
 
-        when(authBloc.state).thenReturn(AuthState.authenticated(
+        when(authBloc.state).thenReturn(const AuthStateAuthenticated(
           Authentication('jwt', 10, UserType.Imam),
         ));
         when(repo.get(1)).thenAnswer(
@@ -194,10 +194,10 @@ void main() {
 
         return bloc;
       },
-      act: (_) => bloc.add(const ChatEvent.refresh(1)),
+      act: (_) => bloc.add(const ChatEventRefresh(1)),
       expect: () => [
-        const ChatState.inProgress(),
-        ChatState(
+        const ChatStateInProgress(),
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -210,13 +210,13 @@ void main() {
       ],
       verify: (_) {
         verify(repo.setViewedFlag(1)).called(1);
-        verify(myChatsBloc.add(const MyChatsEvent.reload())).called(1);
-        verify(unansweredChatsBloc.add(const UnansweredChatsEvent.reload()))
+        verify(myChatsBloc.add(const MyChatsEventReload())).called(1);
+        verify(unansweredChatsBloc.add(const UnansweredChatsEventReload()))
             .called(1);
       },
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not get it as it was not able to set a Viewed flag',
       build: () {
         when(repo.get(1)).thenAnswer(
@@ -235,38 +235,38 @@ void main() {
 
         return bloc;
       },
-      act: (_) => bloc.add(const ChatEvent.refresh(1)),
+      act: (_) => bloc.add(const ChatEventRefresh(1)),
       expect: () => [
-        const ChatState.inProgress(),
-        ChatState.error(Rejection('reason')),
+        const ChatStateInProgress(),
+        ChatStateError(Rejection('reason')),
       ],
       verify: (_) {
         verify(repo.setViewedFlag(1)).called(1);
       },
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not get it',
       build: () {
         when(repo.get(1)).thenAnswer((_) async => left(Rejection('reason')));
         return bloc;
       },
-      act: (_) => bloc.add(const ChatEvent.refresh(1)),
+      act: (_) => bloc.add(const ChatEventRefresh(1)),
       expect: () => [
-        const ChatState.inProgress(),
-        ChatState.error(Rejection('reason')),
+        const ChatStateInProgress(),
+        ChatStateError(Rejection('reason')),
       ],
     );
   });
 
   group('Return to unaswered ones:', () {
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should return',
       build: () {
         when(repo.returnToUnanswered(1)).thenAnswer((_) async => none());
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
@@ -275,9 +275,9 @@ void main() {
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
+      act: (_) => bloc.add(const ChatEventReturnToUnaswered()),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -287,7 +287,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -300,14 +300,14 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not return',
       build: () {
         when(repo.returnToUnanswered(1))
             .thenAnswer((_) async => some(Rejection('reason')));
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
@@ -316,9 +316,9 @@ void main() {
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
+      act: (_) => bloc.add(const ChatEventReturnToUnaswered()),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -328,7 +328,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -341,31 +341,31 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       "shouldn't even try",
       build: () => bloc,
-      seed: () => const ChatState.inProgress(),
-      act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
+      seed: () => const ChatStateInProgress(),
+      act: (_) => bloc.add(const ChatEventReturnToUnaswered()),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       "shouldn't even try either",
       build: () => bloc,
-      seed: () => ChatState.error(Rejection('reason')),
-      act: (_) => bloc.add(const ChatEvent.returnToUnaswered()),
+      seed: () => ChatStateError(Rejection('reason')),
+      act: (_) => bloc.add(const ChatEventReturnToUnaswered()),
       expect: () => [],
     );
   });
 
   group('Update subject:', () {
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should do it',
       build: () {
         when(repo.updateSubject(1, 'subject')).thenAnswer((_) async => none());
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
@@ -374,9 +374,9 @@ void main() {
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
+      act: (_) => bloc.add(const ChatEventUpdateSubject('subject')),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -386,7 +386,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -399,14 +399,14 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not do it',
       build: () {
         when(repo.updateSubject(1, 'subject'))
             .thenAnswer((_) async => some(Rejection('reason')));
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
@@ -415,9 +415,9 @@ void main() {
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
+      act: (_) => bloc.add(const ChatEventUpdateSubject('subject')),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -427,7 +427,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -440,25 +440,25 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       "shouldn't even try",
       build: () => bloc,
-      seed: () => const ChatState.inProgress(),
-      act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
+      seed: () => const ChatStateInProgress(),
+      act: (_) => bloc.add(const ChatEventUpdateSubject('subject')),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       "shouldn't even try either",
       build: () => bloc,
-      seed: () => ChatState.error(Rejection('reason')),
-      act: (_) => bloc.add(const ChatEvent.updateSubject('subject')),
+      seed: () => ChatStateError(Rejection('reason')),
+      act: (_) => bloc.add(const ChatEventUpdateSubject('subject')),
       expect: () => [],
     );
   });
 
   group('Add text:', () {
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should add it',
       build: () {
         when(messageRepo.addText(1, 'text')).thenAnswer((_) async => none());
@@ -476,16 +476,16 @@ void main() {
 
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(const ChatEvent.addText('text')),
+      act: (_) => bloc.add(const ChatEventAddText('text')),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -493,7 +493,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -506,7 +506,7 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not add it',
       build: () {
         when(messageRepo.addText(1, 'text')).thenAnswer((_) async => none());
@@ -516,16 +516,16 @@ void main() {
 
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(const ChatEvent.addText('text')),
+      act: (_) => bloc.add(const ChatEventAddText('text')),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -533,7 +533,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -544,7 +544,7 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not add it as well',
       build: () {
         when(messageRepo.addText(1, 'text'))
@@ -552,16 +552,16 @@ void main() {
 
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(const ChatEvent.addText('text')),
+      act: (_) => bloc.add(const ChatEventAddText('text')),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -569,7 +569,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -580,19 +580,19 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not even try to',
       build: () => bloc,
-      seed: () => const ChatState.inProgress(),
-      act: (_) => bloc.add(const ChatEvent.addText('text')),
+      seed: () => const ChatStateInProgress(),
+      act: (_) => bloc.add(const ChatEventAddText('text')),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not even try to either',
       build: () => bloc,
-      seed: () => ChatState.error(Rejection('reason')),
-      act: (_) => bloc.add(const ChatEvent.addText('text')),
+      seed: () => ChatStateError(Rejection('reason')),
+      act: (_) => bloc.add(const ChatEventAddText('text')),
       expect: () => [],
     );
   });
@@ -600,7 +600,7 @@ void main() {
   group('Add audio:', () {
     final file = File('audio.mp3');
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should add it',
       build: () {
         when(messageRepo.addAudio(1, file, '1:23'))
@@ -620,16 +620,16 @@ void main() {
 
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
+      act: (_) => bloc.add(ChatEventAddAudio(file, '1:23')),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -637,7 +637,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -651,7 +651,7 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not add it',
       build: () {
         when(messageRepo.addAudio(1, file, '1:23'))
@@ -662,16 +662,16 @@ void main() {
 
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
+      act: (_) => bloc.add(ChatEventAddAudio(file, '1:23')),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -679,7 +679,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -690,7 +690,7 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not add it as well',
       build: () {
         when(messageRepo.addAudio(1, file, '1:23'))
@@ -698,16 +698,16 @@ void main() {
 
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
+      act: (_) => bloc.add(ChatEventAddAudio(file, '1:23')),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -715,7 +715,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -726,31 +726,31 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not even try to',
       build: () => bloc,
-      seed: () => const ChatState.inProgress(),
-      act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
+      seed: () => const ChatStateInProgress(),
+      act: (_) => bloc.add(ChatEventAddAudio(file, '1:23')),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not even try to either',
       build: () => bloc,
-      seed: () => ChatState.error(Rejection('reason')),
-      act: (_) => bloc.add(ChatEvent.addAudio(file, '1:23')),
+      seed: () => ChatStateError(Rejection('reason')),
+      act: (_) => bloc.add(ChatEventAddAudio(file, '1:23')),
       expect: () => [],
     );
   });
 
   group('Delete a message:', () {
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should do it',
       build: () {
         when(messageRepo.delete(1, 1)).thenAnswer((_) async => none());
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
@@ -759,9 +759,9 @@ void main() {
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
+      act: (_) => bloc.add(const ChatEventDeleteMessage(1)),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(2, MessageType.Text, 'text', 'author',
@@ -769,7 +769,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(2, MessageType.Text, 'text', 'author',
@@ -779,28 +779,28 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not do it',
       build: () {
         when(messageRepo.delete(1, 1))
             .thenAnswer((_) async => some(Rejection('reason')));
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
+      act: (_) => bloc.add(const ChatEventDeleteMessage(1)),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: []),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -811,32 +811,32 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not even try to',
       build: () => bloc,
-      seed: () => const ChatState.inProgress(),
-      act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
+      seed: () => const ChatStateInProgress(),
+      act: (_) => bloc.add(const ChatEventDeleteMessage(1)),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not even try to either',
       build: () => bloc,
-      seed: () => ChatState.error(Rejection('reason')),
-      act: (_) => bloc.add(const ChatEvent.deleteMessage(1)),
+      seed: () => ChatStateError(Rejection('reason')),
+      act: (_) => bloc.add(const ChatEventDeleteMessage(1)),
       expect: () => [],
     );
   });
 
   group('Update a message:', () {
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should do it',
       build: () {
         when(messageRepo.updateText(1, 1, 'text 2'))
             .thenAnswer((_) async => none());
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
@@ -845,9 +845,9 @@ void main() {
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
+      act: (_) => bloc.add(const ChatEventUpdateTextMessage(1, 'text 2')),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -857,7 +857,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text 2', 'author',
@@ -869,23 +869,23 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not do it',
       build: () {
         when(messageRepo.updateText(1, 1, 'text 2'))
             .thenAnswer((_) async => some(Rejection('reason')));
         return bloc;
       },
-      seed: () => ChatState(
+      seed: () => ChatStateSuccess(
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
             messages: [
               Message(1, MessageType.Text, 'text', 'author',
                   DateTime.parse('20210418'), null),
             ]),
       ),
-      act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
+      act: (_) => bloc.add(const ChatEventUpdateTextMessage(1, 'text 2')),
       expect: () => [
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -893,7 +893,7 @@ void main() {
               ]),
           isInProgress: true,
         ),
-        ChatState(
+        ChatStateSuccess(
           Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'),
               messages: [
                 Message(1, MessageType.Text, 'text', 'author',
@@ -904,19 +904,19 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not even try to',
       build: () => bloc,
-      seed: () => const ChatState.inProgress(),
-      act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
+      seed: () => const ChatStateInProgress(),
+      act: (_) => bloc.add(const ChatEventUpdateTextMessage(1, 'text 2')),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<ChatBloc, ChatState>(
       'should not even try to either',
       build: () => bloc,
-      seed: () => ChatState.error(Rejection('reason')),
-      act: (_) => bloc.add(const ChatEvent.updateTextMessage(1, 'text 2')),
+      seed: () => ChatStateError(Rejection('reason')),
+      act: (_) => bloc.add(const ChatEventUpdateTextMessage(1, 'text 2')),
       expect: () => [],
     );
   });
