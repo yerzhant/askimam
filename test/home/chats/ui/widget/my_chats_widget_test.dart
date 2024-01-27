@@ -5,7 +5,6 @@ import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:askimam/home/chats/ui/widget/my_chats_widget.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -37,8 +36,8 @@ void main() {
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
     when(authBloc.stream).thenAnswer((_) => const Stream.empty());
     when(favoriteBloc.stream).thenAnswer((_) => const Stream.empty());
-    when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', 1, UserType.Inquirer)));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('jwt', 1, UserType.Inquirer)));
 
     app = BlocProvider.value(
       value: bloc,
@@ -80,7 +79,7 @@ void main() {
 
   testWidgets('should show a list of an imam', (tester) async {
     when(authBloc.state).thenReturn(
-        AuthState.authenticated(Authentication('jwt', 1, UserType.Imam)));
+        const AuthStateAuthenticated(Authentication('jwt', 1, UserType.Imam)));
     await _fixture(bloc, tester, app);
 
     expect(find.text('Chat 1'), findsOneWidget);
@@ -116,7 +115,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Chat 12'), findsOneWidget);
-    verify(bloc.add(const MyChatsEvent.loadNextPage())).called(1);
+    verify(bloc.add(const MyChatsEventLoadNextPage())).called(1);
   });
 
   testWidgets('should delete a chat', (tester) async {
@@ -125,7 +124,7 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(bloc.add(
-      MyChatsEvent.delete(
+      MyChatsEventDelete(
         Chat(2, ChatType.Private, 1, 'Chat 2', DateTime.parse('2021-05-01'),
             isFavorite: true, isViewedByImam: true),
       ),
@@ -133,7 +132,7 @@ void main() {
   });
 
   testWidgets('should show a list and a progress circle', (tester) async {
-    when(bloc.state).thenReturn(MyChatsState.inProgress([
+    when(bloc.state).thenReturn(MyChatsStateInProgress([
       Chat(1, ChatType.Public, 1, 'Chat 1', DateTime.parse('2021-05-01')),
       Chat(2, ChatType.Private, 1, 'Chat 2', DateTime.parse('2021-05-01')),
     ]));
@@ -150,7 +149,7 @@ void main() {
     await tester.fling(find.text('Chat 1'), const Offset(0.0, 300.0), 1000.0);
     await tester.pumpAndSettle();
 
-    verify(bloc.add(const MyChatsEvent.reload())).called(1);
+    verify(bloc.add(const MyChatsEventReload())).called(1);
   });
 
   testWidgets('should route to a chat', (tester) async {
@@ -168,7 +167,7 @@ void main() {
 
     verify(
       favoriteBloc.add(
-        FavoriteEvent.add(
+        FavoriteEventAdd(
           Chat(
             1,
             ChatType.Public,
@@ -186,7 +185,7 @@ void main() {
     await _fixture(bloc, tester, app);
     await tester.tap(find.byIcon(Icons.bookmark));
 
-    verify(favoriteBloc.add(const FavoriteEvent.delete(2))).called(1);
+    verify(favoriteBloc.add(const FavoriteEventDelete(2))).called(1);
   });
 
   testWidgets('should show an error', (tester) async {
@@ -199,7 +198,7 @@ void main() {
     await _errorFixture(bloc, tester, app);
     await tester.tap(find.text('ПОВТОРИТЬ'));
 
-    verify(bloc.add(const MyChatsEvent.reload())).called(1);
+    verify(bloc.add(const MyChatsEventReload())).called(1);
   });
 }
 
@@ -209,7 +208,7 @@ Future _fixture(
   Widget app, {
   int count = 2,
 }) async {
-  when(bloc.state).thenReturn(MyChatsState([
+  when(bloc.state).thenReturn(MyChatsStateSuccess([
     for (var i = 1; i <= count; i++)
       Chat(
         i,
@@ -231,7 +230,7 @@ Future _errorFixture(
   WidgetTester tester,
   Widget app,
 ) async {
-  when(bloc.state).thenReturn(MyChatsState.error(Rejection('reason')));
+  when(bloc.state).thenReturn(MyChatsStateError(Rejection('reason')));
 
   await tester.pumpWidget(app);
 }
