@@ -84,7 +84,7 @@ class _ChatPageState extends State<ChatPage> {
                       ) =>
                         authentication.userType == UserType.Imam
                             ? IconButton(
-                                icon: const Icon(Icons.rotate_left),
+                                icon: const Icon(Icons.rotate_left_rounded),
                                 tooltip: 'Вернуть в новые',
                                 onPressed: () {
                                   context

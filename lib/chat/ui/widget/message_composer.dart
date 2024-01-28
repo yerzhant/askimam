@@ -82,7 +82,7 @@ class _MessageComposerState extends State<MessageComposer> {
           ),
         ),
         IconButton(
-          icon: const Icon(Icons.send, color: primaryColor),
+          icon: const Icon(Icons.send_rounded, color: primaryColor),
           onPressed: () {
             final text = _controller.text.trim();
 
@@ -95,7 +95,7 @@ class _MessageComposerState extends State<MessageComposer> {
         if (widget.auth.userType == UserType.Imam)
           IconButton(
             onPressed: () => _startRecording(context),
-            icon: const Icon(Icons.mic, color: primaryColor),
+            icon: const Icon(Icons.mic_rounded, color: primaryColor),
           ),
       ],
     );
@@ -109,18 +109,18 @@ class _MessageComposerState extends State<MessageComposer> {
             padding: const EdgeInsets.symmetric(horizontal: basePadding),
             child: LinearProgressIndicator(
               value: _dbLevel / 120,
-              backgroundColor: secondaryColor,
+              backgroundColor: primaryColor,
             ),
           ),
         ),
         Text(_recorderTime.format()),
         IconButton(
           onPressed: _cancelRecording,
-          icon: const Icon(Icons.cancel, color: secondaryDarkColor),
+          icon: const Icon(Icons.cancel_rounded, color: warningColor),
         ),
         IconButton(
           onPressed: () => _sendAudio(context),
-          icon: const Icon(Icons.send, color: primaryColor),
+          icon: const Icon(Icons.send_rounded, color: primaryColor),
         ),
       ],
     );

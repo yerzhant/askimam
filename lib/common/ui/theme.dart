@@ -1,12 +1,11 @@
+import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const primaryColor = Color.fromARGB(255, 61, 111, 229);
-const primaryLightColor = Color.fromARGB(255, 61, 111, 229);
+const primaryLightColor = Color.fromARGB(255, 211, 224, 255);
 const primaryDarkColor = Color.fromARGB(255, 41, 84, 183);
-const secondaryColor = Color(0xffccff56);
-const secondaryDarkColor = Color(0xff98cc19);
-const secondaryTextColor = Color(0xff000000);
+const warningColor = Color.fromARGB(255, 215, 23, 167);
 const grayColor = Color(0xffa0a0a0);
 
 ThemeData theme(BuildContext context) {
@@ -25,13 +24,15 @@ ThemeData theme(BuildContext context) {
     filledButtonTheme: FilledButtonThemeData(
         style: ButtonStyle(textStyle: MaterialStatePropertyAll(poireOne))),
     inputDecorationTheme: const InputDecorationTheme(
-      border: OutlineInputBorder(),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
     ),
     dividerTheme: const DividerThemeData(
       space: 0,
       thickness: .3,
-      indent: 16,
-      endIndent: 16,
+      indent: basePadding,
+      endIndent: basePadding,
       color: grayColor,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -40,8 +41,7 @@ ThemeData theme(BuildContext context) {
     ),
     snackBarTheme: const SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
-      backgroundColor: secondaryColor,
-      contentTextStyle: TextStyle(color: secondaryTextColor),
+      backgroundColor: primaryDarkColor,
     ),
   );
 }
