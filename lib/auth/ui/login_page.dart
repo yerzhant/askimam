@@ -43,22 +43,11 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.all(basePadding),
                 child: Theme(
                   data: Theme.of(context).copyWith(
-                    colorScheme: Theme.of(context).colorScheme.copyWith(
-                          onSurface: primaryDarkColor,
-                        ),
                     inputDecorationTheme: const InputDecorationTheme(
-                      border: OutlineInputBorder(),
-                      labelStyle: TextStyle(color: primaryDarkColor),
-                    ),
-                    textButtonTheme: TextButtonThemeData(
-                      style: TextButton.styleFrom(
-                        primary: primaryDarkColor,
-                        textStyle: const TextStyle(fontSize: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                     ),
-                    textTheme: Theme.of(context).textTheme.copyWith(
-                          subtitle1: const TextStyle(color: primaryDarkColor),
-                        ),
                   ),
                   child: Column(
                     children: [
@@ -66,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: 50,
                         child: Image.asset(
                           'assets/images/logo.png',
-                          color: primaryDarkColor,
+                          color: primaryColor,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -77,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: 'Логин',
                           prefixIcon: Icon(
                             Icons.email,
-                            color: primaryDarkColor,
+                            color: primaryColor,
                           ),
                         ),
                         keyboardType: TextInputType.emailAddress,
@@ -95,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: 'Пароль',
                           prefixIcon: Icon(
                             Icons.vpn_key,
-                            color: primaryDarkColor,
+                            color: primaryColor,
                           ),
                         ),
                         obscureText: true,
@@ -124,7 +113,6 @@ class _LoginPageState extends State<LoginPage> {
                         builder: (context, state) {
                           return WideButton(
                             'ВОЙТИ',
-                            Icons.login,
                             () {
                               if (_form.currentState!.validate()) {
                                 widget.bloc.add(AuthEventLogin(
