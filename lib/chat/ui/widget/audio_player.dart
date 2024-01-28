@@ -4,7 +4,7 @@ import 'package:askimam/common/connection.dart';
 import 'package:askimam/common/extention/date_extentions.dart';
 import 'package:askimam/common/ui/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/public/flutter_sound_player.dart';
 
 class AudioPlayer extends StatefulWidget {
   final String fileName;
@@ -32,7 +32,7 @@ class _AudioPlayer extends State<AudioPlayer> {
   @override
   void dispose() {
     _subscription?.cancel();
-    _player.closeAudioSession();
+    _player.closePlayer();
     super.dispose();
   }
 
@@ -63,7 +63,7 @@ class _AudioPlayer extends State<AudioPlayer> {
           child: SliderTheme(
             data: const SliderThemeData(
               trackHeight: 5,
-              thumbColor: secondaryColor,
+              thumbColor: primaryColor,
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5),
               overlayShape: RoundSliderOverlayShape(overlayRadius: 0),
             ),
@@ -91,7 +91,7 @@ class _AudioPlayer extends State<AudioPlayer> {
     await _nowPlaying?._stop();
 
     if (!_player.isOpen()) {
-      await _player.openAudioSession();
+      await _player.openPlayer();
       await _player.setSubscriptionDuration(const Duration(milliseconds: 20));
     }
 
@@ -116,7 +116,7 @@ class _AudioPlayer extends State<AudioPlayer> {
   Future<void> _stop() async {
     await _player.stopPlayer();
     await _subscription?.cancel();
-    await _player.closeAudioSession();
+    await _player.closePlayer();
 
     setState(() {
       _nowPlaying = null;

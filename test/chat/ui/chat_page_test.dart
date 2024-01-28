@@ -10,7 +10,7 @@ import 'package:askimam/chat/ui/widget/message_composer.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -110,8 +110,7 @@ void main() {
   testWidgets('should start recording audio', (tester) async {
     when(authBloc.state).thenReturn(
         const AuthStateAuthenticated(Authentication('jwt', 2, UserType.Imam)));
-    when(soundRecorder.openAudioSession())
-        .thenAnswer((_) async => soundRecorder);
+    when(soundRecorder.openRecorder()).thenAnswer((_) async => soundRecorder);
     when(soundRecorder.startRecorder()).thenAnswer((_) async => Void);
     when(soundRecorder.onProgress).thenReturn(null);
 
@@ -127,8 +126,7 @@ void main() {
   testWidgets('should send audio', (tester) async {
     when(authBloc.state).thenReturn(
         const AuthStateAuthenticated(Authentication('jwt', 2, UserType.Imam)));
-    when(soundRecorder.openAudioSession())
-        .thenAnswer((_) async => soundRecorder);
+    when(soundRecorder.openRecorder()).thenAnswer((_) async => soundRecorder);
     when(soundRecorder.startRecorder()).thenAnswer((_) async => Void);
     when(soundRecorder.stopRecorder()).thenAnswer((_) async => 'audio.mp3');
     when(soundRecorder.onProgress).thenReturn(null);

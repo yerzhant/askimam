@@ -14,9 +14,7 @@ import 'package:flutter/material.dart' as _i10;
 import 'package:flutter_modular/src/presenter/models/modular_navigator.dart'
     as _i8;
 import 'package:flutter_modular/src/presenter/models/route.dart' as _i9;
-import 'package:flutter_sound_lite/flutter_sound.dart' as _i12;
-import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart'
-    as _i15;
+import 'package:flutter_sound/flutter_sound.dart' as _i12;
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart'
     as _i13;
 import 'package:logger/logger.dart' as _i2;
@@ -724,24 +722,10 @@ class MockFlutterSoundRecorder extends _i1.Mock
       );
 
   @override
-  _i5.Future<_i12.FlutterSoundRecorder?> openAudioSession({
-    _i15.AudioFocus? focus = _i15.AudioFocus.requestFocusTransient,
-    _i15.SessionCategory? category = _i15.SessionCategory.playAndRecord,
-    _i15.SessionMode? mode = _i15.SessionMode.modeDefault,
-    int? audioFlags = 1,
-    _i15.AudioDevice? device = _i15.AudioDevice.speaker,
-  }) =>
-      (super.noSuchMethod(
+  _i5.Future<_i12.FlutterSoundRecorder?> openRecorder() => (super.noSuchMethod(
         Invocation.method(
-          #openAudioSession,
+          #openRecorder,
           [],
-          {
-            #focus: focus,
-            #category: category,
-            #mode: mode,
-            #audioFlags: audioFlags,
-            #device: device,
-          },
         ),
         returnValue: _i5.Future<_i12.FlutterSoundRecorder?>.value(),
         returnValueForMissingStub:
@@ -749,9 +733,9 @@ class MockFlutterSoundRecorder extends _i1.Mock
       ) as _i5.Future<_i12.FlutterSoundRecorder?>);
 
   @override
-  _i5.Future<void> closeAudioSession() => (super.noSuchMethod(
+  _i5.Future<void> closeRecorder() => (super.noSuchMethod(
         Invocation.method(
-          #closeAudioSession,
+          #closeRecorder,
           [],
         ),
         returnValue: _i5.Future<void>.value(),
@@ -759,7 +743,7 @@ class MockFlutterSoundRecorder extends _i1.Mock
       ) as _i5.Future<void>);
 
   @override
-  _i5.Future<bool> isEncoderSupported(_i15.Codec? codec) => (super.noSuchMethod(
+  _i5.Future<bool> isEncoderSupported(_i12.Codec? codec) => (super.noSuchMethod(
         Invocation.method(
           #isEncoderSupported,
           [codec],
@@ -781,7 +765,7 @@ class MockFlutterSoundRecorder extends _i1.Mock
 
   @override
   _i5.Future<void> startRecorder({
-    _i15.Codec? codec = _i15.Codec.defaultCodec,
+    _i12.Codec? codec = _i12.Codec.defaultCodec,
     String? toFile,
     _i5.StreamSink<_i12.Food>? toStream,
     int? sampleRate = 16000,
@@ -816,28 +800,6 @@ class MockFlutterSoundRecorder extends _i1.Mock
         returnValue: _i5.Future<String?>.value(),
         returnValueForMissingStub: _i5.Future<String?>.value(),
       ) as _i5.Future<String?>);
-
-  @override
-  _i5.Future<void> setAudioFocus({
-    _i15.AudioFocus? focus = _i15.AudioFocus.requestFocusTransient,
-    _i15.SessionCategory? category = _i15.SessionCategory.playAndRecord,
-    _i15.SessionMode? mode = _i15.SessionMode.modeDefault,
-    _i15.AudioDevice? device = _i15.AudioDevice.speaker,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #setAudioFocus,
-          [],
-          {
-            #focus: focus,
-            #category: category,
-            #mode: mode,
-            #device: device,
-          },
-        ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
 
   @override
   _i5.Future<void> pauseRecorder() => (super.noSuchMethod(

@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app uses the microphone to send voice replies.</string>
 </dict>
 </plist>

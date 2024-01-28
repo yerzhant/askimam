@@ -13,7 +13,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart'
     hide ModularWatchExtension;
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 
 const _messagePadding = 10.0;
 

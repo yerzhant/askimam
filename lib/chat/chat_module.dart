@@ -4,7 +4,7 @@ import 'package:askimam/chat/infra/http_chat_repository.dart';
 import 'package:askimam/chat/infra/http_message_repository.dart';
 import 'package:askimam/chat/ui/chat_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:logger/logger.dart';
 
 class ChatModule extends Module {

@@ -8,7 +8,7 @@ import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
@@ -39,13 +39,14 @@ class _MessageComposerState extends State<MessageComposer> {
   @override
   void initState() {
     super.initState();
+    widget.recorder.openRecorder();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     _recorderSubscription?.cancel();
-    widget.recorder.closeAudioSession();
+    widget.recorder.closeRecorder();
     super.dispose();
   }
 
@@ -137,7 +138,6 @@ class _MessageComposerState extends State<MessageComposer> {
     }
 
     final fileName = '${const Uuid().v4()}.mp4';
-    await widget.recorder.openAudioSession();
     await widget.recorder.startRecorder(toFile: fileName, codec: Codec.aacMP4);
 
     _recorderSubscription = widget.recorder.onProgress?.listen((event) {
