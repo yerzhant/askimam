@@ -24,7 +24,7 @@ class ImamRatingsPage extends StatelessWidget {
           return switch (state) {
             ImamRatingsStateSuccess(ratings: final ratings) => Column(
                 children: [
-                  Expanded(child: _list(ratings.ratings)),
+                  Expanded(child: _list(ratings.ratings, context)),
                   Padding(
                     padding: const EdgeInsets.all(basePadding),
                     child: Text(
@@ -49,7 +49,7 @@ class ImamRatingsPage extends StatelessWidget {
     );
   }
 
-  Widget _list(List<ImamRating> items) {
+  Widget _list(List<ImamRating> items, BuildContext context) {
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (_, i) {
@@ -61,6 +61,7 @@ class ImamRatingsPage extends StatelessWidget {
             child: Text(item.name),
           ),
           trailing: Text(item.rating.toString()),
+          leadingAndTrailingTextStyle: Theme.of(context).textTheme.bodyLarge,
         );
       },
       physics: const BouncingScrollPhysics(

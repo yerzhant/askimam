@@ -114,7 +114,6 @@ class _HomePageState extends State<HomePage> {
               items: _items(state),
             ),
             floatingActionButton: FloatingActionButton(
-              shape: const CircleBorder(),
               onPressed: () => switch (state) {
                 AuthStateAuthenticated() =>
                   Modular.to.pushNamed('/new-question'),
