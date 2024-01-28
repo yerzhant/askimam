@@ -4,9 +4,9 @@ final httpClient = MockClient((req) async {
   switch (req.method) {
     case 'GET':
       if (req.url.path == '/list') {
-        final json = ApiResponse.data([
-          const Favorite(1, 1, 'Тема'),
-          const Favorite(2, 2, 'Тема'),
+        final json = ApiResponse.data(const [
+          Favorite(1, 1, 'Тема'),
+          Favorite(2, 2, 'Тема'),
         ]).toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/one' && _isAuthorized(req)) {
@@ -24,9 +24,9 @@ final httpClient = MockClient((req) async {
       } else if (req.url.path == '/auth' && !_isAuthorized(req)) {
         return Response('', 401);
       } else if (req.url.path == '/auth-list' && _isAuthorized(req)) {
-        final json = ApiResponse.data([
-          const Favorite(1, 1, 'Тема'),
-          const Favorite(2, 2, 'Тема'),
+        final json = ApiResponse.data(const [
+          Favorite(1, 1, 'Тема'),
+          Favorite(2, 2, 'Тема'),
         ]).toJsonUtf8();
         return Response.bytes(json, 200);
       } else if (req.url.path == '/rejection') {
