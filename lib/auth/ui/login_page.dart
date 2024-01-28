@@ -41,114 +41,105 @@ class _LoginPageState extends State<LoginPage> {
               physics: const BouncingScrollPhysics(),
               child: Padding(
                 padding: const EdgeInsets.all(basePadding),
-                child: Theme(
-                  data: Theme.of(context).copyWith(
-                    inputDecorationTheme: const InputDecorationTheme(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 50,
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        color: primaryColor,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 50,
-                        child: Image.asset(
-                          'assets/images/logo.png',
+                    const SizedBox(height: 70),
+                    TextFormField(
+                      controller: _login,
+                      decoration: const InputDecoration(
+                        labelText: 'Логин',
+                        prefixIcon: Icon(
+                          Icons.email,
                           color: primaryColor,
-                          fit: BoxFit.cover,
                         ),
                       ),
-                      const SizedBox(height: 70),
-                      TextFormField(
-                        controller: _login,
-                        decoration: const InputDecoration(
-                          labelText: 'Логин',
-                          prefixIcon: Icon(
-                            Icons.email,
-                            color: primaryColor,
-                          ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Введите логин';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: interElementMargin),
+                    TextFormField(
+                      controller: _password,
+                      decoration: const InputDecoration(
+                        labelText: 'Пароль',
+                        prefixIcon: Icon(
+                          Icons.vpn_key,
+                          color: primaryColor,
                         ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Введите логин';
-                          }
-                          return null;
-                        },
                       ),
-                      const SizedBox(height: interElementMargin),
-                      TextFormField(
-                        controller: _password,
-                        decoration: const InputDecoration(
-                          labelText: 'Пароль',
-                          prefixIcon: Icon(
-                            Icons.vpn_key,
-                            color: primaryColor,
-                          ),
-                        ),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Введите пароль';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: interElementMargin * 2),
-                      BlocConsumer<AuthBloc, AuthState>(
-                        listener: (context, state) {
-                          switch (state) {
-                            case AuthStateAuthenticated():
-                              Modular.to.pop();
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Введите пароль';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: interElementMargin * 2),
+                    BlocConsumer<AuthBloc, AuthState>(
+                      listener: (context, state) {
+                        switch (state) {
+                          case AuthStateAuthenticated():
+                            Modular.to.pop();
 
-                            case AuthStateError(rejection: final rejection):
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(rejection.message)),
-                              );
+                          case AuthStateError(rejection: final rejection):
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(rejection.message)),
+                            );
 
-                            default:
-                          }
-                        },
-                        builder: (context, state) {
-                          return WideButton(
-                            'ВОЙТИ',
-                            () {
-                              if (_form.currentState!.validate()) {
-                                widget.bloc.add(AuthEventLogin(
-                                  _login.text,
-                                  _password.text,
-                                ));
-                              }
-                            },
-                            isInProgress: switch (state) {
-                              AuthStateInProgress() => true,
-                              _ => false,
-                            },
-                          );
-                        },
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                            onPressed: () =>
-                                launchUrlString('https://azan.kz/signup'),
-                            child: const Text('Регистрация'),
-                          ),
-                          const Text(
-                            '|',
-                            style: TextStyle(color: primaryColor),
-                          ),
-                          TextButton(
-                            onPressed: () => launchUrlString(
-                                'https://azan.kz/site/request-password-reset'),
-                            child: const Text('Забыли пароль?'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                          default:
+                        }
+                      },
+                      builder: (context, state) {
+                        return WideButton(
+                          'ВОЙТИ',
+                          () {
+                            if (_form.currentState!.validate()) {
+                              widget.bloc.add(AuthEventLogin(
+                                _login.text,
+                                _password.text,
+                              ));
+                            }
+                          },
+                          isInProgress: switch (state) {
+                            AuthStateInProgress() => true,
+                            _ => false,
+                          },
+                        );
+                      },
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: () =>
+                              launchUrlString('https://azan.kz/signup'),
+                          child: const Text('Регистрация'),
+                        ),
+                        const Text(
+                          '|',
+                          style: TextStyle(color: primaryColor),
+                        ),
+                        TextButton(
+                          onPressed: () => launchUrlString(
+                              'https://azan.kz/site/request-password-reset'),
+                          child: const Text('Забыли пароль?'),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
