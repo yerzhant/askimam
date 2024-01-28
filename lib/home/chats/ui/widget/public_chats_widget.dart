@@ -86,7 +86,7 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
               padding: const EdgeInsets.only(top: dateTopPadding),
               child: Text(
                 item.updatedAt.format(),
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
             trailing: BlocBuilder<AuthBloc, AuthState>(

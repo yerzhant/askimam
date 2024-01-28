@@ -111,7 +111,7 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
             padding: const EdgeInsets.only(top: dateTopPadding),
             child: Text(
               item.updatedAt.format(),
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
         );

@@ -76,12 +76,12 @@ class MessageCard extends StatelessWidget {
         children: [
           Text(
             message.createdAt.format(),
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           if (message.updatedAt != null)
             Text(
               ' | ${message.updatedAt!.format()}',
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
         ],
       );

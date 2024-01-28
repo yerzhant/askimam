@@ -29,7 +29,7 @@ class ImamRatingsPage extends StatelessWidget {
                     padding: const EdgeInsets.all(basePadding),
                     child: Text(
                       ratings.description,
-                      style: Theme.of(context).textTheme.caption?.copyWith(
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             height: 1.5,
                           ),
                     ),
