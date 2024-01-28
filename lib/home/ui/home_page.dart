@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
               mini: true,
               child: const Icon(
                 color: primaryColor,
-                Icons.question_mark,
+                Icons.question_mark_rounded,
               ),
             ),
           );

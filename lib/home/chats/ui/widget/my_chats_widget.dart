@@ -65,7 +65,7 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
   }
 
   Widget _list(List<Chat> items, BuildContext context) {
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () async =>
           context.read<MyChatsBloc>().add(const MyChatsEventReload()),
       child: ListView.separated(
@@ -79,7 +79,7 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
             key: ValueKey(item.id),
             onDismissed: (_) =>
                 context.read<MyChatsBloc>().add(MyChatsEventDelete(item)),
-            background: Container(color: secondaryColor),
+            background: Container(color: warningColor),
             child: ListTile(
               title: AutoDirection(
                 text: item.subject,
@@ -90,7 +90,10 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
                 ),
               ),
               minVerticalPadding: listTileMinVertPadding,
-              subtitle: _getSubtitle(item, widget.authBloc),
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: dateTopPadding),
+                child: _getSubtitle(item, widget.authBloc),
+              ),
               leading: Stack(
                 alignment: Alignment.topRight,
                 children: [
@@ -100,13 +103,11 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
                       item.type == ChatType.Public
                           ? Icons.public_rounded
                           : Icons.lock_rounded,
-                      color: item.type == ChatType.Public
-                          ? primaryColor
-                          : secondaryDarkColor,
+                      color: primaryColor,
                       size: iconSize,
                     ),
                   ),
-                  _getTrailingStatusIcon(item, widget.authBloc),
+                  _getStatusIcon(item, widget.authBloc),
                 ],
               ),
               trailing: IconButton(
@@ -138,32 +139,31 @@ class _MyChatsWidgetState extends State<MyChatsWidget> {
       AuthStateAuthenticated(authentication: final auth) => () {
           if (auth.userType == UserType.Inquirer && !item.isViewedByInquirer ||
               auth.userType == UserType.Imam && !item.isViewedByImam) {
-            return const Text('Есть новое сообщение',
-                style: TextStyle(color: secondaryDarkColor));
+            return Text(
+              'Есть новое сообщение',
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: primaryColor,
+                  ),
+            );
           }
-          return Padding(
-            padding: const EdgeInsets.only(top: dateTopPadding),
-            child: Text(
-              item.updatedAt.format(),
-              style: Theme.of(context).textTheme.caption,
-            ),
+          return Text(
+            item.updatedAt.format(),
+            style: Theme.of(context).textTheme.bodySmall,
           );
         }.call(),
       _ => const SizedBox.shrink(),
     };
   }
 
-  Widget _getTrailingStatusIcon(Chat item, AuthBloc authBloc) {
+  Widget _getStatusIcon(Chat item, AuthBloc authBloc) {
     return switch (authBloc.state) {
       AuthStateAuthenticated(authentication: final auth) => () {
           if (auth.userType == UserType.Inquirer && item.isViewedByImam ||
               auth.userType == UserType.Imam && item.isViewedByInquirer) {
-            return Icon(
+            return const Icon(
               Icons.check_rounded,
+              color: primaryColor,
               size: 11,
-              color: item.type == ChatType.Public
-                  ? primaryColor
-                  : secondaryDarkColor,
             );
           }
 
