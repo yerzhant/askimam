@@ -33,8 +33,8 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       ));
     });
 
-    on<FavoriteEventAdd>((event, emit) {
-      void addIt(List<Favorite> favorites) async {
+    on<FavoriteEventAdd>((event, emit) async {
+      Future addIt(List<Favorite> favorites) async {
         emit(FavoriteStateInProgress(favorites));
 
         final result = await _repo.add(event.chat);
@@ -47,16 +47,16 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
 
       switch (state) {
         case FavoriteStateSuccess(favorites: final favorites):
-          addIt(favorites);
+          await addIt(favorites);
         case FavoriteStateInProgress(favorites: final favorites):
-          addIt(favorites);
+          await addIt(favorites);
         case FavoriteStateError():
           break;
       }
     });
 
-    on<FavoriteEventDelete>((event, emit) {
-      void delete(List<Favorite> favorites) async {
+    on<FavoriteEventDelete>((event, emit) async {
+      Future delete(List<Favorite> favorites) async {
         emit(FavoriteStateInProgress(favorites));
 
         final result = await _repo.delete(event.chatId);
@@ -71,9 +71,9 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
 
       switch (state) {
         case FavoriteStateSuccess(favorites: final favorites):
-          delete(favorites);
+          await delete(favorites);
         case FavoriteStateInProgress(favorites: final favorites):
-          delete(favorites);
+          await delete(favorites);
         case FavoriteStateError():
           break;
       }

@@ -33,7 +33,7 @@ class FavoritesWidget extends StatelessWidget {
   }
 
   Widget _list(List<Favorite> items, BuildContext context) {
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () async =>
           context.read<FavoriteBloc>().add(const FavoriteEventRefresh()),
       child: ListView.separated(
@@ -46,7 +46,7 @@ class FavoritesWidget extends StatelessWidget {
             onDismissed: (_) => context
                 .read<FavoriteBloc>()
                 .add(FavoriteEventDelete(item.chatId)),
-            background: Container(color: secondaryColor),
+            background: Container(color: warningColor),
             child: ListTile(
               title: AutoDirection(
                 text: item.subject,
