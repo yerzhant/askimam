@@ -63,7 +63,7 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
   }
 
   Widget _list(List<Chat> items, BuildContext context) {
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () async =>
           context.read<PublicChatsBloc>().add(const PublicChatsEventReload()),
       child: ListView.separated(
