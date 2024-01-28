@@ -76,7 +76,7 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
           onPressed: () {
             _search(controller);
           },
-          icon: const Icon(Icons.search, color: primaryColor),
+          icon: const Icon(Icons.search_rounded, color: primaryColor),
         ),
       ],
     );
