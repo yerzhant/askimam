@@ -1,6 +1,6 @@
 const apiUrl = String.fromEnvironment(
   'api-url',
-  defaultValue: 'http://192.168.0.102:8080/v1',
+  defaultValue: 'http://192.168.1.3:8080/v1',
 );
 
 const audioUrl = String.fromEnvironment(

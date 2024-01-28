@@ -13,5 +13,5 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseMessaging.instance.requestPermission();
 
-  runApp(ModularApp(module: AppModule(apiUrl), child: AppWidget()));
+  runApp(ModularApp(module: AppModule(apiUrl), child: const AppWidget()));
 }

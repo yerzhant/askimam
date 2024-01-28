@@ -1,3 +1,4 @@
+import 'package:askimam/chat/domain/repo/chat_repository.dart';
 import 'package:askimam/chat/infra/http_chat_repository.dart';
 import 'package:askimam/common/infra/fcm_service.dart';
 import 'package:askimam/common/ui/ui_constants.dart';
@@ -6,6 +7,7 @@ import 'package:askimam/home/chats/bloc/public_chats_bloc.dart';
 import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
 import 'package:askimam/home/chats/ui/new_question_page.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
+import 'package:askimam/home/favorites/domain/repo/favorite_repository.dart';
 import 'package:askimam/home/favorites/infra/http_favorite_repository.dart';
 import 'package:askimam/home/search/bloc/search_chats_bloc.dart';
 import 'package:askimam/home/ui/home_page.dart';
@@ -15,8 +17,8 @@ class HomeModule extends Module {
   @override
   void binds(Injector i) {
     i.addSingleton(() => FcmService());
-    i.addSingleton(() => HttpFavoriteRepository(i()));
-    i.addSingleton(() => HttpChatRepository(i(), i()));
+    i.addSingleton<FavoriteRepository>(() => HttpFavoriteRepository(i()));
+    i.addSingleton<ChatRepository>(() => HttpChatRepository(i(), i()));
     i.addSingleton(() => FavoriteBloc(i()));
     i.addSingleton(() => SearchChatsBloc(i()));
     i.addSingleton(() => MyChatsBloc(i(), i(), pageSize));
