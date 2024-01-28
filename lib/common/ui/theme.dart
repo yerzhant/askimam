@@ -1,10 +1,40 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-const primaryColor = Color(0xff72c2ff);
-const primaryLightColor = Color(0xffa8f5ff);
-const primaryDarkColor = Color(0xff3792cc);
+const primaryColor = Color.fromARGB(255, 61, 111, 229);
+const primaryLightColor = Color.fromARGB(255, 61, 111, 229);
+const primaryDarkColor = Color.fromARGB(255, 41, 84, 183);
 const secondaryColor = Color(0xffccff56);
-const secondaryLightColor = Color(0xffffff8a);
 const secondaryDarkColor = Color(0xff98cc19);
-const primaryTextColor = Color(0xffffffff);
 const secondaryTextColor = Color(0xff000000);
+const grayColor = Color(0xffa0a0a0);
+
+ThemeData theme(BuildContext context) {
+  final text = GoogleFonts.elMessiriTextTheme();
+
+  return ThemeData(
+    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+    textTheme: text.copyWith(
+      bodySmall: text.bodySmall!.copyWith(color: grayColor),
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(),
+    ),
+    dividerTheme: const DividerThemeData(
+      space: 0,
+      thickness: .3,
+      indent: 16,
+      endIndent: 16,
+      color: grayColor,
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      selectedItemColor: primaryDarkColor,
+      unselectedItemColor: primaryColor,
+    ),
+    snackBarTheme: const SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: secondaryColor,
+      contentTextStyle: TextStyle(color: secondaryTextColor),
+    ),
+  );
+}

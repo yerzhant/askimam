@@ -1,5 +1,6 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
+import 'package:askimam/common/ui/theme.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:askimam/home/chats/bloc/public_chats_bloc.dart';
 import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
@@ -113,13 +114,17 @@ class _HomePageState extends State<HomePage> {
               items: _items(state),
             ),
             floatingActionButton: FloatingActionButton(
+              shape: const CircleBorder(),
               onPressed: () => switch (state) {
                 AuthStateAuthenticated() =>
                   Modular.to.pushNamed('/new-question'),
                 _ => Modular.to.pushNamed('/auth/login'),
               },
               mini: true,
-              child: const Icon(Icons.add_rounded),
+              child: const Icon(
+                color: primaryColor,
+                Icons.question_mark,
+              ),
             ),
           );
         },
