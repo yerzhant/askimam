@@ -10,16 +10,20 @@ const secondaryTextColor = Color(0xff000000);
 const grayColor = Color(0xffa0a0a0);
 
 ThemeData theme(BuildContext context) {
-  final text = GoogleFonts.elMessiriTextTheme();
-  final buttonText = GoogleFonts.poiretOne(fontSize: 15);
+  final elMessiri = GoogleFonts.elMessiriTextTheme();
+  final poireOne = GoogleFonts.poiretOne(fontSize: 15);
 
   return ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
-    textTheme: text.copyWith(
-      bodySmall: text.bodySmall!.copyWith(color: grayColor),
+    textTheme: elMessiri.copyWith(
+      bodySmall: elMessiri.bodySmall!.copyWith(color: grayColor),
+    ),
+    appBarTheme: const AppBarTheme(
+      foregroundColor: Colors.white,
+      backgroundColor: primaryColor,
     ),
     filledButtonTheme: FilledButtonThemeData(
-        style: ButtonStyle(textStyle: MaterialStatePropertyAll(buttonText))),
+        style: ButtonStyle(textStyle: MaterialStatePropertyAll(poireOne))),
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
     ),
