@@ -41,6 +41,8 @@ void main() {
     await tester.tap(find.text('Публичный'));
     await tester.enterText(find.byType(TextField).first, ' subject ');
     await tester.enterText(find.byType(TextField).last, ' text ');
+    await tester.scrollUntilVisible(find.text('ОТПРАВИТЬ'), 100,
+        scrollable: find.byType(Scrollable).last);
     await tester.tap(find.text('ОТПРАВИТЬ'));
 
     verify(bloc.add(const MyChatsEventAdd(ChatType.Public, 'subject', 'text')))
@@ -52,6 +54,8 @@ void main() {
     await _fixture(tester, bloc);
     await tester.tap(find.text('Публичный'));
     await tester.enterText(find.byType(TextField).last, 'text');
+    await tester.scrollUntilVisible(find.text('ОТПРАВИТЬ'), 100,
+        scrollable: find.byType(Scrollable).last);
     await tester.tap(find.text('ОТПРАВИТЬ'));
 
     verify(bloc.add(const MyChatsEventAdd(ChatType.Public, null, 'text')))
@@ -60,6 +64,8 @@ void main() {
 
   testWidgets('should not send a question without text', (tester) async {
     await _fixture(tester, bloc);
+    await tester.scrollUntilVisible(find.text('ОТПРАВИТЬ'), 100,
+        scrollable: find.byType(Scrollable).last);
     await tester.tap(find.text('ОТПРАВИТЬ'));
     await tester.pump();
 

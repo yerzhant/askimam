@@ -54,7 +54,7 @@ void main() {
   testWidgets('should start searching', (tester) async {
     await _fixture(bloc, tester, app);
     await tester.enterText(find.byType(TextField), 'text');
-    await tester.tap(find.byIcon(Icons.search));
+    await tester.tap(find.byIcon(Icons.search_rounded));
     await tester.pump();
 
     verify(bloc.add(const SearchChatsEventFind('text'))).called(1);
@@ -62,7 +62,7 @@ void main() {
 
   testWidgets('should not search an empty phrase', (tester) async {
     await _fixture(bloc, tester, app);
-    await tester.tap(find.byIcon(Icons.search));
+    await tester.tap(find.byIcon(Icons.search_rounded));
     await tester.pump();
 
     verifyNever(bloc.add(const SearchChatsEventFind('')));

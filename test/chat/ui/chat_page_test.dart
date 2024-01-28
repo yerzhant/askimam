@@ -63,9 +63,9 @@ void main() {
     expect(find.text('text 1'), findsOneWidget);
     expect(find.text('text 2'), findsOneWidget);
     expect(find.byType(TextField), findsOneWidget);
-    expect(find.byIcon(Icons.mic), findsNothing);
-    expect(find.byIcon(Icons.send), findsOneWidget);
-    expect(find.byIcon(Icons.rotate_left), findsNothing);
+    expect(find.byIcon(Icons.mic_rounded), findsNothing);
+    expect(find.byIcon(Icons.send_rounded), findsOneWidget);
+    expect(find.byIcon(Icons.rotate_left_rounded), findsNothing);
 
     verify(bloc.add(const ChatEventRefresh(1))).called(1);
   });
@@ -78,9 +78,9 @@ void main() {
     expect(find.text('text 1'), findsOneWidget);
     expect(find.text('text 2'), findsOneWidget);
     expect(find.byType(TextField), findsNothing);
-    expect(find.byIcon(Icons.mic), findsNothing);
-    expect(find.byIcon(Icons.send), findsNothing);
-    expect(find.byIcon(Icons.rotate_left), findsNothing);
+    expect(find.byIcon(Icons.mic_rounded), findsNothing);
+    expect(find.byIcon(Icons.send_rounded), findsNothing);
+    expect(find.byIcon(Icons.rotate_left_rounded), findsNothing);
   });
 
   testWidgets('should have public elements only - auth', (tester) async {
@@ -92,9 +92,9 @@ void main() {
     expect(find.text('text 1'), findsOneWidget);
     expect(find.text('text 2'), findsOneWidget);
     expect(find.byType(TextField), findsNothing);
-    expect(find.byIcon(Icons.mic), findsNothing);
-    expect(find.byIcon(Icons.send), findsNothing);
-    expect(find.byIcon(Icons.rotate_left), findsNothing);
+    expect(find.byIcon(Icons.mic_rounded), findsNothing);
+    expect(find.byIcon(Icons.send_rounded), findsNothing);
+    expect(find.byIcon(Icons.rotate_left_rounded), findsNothing);
   });
 
   testWidgets('should have additinal elements for imams', (tester) async {
@@ -103,8 +103,8 @@ void main() {
     await _fixture(tester, bloc, authBloc, soundRecorder);
 
     expect(find.byType(MessageComposer), findsOneWidget);
-    expect(find.byIcon(Icons.rotate_left), findsOneWidget);
-    expect(find.byIcon(Icons.mic), findsOneWidget);
+    expect(find.byIcon(Icons.rotate_left_rounded), findsOneWidget);
+    expect(find.byIcon(Icons.mic_rounded), findsOneWidget);
   });
 
   testWidgets('should start recording audio', (tester) async {
@@ -115,12 +115,12 @@ void main() {
     when(soundRecorder.onProgress).thenReturn(null);
 
     await _fixture(tester, bloc, authBloc, soundRecorder);
-    await tester.tap(find.byIcon(Icons.mic));
+    await tester.tap(find.byIcon(Icons.mic_rounded));
     await tester.pump();
 
     expect(find.byType(LinearProgressIndicator), findsOneWidget);
     expect(find.text('00:00'), findsOneWidget);
-    expect(find.byIcon(Icons.cancel), findsOneWidget);
+    expect(find.byIcon(Icons.cancel_rounded), findsOneWidget);
   });
 
   testWidgets('should send audio', (tester) async {
@@ -132,9 +132,9 @@ void main() {
     when(soundRecorder.onProgress).thenReturn(null);
 
     await _fixture(tester, bloc, authBloc, soundRecorder);
-    await tester.tap(find.byIcon(Icons.mic));
+    await tester.tap(find.byIcon(Icons.mic_rounded));
     await tester.pump();
-    await tester.tap(find.byIcon(Icons.send));
+    await tester.tap(find.byIcon(Icons.send_rounded));
     await tester.pump();
 
     final event = verify(bloc.add(captureAny))
@@ -148,7 +148,7 @@ void main() {
     when(authBloc.state).thenReturn(
         const AuthStateAuthenticated(Authentication('jwt', 2, UserType.Imam)));
     await _fixture(tester, bloc, authBloc, soundRecorder);
-    await tester.tap(find.byIcon(Icons.rotate_left));
+    await tester.tap(find.byIcon(Icons.rotate_left_rounded));
 
     verify(bloc.add(const ChatEventReturnToUnaswered())).called(1);
     verify(navigator.pop()).called(1);
@@ -193,7 +193,7 @@ void main() {
   testWidgets('should create a message', (tester) async {
     await _fixture(tester, bloc, authBloc, soundRecorder);
     await tester.enterText(find.byType(TextField), 'text 3');
-    await tester.tap(find.byIcon(Icons.send).first);
+    await tester.tap(find.byIcon(Icons.send_rounded).first);
     await tester.pumpAndSettle();
 
     verify(bloc.add(const ChatEventAddText('text 3'))).called(1);
@@ -202,7 +202,7 @@ void main() {
   testWidgets('should trim a message', (tester) async {
     await _fixture(tester, bloc, authBloc, soundRecorder);
     await tester.enterText(find.byType(TextField), ' text 3 ');
-    await tester.tap(find.byIcon(Icons.send).first);
+    await tester.tap(find.byIcon(Icons.send_rounded).first);
     await tester.pumpAndSettle();
 
     verify(bloc.add(const ChatEventAddText('text 3'))).called(1);
@@ -211,7 +211,7 @@ void main() {
   testWidgets('should not send an empty message', (tester) async {
     await _fixture(tester, bloc, authBloc, soundRecorder);
     await tester.enterText(find.byType(TextField), ' ');
-    await tester.tap(find.byIcon(Icons.send).first);
+    await tester.tap(find.byIcon(Icons.send_rounded).first);
     await tester.pumpAndSettle();
 
     verifyNever(bloc.add(const ChatEventAddText('')));
