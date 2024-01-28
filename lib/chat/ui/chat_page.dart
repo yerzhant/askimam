@@ -15,7 +15,7 @@ import 'package:flutter_modular/flutter_modular.dart'
     hide ModularWatchExtension;
 import 'package:flutter_sound_lite/flutter_sound.dart';
 
-const _interMessageSpace = 10.0;
+const _messagePadding = 10.0;
 
 class ChatPage extends StatefulWidget {
   final int id;
@@ -149,13 +149,14 @@ class _ChatPageState extends State<ChatPage> {
     Chat chat,
     AuthState authState,
   ) {
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () async =>
           context.read<ChatBloc>().add(ChatEventRefresh(widget.id)),
       child: ListView.separated(
         controller: _scrollController,
         itemCount: items.length,
-        separatorBuilder: (_, __) => const SizedBox(height: _interMessageSpace),
+        separatorBuilder: (_, __) =>
+            const SizedBox(height: _messagePadding * 2),
         itemBuilder: (_, i) {
           final item = items[i];
 
@@ -168,7 +169,7 @@ class _ChatPageState extends State<ChatPage> {
                 _ => false,
               },
             ),
-            background: Container(color: secondaryColor),
+            background: Container(color: warningColor),
             onDismissed: (_) =>
                 context.read<ChatBloc>().add(ChatEventDeleteMessage(item.id)),
             child: MessageCard(
@@ -183,7 +184,7 @@ class _ChatPageState extends State<ChatPage> {
           );
         },
         key: const PageStorageKey('chat'),
-        padding: const EdgeInsets.all(_interMessageSpace),
+        padding: const EdgeInsets.all(_messagePadding),
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
