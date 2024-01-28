@@ -22,15 +22,14 @@ class RejectionWidget extends StatelessWidget {
           children: [
             Text(
               'Ой, шо-то пошло не так!',
-              style: Theme.of(context).textTheme.subtitle2,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: interElementMargin),
             Text(rejection.message),
             const SizedBox(height: interElementMargin),
-            ElevatedButton.icon(
+            FilledButton(
               onPressed: onRefresh,
-              icon: const Icon(Icons.repeat),
-              label: const Text('ПОВТОРИТЬ'),
+              child: const Text('ПОВТОРИТЬ'),
             ),
           ],
         ),

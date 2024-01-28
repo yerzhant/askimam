@@ -11,12 +11,15 @@ const grayColor = Color(0xffa0a0a0);
 
 ThemeData theme(BuildContext context) {
   final text = GoogleFonts.elMessiriTextTheme();
+  final buttonText = GoogleFonts.poiretOne(fontSize: 15);
 
   return ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
     textTheme: text.copyWith(
       bodySmall: text.bodySmall!.copyWith(color: grayColor),
     ),
+    filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(textStyle: MaterialStatePropertyAll(buttonText))),
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
     ),
