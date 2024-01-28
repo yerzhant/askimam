@@ -47,32 +47,22 @@ class MessageCard extends StatelessWidget {
           ),
         _ => _margins(isImam),
       },
-      child: Theme(
-        data: Theme.of(context).copyWith(
-          textTheme: Theme.of(context).textTheme.copyWith(
-                bodyText2: const TextStyle(
-                  color: Colors.black,
-                  height: 1.6,
-                ),
-              ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 15,
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 15,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (isImam) ..._imamsName,
-              if (message.type == MessageType.Text)
-                _text
-              else
-                AudioPlayer(message.audio!, message.duration!),
-              const SizedBox(height: 15),
-              _dates(context),
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (isImam) ..._imamsName,
+            if (message.type == MessageType.Text)
+              _text
+            else
+              AudioPlayer(message.audio!, message.duration!),
+            const SizedBox(height: 15),
+            _dates(context),
+          ],
         ),
       ),
     );
@@ -100,7 +90,7 @@ class MessageCard extends StatelessWidget {
         Text(
           message.author!,
           style: const TextStyle(
-            color: primaryDarkColor,
+            color: primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -113,7 +103,8 @@ class MessageCard extends StatelessWidget {
           width: double.infinity,
           child: SelectableLinkify(
             text: message.text,
-            linkStyle: const TextStyle(color: primaryDarkColor),
+            style: const TextStyle(height: 1.6),
+            linkStyle: const TextStyle(color: primaryColor),
             onOpen: (link) async {
               if (await canLaunchUrlString(link.url)) {
                 await launchUrlString(link.url);
