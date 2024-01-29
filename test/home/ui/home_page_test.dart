@@ -67,11 +67,8 @@ void main() {
     when(publicChatsBloc.state).thenReturn(const PublicChatsStateSuccess([]));
     when(unansweredChatsBloc.state)
         .thenReturn(const UnansweredChatsStateSuccess([]));
-    when(authBloc.state).thenReturn(const AuthStateAuthenticated(Authentication(
-      '123',
-      1,
-      UserType.Inquirer,
-    )));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('123', 1, UserType.Inquirer, 'fcm')));
   });
 
   testWidgets('should contain contents for an inquirer', (tester) async {
@@ -94,11 +91,8 @@ void main() {
   });
 
   testWidgets('should contain contents for an imam', (tester) async {
-    when(authBloc.state).thenReturn(const AuthStateAuthenticated(Authentication(
-      '123',
-      1,
-      UserType.Imam,
-    )));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('123', 1, UserType.Imam, 'fcm')));
 
     await _fixture(
       tester,
@@ -146,11 +140,8 @@ void main() {
   });
 
   testWidgets('should load new chats on launch', (tester) async {
-    when(authBloc.state).thenReturn(const AuthStateAuthenticated(Authentication(
-      '123',
-      1,
-      UserType.Imam,
-    )));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('123', 1, UserType.Imam, 'fcm')));
 
     await _fixture(
       tester,
@@ -168,11 +159,8 @@ void main() {
   });
 
   testWidgets('should show new chats', (tester) async {
-    when(authBloc.state).thenReturn(const AuthStateAuthenticated(Authentication(
-      '123',
-      1,
-      UserType.Imam,
-    )));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('123', 1, UserType.Imam, 'fcm')));
 
     await _fixture(
       tester,
@@ -294,7 +282,7 @@ void main() {
   testWidgets('should load my chats on successful logging in', (tester) async {
     when(authBloc.stream).thenAnswer((_) => Stream.value(
           const AuthStateAuthenticated(
-              Authentication('123', 1, UserType.Inquirer)),
+              Authentication('123', 1, UserType.Inquirer, 'fcm')),
         ));
     await _fixture(
       tester,
@@ -311,10 +299,12 @@ void main() {
 
   testWidgets('should load new chats on successful logging in', (tester) async {
     when(authBloc.state).thenReturn(
-      const AuthStateAuthenticated(Authentication('123', 1, UserType.Imam)),
+      const AuthStateAuthenticated(
+          Authentication('123', 1, UserType.Imam, 'fcm')),
     );
     when(authBloc.stream).thenAnswer((_) => Stream.value(
-          const AuthStateAuthenticated(Authentication('123', 1, UserType.Imam)),
+          const AuthStateAuthenticated(
+              Authentication('123', 1, UserType.Imam, 'fcm')),
         ));
     await _fixture(
       tester,

@@ -11,6 +11,7 @@ Authentication _$AuthenticationFromJson(Map<String, dynamic> json) =>
       json['jwt'] as String,
       json['userId'] as int,
       $enumDecode(_$UserTypeEnumMap, json['userType']),
+      json['fcmToken'] as String,
     );
 
 Map<String, dynamic> _$AuthenticationToJson(Authentication instance) =>
@@ -18,6 +19,7 @@ Map<String, dynamic> _$AuthenticationToJson(Authentication instance) =>
       'jwt': instance.jwt,
       'userId': instance.userId,
       'userType': _$UserTypeEnumMap[instance.userType]!,
+      'fcmToken': instance.fcmToken,
     };
 
 const _$UserTypeEnumMap = {

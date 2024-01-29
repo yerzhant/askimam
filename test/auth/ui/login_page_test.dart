@@ -75,8 +75,10 @@ void main() {
 
   testWidgets('should go to home page', (tester) async {
     when(bloc.stream).thenAnswer((_) => Stream.value(
-        const AuthStateAuthenticated(
-            Authentication('123', 1, UserType.Inquirer))));
+          const AuthStateAuthenticated(
+            Authentication('123', 1, UserType.Inquirer, 'fcm'),
+          ),
+        ));
     await _fixture(tester, bloc);
     await tester.pump();
 

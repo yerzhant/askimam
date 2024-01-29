@@ -187,7 +187,10 @@ void main() {
           await apiClient.postAndGetResponse<Authentication, LoginRequest>(
               'suffix/ok', const LoginRequest('login', 'password', 'fcm'));
 
-      expect(result, right(const Authentication('123', 1, UserType.Inquirer)));
+      expect(
+        result,
+        right(const Authentication('123', 1, UserType.Inquirer, 'fcm')),
+      );
     });
 
     test('should return some rejection reason', () async {

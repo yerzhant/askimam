@@ -42,7 +42,7 @@ void main() {
     provideDummy<PublicChatsState>(const PublicChatsStateInProgress([]));
 
     when(authBloc.state).thenReturn(const AuthStateAuthenticated(
-      Authentication('123', 1, UserType.Inquirer),
+      Authentication('123', 1, UserType.Inquirer, 'fcm'),
     ));
 
     app = MaterialApp(

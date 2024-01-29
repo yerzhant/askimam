@@ -52,7 +52,7 @@ void main() {
     authBloc = MockAuthBloc();
     provideDummy<AuthState>(const AuthStateInProgress());
     when(authBloc.state).thenReturn(const AuthStateAuthenticated(
-        Authentication('jwt', 1, UserType.Inquirer)));
+        Authentication('jwt', 1, UserType.Inquirer, 'fcm')));
     when(authBloc.stream).thenAnswer((_) => const Stream.empty());
   });
 
@@ -85,7 +85,7 @@ void main() {
 
   testWidgets('should have public elements only - auth', (tester) async {
     when(authBloc.state).thenReturn(const AuthStateAuthenticated(
-        Authentication('jwt', 10, UserType.Inquirer)));
+        Authentication('jwt', 10, UserType.Inquirer, 'fcm')));
     await _fixture(tester, bloc, authBloc, soundRecorder);
 
     expect(find.text('Subject'), findsOneWidget);
@@ -98,8 +98,8 @@ void main() {
   });
 
   testWidgets('should have additinal elements for imams', (tester) async {
-    when(authBloc.state).thenReturn(
-        const AuthStateAuthenticated(Authentication('jwt', 2, UserType.Imam)));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('jwt', 2, UserType.Imam, 'fcm')));
     await _fixture(tester, bloc, authBloc, soundRecorder);
 
     expect(find.byType(MessageComposer), findsOneWidget);
@@ -108,8 +108,8 @@ void main() {
   });
 
   testWidgets('should start recording audio', (tester) async {
-    when(authBloc.state).thenReturn(
-        const AuthStateAuthenticated(Authentication('jwt', 2, UserType.Imam)));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('jwt', 2, UserType.Imam, 'fcm')));
     when(soundRecorder.openRecorder()).thenAnswer((_) async => soundRecorder);
     when(soundRecorder.startRecorder()).thenAnswer((_) async => Void);
     when(soundRecorder.onProgress).thenReturn(null);
@@ -124,8 +124,8 @@ void main() {
   });
 
   testWidgets('should send audio', (tester) async {
-    when(authBloc.state).thenReturn(
-        const AuthStateAuthenticated(Authentication('jwt', 2, UserType.Imam)));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('jwt', 2, UserType.Imam, 'fcm')));
     when(soundRecorder.openRecorder()).thenAnswer((_) async => soundRecorder);
     when(soundRecorder.startRecorder()).thenAnswer((_) async => Void);
     when(soundRecorder.stopRecorder()).thenAnswer((_) async => 'audio.mp3');
@@ -145,8 +145,8 @@ void main() {
   });
 
   testWidgets('should return a chat to unanswered ones', (tester) async {
-    when(authBloc.state).thenReturn(
-        const AuthStateAuthenticated(Authentication('jwt', 2, UserType.Imam)));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('jwt', 2, UserType.Imam, 'fcm')));
     await _fixture(tester, bloc, authBloc, soundRecorder);
     await tester.tap(find.byIcon(Icons.rotate_left_rounded));
 
@@ -172,7 +172,7 @@ void main() {
 
   testWidgets('should not allow to delete a chat', (tester) async {
     when(authBloc.state).thenReturn(const AuthStateAuthenticated(
-        Authentication('jwt', 2, UserType.Inquirer)));
+        Authentication('jwt', 2, UserType.Inquirer, 'fcm')));
     await _fixture(tester, bloc, authBloc, soundRecorder);
     await tester.drag(find.text('text 2'), const Offset(500, 0));
     await tester.pumpAndSettle();
@@ -181,8 +181,8 @@ void main() {
   });
 
   testWidgets('should allow to delete a chat to an imam', (tester) async {
-    when(authBloc.state).thenReturn(
-        const AuthStateAuthenticated(Authentication('jwt', 20, UserType.Imam)));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('jwt', 20, UserType.Imam, 'fcm')));
     await _fixture(tester, bloc, authBloc, soundRecorder);
     await tester.drag(find.text('text 2'), const Offset(500, 0));
     await tester.pumpAndSettle();

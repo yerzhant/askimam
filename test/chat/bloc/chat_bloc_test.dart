@@ -36,7 +36,7 @@ void main() {
   setUp(() {
     provideDummy<AuthState>(const AuthStateInProgress());
     when(authBloc.state).thenReturn(const AuthStateAuthenticated(
-      Authentication('jwt', 1, UserType.Inquirer),
+      Authentication('jwt', 1, UserType.Inquirer, 'fcm'),
     ));
 
     bloc = ChatBloc(
@@ -137,7 +137,7 @@ void main() {
       'should get it without updating a viewed flag - not an author',
       build: () {
         when(authBloc.state).thenReturn(const AuthStateAuthenticated(
-          Authentication('jwt', 10, UserType.Inquirer),
+          Authentication('jwt', 10, UserType.Inquirer, 'fcm'),
         ));
         when(repo.get(1)).thenAnswer(
           (_) async => right(
@@ -179,7 +179,7 @@ void main() {
         reset(unansweredChatsBloc);
 
         when(authBloc.state).thenReturn(const AuthStateAuthenticated(
-          Authentication('jwt', 10, UserType.Imam),
+          Authentication('jwt', 10, UserType.Imam, 'fcm'),
         ));
         when(repo.get(1)).thenAnswer(
           (_) async => right(

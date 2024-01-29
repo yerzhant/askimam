@@ -26,19 +26,25 @@ void main() {
           const LoginRequest('login', 'password', 'fcm'),
         ),
       ).thenAnswer(
-        (_) async => right(const Authentication('jwt', 1, UserType.Inquirer)),
+        (_) async => right(
+          const Authentication('jwt', 1, UserType.Inquirer, 'fcm'),
+        ),
       );
       when(settings.saveAuthentication(
-        const Authentication('jwt', 1, UserType.Inquirer),
+        const Authentication('jwt', 1, UserType.Inquirer, 'fcm'),
       )).thenAnswer((p) async => right(p.positionalArguments[0]));
 
-      final result =
-          await repo.login(const LoginRequest('login', 'password', 'fcm'));
+      final result = await repo.login(
+        const LoginRequest('login', 'password', 'fcm'),
+      );
 
-      expect(result, right(const Authentication('jwt', 1, UserType.Inquirer)));
+      expect(
+        result,
+        right(const Authentication('jwt', 1, UserType.Inquirer, 'fcm')),
+      );
 
       verify(settings.saveAuthentication(
-        const Authentication('jwt', 1, UserType.Inquirer),
+        const Authentication('jwt', 1, UserType.Inquirer, 'fcm'),
       )).called(1);
     });
 
@@ -49,10 +55,12 @@ void main() {
           const LoginRequest('login', 'password', 'fcm'),
         ),
       ).thenAnswer(
-        (_) async => right(const Authentication('jwt', 1, UserType.Inquirer)),
+        (_) async => right(
+          const Authentication('jwt', 1, UserType.Inquirer, 'fcm'),
+        ),
       );
       when(settings.saveAuthentication(
-        const Authentication('jwt', 1, UserType.Inquirer),
+        const Authentication('jwt', 1, UserType.Inquirer, 'fcm'),
       )).thenAnswer((p) async => left(Rejection('reason')));
 
       final result =
@@ -112,12 +120,16 @@ void main() {
 
   group('Load:', () {
     test('should be ok', () async {
-      when(settings.loadAuthentication()).thenAnswer(
-          (_) async => right(const Authentication('jwt', 1, UserType.Imam)));
+      when(settings.loadAuthentication()).thenAnswer((_) async => right(
+            const Authentication('jwt', 1, UserType.Imam, 'fcm'),
+          ));
 
       final result = await repo.load();
 
-      expect(result, right(const Authentication('jwt', 1, UserType.Imam)));
+      expect(
+        result,
+        right(const Authentication('jwt', 1, UserType.Imam, 'fcm')),
+      );
     });
 
     test('should not be ok', () async {

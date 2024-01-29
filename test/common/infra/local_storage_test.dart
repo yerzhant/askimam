@@ -18,11 +18,15 @@ void main() {
         'jwt': '123',
         'user-id': 1,
         'user-type': 'UserType.Inquirer',
+        'fcm-token': 'n-token',
       });
 
       final result = await storage.loadAuthentication();
 
-      expect(result, right(const Authentication('123', 1, UserType.Inquirer)));
+      expect(
+        result,
+        right(const Authentication('123', 1, UserType.Inquirer, 'n-token')),
+      );
     });
 
     test('should not load it', () async {
@@ -40,16 +44,22 @@ void main() {
         'jwt': '555',
         'user-id': 555,
         'user-type': 'UserType.Imam',
+        'fcm-token': 'xyz-token',
       });
 
       final result = await storage.saveAuthentication(
-          const Authentication('123', 1, UserType.Inquirer));
+        const Authentication('123', 1, UserType.Inquirer, 'n-token'),
+      );
 
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getString('jwt'), '123');
       expect(prefs.getInt('user-id'), 1);
       expect(prefs.getString('user-type'), UserType.Inquirer.toString());
-      expect(result, right(const Authentication('123', 1, UserType.Inquirer)));
+      expect(prefs.getString('fcm-token'), 'n-token');
+      expect(
+        result,
+        right(const Authentication('123', 1, UserType.Inquirer, 'n-token')),
+      );
     });
   });
 
@@ -59,6 +69,7 @@ void main() {
         'jwt': '123',
         'user-id': 1,
         'user-type': 'UserType.Inquirer',
+        'fcm-token': 'n-token',
       });
 
       final result = await storage.clearAuthentication();
@@ -68,6 +79,7 @@ void main() {
       expect(prefs.getString('jwt'), null);
       expect(prefs.getInt('user-id'), null);
       expect(prefs.getString('user-type'), null);
+      expect(prefs.getString('fcm-token'), null);
     });
   });
 }

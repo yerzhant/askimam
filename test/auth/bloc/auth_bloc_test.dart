@@ -27,8 +27,8 @@ void main() {
     notificationService = MockNotificationService();
     bloc = AuthBloc(repo, apiClient, notificationService);
 
-    when(repo.load()).thenAnswer(
-        (_) async => right(const Authentication('jwt', 1, UserType.Inquirer)));
+    when(repo.load()).thenAnswer((_) async =>
+        right(const Authentication('jwt', 1, UserType.Inquirer, 'fcm')));
     when(notificationService.getFcmToken())
         .thenAnswer((_) async => right('fcm'));
   });
@@ -42,8 +42,8 @@ void main() {
       'should login',
       build: () {
         when(repo.login(const LoginRequest('login', 'password', 'fcm')))
-            .thenAnswer((_) async =>
-                right(const Authentication('123', 1, UserType.Inquirer)));
+            .thenAnswer((_) async => right(
+                const Authentication('123', 1, UserType.Inquirer, 'fcm')));
         return bloc;
       },
       seed: () => const AuthStateUnauthenticated(),
@@ -51,7 +51,7 @@ void main() {
       expect: () => [
         const AuthStateInProgress(),
         const AuthStateAuthenticated(
-            Authentication('123', 1, UserType.Inquirer)),
+            Authentication('123', 1, UserType.Inquirer, 'fcm')),
       ],
       verify: (_) => verify(apiClient.setJwt('123')).called(1),
     );
@@ -98,7 +98,7 @@ void main() {
         return bloc;
       },
       seed: () => const AuthStateAuthenticated(
-          Authentication('jwt', 1, UserType.Inquirer)),
+          Authentication('jwt', 1, UserType.Inquirer, 'fcm')),
       act: (_) => bloc.add(const AuthEventLogout()),
       expect: () => [
         const AuthStateInProgress(),
@@ -115,7 +115,7 @@ void main() {
         return bloc;
       },
       seed: () => const AuthStateAuthenticated(
-          Authentication('jwt', 1, UserType.Inquirer)),
+          Authentication('jwt', 1, UserType.Inquirer, 'fcm')),
       act: (_) => bloc.add(const AuthEventLogout()),
       expect: () => [
         const AuthStateInProgress(),
@@ -131,7 +131,7 @@ void main() {
         return bloc;
       },
       seed: () => const AuthStateAuthenticated(
-          Authentication('jwt', 1, UserType.Inquirer)),
+          Authentication('jwt', 1, UserType.Inquirer, 'fcm')),
       act: (_) => bloc.add(const AuthEventLogout()),
       expect: () => [
         const AuthStateInProgress(),
@@ -148,7 +148,7 @@ void main() {
       expect: () => [
         const AuthStateInProgress(),
         const AuthStateAuthenticated(
-            Authentication('jwt', 1, UserType.Inquirer)),
+            Authentication('jwt', 1, UserType.Inquirer, 'fcm')),
       ],
       verify: (_) => verify(apiClient.setJwt('jwt')).called(1),
     );

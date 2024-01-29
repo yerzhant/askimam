@@ -47,7 +47,7 @@ final httpClient = MockClient((req) async {
           const LoginRequest('login', 'password', 'fcm').toJsonUtf8(),
         )) {
           final json = ApiResponse.data(
-            const Authentication('123', 1, UserType.Inquirer),
+            const Authentication('123', 1, UserType.Inquirer, 'fcm'),
           ).toJsonString();
           return Response(json, 200);
         } else {

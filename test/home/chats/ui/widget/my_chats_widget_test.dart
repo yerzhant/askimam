@@ -40,7 +40,7 @@ void main() {
     when(authBloc.stream).thenAnswer((_) => const Stream.empty());
     when(favoriteBloc.stream).thenAnswer((_) => const Stream.empty());
     when(authBloc.state).thenReturn(const AuthStateAuthenticated(
-        Authentication('jwt', 1, UserType.Inquirer)));
+        Authentication('jwt', 1, UserType.Inquirer, 'fcm')));
 
     app = BlocProvider.value(
       value: bloc,
@@ -81,8 +81,8 @@ void main() {
   });
 
   testWidgets('should show a list of an imam', (tester) async {
-    when(authBloc.state).thenReturn(
-        const AuthStateAuthenticated(Authentication('jwt', 1, UserType.Imam)));
+    when(authBloc.state).thenReturn(const AuthStateAuthenticated(
+        Authentication('jwt', 1, UserType.Imam, 'fcm')));
     await _fixture(bloc, tester, app);
 
     expect(find.text('Chat 1'), findsOneWidget);

@@ -9,8 +9,9 @@ class Authentication extends Equatable with Model {
   final String jwt;
   final int userId;
   final UserType userType;
+  final String fcmToken;
 
-  const Authentication(this.jwt, this.userId, this.userType);
+  const Authentication(this.jwt, this.userId, this.userType, this.fcmToken);
 
   factory Authentication.fromJson(Map<String, dynamic> json) =>
       _$AuthenticationFromJson(json);
@@ -19,7 +20,7 @@ class Authentication extends Equatable with Model {
   Map<String, dynamic> toJson() => _$AuthenticationToJson(this);
 
   @override
-  List<Object?> get props => [jwt, userId, userType];
+  List<Object?> get props => [jwt, userId, userType, fcmToken];
 }
 
 // ignore: constant_identifier_names
