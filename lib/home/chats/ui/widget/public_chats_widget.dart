@@ -10,13 +10,14 @@ import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_modular/flutter_modular.dart'
+    hide ModularWatchExtension;
 
 class PublicChatsWidget extends StatefulWidget {
-  const PublicChatsWidget();
+  const PublicChatsWidget({super.key});
 
   @override
-  _PublicChatsWidgetState createState() => _PublicChatsWidgetState();
+  State createState() => _PublicChatsWidgetState();
 }
 
 class _PublicChatsWidgetState extends State<PublicChatsWidget> {
@@ -38,9 +39,7 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
   void _loadNextPage() {
     if (_scrollController.position.maxScrollExtent ==
         _scrollController.position.pixels) {
-      context
-          .read<PublicChatsBloc>()
-          .add(const PublicChatsEvent.loadNextPage());
+      context.read<PublicChatsBloc>().add(const PublicChatsEventLoadNextPage());
     }
   }
 
@@ -48,24 +47,25 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<PublicChatsBloc, PublicChatsState>(
       builder: (context, state) {
-        return state.when(
-          (items) => _list(items, context),
-          inProgress: (items) => InProgressWidget(child: _list(items, context)),
-          error: (rejection) => RejectionWidget(
-            rejection: rejection,
-            onRefresh: () => context
-                .read<PublicChatsBloc>()
-                .add(const PublicChatsEvent.reload()),
-          ),
-        );
+        return switch (state) {
+          PublicChatsStateSuccess(chats: final items) => _list(items, context),
+          PublicChatsStateInProgress(chats: final items) =>
+            InProgressWidget(child: _list(items, context)),
+          PublicChatsStateError(rejection: final rejection) => RejectionWidget(
+              rejection: rejection,
+              onRefresh: () => context
+                  .read<PublicChatsBloc>()
+                  .add(const PublicChatsEventReload()),
+            ),
+        };
       },
     );
   }
 
   Widget _list(List<Chat> items, BuildContext context) {
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () async =>
-          context.read<PublicChatsBloc>().add(const PublicChatsEvent.reload()),
+          context.read<PublicChatsBloc>().add(const PublicChatsEventReload()),
       child: ListView.separated(
         controller: _scrollController,
         itemCount: items.length,
@@ -86,26 +86,28 @@ class _PublicChatsWidgetState extends State<PublicChatsWidget> {
               padding: const EdgeInsets.only(top: dateTopPadding),
               child: Text(
                 item.updatedAt.format(),
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
             trailing: BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
-                return state.maybeWhen(
-                  authenticated: (_) => IconButton(
-                    icon: Icon(
-                      item.isFavorite ? Icons.bookmark : Icons.bookmark_border,
-                      color: primaryColor,
-                      size: iconSize,
+                return switch (state) {
+                  AuthStateAuthenticated() => IconButton(
+                      icon: Icon(
+                        item.isFavorite
+                            ? Icons.bookmark
+                            : Icons.bookmark_border,
+                        color: primaryColor,
+                        size: iconSize,
+                      ),
+                      onPressed: () => context.read<FavoriteBloc>().add(
+                            item.isFavorite
+                                ? FavoriteEventDelete(item.id)
+                                : FavoriteEventAdd(item),
+                          ),
                     ),
-                    onPressed: () => context.read<FavoriteBloc>().add(
-                          item.isFavorite
-                              ? FavoriteEvent.delete(item.id)
-                              : FavoriteEvent.add(item),
-                        ),
-                  ),
-                  orElse: () => Container(width: 0),
-                );
+                  _ => Container(width: 0),
+                };
               },
             ),
             onTap: () => Modular.to.pushNamed('/chat/${item.id}'),

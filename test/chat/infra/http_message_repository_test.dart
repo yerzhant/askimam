@@ -30,19 +30,20 @@ void main() {
   group('Add text:', () {
     test('should add a text message', () async {
       when(nService.getFcmToken()).thenAnswer((_) async => right('123'));
-      when(api.post('messages', AddTextMessage(1, 'text', '123')))
+      when(api.post('messages', const AddTextMessage(1, 'text', '123')))
           .thenAnswer((_) async => none());
 
       final result = await repo.addText(1, 'text');
 
       expect(result, none());
       verify(nService.getFcmToken()).called(1);
-      verify(api.post('messages', AddTextMessage(1, 'text', '123'))).called(1);
+      verify(api.post('messages', const AddTextMessage(1, 'text', '123')))
+          .called(1);
     });
 
     test('should not add it', () async {
       when(nService.getFcmToken()).thenAnswer((_) async => right('123'));
-      when(api.post('messages', AddTextMessage(1, 'text', '123')))
+      when(api.post('messages', const AddTextMessage(1, 'text', '123')))
           .thenAnswer((_) async => some(Rejection('reason')));
 
       final result = await repo.addText(1, 'text');
@@ -70,7 +71,7 @@ void main() {
       when(
         api.post(
           'messages/audio',
-          AddAudioMessage(1, 'audio.mp3', '1:23', '123'),
+          const AddAudioMessage(1, 'audio.mp3', '1:23', '123'),
         ),
       ).thenAnswer((_) async => none());
 
@@ -81,7 +82,7 @@ void main() {
       verify(
         api.post(
           'messages/audio',
-          AddAudioMessage(1, 'audio.mp3', '1:23', '123'),
+          const AddAudioMessage(1, 'audio.mp3', '1:23', '123'),
         ),
       ).called(1);
     });
@@ -93,7 +94,7 @@ void main() {
       when(
         api.post(
           'messages/audio',
-          AddAudioMessage(1, 'audio.mp3', '1:23', '123'),
+          const AddAudioMessage(1, 'audio.mp3', '1:23', '123'),
         ),
       ).thenAnswer((_) async => some(Rejection('reason')));
 
@@ -125,7 +126,8 @@ void main() {
   group('Update text:', () {
     test('should update a text message', () async {
       when(nService.getFcmToken()).thenAnswer((_) async => right('123'));
-      when(api.patchWithBody('messages/1/2', UpdateTextMessage('text', '123')))
+      when(api.patchWithBody(
+              'messages/1/2', const UpdateTextMessage('text', '123')))
           .thenAnswer((_) async => none());
 
       final result = await repo.updateText(1, 2, 'text');
@@ -133,13 +135,14 @@ void main() {
       expect(result, none());
       verify(nService.getFcmToken()).called(1);
       verify(api.patchWithBody(
-              'messages/1/2', UpdateTextMessage('text', '123')))
+              'messages/1/2', const UpdateTextMessage('text', '123')))
           .called(1);
     });
 
     test('should not add it', () async {
       when(nService.getFcmToken()).thenAnswer((_) async => right('123'));
-      when(api.patchWithBody('messages/1/2', UpdateTextMessage('text', '123')))
+      when(api.patchWithBody(
+              'messages/1/2', const UpdateTextMessage('text', '123')))
           .thenAnswer((_) async => some(Rejection('reason')));
 
       final result = await repo.updateText(1, 2, 'text');

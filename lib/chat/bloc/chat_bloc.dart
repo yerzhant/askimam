@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:askimam/auth/bloc/auth_bloc.dart';
@@ -10,9 +9,8 @@ import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
 import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
-part 'chat_bloc.freezed.dart';
 part 'chat_event.dart';
 part 'chat_state.dart';
 
@@ -29,199 +27,164 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     this._authBloc,
     this._myChatsBloc,
     this._unansweredChatsBloc,
-  ) : super(const _InProgress());
+  ) : super(const ChatStateInProgress()) {
+    on<ChatEventRefresh>((event, emit) async {
+      emit(const ChatStateInProgress());
 
-  @override
-  Stream<ChatState> mapEventToState(ChatEvent event) => event.when(
-        refresh: _refresh,
-        addText: _addText,
-        addAudio: _addAudio,
-        deleteMessage: _deleteMessage,
-        updateSubject: _updateSubject,
-        updateTextMessage: _updateTextMessage,
-        returnToUnaswered: _returnToUnaswered,
+      final result = await _repo.get(event.id);
+
+      await result.fold(
+        (l) async => emit(ChatStateError(l)),
+        (r) async {
+          switch (_authBloc.state) {
+            case AuthStateAuthenticated(authentication: final auth):
+              if (auth.userId == r.askedBy || auth.userType == UserType.Imam) {
+                final setViewedFlagResult = await _repo.setViewedFlag(event.id);
+
+                setViewedFlagResult.fold(
+                  () {
+                    _myChatsBloc.add(const MyChatsEventReload());
+
+                    if (auth.userType == UserType.Imam) {
+                      _unansweredChatsBloc.add(
+                        const UnansweredChatsEventReload(),
+                      );
+                    }
+
+                    emit(ChatStateSuccess(r, isSuccess: true));
+                  },
+                  (a) => emit(ChatStateError(a)),
+                );
+              } else {
+                emit(ChatStateSuccess(r, isSuccess: true));
+              }
+
+            default:
+              emit(ChatStateSuccess(r, isSuccess: true));
+          }
+        },
       );
+    });
 
-  Stream<ChatState> _refresh(int id) async* {
-    yield const ChatState.inProgress();
+    on<ChatEventAddText>((event, emit) async {
+      if (state case ChatStateSuccess(chat: final chat)) {
+        emit(ChatStateSuccess(chat, isInProgress: true));
 
-    final result = await _repo.get(id);
+        final result = await _messageRepo.addText(chat.id, event.text);
 
-    yield* result.fold(
-      (l) async* {
-        yield ChatState.error(l);
-      },
-      (r) async* {
-        yield* _authBloc.state.maybeWhen(
-          authenticated: (auth) async* {
-            if (auth.userId == r.askedBy || auth.userType == UserType.Imam) {
-              final setViewedFlagResult = await _repo.setViewedFlag(id);
-
-              yield setViewedFlagResult.fold(
-                () {
-                  _myChatsBloc.add(const MyChatsEvent.reload());
-
-                  if (auth.userType == UserType.Imam) {
-                    _unansweredChatsBloc.add(
-                      const UnansweredChatsEvent.reload(),
-                    );
-                  }
-
-                  return ChatState(r, isSuccess: true);
-                },
-                (a) => ChatState.error(a),
-              );
-            } else {
-              yield ChatState(r, isSuccess: true);
-            }
-          },
-          orElse: () async* {
-            yield ChatState(r, isSuccess: true);
-          },
-        );
-      },
-    );
-  }
-
-  Stream<ChatState> _addText(String text) async* {
-    yield* state.maybeWhen(
-      (chat, rejection, isInProgress, isSuccess) async* {
-        yield ChatState(chat, isInProgress: true);
-
-        final result = await _messageRepo.addText(chat.id, text);
-
-        yield* result.fold(
-          () async* {
+        await result.fold(
+          () async {
             final updateResult = await _repo.get(chat.id);
 
-            yield updateResult.fold(
-              (l) => ChatState(chat, rejection: l),
-              (r) => ChatState(r, isSuccess: true),
-            );
+            emit(updateResult.fold(
+              (l) => ChatStateSuccess(chat, rejection: l),
+              (r) => ChatStateSuccess(r, isSuccess: true),
+            ));
           },
-          (a) async* {
-            yield ChatState(chat, rejection: a);
+          (a) {
+            emit(ChatStateSuccess(chat, rejection: a));
           },
         );
-      },
-      orElse: () async* {
-        yield state;
-      },
-    );
-  }
+      }
+    });
 
-  Stream<ChatState> _addAudio(File file, String duration) async* {
-    yield* state.maybeWhen(
-      (chat, rejection, isInProgress, isSuccess) async* {
-        yield ChatState(chat, isInProgress: true);
+    on<ChatEventAddAudio>((event, emit) async {
+      if (state case ChatStateSuccess(chat: final chat)) {
+        emit(ChatStateSuccess(chat, isInProgress: true));
 
-        final result = await _messageRepo.addAudio(chat.id, file, duration);
-        if (file.path != 'audio.mp3') file.deleteSync();
+        final result = await _messageRepo.addAudio(
+          chat.id,
+          event.file,
+          event.duration,
+        );
+        if (event.file.path != 'audio.mp3') event.file.deleteSync();
 
-        yield* result.fold(
-          () async* {
+        await result.fold(
+          () async {
             final updateResult = await _repo.get(chat.id);
 
-            yield updateResult.fold(
-              (l) => ChatState(chat, rejection: l),
-              (r) => ChatState(r, isSuccess: true),
-            );
+            emit(updateResult.fold(
+              (l) => ChatStateSuccess(chat, rejection: l),
+              (r) => ChatStateSuccess(r, isSuccess: true),
+            ));
           },
-          (a) async* {
-            yield ChatState(chat, rejection: a);
+          (a) {
+            emit(ChatStateSuccess(chat, rejection: a));
           },
         );
-      },
-      orElse: () async* {
-        yield state;
-      },
-    );
-  }
+      }
+    });
 
-  Stream<ChatState> _updateTextMessage(int id, String text) async* {
-    yield* state.maybeWhen(
-      (chat, rejection, isInProgress, isSuccess) async* {
-        yield ChatState(chat, isInProgress: true);
+    on<ChatEventUpdateTextMessage>((event, emit) async {
+      if (state case ChatStateSuccess(chat: final chat)) {
+        emit(ChatStateSuccess(chat, isInProgress: true));
 
-        final result = await _messageRepo.updateText(chat.id, id, text);
+        final result = await _messageRepo.updateText(
+          chat.id,
+          event.id,
+          event.text,
+        );
 
-        yield result.fold(
-          () => ChatState(
+        emit(result.fold(
+          () => ChatStateSuccess(
             chat.copyWith(
               messages: chat.messages
-                  ?.map((m) => m.id == id ? m.copyWith(text: text) : m)
+                  ?.map((m) =>
+                      m.id == event.id ? m.copyWith(text: event.text) : m)
                   .toList(),
             ),
           ),
-          (a) => ChatState(chat, rejection: a),
-        );
-      },
-      orElse: () async* {
-        yield state;
-      },
-    );
-  }
+          (a) => ChatStateSuccess(chat, rejection: a),
+        ));
+      }
+    });
 
-  Stream<ChatState> _deleteMessage(int id) async* {
-    yield* state.maybeWhen(
-      (chat, rejection, isInProgress, isSuccess) async* {
-        yield ChatState(
-            chat.copyWith(
-                messages: chat.messages
-                    ?.where((element) => element.id != id)
-                    .toList()),
-            isInProgress: true);
-
-        final result = await _messageRepo.delete(chat.id, id);
-
-        yield result.fold(
-          () => ChatState(
-            chat.copyWith(
-              messages: chat.messages?.whereNot((m) => m.id == id).toList(),
-            ),
+    on<ChatEventDeleteMessage>((event, emit) async {
+      if (state case ChatStateSuccess(chat: final chat)) {
+        emit(ChatStateSuccess(
+          chat.copyWith(
+            messages: chat.messages
+                ?.where((element) => element.id != event.id)
+                .toList(),
           ),
-          (a) => ChatState(chat, rejection: a),
-        );
-      },
-      orElse: () async* {
-        yield state;
-      },
-    );
-  }
+          isInProgress: true,
+        ));
 
-  Stream<ChatState> _updateSubject(String subject) async* {
-    yield* state.maybeWhen(
-      (chat, rejection, isInProgress, isSuccess) async* {
-        yield ChatState(chat, isInProgress: true);
+        final result = await _messageRepo.delete(chat.id, event.id);
 
-        final result = await _repo.updateSubject(chat.id, subject);
+        emit(result.fold(
+          () => ChatStateSuccess(chat.copyWith(
+              messages:
+                  chat.messages?.where((m) => m.id != event.id).toList())),
+          (a) => ChatStateSuccess(chat, rejection: a),
+        ));
+      }
+    });
 
-        yield result.fold(
-          () => ChatState(chat, isSuccess: true),
-          (a) => ChatState(chat, rejection: a),
-        );
-      },
-      orElse: () async* {
-        yield state;
-      },
-    );
-  }
+    on<ChatEventUpdateSubject>((event, emit) async {
+      if (state case ChatStateSuccess(chat: final chat)) {
+        emit(ChatStateSuccess(chat, isInProgress: true));
 
-  Stream<ChatState> _returnToUnaswered() async* {
-    yield* state.maybeWhen(
-      (chat, rejection, isInProgress, isSuccess) async* {
-        yield ChatState(chat, isInProgress: true);
+        final result = await _repo.updateSubject(chat.id, event.subject);
+
+        emit(result.fold(
+          () => ChatStateSuccess(chat, isSuccess: true),
+          (a) => ChatStateSuccess(chat, rejection: a),
+        ));
+      }
+    });
+
+    on<ChatEventReturnToUnaswered>((event, emit) async {
+      if (state case ChatStateSuccess(chat: final chat)) {
+        emit(ChatStateSuccess(chat, isInProgress: true));
 
         final result = await _repo.returnToUnanswered(chat.id);
 
-        yield result.fold(
-          () => ChatState(chat, isSuccess: true),
-          (a) => ChatState(chat, rejection: a),
-        );
-      },
-      orElse: () async* {
-        yield state;
-      },
-    );
+        emit(result.fold(
+          () => ChatStateSuccess(chat, isSuccess: true),
+          (a) => ChatStateSuccess(chat, rejection: a),
+        ));
+      }
+    });
   }
 }

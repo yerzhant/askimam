@@ -1,19 +1,23 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
-part 'rejection.freezed.dart';
+class Rejection extends Equatable {
+  final String reason;
 
-@freezed
-class Rejection with _$Rejection {
-  @Assert('reason.trim().isNotEmpty', 'reason may not be empty')
-  factory Rejection(String reason) = _Rejection;
+  Rejection(this.reason) {
+    if (reason.trim().isEmpty) {
+      throw ArgumentError("Empty or blank string");
+    }
+  }
 
-  Rejection._();
+  String get message => _messages.entries
+      .firstWhere(
+        (entry) => RegExp(entry.key).hasMatch(reason),
+        orElse: () => MapEntry('', reason),
+      )
+      .value;
 
-  String get message =>
-      _messages.entries
-          .firstWhereOrNull((entry) => RegExp(entry.key).hasMatch(reason))
-          ?.value ??
-      reason;
+  @override
+  List<Object?> get props => [reason];
 }
 
 extension RejectionExt on Exception {

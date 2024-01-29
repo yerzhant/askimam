@@ -20,19 +20,20 @@ void main() {
   });
 
   test('should get ratings', () async {
-    final list = [
+    const list = [
       ImamRating('Imam 1', 123),
       ImamRating('Imam 2', 12),
     ];
     when(
       apiClient.get<ImamRatingsWithDescription>('imam-ratings/with-desc'),
     ).thenAnswer(
-      (_) async => right(ImamRatingsWithDescription('description', list)),
+      (_) async => right(const ImamRatingsWithDescription('description', list)),
     );
 
     final result = await repo.getRatings();
 
-    expect(result, right(ImamRatingsWithDescription('description', list)));
+    expect(
+        result, right(const ImamRatingsWithDescription('description', list)));
   });
 
   test('should not get ratings', () async {

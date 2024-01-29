@@ -1,7 +1,11 @@
 import 'package:askimam/auth/auth_module.dart';
 import 'package:askimam/auth/bloc/auth_bloc.dart';
+import 'package:askimam/auth/domain/repo/auth_repository.dart';
 import 'package:askimam/auth/infra/http_auth_repository.dart';
 import 'package:askimam/chat/chat_module.dart';
+import 'package:askimam/common/domain/service/api_client.dart';
+import 'package:askimam/common/domain/service/notification_service.dart';
+import 'package:askimam/common/domain/service/settings.dart';
 import 'package:askimam/common/infra/fcm_service.dart';
 import 'package:askimam/common/infra/http_api_client.dart';
 import 'package:askimam/common/infra/local_storage.dart';
@@ -16,20 +20,22 @@ class AppModule extends Module {
   AppModule(this._url);
 
   @override
-  List<Bind<Object>> get binds => [
-        Bind.singleton((i) => Client()),
-        Bind.singleton((i) => FcmService()),
-        Bind.singleton((i) => LocalStorage()),
-        Bind.singleton((i) => HttpApiClient(i(), _url)),
-        Bind.singleton((i) => HttpAuthRepository(i(), i())),
-        Bind.singleton((i) => AuthBloc(i(), i(), i())),
-      ];
+  void binds(Injector i) {
+    i.addSingleton(() => Client());
+    i.addSingleton<NotificationService>(() => FcmService());
+    i.addSingleton<Settings>(() => LocalStorage());
+    i.addSingleton<ApiClient>(() => HttpApiClient(i(), _url));
+    i.addSingleton<AuthRepository>(() => HttpAuthRepository(i(), i()));
+    i.addSingleton(
+      () => AuthBloc(i(), i(), i(), i())..add(const AuthEventLoad()),
+    );
+  }
 
   @override
-  List<ModularRoute> get routes => [
-        ModuleRoute('/', module: HomeModule()),
-        ModuleRoute('/chat', module: ChatModule()),
-        ModuleRoute('/auth', module: AuthModule()),
-        ModuleRoute('/imam-ratings', module: ImamRatingsModule()),
-      ];
+  void routes(RouteManager r) {
+    r.module('/', module: HomeModule());
+    r.module('/chat', module: ChatModule());
+    r.module('/auth', module: AuthModule());
+    r.module('/imam-ratings', module: ImamRatingsModule());
+  }
 }

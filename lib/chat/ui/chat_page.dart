@@ -11,21 +11,24 @@ import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_modular/flutter_modular.dart'
+    hide ModularWatchExtension;
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 
-const _interMessageSpace = 10.0;
+const _messagePadding = 10.0;
 
 class ChatPage extends StatefulWidget {
   final int id;
   final ChatBloc bloc;
   final AuthBloc authBloc;
+  final FlutterSoundRecorder soundRecorder;
 
-  ChatPage(this.id, this.bloc, this.authBloc) {
-    bloc.add(ChatEvent.refresh(id));
+  ChatPage(this.id, this.bloc, this.authBloc, this.soundRecorder, {super.key}) {
+    bloc.add(ChatEventRefresh(id));
   }
 
   @override
-  _ChatPageState createState() => _ChatPageState();
+  State createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
@@ -43,23 +46,24 @@ class _ChatPageState extends State<ChatPage> {
       value: widget.bloc,
       child: BlocConsumer<ChatBloc, ChatState>(
         listener: (context, state) {
-          state.maybeWhen(
-            (chat, rejection, isInProgress, isSuccess) {
-              if (rejection != null) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(rejection.message)));
-              } else if (isSuccess) {
-                SchedulerBinding.instance?.addPostFrameCallback((_) {
-                  _scrollController.animateTo(
-                    _scrollController.position.maxScrollExtent,
-                    duration: const Duration(milliseconds: 100),
-                    curve: Curves.easeOutExpo,
-                  );
-                });
-              }
-            },
-            orElse: () {},
-          );
+          if (state
+              case ChatStateSuccess(
+                rejection: final rejection,
+                isSuccess: final isSuccess
+              )) {
+            if (rejection != null) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text(rejection.message)));
+            } else if (isSuccess) {
+              SchedulerBinding.instance.addPostFrameCallback((_) {
+                _scrollController.animateTo(
+                  _scrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.easeOutExpo,
+                );
+              });
+            }
+          }
         },
         builder: (context, state) {
           return BlocBuilder<AuthBloc, AuthState>(
@@ -68,70 +72,69 @@ class _ChatPageState extends State<ChatPage> {
               return Scaffold(
                 appBar: AppBar(
                   title: Text(
-                    state.maybeWhen(
-                      (chat, rejection, isInProgress, isSuccess) =>
-                          chat.subject,
-                      orElse: () => '',
-                    ),
+                    switch (state) {
+                      ChatStateSuccess(chat: final chat) => chat.subject,
+                      _ => '',
+                    },
                   ),
                   actions: [
-                    authState.maybeWhen(
-                      authenticated: (authentication) {
-                        if (authentication.userType == UserType.Imam) {
-                          return IconButton(
-                            icon: const Icon(Icons.rotate_left),
-                            tooltip: 'Вернуть в новые',
-                            onPressed: () {
-                              context
-                                  .read<ChatBloc>()
-                                  .add(const ChatEvent.returnToUnaswered());
+                    switch (authState) {
+                      AuthStateAuthenticated(
+                        authentication: final authentication
+                      ) =>
+                        authentication.userType == UserType.Imam
+                            ? IconButton(
+                                icon: const Icon(Icons.rotate_left_rounded),
+                                tooltip: 'Вернуть в новые',
+                                onPressed: () {
+                                  context
+                                      .read<ChatBloc>()
+                                      .add(const ChatEventReturnToUnaswered());
 
-                              Modular.to.pop();
-                            },
-                          );
-                        } else {
-                          return Container();
-                        }
-                      },
-                      orElse: () => Container(),
-                    ),
+                                  Modular.to.pop();
+                                },
+                              )
+                            : Container(),
+                      _ => Container(),
+                    }
                   ],
                 ),
-                body: state.when(
-                  (chat, rejection, isInProgress, isSuccess) => Column(
-                    children: [
-                      Expanded(
-                        child: InProgressWidget(
-                          isInProgress: isInProgress,
-                          child: _list(
-                            chat.messages ?? [],
-                            context,
-                            chat,
-                            authState,
+                body: switch (state) {
+                  ChatStateSuccess(
+                    chat: final chat,
+                    isInProgress: final isInProgress
+                  ) =>
+                    Column(
+                      children: [
+                        Expanded(
+                          child: InProgressWidget(
+                            isInProgress: isInProgress,
+                            child: _list(
+                              chat.messages ?? [],
+                              context,
+                              chat,
+                              authState,
+                            ),
                           ),
                         ),
-                      ),
-                      authState.maybeWhen(
-                        authenticated: (auth) {
-                          if (auth.userId == chat.askedBy ||
-                              auth.userType == UserType.Imam) {
-                            return MessageComposer(auth);
-                          } else {
-                            return Container();
-                          }
+                        switch (authState) {
+                          AuthStateAuthenticated(authentication: final auth) =>
+                            auth.userId == chat.askedBy ||
+                                    auth.userType == UserType.Imam
+                                ? MessageComposer(auth, widget.soundRecorder)
+                                : Container(),
+                          _ => Container(),
                         },
-                        orElse: () => Container(),
-                      ),
-                    ],
-                  ),
-                  inProgress: () => InProgressWidget(child: Container()),
-                  error: (rejection) => RejectionWidget(
-                    rejection: rejection,
-                    onRefresh: () => context
-                        .read<ChatBloc>()
-                        .add(ChatEvent.refresh(widget.id)),
-                  ),
-                ),
+                      ],
+                    ),
+                  ChatStateInProgress() => InProgressWidget(child: Container()),
+                  ChatStateError(rejection: final rejection) => RejectionWidget(
+                      rejection: rejection,
+                      onRefresh: () => context
+                          .read<ChatBloc>()
+                          .add(ChatEventRefresh(widget.id)),
+                    ),
+                },
               );
             },
           );
@@ -146,46 +149,42 @@ class _ChatPageState extends State<ChatPage> {
     Chat chat,
     AuthState authState,
   ) {
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () async =>
-          context.read<ChatBloc>().add(ChatEvent.refresh(widget.id)),
+          context.read<ChatBloc>().add(ChatEventRefresh(widget.id)),
       child: ListView.separated(
         controller: _scrollController,
         itemCount: items.length,
-        separatorBuilder: (_, __) => const SizedBox(height: _interMessageSpace),
+        separatorBuilder: (_, __) =>
+            const SizedBox(height: _messagePadding * 2),
         itemBuilder: (_, i) {
           final item = items[i];
 
           return Dismissible(
             key: ValueKey(item.id),
             confirmDismiss: (_) => Future.value(
-              authState.maybeWhen(
-                authenticated: (auth) {
-                  if (auth.userId == chat.askedBy ||
-                      auth.userType == UserType.Imam) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                },
-                orElse: () => false,
-              ),
+              switch (authState) {
+                AuthStateAuthenticated(authentication: final auth) =>
+                  auth.userId == chat.askedBy || auth.userType == UserType.Imam,
+                _ => false,
+              },
             ),
-            background: Container(color: secondaryColor),
+            background: Container(color: warningColor),
             onDismissed: (_) =>
-                context.read<ChatBloc>().add(ChatEvent.deleteMessage(item.id)),
+                context.read<ChatBloc>().add(ChatEventDeleteMessage(item.id)),
             child: MessageCard(
               item,
               authState,
-              isItMine: authState.maybeWhen(
-                authenticated: (auth) => auth.userId == chat.askedBy,
-                orElse: () => false,
-              ),
+              isItMine: switch (authState) {
+                AuthStateAuthenticated(authentication: final auth) =>
+                  auth.userId == chat.askedBy,
+                _ => false,
+              },
             ),
           );
         },
         key: const PageStorageKey('chat'),
-        padding: const EdgeInsets.all(_interMessageSpace),
+        padding: const EdgeInsets.all(_messagePadding),
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),

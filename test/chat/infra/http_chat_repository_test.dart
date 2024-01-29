@@ -6,7 +6,6 @@ import 'package:askimam/chat/infra/http_chat_repository.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/service/notification_service.dart';
-import 'package:askimam/common/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -35,7 +34,7 @@ void main() {
 
       final resutl = await repo.getPublic(0, 20);
 
-      expect(resutl.getOrElse(() => Todo), [
+      expect(resutl.getOrElse(() => throw UnimplementedError()), [
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'))
       ]);
     });
@@ -58,7 +57,7 @@ void main() {
 
       final resutl = await repo.getMy(0, 20);
 
-      expect(resutl.getOrElse(() => Todo), [
+      expect(resutl.getOrElse(() => throw UnimplementedError()), [
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'))
       ]);
     });
@@ -82,7 +81,7 @@ void main() {
 
       final resutl = await repo.getUnanswered(0, 20);
 
-      expect(resutl.getOrElse(() => Todo), [
+      expect(resutl.getOrElse(() => throw UnimplementedError()), [
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'))
       ]);
     });
@@ -106,7 +105,7 @@ void main() {
 
       final resutl = await repo.find('phrase');
 
-      expect(resutl.getOrElse(() => Todo), [
+      expect(resutl.getOrElse(() => throw UnimplementedError()), [
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01'))
       ]);
     });
@@ -159,8 +158,8 @@ void main() {
     test('should add it', () async {
       when(notificationService.getFcmToken())
           .thenAnswer((_) async => right('123'));
-      when(api.post(
-              'chats', CreateChat(ChatType.Public, 'subject', 'text', '123')))
+      when(api.post('chats',
+              const CreateChat(ChatType.Public, 'subject', 'text', '123')))
           .thenAnswer((_) async => none());
 
       final resutl = await repo.add(ChatType.Public, 'subject', 'text');
@@ -171,8 +170,8 @@ void main() {
     test('should not add it', () async {
       when(notificationService.getFcmToken())
           .thenAnswer((_) async => right('123'));
-      when(api.post(
-              'chats', CreateChat(ChatType.Public, 'subject', 'text', '123')))
+      when(api.post('chats',
+              const CreateChat(ChatType.Public, 'subject', 'text', '123')))
           .thenAnswer((_) async => some(Rejection('reason')));
 
       final resutl = await repo.add(ChatType.Public, 'subject', 'text');
@@ -192,7 +191,7 @@ void main() {
 
   group('Update a chat:', () {
     test('should update it', () async {
-      when(api.patchWithBody('chats/1', UpdateChat('subject')))
+      when(api.patchWithBody('chats/1', const UpdateChat('subject')))
           .thenAnswer((_) async => none());
 
       final resutl = await repo.updateSubject(1, 'subject');
@@ -201,7 +200,7 @@ void main() {
     });
 
     test('should not update it', () async {
-      when(api.patchWithBody('chats/1', UpdateChat('subject')))
+      when(api.patchWithBody('chats/1', const UpdateChat('subject')))
           .thenAnswer((_) async => some(Rejection('reason')));
 
       final resutl = await repo.updateSubject(1, 'subject');

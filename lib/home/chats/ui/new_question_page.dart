@@ -4,7 +4,6 @@ import 'package:askimam/common/ui/widget/wide_button.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class NewQuestionPage extends StatefulWidget {
@@ -13,7 +12,7 @@ class NewQuestionPage extends StatefulWidget {
   const NewQuestionPage(this._bloc, {Key? key}) : super(key: key);
 
   @override
-  _NewQuestionPageState createState() => _NewQuestionPageState();
+  State createState() => _NewQuestionPageState();
 }
 
 class _NewQuestionPageState extends State<NewQuestionPage> {
@@ -42,34 +41,23 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
             key: _formKey,
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: RadioListTile<ChatType>(
-                        title: const Text('Приватный'),
-                        value: ChatType.Private,
-                        groupValue: _type,
-                        onChanged: (value) {
-                          setState(() {
-                            _type = value!;
-                          });
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: RadioListTile<ChatType>(
-                        title: const Text('Публичный'),
-                        value: ChatType.Public,
-                        groupValue: _type,
-                        onChanged: (value) {
-                          setState(() {
-                            _type = value!;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
+                RadioListTile<ChatType>.adaptive(
+                  contentPadding: EdgeInsets.zero,
+                  visualDensity: VisualDensity.compact,
+                  title: const Text('Приватный'),
+                  value: ChatType.Private,
+                  groupValue: _type,
+                  onChanged: (value) => setState(() => _type = value!),
                 ),
+                RadioListTile<ChatType>.adaptive(
+                  visualDensity: VisualDensity.compact,
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('Публичный'),
+                  value: ChatType.Public,
+                  groupValue: _type,
+                  onChanged: (value) => setState(() => _type = value!),
+                ),
+                const SizedBox(height: interElementMargin),
                 AutoDirection(
                   text: _subject.text,
                   child: TextFormField(
@@ -79,9 +67,7 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                       labelText: 'Тема',
                       hintText: 'Необязательное поле',
                     ),
-                    onChanged: (_) {
-                      setState(() {});
-                    },
+                    onChanged: (_) => setState(() {}),
                   ),
                 ),
                 const SizedBox(height: interElementMargin),
@@ -89,7 +75,7 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                   text: _text.text,
                   child: TextFormField(
                     controller: _text,
-                    maxLines: 5,
+                    maxLines: 13,
                     textCapitalization: TextCapitalization.sentences,
                     decoration: const InputDecoration(
                       labelText: 'Вопрос',
@@ -100,16 +86,15 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                       if (value == null || value.isEmpty) {
                         return 'Введите значение';
                       }
+                      return null;
                     },
-                    onChanged: (_) {
-                      setState(() {});
-                    },
+                    onChanged: (_) => setState(() {}),
                   ),
                 ),
                 const SizedBox(height: interElementMargin),
-                WideButton('ОТПРАВИТЬ', Icons.send, () {
+                WideButton('ОТПРАВИТЬ', () {
                   if (_formKey.currentState!.validate()) {
-                    widget._bloc.add(MyChatsEvent.add(
+                    widget._bloc.add(MyChatsEventAdd(
                       _type,
                       _getSubject,
                       _text.text.trim(),

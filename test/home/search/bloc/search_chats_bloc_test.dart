@@ -17,7 +17,7 @@ void main() {
   });
 
   test('Initial state', () {
-    expect(bloc.state, const SearchChatsState([]));
+    expect(bloc.state, const SearchChatsStateSuccess([]));
   });
 
   blocTest(
@@ -31,10 +31,10 @@ void main() {
       );
       return bloc;
     },
-    act: (_) => bloc.add(const SearchChatsEvent.find('phrase')),
+    act: (_) => bloc.add(const SearchChatsEventFind('phrase')),
     expect: () => [
-      const SearchChatsState.inProgress(),
-      SearchChatsState([
+      const SearchChatsStateInProgress(),
+      SearchChatsStateSuccess([
         Chat(1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')),
         Chat(2, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')),
       ]),
@@ -49,10 +49,10 @@ void main() {
       );
       return bloc;
     },
-    act: (_) => bloc.add(const SearchChatsEvent.find('phrase')),
+    act: (_) => bloc.add(const SearchChatsEventFind('phrase')),
     expect: () => [
-      const SearchChatsState.inProgress(),
-      SearchChatsState.error(Rejection('reason')),
+      const SearchChatsStateInProgress(),
+      SearchChatsStateError(Rejection('reason')),
     ],
   );
 }

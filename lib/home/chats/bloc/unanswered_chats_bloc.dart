@@ -1,13 +1,10 @@
-import 'dart:async';
-
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/repo/chat_repository.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
-part 'unanswered_chats_bloc.freezed.dart';
 part 'unanswered_chats_event.dart';
 part 'unanswered_chats_state.dart';
 
@@ -17,92 +14,63 @@ class UnansweredChatsBloc
   final int _pageSize;
 
   UnansweredChatsBloc(this._repo, this._pageSize)
-      : super(const _InProgress([]));
+      : super(const UnansweredChatsStateInProgress([])) {
+    on<UnansweredChatsEventShow>((event, emit) {
+      if (state is! UnansweredChatsStateSuccess) {
+        add(const UnansweredChatsEventReload());
+      }
+    });
 
-  @override
-  Stream<UnansweredChatsState> mapEventToState(UnansweredChatsEvent event) =>
-      event.when(
-        show: _show,
-        delete: _delete,
-        reload: _reload,
-        loadNextPage: _loadNextPage,
-        updateFavorites: _updateFavorites,
-      );
+    on<UnansweredChatsEventReload>((event, emit) async {
+      emit(const UnansweredChatsStateInProgress([]));
 
-  Stream<UnansweredChatsState> _show() async* {
-    state.maybeWhen(
-      (chats) async* {
-        yield UnansweredChatsState(chats);
-      },
-      orElse: () => add(const UnansweredChatsEvent.reload()),
-    );
-  }
+      final result = await _repo.getUnanswered(0, _pageSize);
 
-  Stream<UnansweredChatsState> _reload() async* {
-    yield const UnansweredChatsState.inProgress([]);
+      emit(result.fold(
+        (l) => UnansweredChatsStateError(l),
+        (r) => UnansweredChatsStateSuccess(r),
+      ));
+    });
 
-    final result = await _repo.getUnanswered(0, _pageSize);
+    on<UnansweredChatsEventLoadNextPage>((event, emit) async {
+      if (state case UnansweredChatsStateSuccess(chats: final chats)) {
+        emit(UnansweredChatsStateInProgress(chats));
 
-    yield result.fold(
-      (l) => UnansweredChatsState.error(l),
-      (r) => UnansweredChatsState(r),
-    );
-  }
+        final page = chats.length ~/ _pageSize;
+        final result = await _repo.getUnanswered(page, _pageSize);
 
-  Stream<UnansweredChatsState> _loadNextPage() async* {
-    Stream<UnansweredChatsState> load(List<Chat> chats) async* {
-      yield UnansweredChatsState.inProgress(chats);
+        emit(result.fold(
+          (l) => UnansweredChatsStateError(l),
+          (r) => UnansweredChatsStateSuccess(chats..addAll(r)),
+        ));
+      }
+    });
 
-      final page = chats.length ~/ _pageSize;
-      final result = await _repo.getUnanswered(page, _pageSize);
+    on<UnansweredChatsEventDelete>((event, emit) async {
+      if (state case UnansweredChatsStateSuccess(chats: final chats)) {
+        emit(UnansweredChatsStateInProgress(chats));
 
-      yield result.fold(
-        (l) => UnansweredChatsState.error(l),
-        (r) => UnansweredChatsState(chats..addAll(r)),
-      );
-    }
+        final result = await _repo.delete(event.chat);
 
-    yield* state.when(
-      (chats) => load(chats),
-      inProgress: (chats) async* {
-        yield UnansweredChatsState.inProgress(chats);
-      },
-      error: (rejection) async* {
-        yield UnansweredChatsState.error(rejection);
-      },
-    );
-  }
+        emit(result.fold(
+          () => UnansweredChatsStateSuccess(
+            chats.where((c) => c.id != event.chat.id).toList(),
+          ),
+          (a) => UnansweredChatsStateError(a),
+        ));
+      }
+    });
 
-  Stream<UnansweredChatsState> _delete(Chat chat) async* {
-    yield* state.maybeWhen(
-      (chats) async* {
-        yield UnansweredChatsState.inProgress(chats);
-
-        final result = await _repo.delete(chat);
-
-        yield result.fold(
-          () => UnansweredChatsState(
-              chats.where((c) => c.id != chat.id).toList()),
-          (a) => UnansweredChatsState.error(a),
-        );
-      },
-      orElse: () async* {
-        yield state;
-      },
-    );
-  }
-
-  Stream<UnansweredChatsState> _updateFavorites(
-      List<Favorite> favorites) async* {
-    yield state.maybeWhen(
-      (chats) => UnansweredChatsState(chats
-          .map(
-            (chat) => chat.copyWith(
-              isFavorite: favorites.any((f) => f.chatId == chat.id),
-            ),
-          )
-          .toList()),
-      orElse: () => state,
-    );
+    on<UnansweredChatsEventUpdateFavorites>((event, emit) {
+      if (state case UnansweredChatsStateSuccess(chats: final chats)) {
+        emit(UnansweredChatsStateSuccess(chats
+            .map(
+              (c) => c.copyWith(
+                isFavorite: event.favorites.any((f) => f.chatId == c.id),
+              ),
+            )
+            .toList()));
+      }
+    });
   }
 }

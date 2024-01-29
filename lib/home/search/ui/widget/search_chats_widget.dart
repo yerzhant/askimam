@@ -8,13 +8,14 @@ import 'package:askimam/home/search/bloc/search_chats_bloc.dart';
 import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_modular/flutter_modular.dart'
+    hide ModularWatchExtension;
 
 class SearchChatsWidget extends StatefulWidget {
-  const SearchChatsWidget();
+  const SearchChatsWidget({super.key});
 
   @override
-  _SearchChatsWidgetState createState() => _SearchChatsWidgetState();
+  State createState() => _SearchChatsWidgetState();
 }
 
 class _SearchChatsWidgetState extends State<SearchChatsWidget> {
@@ -35,16 +36,19 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
         Expanded(
           child: BlocBuilder<SearchChatsBloc, SearchChatsState>(
             builder: (context, state) {
-              return state.when(
-                (items) => _list(items, context),
-                inProgress: () => InProgressWidget(child: Container()),
-                error: (rejection) => RejectionWidget(
-                  rejection: rejection,
-                  onRefresh: () => context
-                      .read<SearchChatsBloc>()
-                      .add(SearchChatsEvent.find(_controller.text)),
-                ),
-              );
+              return switch (state) {
+                SearchChatsStateSuccess(chats: final items) =>
+                  _list(items, context),
+                SearchChatsStateInProgress() =>
+                  InProgressWidget(child: Container()),
+                SearchChatsStateError(rejection: final rejection) =>
+                  RejectionWidget(
+                    rejection: rejection,
+                    onRefresh: () => context
+                        .read<SearchChatsBloc>()
+                        .add(SearchChatsEventFind(_controller.text)),
+                  ),
+              };
             },
           ),
         ),
@@ -72,7 +76,7 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
           onPressed: () {
             _search(controller);
           },
-          icon: const Icon(Icons.search, color: primaryColor),
+          icon: const Icon(Icons.search_rounded, color: primaryColor),
         ),
       ],
     );
@@ -82,7 +86,7 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
     if (controller.text.isNotEmpty) {
       context
           .read<SearchChatsBloc>()
-          .add(SearchChatsEvent.find(controller.text));
+          .add(SearchChatsEventFind(controller.text));
     }
   }
 
@@ -107,7 +111,7 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
             padding: const EdgeInsets.only(top: dateTopPadding),
             child: Text(
               item.updatedAt.format(),
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
         );

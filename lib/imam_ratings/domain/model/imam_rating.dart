@@ -1,18 +1,22 @@
 import 'package:askimam/common/domain/model/model.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'imam_rating.freezed.dart';
 part 'imam_rating.g.dart';
 
-@freezed
-class ImamRating with _$ImamRating, Model {
-  factory ImamRating(
-    String name,
-    int rating,
-  ) = _ImamRating;
+@JsonSerializable()
+class ImamRating extends Equatable with Model {
+  final String name;
+  final int rating;
 
-  const ImamRating._();
+  const ImamRating(this.name, this.rating);
 
   factory ImamRating.fromJson(Map<String, dynamic> json) =>
       _$ImamRatingFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ImamRatingToJson(this);
+
+  @override
+  List<Object?> get props => [name, rating];
 }

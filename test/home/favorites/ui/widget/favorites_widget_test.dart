@@ -30,6 +30,8 @@ void main() {
         child: const Material(child: FavoritesWidget()),
       ),
     );
+
+    provideDummy<FavoriteState>(const FavoriteStateInProgress([]));
   });
 
   testWidgets('should show a list', (tester) async {
@@ -54,7 +56,7 @@ void main() {
     await tester.fling(find.text('Chat 1'), const Offset(0.0, 300.0), 1000.0);
     await tester.pumpAndSettle();
 
-    verify(bloc.add(const FavoriteEvent.refresh())).called(1);
+    verify(bloc.add(const FavoriteEventRefresh())).called(1);
   });
 
   testWidgets('should delete an item', (tester) async {
@@ -62,12 +64,12 @@ void main() {
     await tester.drag(find.text('Chat 1'), const Offset(-500, 0));
     await tester.pumpAndSettle();
 
-    verify(bloc.add(const FavoriteEvent.delete(11))).called(1);
+    verify(bloc.add(const FavoriteEventDelete(11))).called(1);
   });
 
   testWidgets('should show a list and progress', (tester) async {
     when(bloc.state).thenReturn(
-      FavoriteState.inProgress([
+      const FavoriteStateInProgress([
         Favorite(1, 1, 'Chat 1'),
         Favorite(1, 1, 'Chat 2'),
       ]),
@@ -90,12 +92,12 @@ void main() {
     await _errorFixture(bloc, tester, app);
     await tester.tap(find.text('ПОВТОРИТЬ'));
 
-    verify(bloc.add(const FavoriteEvent.refresh())).called(1);
+    verify(bloc.add(const FavoriteEventRefresh())).called(1);
   });
 }
 
 Future _errorFixture(FavoriteBloc bloc, WidgetTester tester, Widget app) async {
-  when(bloc.state).thenReturn(FavoriteState.error(Rejection('reason')));
+  when(bloc.state).thenReturn(FavoriteStateError(Rejection('reason')));
 
   await tester.pumpWidget(app);
 }
@@ -106,7 +108,7 @@ Future<void> _standartFixture(
   Widget app,
 ) async {
   when(bloc.state).thenReturn(
-    FavoriteState([
+    const FavoriteStateSuccess([
       Favorite(1, 11, 'Chat 1'),
       Favorite(1, 12, 'Chat 2'),
     ]),

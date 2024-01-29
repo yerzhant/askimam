@@ -1,92 +1,82 @@
-import 'dart:async';
-
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:askimam/home/favorites/domain/repo/favorite_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
 part 'favorite_event.dart';
 part 'favorite_state.dart';
-part 'favorite_bloc.freezed.dart';
 
 class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   final FavoriteRepository _repo;
 
-  FavoriteBloc(this._repo) : super(const _InProgress([]));
+  FavoriteBloc(this._repo) : super(const FavoriteStateInProgress([])) {
+    on<FavoriteEventShow>((event, emit) {
+      switch (state) {
+        case FavoriteStateSuccess():
+          break;
 
-  @override
-  Stream<FavoriteState> mapEventToState(FavoriteEvent event) => event.when(
-        show: _show,
-        refresh: _refresh,
-        add: _add,
-        delete: _delete,
-      );
+        default:
+          add(const FavoriteEventRefresh());
+      }
+    });
 
-  Stream<FavoriteState> _show() async* {
-    state.maybeWhen(
-      (favorites) => FavoriteState(favorites),
-      orElse: () => add(const FavoriteEvent.refresh()),
-    );
-  }
+    on<FavoriteEventRefresh>((event, emit) async {
+      emit(const FavoriteStateInProgress([]));
 
-  Stream<FavoriteState> _refresh() async* {
-    yield const FavoriteState.inProgress([]);
+      final result = await _repo.get();
 
-    final result = await _repo.get();
+      emit(result.fold(
+        (l) => FavoriteStateError(l),
+        (r) => FavoriteStateSuccess(r),
+      ));
+    });
 
-    yield result.fold(
-      (l) => FavoriteState.error(l),
-      (r) => FavoriteState(r),
-    );
-  }
+    on<FavoriteEventAdd>((event, emit) async {
+      Future addIt(List<Favorite> favorites) async {
+        emit(FavoriteStateInProgress(favorites));
 
-  Stream<FavoriteState> _add(Chat chat) async* {
-    Stream<FavoriteState> addIt(List<Favorite> favorites) async* {
-      yield FavoriteState.inProgress(favorites);
+        final result = await _repo.add(event.chat);
 
-      final result = await _repo.add(chat);
+        result.fold(
+          () => add(const FavoriteEventRefresh()),
+          (a) => emit(FavoriteStateError(a)),
+        );
+      }
 
-      yield* result.fold(
-        () async* {
-          add(const FavoriteEvent.refresh());
-        },
-        (a) async* {
-          yield FavoriteState.error(a);
-        },
-      );
-    }
+      switch (state) {
+        case FavoriteStateSuccess(favorites: final favorites):
+          await addIt(favorites);
+        case FavoriteStateInProgress(favorites: final favorites):
+          await addIt(favorites);
+        case FavoriteStateError():
+          break;
+      }
+    });
 
-    yield* state.when(
-      (favorites) => addIt(favorites),
-      inProgress: (favorites) => addIt(favorites),
-      error: (rejection) async* {
-        yield FavoriteState.error(rejection);
-      },
-    );
-  }
+    on<FavoriteEventDelete>((event, emit) async {
+      Future delete(List<Favorite> favorites) async {
+        emit(FavoriteStateInProgress(favorites));
 
-  Stream<FavoriteState> _delete(int chatId) async* {
-    Stream<FavoriteState> delete(List<Favorite> favorites) async* {
-      yield FavoriteState.inProgress(favorites);
+        final result = await _repo.delete(event.chatId);
 
-      final result = await _repo.delete(chatId);
+        emit(result.fold(
+          () => FavoriteStateSuccess(
+            favorites.where((f) => f.chatId != event.chatId).toList(),
+          ),
+          (a) => FavoriteStateError(a),
+        ));
+      }
 
-      yield result.fold(
-        () => FavoriteState(
-          favorites.whereNot((f) => f.chatId == chatId).toList(),
-        ),
-        (a) => FavoriteState.error(a),
-      );
-    }
-
-    yield* state.when(
-      (favorites) => delete(favorites),
-      inProgress: (favorites) => delete(favorites),
-      error: (rejection) async* {
-        yield FavoriteState.error(rejection);
-      },
-    );
+      switch (state) {
+        case FavoriteStateSuccess(favorites: final favorites):
+          await delete(favorites);
+        case FavoriteStateInProgress(favorites: final favorites):
+          await delete(favorites);
+        case FavoriteStateError():
+          break;
+      }
+    });
   }
 }

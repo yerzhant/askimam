@@ -6,15 +6,14 @@ part of 'add_text_message.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_AddTextMessage _$_$_AddTextMessageFromJson(Map<String, dynamic> json) {
-  return _$_AddTextMessage(
-    json['chatId'] as int,
-    json['text'] as String,
-    json['fcmToken'] as String,
-  );
-}
+AddTextMessage _$AddTextMessageFromJson(Map<String, dynamic> json) =>
+    AddTextMessage(
+      json['chatId'] as int,
+      json['text'] as String,
+      json['fcmToken'] as String,
+    );
 
-Map<String, dynamic> _$_$_AddTextMessageToJson(_$_AddTextMessage instance) =>
+Map<String, dynamic> _$AddTextMessageToJson(AddTextMessage instance) =>
     <String, dynamic>{
       'chatId': instance.chatId,
       'text': instance.text,

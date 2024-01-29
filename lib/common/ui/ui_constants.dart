@@ -1,4 +1,4 @@
-const basePadding = 15.0;
+const basePadding = 16.0;
 const dateTopPadding = 7.0;
 const interElementMargin = 10.0;
 

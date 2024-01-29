@@ -1,13 +1,68 @@
 part of 'chat_bloc.dart';
 
-@freezed
-class ChatEvent with _$ChatEvent {
-  const factory ChatEvent.refresh(int id) = _Refresh;
-  const factory ChatEvent.returnToUnaswered() = _ReturnToUnaswered;
-  const factory ChatEvent.updateSubject(String subject) = _UpdateSubject;
-  const factory ChatEvent.addText(String text) = _AddText;
-  const factory ChatEvent.addAudio(File file, String duration) = _AddAudio;
-  const factory ChatEvent.deleteMessage(int id) = _DeleteMessage;
-  const factory ChatEvent.updateTextMessage(int id, String text) =
-      _UpdateTextMessage;
+sealed class ChatEvent extends Equatable {
+  const ChatEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+final class ChatEventRefresh extends ChatEvent {
+  final int id;
+
+  const ChatEventRefresh(this.id);
+
+  @override
+  List<Object?> get props => [id];
+}
+
+final class ChatEventReturnToUnaswered extends ChatEvent {
+  const ChatEventReturnToUnaswered();
+}
+
+final class ChatEventUpdateSubject extends ChatEvent {
+  final String subject;
+
+  const ChatEventUpdateSubject(this.subject);
+
+  @override
+  List<Object?> get props => [subject];
+}
+
+final class ChatEventAddText extends ChatEvent {
+  final String text;
+
+  const ChatEventAddText(this.text);
+
+  @override
+  List<Object?> get props => [text];
+}
+
+final class ChatEventAddAudio extends ChatEvent {
+  final File file;
+  final String duration;
+
+  const ChatEventAddAudio(this.file, this.duration);
+
+  @override
+  List<Object?> get props => [file, duration];
+}
+
+final class ChatEventDeleteMessage extends ChatEvent {
+  final int id;
+
+  const ChatEventDeleteMessage(this.id);
+
+  @override
+  List<Object?> get props => [id];
+}
+
+final class ChatEventUpdateTextMessage extends ChatEvent {
+  final int id;
+  final String text;
+
+  const ChatEventUpdateTextMessage(this.id, this.text);
+
+  @override
+  List<Object?> get props => [id, text];
 }

@@ -1,23 +1,59 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:askimam/common/domain/model/model.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'message.freezed.dart';
 part 'message.g.dart';
 
-@freezed
-class Message with _$Message {
-  factory Message(
-    int id,
-    MessageType type,
-    String text,
-    String? author,
-    DateTime createdAt,
-    DateTime? updatedAt, {
-    String? audio,
-    String? duration,
-  }) = _Message;
+@JsonSerializable()
+class Message extends Equatable with Model {
+  final int id;
+  final MessageType type;
+  final String text;
+  final String? author;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final String? audio;
+  final String? duration;
+
+  const Message(
+    this.id,
+    this.type,
+    this.text,
+    this.author,
+    this.createdAt,
+    this.updatedAt, {
+    this.audio,
+    this.duration,
+  });
 
   factory Message.fromJson(Map<String, dynamic> json) =>
       _$MessageFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$MessageToJson(this);
+
+  Message copyWith({String? text}) => Message(
+        id,
+        type,
+        text ?? this.text,
+        author,
+        createdAt,
+        updatedAt,
+        audio: audio,
+        duration: duration,
+      );
+
+  @override
+  List<Object?> get props => [
+        id,
+        type,
+        text,
+        author,
+        createdAt,
+        updatedAt,
+        audio,
+        duration,
+      ];
 }
 
 // ignore: constant_identifier_names

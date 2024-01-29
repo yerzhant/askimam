@@ -2,6 +2,7 @@ import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/auth/domain/model/login_request.dart';
 import 'package:askimam/auth/domain/model/logout_request.dart';
 import 'package:askimam/auth/domain/repo/auth_repository.dart';
+import 'package:askimam/auth/infra/dto/update_fcm_token.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/service/settings.dart';
@@ -39,4 +40,8 @@ class HttpAuthRepository implements AuthRepository {
       (a) => some(a),
     );
   }
+
+  @override
+  Future<Option<Rejection>> updateFcmToken(UpdateFcmToken request) =>
+      _api.patchWithBody('user/update-fcm-token', request);
 }

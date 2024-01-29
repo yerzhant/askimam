@@ -1,19 +1,23 @@
 import 'package:askimam/common/domain/model/model.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'login_request.freezed.dart';
 part 'login_request.g.dart';
 
-@freezed
-class LoginRequest with _$LoginRequest, Model {
-  factory LoginRequest(
-    String login,
-    String password,
-    String fcmToken,
-  ) = _LoginRequest;
+@JsonSerializable()
+class LoginRequest extends Equatable with Model {
+  final String login;
+  final String password;
+  final String fcmToken;
 
-  const LoginRequest._();
+  const LoginRequest(this.login, this.password, this.fcmToken);
 
   factory LoginRequest.fromJson(Map<String, dynamic> json) =>
       _$LoginRequestFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$LoginRequestToJson(this);
+
+  @override
+  List<Object?> get props => [login, password, fcmToken];
 }

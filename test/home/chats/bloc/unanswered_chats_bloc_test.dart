@@ -20,11 +20,11 @@ void main() {
   });
 
   test('Initial state', () {
-    expect(bloc.state, const UnansweredChatsState.inProgress([]));
+    expect(bloc.state, const UnansweredChatsStateInProgress([]));
   });
 
   group('Load first page:', () {
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should load chats',
       build: () {
         when(repo.getUnanswered(0, 20)).thenAnswer(
@@ -55,10 +55,10 @@ void main() {
         );
         return bloc;
       },
-      act: (_) => bloc.add(const UnansweredChatsEvent.reload()),
+      act: (_) => bloc.add(const UnansweredChatsEventReload()),
       expect: () => [
-        const UnansweredChatsState.inProgress([]),
-        UnansweredChatsState([
+        const UnansweredChatsStateInProgress([]),
+        UnansweredChatsStateSuccess([
           Chat(
             1,
             ChatType.Public,
@@ -85,21 +85,21 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should be rejected',
       build: () {
         when(repo.getUnanswered(0, 20))
             .thenAnswer((_) async => left(Rejection('reason')));
         return bloc;
       },
-      act: (_) => bloc.add(const UnansweredChatsEvent.reload()),
+      act: (_) => bloc.add(const UnansweredChatsEventReload()),
       expect: () => [
-        const UnansweredChatsState.inProgress([]),
-        UnansweredChatsState.error(Rejection('reason')),
+        const UnansweredChatsStateInProgress([]),
+        UnansweredChatsStateError(Rejection('reason')),
       ],
     );
 
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should load chats after an error',
       build: () {
         when(repo.getUnanswered(0, 20)).thenAnswer(
@@ -130,11 +130,11 @@ void main() {
         );
         return bloc;
       },
-      seed: () => UnansweredChatsState.error(Rejection('reason')),
-      act: (_) => bloc.add(const UnansweredChatsEvent.reload()),
+      seed: () => UnansweredChatsStateError(Rejection('reason')),
+      act: (_) => bloc.add(const UnansweredChatsEventReload()),
       expect: () => [
-        const UnansweredChatsState.inProgress([]),
-        UnansweredChatsState([
+        const UnansweredChatsStateInProgress([]),
+        UnansweredChatsStateSuccess([
           Chat(
             1,
             ChatType.Public,
@@ -161,7 +161,7 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should reload chats',
       build: () {
         when(repo.getUnanswered(0, 20)).thenAnswer(
@@ -200,7 +200,7 @@ void main() {
         );
         return bloc;
       },
-      seed: () => UnansweredChatsState([
+      seed: () => UnansweredChatsStateSuccess([
         Chat(
           1,
           ChatType.Public,
@@ -224,10 +224,10 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(const UnansweredChatsEvent.reload()),
+      act: (_) => bloc.add(const UnansweredChatsEventReload()),
       expect: () => [
-        const UnansweredChatsState.inProgress([]),
-        UnansweredChatsState([
+        const UnansweredChatsStateInProgress([]),
+        UnansweredChatsStateSuccess([
           Chat(
             1,
             ChatType.Public,
@@ -264,7 +264,7 @@ void main() {
   });
 
   group('Load next page:', () {
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should load next page',
       build: () {
         when(repo.getUnanswered(1, 20)).thenAnswer(
@@ -277,7 +277,7 @@ void main() {
         );
         return bloc;
       },
-      seed: () => UnansweredChatsState([
+      seed: () => UnansweredChatsStateSuccess([
         ...List.generate(
             18,
             (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -298,9 +298,9 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(const UnansweredChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(const UnansweredChatsEventLoadNextPage()),
       expect: () => [
-        UnansweredChatsState.inProgress([
+        UnansweredChatsStateInProgress([
           ...List.generate(
               18,
               (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -326,7 +326,7 @@ void main() {
               (i) => Chat(i + 21, ChatType.Public, 1, 'subject',
                   DateTime.parse('2021-05-01'))),
         ]),
-        UnansweredChatsState([
+        UnansweredChatsStateSuccess([
           ...List.generate(
               18,
               (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -354,10 +354,10 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should ignore double next page loading',
       build: () => bloc,
-      seed: () => UnansweredChatsState.inProgress([
+      seed: () => UnansweredChatsStateInProgress([
         ...List.generate(
             18,
             (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -378,26 +378,26 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(const UnansweredChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(const UnansweredChatsEventLoadNextPage()),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should reject to load next page if already has been rejected',
       build: () => bloc,
-      seed: () => UnansweredChatsState.error(Rejection('reason')),
-      act: (_) => bloc.add(const UnansweredChatsEvent.loadNextPage()),
+      seed: () => UnansweredChatsStateError(Rejection('reason')),
+      act: (_) => bloc.add(const UnansweredChatsEventLoadNextPage()),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should be rejected on loading next page',
       build: () {
         when(repo.getUnanswered(1, 20))
             .thenAnswer((_) async => left(Rejection('reason')));
         return bloc;
       },
-      seed: () => UnansweredChatsState([
+      seed: () => UnansweredChatsStateSuccess([
         ...List.generate(
             18,
             (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -418,9 +418,9 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(const UnansweredChatsEvent.loadNextPage()),
+      act: (_) => bloc.add(const UnansweredChatsEventLoadNextPage()),
       expect: () => [
-        UnansweredChatsState.inProgress([
+        UnansweredChatsStateInProgress([
           ...List.generate(
               18,
               (i) => Chat(i + 1, ChatType.Public, 1, 'subject',
@@ -441,13 +441,13 @@ void main() {
             isFavorite: true,
           ),
         ]),
-        UnansweredChatsState.error(Rejection('reason')),
+        UnansweredChatsStateError(Rejection('reason')),
       ],
     );
   });
 
   group('Show tab:', () {
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should load first page',
       build: () {
         when(repo.getUnanswered(0, 20)).thenAnswer(
@@ -478,10 +478,10 @@ void main() {
         );
         return bloc;
       },
-      act: (_) => bloc.add(const UnansweredChatsEvent.show()),
+      act: (_) => bloc.add(const UnansweredChatsEventShow()),
       expect: () => [
-        const UnansweredChatsState.inProgress([]),
-        UnansweredChatsState([
+        const UnansweredChatsStateInProgress([]),
+        UnansweredChatsStateSuccess([
           Chat(
             1,
             ChatType.Public,
@@ -508,10 +508,10 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should not load a page',
       build: () => bloc,
-      seed: () => UnansweredChatsState([
+      seed: () => UnansweredChatsStateSuccess([
         Chat(
           1,
           ChatType.Public,
@@ -535,13 +535,13 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(const UnansweredChatsEvent.show()),
+      act: (_) => bloc.add(const UnansweredChatsEventShow()),
       expect: () => [],
     );
   });
 
   group('Delete a chat:', () {
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should delete it',
       build: () {
         when(repo.delete(Chat(1, ChatType.Public, 1, 'subject',
@@ -549,7 +549,7 @@ void main() {
             .thenAnswer((_) async => none());
         return bloc;
       },
-      seed: () => UnansweredChatsState([
+      seed: () => UnansweredChatsStateSuccess([
         Chat(
           1,
           ChatType.Public,
@@ -573,10 +573,10 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(UnansweredChatsEvent.delete(Chat(
+      act: (_) => bloc.add(UnansweredChatsEventDelete(Chat(
           1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')))),
       expect: () => [
-        UnansweredChatsState.inProgress([
+        UnansweredChatsStateInProgress([
           Chat(
             1,
             ChatType.Public,
@@ -600,7 +600,7 @@ void main() {
             isFavorite: true,
           ),
         ]),
-        UnansweredChatsState([
+        UnansweredChatsStateSuccess([
           Chat(
             2,
             ChatType.Public,
@@ -620,7 +620,7 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should not delete it',
       build: () {
         when(repo.delete(Chat(1, ChatType.Public, 1, 'subject',
@@ -628,7 +628,7 @@ void main() {
             .thenAnswer((_) async => some(Rejection('reason')));
         return bloc;
       },
-      seed: () => UnansweredChatsState([
+      seed: () => UnansweredChatsStateSuccess([
         Chat(
           1,
           ChatType.Public,
@@ -652,10 +652,10 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(UnansweredChatsEvent.delete(Chat(
+      act: (_) => bloc.add(UnansweredChatsEventDelete(Chat(
           1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')))),
       expect: () => [
-        UnansweredChatsState.inProgress([
+        UnansweredChatsStateInProgress([
           Chat(
             1,
             ChatType.Public,
@@ -679,14 +679,14 @@ void main() {
             isFavorite: true,
           ),
         ]),
-        UnansweredChatsState.error(Rejection('reason')),
+        UnansweredChatsStateError(Rejection('reason')),
       ],
     );
 
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should happen nothing',
       build: () => bloc,
-      seed: () => UnansweredChatsState.inProgress([
+      seed: () => UnansweredChatsStateInProgress([
         Chat(
           1,
           ChatType.Public,
@@ -710,16 +710,16 @@ void main() {
           isFavorite: true,
         ),
       ]),
-      act: (_) => bloc.add(UnansweredChatsEvent.delete(Chat(
+      act: (_) => bloc.add(UnansweredChatsEventDelete(Chat(
           1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')))),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<UnansweredChatsBloc, UnansweredChatsState>(
       'should happen nothing either',
       build: () => bloc,
-      seed: () => UnansweredChatsState.error(Rejection('reason')),
-      act: (_) => bloc.add(UnansweredChatsEvent.delete(Chat(
+      seed: () => UnansweredChatsStateError(Rejection('reason')),
+      act: (_) => bloc.add(UnansweredChatsEventDelete(Chat(
           1, ChatType.Public, 1, 'subject', DateTime.parse('2021-05-01')))),
       expect: () => [],
     );

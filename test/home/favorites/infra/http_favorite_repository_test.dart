@@ -18,7 +18,7 @@ void main() {
 
   group('Get my favorites', () {
     test('should return an ordered list', () async {
-      final list = [
+      const list = [
         Favorite(1, 1, 'subject'),
         Favorite(2, 2, 'subject'),
         Favorite(3, 3, 'subject'),
@@ -44,7 +44,7 @@ void main() {
 
   group('Add a favorite', () {
     test('should add it', () async {
-      when(apiClient.post('favorites', AddChatToFavorites(1)))
+      when(apiClient.post('favorites', const AddChatToFavorites(1)))
           .thenAnswer((_) async => none());
 
       final result = await repo.add(
@@ -54,7 +54,7 @@ void main() {
     });
 
     test('should return an error', () async {
-      when(apiClient.post('favorites', AddChatToFavorites(1)))
+      when(apiClient.post('favorites', const AddChatToFavorites(1)))
           .thenAnswer((_) async => some(Rejection('error')));
 
       final result = await repo.add(

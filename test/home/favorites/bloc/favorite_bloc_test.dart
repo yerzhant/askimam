@@ -21,24 +21,24 @@ void main() {
   });
 
   test('Initial state', () {
-    expect(bloc.state, const FavoriteState.inProgress([]));
+    expect(bloc.state, const FavoriteStateInProgress([]));
   });
 
   group('Get my favorites:', () {
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should load my favorites',
       build: () {
-        when(repo.get()).thenAnswer((_) async => right([
+        when(repo.get()).thenAnswer((_) async => right(const [
               Favorite(1, 1, 'Subject 1'),
               Favorite(2, 2, 'Subject 2'),
               Favorite(3, 3, 'Subject 3'),
             ]));
         return bloc;
       },
-      act: (_) => bloc.add(const FavoriteEvent.refresh()),
+      act: (_) => bloc.add(const FavoriteEventRefresh()),
       expect: () => [
-        const FavoriteState.inProgress([]),
-        FavoriteState([
+        const FavoriteStateInProgress([]),
+        const FavoriteStateSuccess([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
@@ -46,7 +46,7 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should return an error',
       build: () {
         when(repo.get()).thenAnswer(
@@ -54,28 +54,28 @@ void main() {
         );
         return bloc;
       },
-      act: (_) => bloc.add(const FavoriteEvent.refresh()),
+      act: (_) => bloc.add(const FavoriteEventRefresh()),
       expect: () => [
-        const FavoriteState.inProgress([]),
-        FavoriteState.error(Rejection('oops!')),
+        const FavoriteStateInProgress([]),
+        FavoriteStateError(Rejection('oops!')),
       ],
     );
 
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should load favorites after an error',
       build: () {
-        when(repo.get()).thenAnswer((_) async => right([
+        when(repo.get()).thenAnswer((_) async => right(const [
               Favorite(1, 1, 'Subject 1'),
               Favorite(2, 2, 'Subject 2'),
               Favorite(3, 3, 'Subject 3'),
             ]));
         return bloc;
       },
-      seed: () => FavoriteState.error(Rejection('x')),
-      act: (_) => bloc.add(const FavoriteEvent.refresh()),
+      seed: () => FavoriteStateError(Rejection('x')),
+      act: (_) => bloc.add(const FavoriteEventRefresh()),
       expect: () => [
-        const FavoriteState.inProgress([]),
-        FavoriteState([
+        const FavoriteStateInProgress([]),
+        const FavoriteStateSuccess([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
@@ -85,7 +85,7 @@ void main() {
   });
 
   group('Add a favorite:', () {
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should add it',
       build: () {
         when(repo.add(Chat(
@@ -97,7 +97,7 @@ void main() {
         ))).thenAnswer(
           (realInvocation) async => none(),
         );
-        when(repo.get()).thenAnswer((_) async => right([
+        when(repo.get()).thenAnswer((_) async => right(const [
               Favorite(1, 1, 'Subject 1'),
               Favorite(2, 2, 'Subject 2'),
               Favorite(3, 3, 'Subject 3'),
@@ -105,11 +105,11 @@ void main() {
 
         return bloc;
       },
-      seed: () => FavoriteState([
+      seed: () => const FavoriteStateSuccess([
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.add(Chat(
+      act: (_) => bloc.add(FavoriteEventAdd(Chat(
         1,
         ChatType.Public,
         1,
@@ -117,12 +117,12 @@ void main() {
         DateTime.parse('2021-05-01'),
       ))),
       expect: () => [
-        FavoriteState.inProgress([
+        const FavoriteStateInProgress([
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
         ]),
-        const FavoriteState.inProgress([]),
-        FavoriteState([
+        const FavoriteStateInProgress([]),
+        const FavoriteStateSuccess([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
@@ -130,7 +130,7 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should add it while in progress',
       build: () {
         when(repo.add(Chat(
@@ -142,7 +142,7 @@ void main() {
         ))).thenAnswer(
           (realInvocation) async => none(),
         );
-        when(repo.get()).thenAnswer((_) async => right([
+        when(repo.get()).thenAnswer((_) async => right(const [
               Favorite(1, 1, 'Subject 1'),
               Favorite(2, 2, 'Subject 2'),
               Favorite(3, 3, 'Subject 3'),
@@ -150,11 +150,11 @@ void main() {
 
         return bloc;
       },
-      seed: () => FavoriteState.inProgress([
+      seed: () => const FavoriteStateInProgress([
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.add(Chat(
+      act: (_) => bloc.add(FavoriteEventAdd(Chat(
         1,
         ChatType.Public,
         1,
@@ -162,8 +162,8 @@ void main() {
         DateTime.parse('2021-05-01'),
       ))),
       expect: () => [
-        const FavoriteState.inProgress([]),
-        FavoriteState([
+        const FavoriteStateInProgress([]),
+        const FavoriteStateSuccess([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
@@ -171,7 +171,7 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should not add it',
       build: () {
         when(repo.add(Chat(
@@ -185,11 +185,11 @@ void main() {
         );
         return bloc;
       },
-      seed: () => FavoriteState([
+      seed: () => const FavoriteStateSuccess([
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(FavoriteEvent.add(Chat(
+      act: (_) => bloc.add(FavoriteEventAdd(Chat(
         1,
         ChatType.Public,
         1,
@@ -197,19 +197,19 @@ void main() {
         DateTime.parse('2021-05-01'),
       ))),
       expect: () => [
-        FavoriteState.inProgress([
+        const FavoriteStateInProgress([
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
         ]),
-        FavoriteState.error(Rejection('reason')),
+        FavoriteStateError(Rejection('reason')),
       ],
     );
 
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should return a previous error',
       build: () => bloc,
-      seed: () => FavoriteState.error(Rejection('reason')),
-      act: (_) => bloc.add(FavoriteEvent.add(Chat(
+      seed: () => FavoriteStateError(Rejection('reason')),
+      act: (_) => bloc.add(FavoriteEventAdd(Chat(
         1,
         ChatType.Public,
         1,
@@ -221,75 +221,75 @@ void main() {
   });
 
   group('Delete a favorite:', () {
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should delete it',
       build: () {
         when(repo.delete(1)).thenAnswer((realInvocation) async => none());
         return bloc;
       },
-      seed: () => FavoriteState([
+      seed: () => const FavoriteStateSuccess([
         Favorite(1, 1, 'Subject 1'),
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(const FavoriteEvent.delete(1)),
+      act: (_) => bloc.add(const FavoriteEventDelete(1)),
       expect: () => [
-        FavoriteState.inProgress([
+        const FavoriteStateInProgress([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
         ]),
-        FavoriteState([
+        const FavoriteStateSuccess([
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
         ]),
       ],
     );
 
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should return an error',
       build: () {
         when(repo.delete(1)).thenAnswer((_) async => some(Rejection('error')));
         return bloc;
       },
-      seed: () => FavoriteState([
+      seed: () => const FavoriteStateSuccess([
         Favorite(1, 1, 'Subject 1'),
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(const FavoriteEvent.delete(1)),
+      act: (_) => bloc.add(const FavoriteEventDelete(1)),
       expect: () => [
-        FavoriteState.inProgress([
+        const FavoriteStateInProgress([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
         ]),
-        FavoriteState.error(Rejection('error')),
+        FavoriteStateError(Rejection('error')),
       ],
     );
 
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should return an earlier error',
       build: () => bloc,
-      seed: () => FavoriteState.error(Rejection('error')),
-      act: (_) => bloc.add(const FavoriteEvent.delete(1)),
+      seed: () => FavoriteStateError(Rejection('error')),
+      act: (_) => bloc.add(const FavoriteEventDelete(1)),
       expect: () => [],
     );
 
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should delete it while deleting another one',
       build: () {
         when(repo.delete(2)).thenAnswer((realInvocation) async => none());
         return bloc;
       },
-      seed: () => FavoriteState.inProgress([
+      seed: () => const FavoriteStateInProgress([
         Favorite(1, 1, 'Subject 1'),
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(const FavoriteEvent.delete(2)),
+      act: (_) => bloc.add(const FavoriteEventDelete(2)),
       expect: () => [
-        FavoriteState([
+        const FavoriteStateSuccess([
           Favorite(1, 1, 'Subject 1'),
           Favorite(3, 3, 'Subject 3'),
         ]),
@@ -298,20 +298,20 @@ void main() {
   });
 
   group('Open tab:', () {
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should load favorites on first view',
       build: () {
-        when(repo.get()).thenAnswer((_) async => right([
+        when(repo.get()).thenAnswer((_) async => right(const [
               Favorite(1, 1, 'Subject 1'),
               Favorite(2, 2, 'Subject 2'),
               Favorite(3, 3, 'Subject 3'),
             ]));
         return bloc;
       },
-      act: (_) => bloc.add(const FavoriteEvent.show()),
+      act: (_) => bloc.add(const FavoriteEventShow()),
       expect: () => [
-        const FavoriteState.inProgress([]),
-        FavoriteState([
+        const FavoriteStateInProgress([]),
+        const FavoriteStateSuccess([
           Favorite(1, 1, 'Subject 1'),
           Favorite(2, 2, 'Subject 2'),
           Favorite(3, 3, 'Subject 3'),
@@ -319,15 +319,15 @@ void main() {
       ],
     );
 
-    blocTest(
+    blocTest<FavoriteBloc, FavoriteState>(
       'should just show what it has',
       build: () => bloc,
-      seed: () => FavoriteState([
+      seed: () => const FavoriteStateSuccess([
         Favorite(1, 1, 'Subject 1'),
         Favorite(2, 2, 'Subject 2'),
         Favorite(3, 3, 'Subject 3'),
       ]),
-      act: (_) => bloc.add(const FavoriteEvent.show()),
+      act: (_) => bloc.add(const FavoriteEventShow()),
       expect: () => [],
     );
   });

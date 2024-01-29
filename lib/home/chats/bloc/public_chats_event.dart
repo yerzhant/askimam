@@ -1,10 +1,29 @@
 part of 'public_chats_bloc.dart';
 
-@freezed
-class PublicChatsEvent with _$PublicChatsEvent {
-  const factory PublicChatsEvent.show() = _Show;
-  const factory PublicChatsEvent.reload() = _Reload;
-  const factory PublicChatsEvent.loadNextPage() = _LoadNextPage;
-  const factory PublicChatsEvent.updateFavorites(List<Favorite> favorites) =
-      _UpdateFavorites;
+sealed class PublicChatsEvent extends Equatable {
+  const PublicChatsEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+final class PublicChatsEventShow extends PublicChatsEvent {
+  const PublicChatsEventShow();
+}
+
+final class PublicChatsEventReload extends PublicChatsEvent {
+  const PublicChatsEventReload();
+}
+
+final class PublicChatsEventLoadNextPage extends PublicChatsEvent {
+  const PublicChatsEventLoadNextPage();
+}
+
+final class PublicChatsEventUpdateFavorites extends PublicChatsEvent {
+  final List<Favorite> favorites;
+
+  const PublicChatsEventUpdateFavorites(this.favorites);
+
+  @override
+  List<Object?> get props => [favorites];
 }

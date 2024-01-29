@@ -1,8 +1,35 @@
 part of 'my_chats_bloc.dart';
 
-@freezed
-class MyChatsState with _$MyChatsState {
-  const factory MyChatsState(List<Chat> chats) = _State;
-  const factory MyChatsState.inProgress(List<Chat> chats) = _InProgress;
-  const factory MyChatsState.error(Rejection rejection) = _Error;
+sealed class MyChatsState extends Equatable {
+  const MyChatsState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+final class MyChatsStateSuccess extends MyChatsState {
+  final List<Chat> chats;
+
+  const MyChatsStateSuccess(this.chats);
+
+  @override
+  List<Object?> get props => [chats];
+}
+
+final class MyChatsStateInProgress extends MyChatsState {
+  final List<Chat> chats;
+
+  const MyChatsStateInProgress(this.chats);
+
+  @override
+  List<Object?> get props => [chats];
+}
+
+final class MyChatsStateError extends MyChatsState {
+  final Rejection rejection;
+
+  const MyChatsStateError(this.rejection);
+
+  @override
+  List<Object?> get props => [rejection];
 }

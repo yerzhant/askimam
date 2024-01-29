@@ -2,7 +2,6 @@ import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
 import 'package:askimam/home/chats/ui/widget/unanswered_chats_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -31,6 +30,9 @@ void main() {
         child: const Material(child: UnansweredChatsWidget()),
       ),
     );
+
+    provideDummy<UnansweredChatsState>(
+        const UnansweredChatsStateInProgress([]));
   });
 
   testWidgets('should show a list', (tester) async {
@@ -51,7 +53,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Chat 12'), findsOneWidget);
-    verify(bloc.add(const UnansweredChatsEvent.loadNextPage())).called(1);
+    verify(bloc.add(const UnansweredChatsEventLoadNextPage())).called(1);
   });
 
   testWidgets('should delete a chat', (tester) async {
@@ -61,7 +63,7 @@ void main() {
 
     verify(
       bloc.add(
-        UnansweredChatsEvent.delete(
+        UnansweredChatsEventDelete(
           Chat(
             2,
             ChatType.Private,
@@ -77,7 +79,7 @@ void main() {
 
   testWidgets('should show a list and a progress circle', (tester) async {
     when(bloc.state).thenReturn(
-      UnansweredChatsState.inProgress([
+      UnansweredChatsStateInProgress([
         Chat(1, ChatType.Public, 1, 'Chat 1', DateTime.parse('2021-05-01')),
         Chat(2, ChatType.Public, 1, 'Chat 2', DateTime.parse('2021-05-01')),
       ]),
@@ -95,7 +97,7 @@ void main() {
     await tester.fling(find.text('Chat 1'), const Offset(0.0, 300.0), 1000.0);
     await tester.pumpAndSettle();
 
-    verify(bloc.add(const UnansweredChatsEvent.reload())).called(1);
+    verify(bloc.add(const UnansweredChatsEventReload())).called(1);
   });
 
   testWidgets('should route to a chat', (tester) async {
@@ -117,7 +119,7 @@ void main() {
     await _errorFixture(bloc, tester, app);
     await tester.tap(find.text('ПОВТОРИТЬ'));
 
-    verify(bloc.add(const UnansweredChatsEvent.reload())).called(1);
+    verify(bloc.add(const UnansweredChatsEventReload())).called(1);
   });
 }
 
@@ -128,7 +130,7 @@ Future _fixture(
   int count = 2,
 }) async {
   when(bloc.state).thenReturn(
-    UnansweredChatsState([
+    UnansweredChatsStateSuccess([
       for (var i = 1; i <= count; i++)
         Chat(
           i,
@@ -150,7 +152,7 @@ Future _errorFixture(
   WidgetTester tester,
   Widget app,
 ) async {
-  when(bloc.state).thenReturn(UnansweredChatsState.error(Rejection('reason')));
+  when(bloc.state).thenReturn(UnansweredChatsStateError(Rejection('reason')));
 
   await tester.pumpWidget(app);
 }

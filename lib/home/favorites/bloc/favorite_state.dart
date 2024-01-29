@@ -1,9 +1,35 @@
 part of 'favorite_bloc.dart';
 
-@freezed
-class FavoriteState with _$FavoriteState {
-  const factory FavoriteState(List<Favorite> favorites) = _State;
-  const factory FavoriteState.inProgress(List<Favorite> favorites) =
-      _InProgress;
-  const factory FavoriteState.error(Rejection rejection) = _Error;
+sealed class FavoriteState extends Equatable {
+  const FavoriteState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+final class FavoriteStateSuccess extends FavoriteState {
+  final List<Favorite> favorites;
+
+  const FavoriteStateSuccess(this.favorites);
+
+  @override
+  List<Object?> get props => [favorites];
+}
+
+final class FavoriteStateInProgress extends FavoriteState {
+  final List<Favorite> favorites;
+
+  const FavoriteStateInProgress(this.favorites);
+
+  @override
+  List<Object?> get props => [favorites];
+}
+
+final class FavoriteStateError extends FavoriteState {
+  final Rejection rejection;
+
+  const FavoriteStateError(this.rejection);
+
+  @override
+  List<Object?> get props => [rejection];
 }

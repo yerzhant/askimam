@@ -1,15 +1,21 @@
 import 'package:askimam/common/domain/model/model.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'update_chat.freezed.dart';
 part 'update_chat.g.dart';
 
-@freezed
-class UpdateChat with _$UpdateChat, Model {
-  factory UpdateChat(String subject) = _UpdateChat;
+@JsonSerializable()
+class UpdateChat extends Equatable with Model {
+  final String subject;
 
-  const UpdateChat._();
+  const UpdateChat(this.subject);
 
   factory UpdateChat.fromJson(Map<String, dynamic> json) =>
       _$UpdateChatFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$UpdateChatToJson(this);
+
+  @override
+  List<Object?> get props => [subject];
 }

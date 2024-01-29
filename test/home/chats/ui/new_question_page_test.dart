@@ -15,8 +15,10 @@ void main() {
   late IModularNavigator navigator;
 
   setUp(() {
+    provideDummy<MyChatsState>(const MyChatsStateInProgress([]));
+
     bloc = MockMyChatsBloc();
-    when(bloc.state).thenReturn(const MyChatsState([]));
+    when(bloc.state).thenReturn(const MyChatsStateSuccess([]));
     when(bloc.stream).thenAnswer((_) => const Stream.empty());
 
     navigator = MockIModularNavigator();
@@ -39,9 +41,11 @@ void main() {
     await tester.tap(find.text('Публичный'));
     await tester.enterText(find.byType(TextField).first, ' subject ');
     await tester.enterText(find.byType(TextField).last, ' text ');
+    await tester.scrollUntilVisible(find.text('ОТПРАВИТЬ'), 100,
+        scrollable: find.byType(Scrollable).last);
     await tester.tap(find.text('ОТПРАВИТЬ'));
 
-    verify(bloc.add(const MyChatsEvent.add(ChatType.Public, 'subject', 'text')))
+    verify(bloc.add(const MyChatsEventAdd(ChatType.Public, 'subject', 'text')))
         .called(1);
     verify(navigator.pop()).called(1);
   });
@@ -50,19 +54,23 @@ void main() {
     await _fixture(tester, bloc);
     await tester.tap(find.text('Публичный'));
     await tester.enterText(find.byType(TextField).last, 'text');
+    await tester.scrollUntilVisible(find.text('ОТПРАВИТЬ'), 100,
+        scrollable: find.byType(Scrollable).last);
     await tester.tap(find.text('ОТПРАВИТЬ'));
 
-    verify(bloc.add(const MyChatsEvent.add(ChatType.Public, null, 'text')))
+    verify(bloc.add(const MyChatsEventAdd(ChatType.Public, null, 'text')))
         .called(1);
   });
 
   testWidgets('should not send a question without text', (tester) async {
     await _fixture(tester, bloc);
+    await tester.scrollUntilVisible(find.text('ОТПРАВИТЬ'), 100,
+        scrollable: find.byType(Scrollable).last);
     await tester.tap(find.text('ОТПРАВИТЬ'));
     await tester.pump();
 
     expect(find.text('Введите значение'), findsOneWidget);
-    verifyNever(bloc.add(const MyChatsEvent.add(ChatType.Private, null, '')));
+    verifyNever(bloc.add(const MyChatsEventAdd(ChatType.Private, null, '')));
   });
 }
 

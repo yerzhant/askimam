@@ -6,21 +6,19 @@ import 'package:askimam/common/domain/model/model.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/home/favorites/domain/model/favorite.dart';
 import 'package:askimam/imam_ratings/domain/model/imam_ratings_with_description.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 import 'package:http/http.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'api_response.freezed.dart';
 part 'api_response.g.dart';
 
-@freezed
-class ApiResponse with _$ApiResponse {
-  const factory ApiResponse(
-    ApiResponseStatus status, {
-    Object? data,
-    String? error,
-  }) = _ApiResponse;
+@JsonSerializable()
+class ApiResponse extends Equatable with Model {
+  final ApiResponseStatus status;
+  final Object? data;
+  final String? error;
 
-  const ApiResponse._();
+  const ApiResponse(this.status, {this.data, this.error});
 
   factory ApiResponse.ok() => const ApiResponse(ApiResponseStatus.Ok);
 
@@ -34,12 +32,6 @@ class ApiResponse with _$ApiResponse {
         error: error,
       );
 
-  factory ApiResponse.fromJson(Map<String, dynamic> json) =>
-      _$ApiResponseFromJson(json);
-
-  String toJsonString() => jsonEncode(toJson());
-  List<int> toJsonUtf8() => utf8.encode(jsonEncode(toJson()));
-
   M value<M extends Model>() {
     return _fromJsonfactories[M]!(data);
   }
@@ -50,8 +42,20 @@ class ApiResponse with _$ApiResponse {
   }
 
   Rejection asRejection() => Rejection(error ?? 'Unknown error.');
+
+  String toJsonString() => jsonEncode(toJson());
+
+  factory ApiResponse.fromJson(Map<String, dynamic> json) =>
+      _$ApiResponseFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ApiResponseToJson(this);
+
+  @override
+  List<Object?> get props => [status, data, error];
 }
 
+// ignore: constant_identifier_names
 enum ApiResponseStatus { Ok, Error }
 
 final _fromJsonfactories = <Type, Function>{

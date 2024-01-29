@@ -8,13 +8,14 @@ import 'package:askimam/common/ui/widget/rejection_widget.dart';
 import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_modular/flutter_modular.dart'
+    hide ModularWatchExtension;
 
 class UnansweredChatsWidget extends StatefulWidget {
-  const UnansweredChatsWidget();
+  const UnansweredChatsWidget({super.key});
 
   @override
-  _UnansweredChatsWidgetState createState() => _UnansweredChatsWidgetState();
+  State createState() => _UnansweredChatsWidgetState();
 }
 
 class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
@@ -38,7 +39,7 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
         _scrollController.position.pixels) {
       context
           .read<UnansweredChatsBloc>()
-          .add(const UnansweredChatsEvent.loadNextPage());
+          .add(const UnansweredChatsEventLoadNextPage());
     }
   }
 
@@ -46,25 +47,28 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<UnansweredChatsBloc, UnansweredChatsState>(
       builder: (context, state) {
-        return state.when(
-          (items) => _list(items, context),
-          inProgress: (items) => InProgressWidget(child: _list(items, context)),
-          error: (rejection) => RejectionWidget(
-            rejection: rejection,
-            onRefresh: () => context
-                .read<UnansweredChatsBloc>()
-                .add(const UnansweredChatsEvent.reload()),
-          ),
-        );
+        return switch (state) {
+          UnansweredChatsStateSuccess(chats: final items) =>
+            _list(items, context),
+          UnansweredChatsStateInProgress(chats: final items) =>
+            InProgressWidget(child: _list(items, context)),
+          UnansweredChatsStateError(rejection: final rejection) =>
+            RejectionWidget(
+              rejection: rejection,
+              onRefresh: () => context
+                  .read<UnansweredChatsBloc>()
+                  .add(const UnansweredChatsEventReload()),
+            ),
+        };
       },
     );
   }
 
   Widget _list(List<Chat> items, BuildContext context) {
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () async => context
           .read<UnansweredChatsBloc>()
-          .add(const UnansweredChatsEvent.reload()),
+          .add(const UnansweredChatsEventReload()),
       child: ListView.separated(
         controller: _scrollController,
         itemCount: items.length,
@@ -75,8 +79,8 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
             key: ValueKey(item.id),
             onDismissed: (_) => context
                 .read<UnansweredChatsBloc>()
-                .add(UnansweredChatsEvent.delete(item)),
-            background: Container(color: secondaryColor),
+                .add(UnansweredChatsEventDelete(item)),
+            background: Container(color: warningColor),
             child: ListTile(
               title: AutoDirection(
                 text: item.subject,
@@ -91,7 +95,7 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
                 padding: const EdgeInsets.only(top: dateTopPadding),
                 child: Text(
                   item.updatedAt.format(),
-                  style: Theme.of(context).textTheme.caption,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
               leading: Stack(
@@ -103,9 +107,7 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
                       item.type == ChatType.Public
                           ? Icons.public_rounded
                           : Icons.lock_rounded,
-                      color: item.type == ChatType.Public
-                          ? primaryColor
-                          : secondaryDarkColor,
+                      color: primaryColor,
                       size: iconSize,
                     ),
                   ),
@@ -127,10 +129,10 @@ class _UnansweredChatsWidgetState extends State<UnansweredChatsWidget> {
 
   Widget _getViewedIcon(Chat item) {
     if (item.isViewedByImam) {
-      return Icon(
+      return const Icon(
         Icons.check_rounded,
+        color: primaryColor,
         size: 11,
-        color: item.type == ChatType.Public ? primaryColor : secondaryDarkColor,
       );
     }
 

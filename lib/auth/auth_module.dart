@@ -3,10 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class AuthModule extends Module {
   @override
-  List<Bind<Object>> get binds => [];
-
-  @override
-  List<ModularRoute> get routes => [
-        ChildRoute('/login', child: (_, __) => LoginPage(Modular.get())),
-      ];
+  void routes(RouteManager r) {
+    r.child('/login', child: (_) => LoginPage(Modular.get()));
+  }
 }

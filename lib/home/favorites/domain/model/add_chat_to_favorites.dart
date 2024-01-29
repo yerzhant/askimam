@@ -1,15 +1,21 @@
 import 'package:askimam/common/domain/model/model.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'add_chat_to_favorites.freezed.dart';
 part 'add_chat_to_favorites.g.dart';
 
-@freezed
-class AddChatToFavorites with _$AddChatToFavorites, Model {
-  factory AddChatToFavorites(int id) = _AddChatToFavorites;
+@JsonSerializable()
+class AddChatToFavorites extends Equatable with Model {
+  final int id;
+
+  const AddChatToFavorites(this.id);
 
   factory AddChatToFavorites.fromJson(Map<String, dynamic> json) =>
       _$AddChatToFavoritesFromJson(json);
 
-  const AddChatToFavorites._();
+  @override
+  Map<String, dynamic> toJson() => _$AddChatToFavoritesToJson(this);
+
+  @override
+  List<Object?> get props => [id];
 }

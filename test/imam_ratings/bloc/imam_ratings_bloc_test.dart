@@ -22,14 +22,14 @@ void main() {
   });
 
   test('initial state', () {
-    expect(bloc.state, const ImamRatingsState.inProgress());
+    expect(bloc.state, const ImamRatingsStateInProgress());
   });
 
   blocTest(
     'should get ratings',
     build: () {
       when(repo.getRatings()).thenAnswer(
-        (_) async => right(ImamRatingsWithDescription('description', [
+        (_) async => right(const ImamRatingsWithDescription('description', [
           ImamRating('Imam 1', 123),
           ImamRating('Imam 2', 12),
         ])),
@@ -37,10 +37,10 @@ void main() {
 
       return bloc;
     },
-    act: (_) => bloc.add(const ImamRatingsEvent.reload()),
+    act: (_) => bloc.add(const ImamRatingsEventReload()),
     expect: () => [
-      const ImamRatingsState.inProgress(),
-      ImamRatingsState(
+      const ImamRatingsStateInProgress(),
+      const ImamRatingsStateSuccess(
         ImamRatingsWithDescription('description', [
           ImamRating('Imam 1', 123),
           ImamRating('Imam 2', 12),
@@ -57,10 +57,10 @@ void main() {
 
       return bloc;
     },
-    act: (_) => bloc.add(const ImamRatingsEvent.reload()),
+    act: (_) => bloc.add(const ImamRatingsEventReload()),
     expect: () => [
-      const ImamRatingsState.inProgress(),
-      ImamRatingsState.error(Rejection('reason')),
+      const ImamRatingsStateInProgress(),
+      ImamRatingsStateError(Rejection('reason')),
     ],
   );
 }

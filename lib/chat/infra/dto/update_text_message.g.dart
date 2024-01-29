@@ -6,15 +6,13 @@ part of 'update_text_message.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_UpdateTextMessage _$_$_UpdateTextMessageFromJson(Map<String, dynamic> json) {
-  return _$_UpdateTextMessage(
-    json['text'] as String,
-    json['fcmToken'] as String,
-  );
-}
+UpdateTextMessage _$UpdateTextMessageFromJson(Map<String, dynamic> json) =>
+    UpdateTextMessage(
+      json['text'] as String,
+      json['fcmToken'] as String,
+    );
 
-Map<String, dynamic> _$_$_UpdateTextMessageToJson(
-        _$_UpdateTextMessage instance) =>
+Map<String, dynamic> _$UpdateTextMessageToJson(UpdateTextMessage instance) =>
     <String, dynamic>{
       'text': instance.text,
       'fcmToken': instance.fcmToken,
