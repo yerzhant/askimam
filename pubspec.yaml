@@ -56,3 +56,4 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "logo/logo.png"
+  web: true

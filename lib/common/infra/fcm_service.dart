@@ -5,12 +5,13 @@ import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/notification_service.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 
 class FcmService implements NotificationService {
   @override
   Future<Either<Rejection, String>> getFcmToken() async {
     try {
-      if (Platform.isIOS) {
+      if (!kIsWeb && Platform.isIOS) {
         final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
         if (apnsToken == null) {
           return left(Rejection('APNs token is null'));
