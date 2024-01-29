@@ -40,7 +40,6 @@ ThemeData theme(BuildContext context) {
       unselectedItemColor: primaryColor,
     ),
     snackBarTheme: const SnackBarThemeData(
-      behavior: SnackBarBehavior.floating,
       backgroundColor: primaryDarkColor,
     ),
   );

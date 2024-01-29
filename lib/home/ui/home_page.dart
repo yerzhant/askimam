@@ -83,16 +83,21 @@ class _HomePageState extends State<HomePage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (state.notification?.title != null)
                       Text(
                         state.notification!.title!,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(color: Colors.white),
                       ),
                     if (state.notification?.body != null)
                       Text(state.notification!.body!),
                   ],
                 ),
+                duration: const Duration(seconds: 15),
               ),
             );
           }
