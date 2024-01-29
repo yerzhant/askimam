@@ -4,17 +4,19 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
-import 'dart:io' as _i11;
+import 'dart:io' as _i12;
 
 import 'package:askimam/auth/domain/model/authentication.dart' as _i7;
 import 'package:askimam/auth/domain/model/login_request.dart' as _i8;
 import 'package:askimam/auth/domain/model/logout_request.dart' as _i6;
 import 'package:askimam/auth/domain/repo/auth_repository.dart' as _i3;
-import 'package:askimam/common/domain/model/model.dart' as _i10;
+import 'package:askimam/auth/infra/dto/update_fcm_token.dart' as _i9;
+import 'package:askimam/common/domain/model/model.dart' as _i11;
 import 'package:askimam/common/domain/model/rejection.dart' as _i5;
-import 'package:askimam/common/domain/service/api_client.dart' as _i9;
+import 'package:askimam/common/domain/service/api_client.dart' as _i10;
 import 'package:askimam/common/domain/service/notification_service.dart'
-    as _i12;
+    as _i14;
+import 'package:askimam/common/domain/service/settings.dart' as _i13;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -112,18 +114,36 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
           ),
         )),
       ) as _i4.Future<_i2.Either<_i5.Rejection, _i7.Authentication>>);
+
+  @override
+  _i4.Future<_i2.Option<_i5.Rejection>> updateFcmToken(
+          _i9.UpdateFcmToken? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateFcmToken,
+          [request],
+        ),
+        returnValue: _i4.Future<_i2.Option<_i5.Rejection>>.value(
+            _FakeOption_0<_i5.Rejection>(
+          this,
+          Invocation.method(
+            #updateFcmToken,
+            [request],
+          ),
+        )),
+      ) as _i4.Future<_i2.Option<_i5.Rejection>>);
 }
 
 /// A class which mocks [ApiClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockApiClient extends _i1.Mock implements _i9.ApiClient {
+class MockApiClient extends _i1.Mock implements _i10.ApiClient {
   MockApiClient() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, M>> get<M extends _i10.Model>(
+  _i4.Future<_i2.Either<_i5.Rejection, M>> get<M extends _i11.Model>(
           String? suffix) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -141,7 +161,7 @@ class MockApiClient extends _i1.Mock implements _i9.ApiClient {
       ) as _i4.Future<_i2.Either<_i5.Rejection, M>>);
 
   @override
-  _i4.Future<_i2.Either<_i5.Rejection, List<M>>> getList<M extends _i10.Model>(
+  _i4.Future<_i2.Either<_i5.Rejection, List<M>>> getList<M extends _i11.Model>(
           String? suffix) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -159,7 +179,7 @@ class MockApiClient extends _i1.Mock implements _i9.ApiClient {
       ) as _i4.Future<_i2.Either<_i5.Rejection, List<M>>>);
 
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> post<M extends _i10.Model>(
+  _i4.Future<_i2.Option<_i5.Rejection>> post<M extends _i11.Model>(
     String? suffix,
     M? model,
   ) =>
@@ -219,7 +239,7 @@ class MockApiClient extends _i1.Mock implements _i9.ApiClient {
       ) as _i4.Future<_i2.Option<_i5.Rejection>>);
 
   @override
-  _i4.Future<_i2.Option<_i5.Rejection>> patchWithBody<M extends _i10.Model>(
+  _i4.Future<_i2.Option<_i5.Rejection>> patchWithBody<M extends _i11.Model>(
     String? suffix,
     M? model,
   ) =>
@@ -246,7 +266,7 @@ class MockApiClient extends _i1.Mock implements _i9.ApiClient {
 
   @override
   _i4.Future<_i2.Either<_i5.Rejection, R>>
-      postAndGetResponse<R extends _i10.Model, M extends _i10.Model>(
+      postAndGetResponse<R extends _i11.Model, M extends _i11.Model>(
     String? suffix,
     M? model,
   ) =>
@@ -274,7 +294,7 @@ class MockApiClient extends _i1.Mock implements _i9.ApiClient {
   @override
   _i4.Future<_i2.Option<_i5.Rejection>> uploadFile(
     String? suffix,
-    _i11.File? file,
+    _i12.File? file,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -316,11 +336,74 @@ class MockApiClient extends _i1.Mock implements _i9.ApiClient {
       );
 }
 
+/// A class which mocks [Settings].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSettings extends _i1.Mock implements _i13.Settings {
+  MockSettings() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<_i2.Option<_i5.Rejection>> clearAuthentication() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #clearAuthentication,
+          [],
+        ),
+        returnValue: _i4.Future<_i2.Option<_i5.Rejection>>.value(
+            _FakeOption_0<_i5.Rejection>(
+          this,
+          Invocation.method(
+            #clearAuthentication,
+            [],
+          ),
+        )),
+      ) as _i4.Future<_i2.Option<_i5.Rejection>>);
+
+  @override
+  _i4.Future<_i2.Either<_i5.Rejection, _i7.Authentication>>
+      loadAuthentication() => (super.noSuchMethod(
+            Invocation.method(
+              #loadAuthentication,
+              [],
+            ),
+            returnValue:
+                _i4.Future<_i2.Either<_i5.Rejection, _i7.Authentication>>.value(
+                    _FakeEither_1<_i5.Rejection, _i7.Authentication>(
+              this,
+              Invocation.method(
+                #loadAuthentication,
+                [],
+              ),
+            )),
+          ) as _i4.Future<_i2.Either<_i5.Rejection, _i7.Authentication>>);
+
+  @override
+  _i4.Future<_i2.Either<_i5.Rejection, _i7.Authentication>> saveAuthentication(
+          _i7.Authentication? authentication) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #saveAuthentication,
+          [authentication],
+        ),
+        returnValue:
+            _i4.Future<_i2.Either<_i5.Rejection, _i7.Authentication>>.value(
+                _FakeEither_1<_i5.Rejection, _i7.Authentication>(
+          this,
+          Invocation.method(
+            #saveAuthentication,
+            [authentication],
+          ),
+        )),
+      ) as _i4.Future<_i2.Either<_i5.Rejection, _i7.Authentication>>);
+}
+
 /// A class which mocks [NotificationService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNotificationService extends _i1.Mock
-    implements _i12.NotificationService {
+    implements _i14.NotificationService {
   MockNotificationService() {
     _i1.throwOnMissingStub(this);
   }
@@ -341,4 +424,13 @@ class MockNotificationService extends _i1.Mock
           ),
         )),
       ) as _i4.Future<_i2.Either<_i5.Rejection, String>>);
+
+  @override
+  _i4.Stream<String> tokenRefreshes() => (super.noSuchMethod(
+        Invocation.method(
+          #tokenRefreshes,
+          [],
+        ),
+        returnValue: _i4.Stream<String>.empty(),
+      ) as _i4.Stream<String>);
 }

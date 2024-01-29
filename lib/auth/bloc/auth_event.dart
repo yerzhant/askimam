@@ -24,3 +24,12 @@ final class AuthEventLogin extends AuthEvent {
   @override
   List<Object?> get props => [login, password];
 }
+
+final class AuthEventUpdateFcmToken extends AuthEvent {
+  final String newToken;
+
+  const AuthEventUpdateFcmToken(this.newToken);
+
+  @override
+  List<Object?> get props => [newToken];
+}

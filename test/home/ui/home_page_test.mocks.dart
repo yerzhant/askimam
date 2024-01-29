@@ -60,6 +60,16 @@ class MockAuthBloc extends _i1.Mock implements _i2.AuthBloc {
       ) as bool);
 
   @override
+  _i4.Future<void> close() => (super.noSuchMethod(
+        Invocation.method(
+          #close,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
   void add(_i2.AuthEvent? event) => super.noSuchMethod(
         Invocation.method(
           #add,
@@ -109,16 +119,6 @@ class MockAuthBloc extends _i1.Mock implements _i2.AuthBloc {
         ),
         returnValueForMissingStub: null,
       );
-
-  @override
-  _i4.Future<void> close() => (super.noSuchMethod(
-        Invocation.method(
-          #close,
-          [],
-        ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
 
   @override
   void onChange(_i5.Change<_i2.AuthState>? change) => super.noSuchMethod(

@@ -3,4 +3,5 @@ import 'package:dartz/dartz.dart';
 
 abstract class NotificationService {
   Future<Either<Rejection, String>> getFcmToken();
+  Stream<String> tokenRefreshes();
 }

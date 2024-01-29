@@ -19,4 +19,7 @@ class FcmService implements NotificationService {
       return left(e.asRejection());
     }
   }
+
+  @override
+  Stream<String> tokenRefreshes() => FirebaseMessaging.instance.onTokenRefresh;
 }

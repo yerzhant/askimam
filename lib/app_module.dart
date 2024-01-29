@@ -26,7 +26,9 @@ class AppModule extends Module {
     i.addSingleton<Settings>(() => LocalStorage());
     i.addSingleton<ApiClient>(() => HttpApiClient(i(), _url));
     i.addSingleton<AuthRepository>(() => HttpAuthRepository(i(), i()));
-    i.addSingleton(() => AuthBloc(i(), i(), i())..add(const AuthEventLoad()));
+    i.addSingleton(
+      () => AuthBloc(i(), i(), i(), i())..add(const AuthEventLoad()),
+    );
   }
 
   @override

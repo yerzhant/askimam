@@ -273,4 +273,13 @@ class MockNotificationService extends _i1.Mock
           ),
         )),
       ) as _i4.Future<_i2.Either<_i5.Rejection, String>>);
+
+  @override
+  _i4.Stream<String> tokenRefreshes() => (super.noSuchMethod(
+        Invocation.method(
+          #tokenRefreshes,
+          [],
+        ),
+        returnValue: _i4.Stream<String>.empty(),
+      ) as _i4.Stream<String>);
 }
