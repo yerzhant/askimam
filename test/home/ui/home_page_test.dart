@@ -1,5 +1,6 @@
 import 'package:askimam/auth/bloc/auth_bloc.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
+import 'package:askimam/chat/domain/model/notification.dart';
 import 'package:askimam/home/chats/bloc/my_chats_bloc.dart';
 import 'package:askimam/home/chats/bloc/public_chats_bloc.dart';
 import 'package:askimam/home/chats/bloc/unanswered_chats_bloc.dart';
@@ -9,7 +10,7 @@ import 'package:askimam/home/chats/ui/widget/unanswered_chats_widget.dart';
 import 'package:askimam/home/favorites/bloc/favorite_bloc.dart';
 import 'package:askimam/home/search/bloc/search_chats_bloc.dart';
 import 'package:askimam/home/ui/home_page.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -318,6 +319,38 @@ void main() {
 
     verify(unansweredChatsBloc.add(const UnansweredChatsEventReload()))
         .called(2);
+  });
+
+  testWidgets('should show notification', (tester) async {
+    when(authBloc.state).thenReturn(
+      const AuthStateAuthenticated(
+          Authentication('123', 1, UserType.Imam, 'fcm')),
+    );
+    when(authBloc.stream).thenAnswer((_) => Stream.value(
+          AuthStateAuthenticated(
+            const Authentication('123', 1, UserType.Imam, 'fcm'),
+            Notification(
+              recievedOn: DateTime.now(),
+              title: 'n title',
+              body: 'n body',
+            ),
+          ),
+        ));
+
+    await _fixture(
+      tester,
+      authBloc,
+      myChatsBloc,
+      favoriteBloc,
+      searchChatsBloc,
+      publicChatsBloc,
+      unansweredChatsBloc,
+    );
+    await tester.pump();
+
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.text('n title'), findsOneWidget);
+    expect(find.text('n body'), findsOneWidget);
   });
 }
 

@@ -76,7 +76,27 @@ class _HomePageState extends State<HomePage> {
         BlocProvider.value(value: widget.unansweredChatsBloc),
       ],
       child: BlocConsumer<AuthBloc, AuthState>(
-        listener: (_, __) => widget._initialReloading(),
+        listener: (context, state) {
+          widget._initialReloading();
+
+          if (state is AuthStateAuthenticated && state.notification != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Column(
+                  children: [
+                    if (state.notification?.title != null)
+                      Text(
+                        state.notification!.title!,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    if (state.notification?.body != null)
+                      Text(state.notification!.body!),
+                  ],
+                ),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
