@@ -5,6 +5,7 @@ import 'package:askimam/auth/domain/model/login_request.dart';
 import 'package:askimam/auth/domain/model/logout_request.dart';
 import 'package:askimam/auth/domain/repo/auth_repository.dart';
 import 'package:askimam/auth/infra/dto/update_fcm_token.dart';
+import 'package:askimam/chat/domain/model/notification.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/service/notification_service.dart';
@@ -21,6 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final Settings _settings;
   final NotificationService _notificationService;
 
+  late final StreamSubscription _notificationsSubscription;
   late final StreamSubscription _tokenRefreshesSubscription;
 
   AuthBloc(
@@ -29,6 +31,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this._settings,
     this._notificationService,
   ) : super(const AuthStateUnauthenticated()) {
+    _notificationsSubscription = _notificationService.notifications().listen(
+        (notification) => add(AuthEventReceivedNotification(notification)));
+
     _tokenRefreshesSubscription = _notificationService
         .tokenRefreshes()
         .listen((token) => add(AuthEventUpdateFcmToken(token)));
@@ -123,10 +128,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       }
     });
+
+    on<AuthEventReceivedNotification>((event, emit) {
+      if (state is AuthStateAuthenticated) {
+        final authenticatedState = state as AuthStateAuthenticated;
+        emit(authenticatedState.copyWith(event.notification));
+      }
+    });
   }
 
   @override
   Future<void> close() {
+    _notificationsSubscription.cancel();
     _tokenRefreshesSubscription.cancel();
     return super.close();
   }

@@ -1,3 +1,4 @@
+import 'package:askimam/chat/domain/model/notification.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/notification_service.dart';
 import 'package:dartz/dartz.dart';
@@ -22,4 +23,13 @@ class FcmService implements NotificationService {
 
   @override
   Stream<String> tokenRefreshes() => FirebaseMessaging.instance.onTokenRefresh;
+
+  @override
+  Stream<Notification> notifications() => FirebaseMessaging.onMessage.map(
+        (msg) => Notification(
+          recievedOn: DateTime.now(),
+          title: msg.notification?.title,
+          body: msg.notification?.body,
+        ),
+      );
 }

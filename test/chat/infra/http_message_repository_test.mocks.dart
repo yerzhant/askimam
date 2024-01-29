@@ -6,6 +6,7 @@
 import 'dart:async' as _i4;
 import 'dart:io' as _i7;
 
+import 'package:askimam/chat/domain/model/notification.dart' as _i9;
 import 'package:askimam/common/domain/model/model.dart' as _i6;
 import 'package:askimam/common/domain/model/rejection.dart' as _i5;
 import 'package:askimam/common/domain/service/api_client.dart' as _i3;
@@ -282,4 +283,13 @@ class MockNotificationService extends _i1.Mock
         ),
         returnValue: _i4.Stream<String>.empty(),
       ) as _i4.Stream<String>);
+
+  @override
+  _i4.Stream<_i9.Notification> notifications() => (super.noSuchMethod(
+        Invocation.method(
+          #notifications,
+          [],
+        ),
+        returnValue: _i4.Stream<_i9.Notification>.empty(),
+      ) as _i4.Stream<_i9.Notification>);
 }

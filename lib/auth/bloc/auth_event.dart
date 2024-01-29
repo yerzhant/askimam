@@ -33,3 +33,12 @@ final class AuthEventUpdateFcmToken extends AuthEvent {
   @override
   List<Object?> get props => [newToken];
 }
+
+final class AuthEventReceivedNotification extends AuthEvent {
+  final Notification notification;
+
+  const AuthEventReceivedNotification(this.notification);
+
+  @override
+  List<Object?> get props => [notification];
+}

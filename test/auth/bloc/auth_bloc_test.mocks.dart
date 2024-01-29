@@ -11,6 +11,7 @@ import 'package:askimam/auth/domain/model/login_request.dart' as _i8;
 import 'package:askimam/auth/domain/model/logout_request.dart' as _i6;
 import 'package:askimam/auth/domain/repo/auth_repository.dart' as _i3;
 import 'package:askimam/auth/infra/dto/update_fcm_token.dart' as _i9;
+import 'package:askimam/chat/domain/model/notification.dart' as _i15;
 import 'package:askimam/common/domain/model/model.dart' as _i11;
 import 'package:askimam/common/domain/model/rejection.dart' as _i5;
 import 'package:askimam/common/domain/service/api_client.dart' as _i10;
@@ -433,4 +434,13 @@ class MockNotificationService extends _i1.Mock
         ),
         returnValue: _i4.Stream<String>.empty(),
       ) as _i4.Stream<String>);
+
+  @override
+  _i4.Stream<_i15.Notification> notifications() => (super.noSuchMethod(
+        Invocation.method(
+          #notifications,
+          [],
+        ),
+        returnValue: _i4.Stream<_i15.Notification>.empty(),
+      ) as _i4.Stream<_i15.Notification>);
 }

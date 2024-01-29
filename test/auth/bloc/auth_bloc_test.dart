@@ -4,6 +4,7 @@ import 'package:askimam/auth/domain/repo/auth_repository.dart';
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/auth/domain/model/login_request.dart';
 import 'package:askimam/auth/infra/dto/update_fcm_token.dart';
+import 'package:askimam/chat/domain/model/notification.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/service/notification_service.dart';
@@ -35,6 +36,8 @@ void main() {
     when(notificationService.getFcmToken())
         .thenAnswer((_) async => right('fcm'));
     when(notificationService.tokenRefreshes())
+        .thenAnswer((_) => const Stream.empty());
+    when(notificationService.notifications())
         .thenAnswer((_) => const Stream.empty());
 
     bloc = AuthBloc(repo, apiClient, settings, notificationService);
@@ -286,6 +289,52 @@ void main() {
           const Authentication('jwt', 1, UserType.Inquirer, 'fcm1'),
         )).called(1);
       },
+    );
+  });
+
+  group('notifications', () {
+    final notification =
+        Notification(recievedOn: DateTime.now(), title: 't', body: 'b');
+
+    blocTest<AuthBloc, AuthState>(
+      'do nothing',
+      build: () => bloc,
+      seed: () => const AuthStateUnauthenticated(),
+      act: (_) => bloc.add(AuthEventReceivedNotification(
+          Notification(recievedOn: DateTime.now(), title: 't', body: 'b'))),
+      expect: () => [],
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'new notification',
+      build: () => bloc,
+      seed: () => const AuthStateAuthenticated(
+          Authentication('jwt', 1, UserType.Inquirer, 'fcm')),
+      act: (_) => bloc.add(AuthEventReceivedNotification(notification)),
+      expect: () => [
+        AuthStateAuthenticated(
+          const Authentication('jwt', 1, UserType.Inquirer, 'fcm'),
+          notification,
+        ),
+      ],
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'new notification - from stream',
+      build: () {
+        when(notificationService.notifications())
+            .thenAnswer((_) => Stream.fromIterable([notification]));
+
+        return AuthBloc(repo, apiClient, settings, notificationService);
+      },
+      seed: () => const AuthStateAuthenticated(
+          Authentication('jwt', 1, UserType.Inquirer, 'fcm')),
+      expect: () => [
+        AuthStateAuthenticated(
+          const Authentication('jwt', 1, UserType.Inquirer, 'fcm'),
+          notification,
+        ),
+      ],
     );
   });
 }

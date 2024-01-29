@@ -26,9 +26,13 @@ final class AuthStateUnauthenticated extends AuthState {
 
 final class AuthStateAuthenticated extends AuthState {
   final Authentication authentication;
+  final Notification? notification;
 
-  const AuthStateAuthenticated(this.authentication);
+  const AuthStateAuthenticated(this.authentication, [this.notification]);
+
+  AuthStateAuthenticated copyWith(Notification notification) =>
+      AuthStateAuthenticated(authentication, notification);
 
   @override
-  List<Object?> get props => [authentication];
+  List<Object?> get props => [authentication, notification];
 }
