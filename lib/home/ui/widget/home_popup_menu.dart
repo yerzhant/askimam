@@ -61,7 +61,7 @@ class HomePopupMenu extends StatelessWidget {
               break;
 
             case _HomePopupMenuAction.imamRatings:
-              Modular.to.pushNamed('/imam-ratings');
+              Modular.to.pushNamed('/imam-ratings/');
               break;
 
             case _HomePopupMenuAction.logout:
