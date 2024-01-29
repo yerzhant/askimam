@@ -116,6 +116,16 @@ final httpClient = MockClient((req) async {
         } else {
           return Response('', 400);
         }
+      } else if (req.url.path == '/suffix/ok-body-fcm-token') {
+        if (listEquals(
+          req.bodyBytes,
+          const UpdateFcmToken('old', 'new').toJsonUtf8(),
+        )) {
+          final json = ApiResponse.ok().toJsonString();
+          return Response(json, 200);
+        } else {
+          return Response('', 400);
+        }
       } else if (req.url.path == '/suffix/nok') {
         final json = ApiResponse.error('Что-то пошло не так').toJsonUtf8();
         return Response.bytes(json, 200);

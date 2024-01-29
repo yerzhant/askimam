@@ -1,5 +1,6 @@
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/auth/domain/model/login_request.dart';
+import 'package:askimam/auth/infra/dto/update_fcm_token.dart';
 import 'package:askimam/chat/domain/model/chat.dart';
 import 'package:askimam/chat/domain/model/message.dart';
 import 'package:askimam/chat/infra/dto/add_text_message.dart';
@@ -273,6 +274,13 @@ void main() {
     test('should return none - message', () async {
       final result = await apiClient.patchWithBody(
           'suffix/ok-body-message', const UpdateTextMessage('Тема', '123'));
+
+      expect(result, none());
+    });
+
+    test('should return none - fcm token', () async {
+      final result = await apiClient.patchWithBody(
+          'suffix/ok-body-fcm-token', const UpdateFcmToken('old', 'new'));
 
       expect(result, none());
     });
