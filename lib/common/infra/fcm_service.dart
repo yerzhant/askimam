@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:askimam/chat/domain/model/notification.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
 import 'package:askimam/common/domain/service/notification_service.dart';
@@ -8,6 +10,13 @@ class FcmService implements NotificationService {
   @override
   Future<Either<Rejection, String>> getFcmToken() async {
     try {
+      if (Platform.isIOS) {
+        final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+        if (apnsToken == null) {
+          return left(Rejection('APNs token is null'));
+        }
+      }
+
       final token = await FirebaseMessaging.instance.getToken(
         vapidKey:
             'BIXzssvzuFUsSssjJT2LJFxGD_z_M0ESO3I7lenS5LEWp2x0P1aBPCAqyXro12Kxk-n7qZuiV5nhOCO2m1QMT3A',
