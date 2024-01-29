@@ -1,6 +1,7 @@
 import 'package:askimam/auth/domain/model/authentication.dart';
 import 'package:askimam/auth/domain/model/login_request.dart';
 import 'package:askimam/auth/domain/model/logout_request.dart';
+import 'package:askimam/auth/infra/dto/update_fcm_token.dart';
 import 'package:askimam/auth/infra/http_auth_repository.dart';
 import 'package:askimam/common/domain/service/api_client.dart';
 import 'package:askimam/common/domain/model/rejection.dart';
@@ -139,6 +140,36 @@ void main() {
       final result = await repo.load();
 
       expect(result, left(Rejection('reason')));
+    });
+  });
+
+  group('Update fcm token:', () {
+    test('should be ok', () async {
+      when(
+        api.patchWithBody(
+          'user/update-fcm-token',
+          const UpdateFcmToken('oldToken', 'newToken'),
+        ),
+      ).thenAnswer((_) async => none());
+
+      final result = await repo
+          .updateFcmToken(const UpdateFcmToken('oldToken', 'newToken'));
+
+      expect(result, none());
+    });
+
+    test('should not be ok', () async {
+      when(
+        api.patchWithBody(
+          'user/update-fcm-token',
+          const UpdateFcmToken('oldToken', 'newToken'),
+        ),
+      ).thenAnswer((_) async => some(Rejection('reason')));
+
+      final result = await repo
+          .updateFcmToken(const UpdateFcmToken('oldToken', 'newToken'));
+
+      expect(result, some(Rejection('reason')));
     });
   });
 }
