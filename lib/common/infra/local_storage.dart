@@ -37,7 +37,7 @@ class LocalStorage implements Settings {
         final userId = prefs.getInt(_userId)!;
         final userType = UserType.values.firstWhere(
             (element) => element.toString() == prefs.getString(_userType));
-        final fcmToken = prefs.getString(_fcmToken)!;
+        final fcmToken = prefs.getString(_fcmToken) ?? '';
 
         return right(Authentication(jwt, userId, userType, fcmToken));
       }
