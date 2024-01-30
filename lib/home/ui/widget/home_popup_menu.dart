@@ -24,6 +24,7 @@ class HomePopupMenu extends StatelessWidget {
                 _androidVersion(),
               ],
               _logout(),
+              _deleteAccount(),
             ],
           _ => [
               _imamRatings(),
@@ -40,33 +41,29 @@ class HomePopupMenu extends StatelessWidget {
           switch (action) {
             case _HomePopupMenuAction.azanKz:
               launchUrlString('https://azan.kz');
-              break;
 
             case _HomePopupMenuAction.webVersion:
               launchUrlString('https://askimam.azan.kz');
-              break;
 
             case _HomePopupMenuAction.iosVersion:
               launchUrlString(
                   'https://apps.apple.com/us/app/%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81-%D0%B8%D0%BC%D0%B0%D0%BC%D1%83-azan-kz/id1481811875');
-              break;
 
             case _HomePopupMenuAction.androidVersion:
               launchUrlString(
                   'https://play.google.com/store/apps/details?id=kz.azan.askimam');
-              break;
 
             case _HomePopupMenuAction.login:
               Modular.to.pushNamed('/auth/login');
-              break;
 
             case _HomePopupMenuAction.imamRatings:
               Modular.to.pushNamed('/imam-ratings/');
-              break;
 
             case _HomePopupMenuAction.logout:
               context.read<AuthBloc>().add(const AuthEventLogout());
-              break;
+
+            case _HomePopupMenuAction.deleteAccount:
+              launchUrlString('https://azan.kz/?delete-account');
           }
         },
       );
@@ -121,6 +118,13 @@ class HomePopupMenu extends StatelessWidget {
       child: Text('Рейтинг устазов'),
     );
   }
+
+  PopupMenuItem<_HomePopupMenuAction> _deleteAccount() {
+    return const PopupMenuItem(
+      value: _HomePopupMenuAction.deleteAccount,
+      child: Text('Удалить учетную запись'),
+    );
+  }
 }
 
 enum _HomePopupMenuAction {
@@ -131,4 +135,5 @@ enum _HomePopupMenuAction {
   iosVersion,
   androidVersion,
   imamRatings,
+  deleteAccount,
 }
