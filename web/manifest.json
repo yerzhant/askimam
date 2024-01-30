@@ -1,11 +1,11 @@
 {
-    "name": "askimam",
-    "short_name": "askimam",
+    "name": "Вопрос имаму Azan.kz",
+    "short_name": "Вопрос имаму",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#3D6FE5",
+    "theme_color": "#3D6FE5",
+    "description": "В приложении можно задавать вопросы на арабском, казахском и русском языках касательно Ислама и работы сайта Azan.kz.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
