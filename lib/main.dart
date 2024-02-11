@@ -11,7 +11,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseMessaging.instance.requestPermission();
+  if (await FirebaseMessaging.instance.isSupported()) {
+    await FirebaseMessaging.instance.requestPermission();
+  }
 
   runApp(ModularApp(module: AppModule(apiUrl), child: const AppWidget()));
 }

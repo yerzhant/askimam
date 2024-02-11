@@ -1,4 +1,4 @@
-version=3.0.3
+version=3.0.4
 
 # flutter test || exit
 flutter build web --dart-define=api-url=https://api.askimam.azan.kz/v1 --dart-define=audio-url=https://azan.kz/askimam/audio
