@@ -110,6 +110,10 @@ class MessageCard extends StatelessWidget {
                 await launchUrlString(link.url);
               }
             },
+            contextMenuBuilder: (_, state) =>
+                AdaptiveTextSelectionToolbar.buttonItems(
+                    buttonItems: state.contextMenuButtonItems,
+                    anchors: state.contextMenuAnchors),
           ),
         ),
       );
